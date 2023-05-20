@@ -3,9 +3,9 @@ package com.hnt.dental.util;
 import java.sql.*;
 
 public class ConnectionUtils {
-    private static final String URL = "jdbc:mysql://localhost:3306/ems";
+    private static final String URL = "jdbc:mysql://localhost:3306/hnt_dental";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "142378956";
+    private static final String PASSWORD = "rootroot@3210";
     private static PreparedStatement preparedStatement;
     public static ResultSet rs;
 
