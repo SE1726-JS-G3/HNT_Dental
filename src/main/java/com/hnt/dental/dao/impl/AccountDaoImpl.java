@@ -11,26 +11,27 @@ import java.util.Optional;
 
 public class AccountDaoImpl extends ConnectionUtils implements AccountDao {
 
-    private static final String LOGIN_SQL = "SELECT * FROM Accounts WHERE email = ? AND password = ?";
-    private static final String GET_ALL_ACCOUNT = "SELECT * FROM Accounts";
+    private static final String FIND_BY_EMAIL_SQL = "SELECT * FROM accounts WHERE email = ?";
+    private static final String GET_ALL_ACCOUNT = "SELECT * FROM accounts";
     private static final String GET_ACCOUNT_BY_ID = "SELECT * FROM accounts where id = ?";
-    private static final String SAVE_ACCOUNT = "INSERT INTO hnt_dental.accounts\n" +
+    private static final String SAVE_ACCOUNT = "INSERT INTO accounts\n" +
             "(email, password, `role`, is_verified, image, create_at, update_at)\n" +
             "VALUES(?, ?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE_ACCOUNT = "UPDATE hnt_dental.accounts\n" +
+    private static final String UPDATE_ACCOUNT = "UPDATE accounts\n" +
             "SET id= ?, password= ?, `role`=?, is_verified=?, image=?, create_at=?, update_at=?\n" +
             "WHERE email=?;\n";
-    private static final String DELETE_ACCOUNT = "DELETE FROM hnt_dental.accounts\n" +
+    private static final String DELETE_ACCOUNT = "DELETE FROM accounts\n" +
             "WHERE id=?;\n";
 
     @Override
-    public Account login(String email, String password) throws SQLException {
-        rs = executeQuery(LOGIN_SQL, email, password);
+    public Account findByEmail(String email) throws SQLException {
+        rs = executeQuery(FIND_BY_EMAIL_SQL, email);
         assert rs != null;
         if (rs.next()) {
             return Account.builder()
                     .id(rs.getLong("id"))
                     .email(rs.getString("email"))
+                    .password(rs.getString("password"))
                     .role(rs.getInt("role"))
                     .isVerified(rs.getBoolean("is_verified"))
                     .build();
