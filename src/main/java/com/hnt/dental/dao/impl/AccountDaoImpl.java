@@ -9,16 +9,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class AccountDaoImpl extends ConnectionUtils  implements AccountDao {
+public class AccountDaoImpl extends ConnectionUtils implements AccountDao {
 
     private static final String LOGIN_SQL = "SELECT * FROM Accounts WHERE email = ? AND password = ?";
     private static final String GET_ALL_ACCOUNT = "SELECT * FROM Accounts";
     private static final String GET_ACCOUNT_BY_ID = "SELECT * FROM accounts where id = ?";
+    private static final String SAVE_ACCOUNT = "INSERT INTO hnt_dental.accounts\n" +
+            "(email, password, `role`, is_verified, image, create_at, update_at)\n" +
+            "VALUES(?, ?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE_ACCOUNT = "UPDATE hnt_dental.accounts\n" +
+            "SET id= ?, password= ?, `role`=?, is_verified=?, image=?, create_at=?, update_at=?\n" +
+            "WHERE email=?;\n";
+    private static final String DELETE_ACCOUNT = "DELETE FROM hnt_dental.accounts\n" +
+            "WHERE id=?;\n";
+
     @Override
     public Account login(String email, String password) throws SQLException {
         rs = executeQuery(LOGIN_SQL, email, password);
         assert rs != null;
-        if (rs.next()){
+        if (rs.next()) {
             return Account.builder()
                     .id(rs.getLong("id"))
                     .email(rs.getString("email"))
@@ -33,7 +42,7 @@ public class AccountDaoImpl extends ConnectionUtils  implements AccountDao {
     public List<Account> getAll() throws SQLException {
         rs = executeQuery(GET_ALL_ACCOUNT);
         List<Account> list = new ArrayList<>();
-        while(true){
+        while (true) {
             assert rs != null;
             if (!rs.next()) break;
             list.add(Account.builder()
@@ -48,9 +57,9 @@ public class AccountDaoImpl extends ConnectionUtils  implements AccountDao {
 
     @Override
     public Optional<Account> get(int id) throws SQLException {
-        rs = executeQuery(GET_ACCOUNT_BY_ID,id);
+        rs = executeQuery(GET_ACCOUNT_BY_ID, id);
         assert rs != null;
-        if(rs.next()){
+        if (rs.next()) {
             return Optional.ofNullable(Account.builder()
                     .id(rs.getLong("id"))
                     .email(rs.getString("email"))
@@ -64,16 +73,24 @@ public class AccountDaoImpl extends ConnectionUtils  implements AccountDao {
 
     @Override
     public void save(Account account) {
-
+        executeUpdate(SAVE_ACCOUNT, account.getEmail(), account.getPassword(), account.getRole(),
+                account.getIsVerified(), account.getImage(), account.getCreatedAt(), account.getUpdatedAt());
     }
 
     @Override
     public void update(Account account) {
-
+        executeUpdate(UPDATE_ACCOUNT, account.getEmail(), account.getPassword(), account.getRole(),
+                account.getIsVerified(), account.getImage(), account.getCreatedAt(), account.getUpdatedAt(), account.getId());
     }
 
     @Override
     public void delete(Account account) {
+        executeUpdate(DELETE_ACCOUNT,account.getId());
 
+    }
+
+    public static void main(String[] args) {
+         AccountDaoImpl account = new AccountDaoImpl();
+        account.delete(Account.builder().id(1L).build());
     }
 }
