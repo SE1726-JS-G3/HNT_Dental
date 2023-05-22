@@ -35,8 +35,12 @@ public class AuthService {
                 String passwordEncrypt = AesUtils.encrypt(password);
 
                 if(StringUtils.equals(passwordEncrypt, account.getPassword())){
-                    req.getSession().setAttribute("account", account);
-                    ServletUtils.redirect(req, resp, "/home");
+                    if(Boolean.TRUE.equals(account.getIsVerified())){
+                        req.getSession().setAttribute("account", account);
+                        message = "success";
+                    } else {
+                        message = "account_not_verified";
+                    }
                 } else {
                     message = "password_incorrect";
                 }
