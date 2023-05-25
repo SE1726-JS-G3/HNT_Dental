@@ -45,6 +45,7 @@ public class AuthController extends HttpServlet {
                 ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/forgot-password.jsp");
                 break;
             case "/auth/forgot/confirm":
+                req.setAttribute("token", req.getParameter("token"));
                 ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/forgot-password-confirm.jsp");
                 break;
             case "/auth/verification":
@@ -67,6 +68,12 @@ public class AuthController extends HttpServlet {
                     break;
                 case "/auth/register":
                     service.register(req, resp);
+                    break;
+                case "/auth/forgot":
+                    service.forgot(req, resp);
+                    break;
+                case "/auth/forgot/confirm":
+                    service.forgotConfirm(req, resp);
                     break;
                 default:
             }

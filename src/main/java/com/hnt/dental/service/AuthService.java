@@ -144,13 +144,65 @@ public class AuthService {
             Verification verification = verificationDao.findByEmail(email);
 
             if (verification != null && StringUtils.equals(verification.getCode(), code) && (StringUtils.equals(code, verification.getCode()))) {
-                    Account account = accountDao.findByEmail(email);
-                    account.setIsVerified(true);
-                    accountDao.update(account);
-                    ServletUtils.redirect(req, resp, "/auth/verification?success=true");
+                Account account = accountDao.findByEmail(email);
+                account.setIsVerified(true);
+                accountDao.update(account);
+                ServletUtils.redirect(req, resp, "/auth/verification?success=true");
 
             }
             ServletUtils.redirect(req, resp, "/auth/verification?success=false");
+        } catch (Exception e) {
+            throw new SystemRuntimeException("Error decrypt");
+        }
+    }
+
+    public void forgot(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+        String email = req.getParameter("email");
+        try {
+            Account account = accountDao.findByEmail(email);
+            if (account != null) {
+                String captcha = CaptchaUtils.getCaptcha(6);
+
+                verificationDao.save(
+                        Verification.builder()
+                                .email(email)
+                                .code(captcha)
+                                .createdAt(LocalDateTime.now())
+                                .updatedAt(LocalDateTime.now())
+                                .createdBy(account.getId())
+                                .build()
+                );
+                String token = AesUtils.encrypt(StringUtils.join(email, ":", captcha));
+                String url = "http://localhost:8080/auth/forgot/confirm?token=" + token;
+                MailService.sendMailConfirm(account.getEmail(), url, email);
+                ServletUtils.apiResponse(resp, new Gson().toJson(ApiResponse.builder().status(true).message("success").build()));
+            } else {
+                ServletUtils.apiResponse(resp, new Gson().toJson(ApiResponse.builder().status(false).message("email_not_existed").build()));
+            }
+        } catch (Exception e) {
+            throw new SystemRuntimeException("Error encrypt");
+        }
+    }
+
+
+    public void forgotConfirm(HttpServletRequest req, HttpServletResponse resp) {
+        String token = req.getParameter("token");
+        String password = req.getParameter("password");
+        try {
+            String tokenDecrypt = AesUtils.decrypt(token);
+            String[] tokenSplit = tokenDecrypt.split(":");
+            String email = tokenSplit[0];
+            String code = tokenSplit[1];
+
+            Verification verification = verificationDao.findByEmail(email);
+
+            if (verification != null && StringUtils.equals(verification.getCode(), code) && (StringUtils.equals(code, verification.getCode()))) {
+                Account account = accountDao.findByEmail(email);
+                account.setPassword(AesUtils.encrypt(password));
+                accountDao.update(account);
+                ServletUtils.redirect(req, resp, "/auth/login");
+            }
+            ServletUtils.redirect(req, resp, "/404.jsp");
         } catch (Exception e) {
             throw new SystemRuntimeException("Error decrypt");
         }
