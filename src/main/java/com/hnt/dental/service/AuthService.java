@@ -7,7 +7,7 @@ import com.hnt.dental.dao.PatientDao;
 import com.hnt.dental.dao.VerificationDao;
 import com.hnt.dental.dao.impl.AccountDaoImpl;
 import com.hnt.dental.dao.impl.PatientDaoImpl;
-import com.hnt.dental.dao.impl.VerificationDaoIpml;
+import com.hnt.dental.dao.impl.VerificationDaoImpl;
 import com.hnt.dental.dto.response.ApiResponse;
 import com.hnt.dental.entities.Account;
 import com.hnt.dental.entities.Patient;
@@ -34,7 +34,7 @@ public class AuthService {
     static {
         accountDao = new AccountDaoImpl();
         patientDao = new PatientDaoImpl();
-        verificationDao = new VerificationDaoIpml();
+        verificationDao = new VerificationDaoImpl();
     }
 
     public void login(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException {
@@ -143,13 +143,12 @@ public class AuthService {
 
             Verification verification = verificationDao.findByEmail(email);
 
-            if (verification != null && StringUtils.equals(verification.getCode(), code)) {
-                if (StringUtils.equals(code, verification.getCode())) {
+            if (verification != null && StringUtils.equals(verification.getCode(), code) && (StringUtils.equals(code, verification.getCode()))) {
                     Account account = accountDao.findByEmail(email);
                     account.setIsVerified(true);
                     accountDao.update(account);
                     ServletUtils.redirect(req, resp, "/auth/verification?success=true");
-                }
+
             }
             ServletUtils.redirect(req, resp, "/auth/verification?success=false");
         } catch (Exception e) {

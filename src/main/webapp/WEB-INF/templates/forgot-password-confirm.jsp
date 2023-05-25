@@ -48,14 +48,6 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="mb-3">
-                                        <label class="form-label" >Mật khẩu cũ <span class="text-danger">*</span></label>
-                                        <input type="password" class="form-control" placeholder="OldPassword"
-                                               name="oldPassword">
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
                                         <label class="form-label">Mật khẩu mới <span class="text-danger">*</span></label>
                                         <input type="password" class="form-control" placeholder="NewPassword"
                                                name="newPassword">
@@ -72,7 +64,7 @@
 
                                 <div class="col-lg-12 mb-0">
                                     <div class="d-grid">
-                                        <button class="btn btn-primary" type="submit">Lưu thay đổi</button>
+                                        <button class="btn btn-primary" type="submit">Đổi mật khẩu</button>
                                     </div>
                                 </div>
 

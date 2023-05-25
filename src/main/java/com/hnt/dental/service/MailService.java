@@ -9,7 +9,7 @@ import java.util.ResourceBundle;
 
 public class MailService {
 
-    public static ResourceBundle bundle = ResourceBundle.getBundle("application");
+    private static final ResourceBundle bundle = ResourceBundle.getBundle("application");
 
 
     public static void send(String to, String sub, String msg) {

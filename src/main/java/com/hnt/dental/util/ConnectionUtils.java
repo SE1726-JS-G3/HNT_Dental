@@ -7,12 +7,14 @@ import java.util.ResourceBundle;
 
 public class ConnectionUtils {
 
+    private ConnectionUtils() {
+    }
+
     private static PreparedStatement preparedStatement;
-    public static ResultSet rs;
 
-    public static ResourceBundle bundle = ResourceBundle.getBundle("application");
+    private static final ResourceBundle bundle = ResourceBundle.getBundle("application");
 
-    public static Connection getConnection() throws SQLException, ClassNotFoundException {
+    private static Connection getConnection() throws SQLException, ClassNotFoundException {
         String url = StringUtils.join("jdbc:mysql://", bundle.getString("db.host"), ":",
                 bundle.getString("db.port"), "/", bundle.getString("db.name"),
                 "?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC");
@@ -56,21 +58,21 @@ public class ConnectionUtils {
     }
 
     public static Long executeUpdateForIdentity(String sql, Object... args) {
-        try {
-            PreparedStatement statement = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        try (Connection connection = getConnection()){
+            preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             for (int i = 0; i < args.length; i++) {
-                statement.setObject(i + 1, args[i]);
+                preparedStatement.setObject(i + 1, args[i]);
             }
 
             long id;
 
-            int affectedRows = statement.executeUpdate();
+            int affectedRows = preparedStatement.executeUpdate();
 
             if (affectedRows == 0) {
                 throw new SQLException("Creating user failed, no rows affected.");
             }
 
-            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     id = generatedKeys.getLong(1);
                 } else {

@@ -4,12 +4,13 @@ import com.hnt.dental.dao.VerificationDao;
 import com.hnt.dental.entities.Verification;
 import com.hnt.dental.util.ConnectionUtils;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 
-public class VerificationDaoIpml extends ConnectionUtils implements VerificationDao {
+public class VerificationDaoImpl implements VerificationDao {
     private static final String SAVE_VERIFICATION = "INSERT INTO verification\n" +
             "(email, code, life_time, created_at, updated_at, created_by)\n" +
             "VALUES(?, ?, UNIX_TIMESTAMP(now() + INTERVAL 180 SECOND), ?, ?, ?)";
@@ -28,7 +29,7 @@ public class VerificationDaoIpml extends ConnectionUtils implements Verification
 
     @Override
     public Long save(Verification verification) throws SQLException, ClassNotFoundException {
-        executeUpdate(SAVE_VERIFICATION, verification.getEmail(), verification.getCode(), verification.getCreatedAt(), verification.getUpdatedAt()
+        ConnectionUtils.executeUpdate(SAVE_VERIFICATION, verification.getEmail(), verification.getCode(), verification.getCreatedAt(), verification.getUpdatedAt()
                 , verification.getCreatedBy());
         return null;
     }
@@ -45,7 +46,8 @@ public class VerificationDaoIpml extends ConnectionUtils implements Verification
 
     @Override
     public Verification findByEmail(String email) throws SQLException {
-        rs = executeQuery(FIND_BY_EMAIL, email);
+        ResultSet rs = ConnectionUtils.executeQuery(FIND_BY_EMAIL, email);
+        assert rs != null;
         if (rs.next()) {
             return Verification.builder()
                     .id(rs.getLong("id"))

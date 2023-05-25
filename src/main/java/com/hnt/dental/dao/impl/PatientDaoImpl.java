@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class PatientDaoImpl extends ConnectionUtils implements PatientDao {
+public class PatientDaoImpl implements PatientDao {
     private static final String SAVE_PATIENT = "INSERT INTO patients" +
             "(id, full_name, dob, gender, phone, address, description, created_at, updated_at, created_by)" +
             "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -25,7 +25,7 @@ public class PatientDaoImpl extends ConnectionUtils implements PatientDao {
 
     @Override
     public Long save(Patient patient) {
-        executeUpdate(SAVE_PATIENT, patient.getAccount().getId(),patient.getFullName(),patient.getDob(),
+        ConnectionUtils.executeUpdate(SAVE_PATIENT, patient.getAccount().getId(),patient.getFullName(),patient.getDob(),
                 patient.getGender(),patient.getPhone(),patient.getAddress(),patient.getDescription(),patient.getCreatedAt()
         ,patient.getUpdatedAt(),patient.getCreatedBy());
         return patient.getAccount().getId();

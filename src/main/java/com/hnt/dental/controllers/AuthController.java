@@ -8,13 +8,19 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet(name = "AuthController", value = {"/auth/login", "/auth/register",
-        "/auth/logout", "/auth/changePassword", "/auth/forgotPassword", "/auth/verification", "/auth/verification/result"})
+@WebServlet(name = "AuthController", value = {
+        "/auth/login",
+        "/auth/register",
+        "/auth/logout",
+        "/auth/verification",
+        "/auth/verification/result",
+        "/auth/forgot",
+        "/auth/forgot/confirm"
+})
 public class AuthController extends HttpServlet {
 
     private static final AuthService service;
@@ -34,17 +40,12 @@ public class AuthController extends HttpServlet {
                 ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/register.jsp");
                 break;
             case "/auth/logout":
-                // TODO
                 break;
-                //để đây để test font end change password
-            case "/auth/changePassword":
-                ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/changePassword.jsp");
-                // TODO
+            case "/auth/forgot":
+                ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/forgot-password.jsp");
                 break;
-            //để đây để test font end forgot
-            case "/auth/forgotPassword":
-                ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/forgotPassword.jsp");
-                // TODO
+            case "/auth/forgot/confirm":
+                ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/forgot-password-confirm.jsp");
                 break;
             case "/auth/verification":
                 service.verification(req, resp);
@@ -53,12 +54,11 @@ public class AuthController extends HttpServlet {
                 ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/verification-result.jsp");
                 break;
             default:
-                // TODO
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String action = req.getServletPath();
         try {
             switch (action) {
@@ -68,25 +68,10 @@ public class AuthController extends HttpServlet {
                 case "/auth/register":
                     service.register(req, resp);
                     break;
-                case "/auth/changePassword":
-                    ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/changePassword.jsp");
-                    // TODO
-                    break;
-                //để đây để test font end forgot
-                case "/auth/forgotPassword":
-                    ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/forgotPassword.jsp");
-                    // TODO
-                    break;
-                case "/auth/logout":
-                    // TODO
-                    break;
                 default:
-                    // TODO
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new SystemRuntimeException("Server error");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
         }
     }
 }
