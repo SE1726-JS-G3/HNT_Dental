@@ -147,10 +147,13 @@ public class AuthService {
                 Account account = accountDao.findByEmail(email);
                 account.setIsVerified(true);
                 accountDao.update(account);
-                ServletUtils.redirect(req, resp, "/auth/verification?success=true");
-
+                verificationDao.delete(verification);
+                req.setAttribute("success", true);
+                ServletUtils.requestDispatcher(req, resp, "/auth/verification/result");
+            } else {
+                req.setAttribute("success", false);
+                ServletUtils.requestDispatcher(req, resp, "/auth/verification/result");
             }
-            ServletUtils.redirect(req, resp, "/auth/verification?success=false");
         } catch (Exception e) {
             throw new SystemRuntimeException("Error decrypt");
         }

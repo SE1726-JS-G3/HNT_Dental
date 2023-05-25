@@ -17,6 +17,8 @@ public class VerificationDaoImpl implements VerificationDao {
 
     private static final String FIND_BY_EMAIL = "SELECT * FROM verification WHERE email = ?";
 
+    private static final String DELETE_VERIFICATION = "DELETE FROM verification WHERE email = ?";
+
     @Override
     public List<Verification> getAll() throws SQLException {
         return null;
@@ -42,6 +44,7 @@ public class VerificationDaoImpl implements VerificationDao {
 
     @Override
     public void delete(Verification verification) {
+        ConnectionUtils.executeUpdate(DELETE_VERIFICATION, verification.getEmail());
     }
 
     @Override
@@ -53,7 +56,7 @@ public class VerificationDaoImpl implements VerificationDao {
                     .id(rs.getLong("id"))
                     .email(rs.getString("email"))
                     .code(rs.getString("code"))
-                    .lifeTime(rs.getInt("life_time"))
+                    .lifeTime(rs.getLong("life_time"))
                     .build();
         }
         return null;
