@@ -13,7 +13,8 @@ import lombok.RequiredArgsConstructor;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet(name = "AuthController", value = {"/auth/login", "/auth/register", "/auth/logout"})
+@WebServlet(name = "AuthController", value = {"/auth/login", "/auth/register",
+        "/auth/logout", "/auth/changePassword", "/auth/forgotPassword", "/auth/verification" })
 public class AuthController extends HttpServlet {
 
     private static final AuthService service;
@@ -35,6 +36,19 @@ public class AuthController extends HttpServlet {
             case "/auth/logout":
                 // TODO
                 break;
+                //để đây để test font end change password
+            case "/auth/changePassword":
+                ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/changePassword.jsp");
+                // TODO
+                break;
+            //để đây để test font end forgot
+            case "/auth/forgotPassword":
+                ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/forgotPassword.jsp");
+                // TODO
+                break;
+            case "/auth/verification":
+                service.verification(req, resp);
+                break;
             default:
                 // TODO
         }
@@ -49,7 +63,16 @@ public class AuthController extends HttpServlet {
                     service.login(req, resp);
                     break;
                 case "/auth/register":
-                    ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/register.jsp");
+                    service.register(req, resp);
+                    break;
+                case "/auth/changePassword":
+                    ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/changePassword.jsp");
+                    // TODO
+                    break;
+                //để đây để test font end forgot
+                case "/auth/forgotPassword":
+                    ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/forgotPassword.jsp");
+                    // TODO
                     break;
                 case "/auth/logout":
                     // TODO
@@ -59,6 +82,8 @@ public class AuthController extends HttpServlet {
             }
         } catch (SQLException e) {
             throw new SystemRuntimeException("Server error");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 }

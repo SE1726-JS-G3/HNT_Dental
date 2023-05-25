@@ -14,14 +14,14 @@ public class AccountDaoImpl extends ConnectionUtils implements AccountDao {
     private static final String FIND_BY_EMAIL_SQL = "SELECT * FROM accounts WHERE email = ?";
     private static final String GET_ALL_ACCOUNT = "SELECT * FROM accounts";
     private static final String GET_ACCOUNT_BY_ID = "SELECT * FROM accounts where id = ?";
-    private static final String SAVE_ACCOUNT = "INSERT INTO accounts\n" +
-            "(email, password, `role`, is_verified, image, create_at, update_at)\n" +
+    private static final String SAVE_ACCOUNT = "INSERT INTO accounts" +
+            "(email, password, `role`, is_verified, image, create_at, update_at)" +
             "VALUES(?, ?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE_ACCOUNT = "UPDATE accounts\n" +
-            "SET id= ?, password= ?, `role`=?, is_verified=?, image=?, create_at=?, update_at=?\n" +
-            "WHERE email=?;\n";
-    private static final String DELETE_ACCOUNT = "DELETE FROM accounts\n" +
-            "WHERE id=?;\n";
+    private static final String UPDATE_ACCOUNT = "UPDATE accounts" +
+            "SET id= ?, password= ?, `role`=?, is_verified=?, image=?, create_at=?, update_at=?" +
+            "WHERE email=?";
+    private static final String DELETE_ACCOUNT = "DELETE FROM accounts" +
+            "WHERE id=?;";
 
     @Override
     public Account findByEmail(String email) throws SQLException {
@@ -73,8 +73,8 @@ public class AccountDaoImpl extends ConnectionUtils implements AccountDao {
     }
 
     @Override
-    public void save(Account account) {
-        executeUpdate(SAVE_ACCOUNT, account.getEmail(), account.getPassword(), account.getRole(),
+    public Long save(Account account) throws SQLException {
+        return executeUpdateForIdentity(SAVE_ACCOUNT, account.getEmail(), account.getPassword(), account.getRole(),
                 account.getIsVerified(), account.getImage(), account.getCreatedAt(), account.getUpdatedAt());
     }
 

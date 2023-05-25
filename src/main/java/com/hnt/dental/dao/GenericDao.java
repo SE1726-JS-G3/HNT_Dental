@@ -9,7 +9,7 @@ public interface GenericDao<T> {
 
     Optional<T> get(int id) throws SQLException;
 
-    void save(T t);
+    Long save(T t) throws SQLException, ClassNotFoundException;
 
     void update(T t);
 

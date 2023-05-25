@@ -1,26 +1,40 @@
 package com.hnt.dental.service;
 
 import com.google.gson.Gson;
+import com.hnt.dental.constant.RoleEnum;
 import com.hnt.dental.dao.AccountDao;
+import com.hnt.dental.dao.PatientDao;
+import com.hnt.dental.dao.VerificationDao;
 import com.hnt.dental.dao.impl.AccountDaoImpl;
+import com.hnt.dental.dao.impl.PatientDaoImpl;
+import com.hnt.dental.dao.impl.VerificationDaoIpm;
 import com.hnt.dental.dto.response.ApiResponse;
 import com.hnt.dental.entities.Account;
+import com.hnt.dental.entities.Patient;
+import com.hnt.dental.entities.Verification;
 import com.hnt.dental.exception.SystemRuntimeException;
 import com.hnt.dental.util.AesUtils;
+import com.hnt.dental.util.CaptchaUtils;
 import com.hnt.dental.util.ServletUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class AuthService {
     private static final AccountDao accountDao;
+    private static final PatientDao patientDao;
+    private static final VerificationDao verificationDao;
 
     static {
         accountDao = new AccountDaoImpl();
+        patientDao = new PatientDaoImpl();
+        verificationDao = new VerificationDaoIpm();
     }
 
     public void login(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException {
@@ -30,12 +44,12 @@ public class AuthService {
 
         Account account = accountDao.findByEmail(email);
 
-        if(account != null){
+        if (account != null) {
             try {
                 String passwordEncrypt = AesUtils.encrypt(password);
 
-                if(StringUtils.equals(passwordEncrypt, account.getPassword())){
-                    if(Boolean.TRUE.equals(account.getIsVerified())){
+                if (StringUtils.equals(passwordEncrypt, account.getPassword())) {
+                    if (Boolean.TRUE.equals(account.getIsVerified())) {
                         req.getSession().setAttribute("account", account);
                         message = "success";
                     } else {
@@ -44,7 +58,7 @@ public class AuthService {
                 } else {
                     message = "password_incorrect";
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 throw new SystemRuntimeException("Error encrypt");
             }
         } else {
@@ -54,6 +68,77 @@ public class AuthService {
         response.setStatus(false);
         response.setMessage(message);
         ServletUtils.apiResponse(resp, new Gson().toJson(response));
+    }
 
+    public void register(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ClassNotFoundException, IOException {
+        String fullName = req.getParameter("fullName");
+        String dob = req.getParameter("dob");
+        String gender = req.getParameter("gender");
+        String phone = req.getParameter("phone");
+        String address = req.getParameter("address");
+        String password = req.getParameter("password");
+        String confirmPassword = req.getParameter("confirmPassword");
+        String email = req.getParameter("email");
+
+        Long id = accountDao.save(
+                Account.builder()
+                        .email(email)
+                        .password(password)
+                        .role(RoleEnum.ROLE_PATIENT.ordinal())
+                        .createdAt(LocalDateTime.now())
+                        .updatedAt(LocalDateTime.now())
+                        .isVerified(false)
+                        .build()
+        );
+
+        patientDao.save(
+                Patient.builder()
+                        .account(Account.builder().id(id).build())
+                        .fullName(fullName)
+                        .dob(LocalDate.parse(dob, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                        .address(address)
+                        .phone(phone)
+                        .gender(StringUtils.equals(gender, "Nam"))
+                        .build()
+        );
+
+        String captcha = CaptchaUtils.getCaptcha(6);
+
+        verificationDao.save(
+                Verification.builder()
+                        .email(email)
+                        .code(captcha)
+                        .createdAt(LocalDateTime.now())
+                        .updatedAt(LocalDateTime.now())
+                        .createdBy(id)
+                        .build()
+        );
+
+        try {
+            String token = AesUtils.encrypt(StringUtils.join(email, ":", captcha));
+            String url = "http://localhost:8080/auth/verification?token=" + token;
+            MailService.sendMailConfirm(fullName, url, email);
+        } catch (Exception e) {
+            throw new SystemRuntimeException("Error encrypt");
+        }
+
+
+
+        ApiResponse<Account> response = new ApiResponse<>();
+        response.setStatus(false);
+        response.setMessage("success");
+        ServletUtils.apiResponse(resp, new Gson().toJson(response));
+    }
+
+    public void verification(HttpServletRequest req, HttpServletResponse resp) {
+        String token = req.getParameter("token");
+        try{
+            String tokenDecrypt = AesUtils.decrypt(token);
+            String[] tokenSplit = tokenDecrypt.split(":");
+            String email = tokenSplit[0];
+            String code = tokenSplit[1];
+        } catch (Exception e) {
+            throw new SystemRuntimeException("Error decrypt");
+        }
     }
 }

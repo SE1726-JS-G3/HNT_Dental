@@ -5,7 +5,7 @@ import java.sql.*;
 public class ConnectionUtils {
     private static final String URL = "jdbc:mysql://localhost:3306/hnt_dental";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "142378956";
+    private static final String PASSWORD = "rootroot@3210";
     private static PreparedStatement preparedStatement;
     public static ResultSet rs;
 
@@ -46,6 +46,35 @@ public class ConnectionUtils {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public static Long executeUpdateForIdentity(String sql, Object... args) {
+        try {
+            PreparedStatement statement = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            for (int i = 0; i < args.length; i++) {
+                statement.setObject(i + 1, args[i]);
+            }
+
+            long id;
+
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Creating user failed, no rows affected.");
+            }
+
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    id = generatedKeys.getLong(1);
+                } else {
+                    throw new SQLException("Creating user failed, no ID obtained.");
+                }
+            }
+            return id;
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }
