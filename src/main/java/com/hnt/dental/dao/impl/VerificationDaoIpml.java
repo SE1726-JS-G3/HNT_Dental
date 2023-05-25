@@ -14,6 +14,8 @@ public class VerificationDaoIpml extends ConnectionUtils implements Verification
             "(email, code, life_time, created_at, updated_at, created_by)\n" +
             "VALUES(?, ?, UNIX_TIMESTAMP(now() + INTERVAL 180 SECOND), ?, ?, ?)";
 
+    private static final String FIND_BY_EMAIL = "SELECT * FROM verification WHERE email = ?";
+
     @Override
     public List<Verification> getAll() throws SQLException {
         return null;
@@ -39,24 +41,19 @@ public class VerificationDaoIpml extends ConnectionUtils implements Verification
 
     @Override
     public void delete(Verification verification) {
-
     }
 
-/* Test ham save
-    public static void main(String[] args) {
-        VerificationDaoIpml verificationDaoIpm = new VerificationDaoIpml();
-        try {
-            verificationDaoIpm.save(Verification.builder()
-                            .email("Huyen@gmail.com")
-                            .code("123456")
-                            .lifeTime(10)
-
-                    .build());
-        } catch (SQLException ignored) {
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+    @Override
+    public Verification findByEmail(String email) throws SQLException {
+        rs = executeQuery(FIND_BY_EMAIL, email);
+        if (rs.next()) {
+            return Verification.builder()
+                    .id(rs.getLong("id"))
+                    .email(rs.getString("email"))
+                    .code(rs.getString("code"))
+                    .lifeTime(rs.getInt("life_time"))
+                    .build();
         }
+        return null;
     }
-    */
-
 }

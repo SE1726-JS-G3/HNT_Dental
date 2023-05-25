@@ -77,66 +77,81 @@ public class AuthService {
         String phone = req.getParameter("phone");
         String address = req.getParameter("address");
         String password = req.getParameter("password");
-        String confirmPassword = req.getParameter("confirmPassword");
         String email = req.getParameter("email");
+        if (accountDao.findByEmail(email) != null) {
+            ApiResponse<Account> response = new ApiResponse<>();
+            response.setStatus(false);
+            response.setMessage("email_existed");
+            ServletUtils.apiResponse(resp, new Gson().toJson(response));
+        } else {
 
-        Long id = accountDao.save(
-                Account.builder()
-                        .email(email)
-                        .password(password)
-                        .role(RoleEnum.ROLE_PATIENT.ordinal())
-                        .createdAt(LocalDateTime.now())
-                        .updatedAt(LocalDateTime.now())
-                        .isVerified(false)
-                        .build()
-        );
+            Long id = accountDao.save(
+                    Account.builder()
+                            .email(email)
+                            .password(password)
+                            .role(RoleEnum.ROLE_PATIENT.ordinal())
+                            .createdAt(LocalDateTime.now())
+                            .updatedAt(LocalDateTime.now())
+                            .isVerified(false)
+                            .build()
+            );
 
-        patientDao.save(
-                Patient.builder()
-                        .account(Account.builder().id(id).build())
-                        .fullName(fullName)
-                        .dob(LocalDate.parse(dob, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-                        .address(address)
-                        .phone(phone)
-                        .gender(StringUtils.equals(gender, "Nam"))
-                        .build()
-        );
+            patientDao.save(
+                    Patient.builder()
+                            .account(Account.builder().id(id).build())
+                            .fullName(fullName)
+                            .dob(LocalDate.parse(dob, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                            .address(address)
+                            .phone(phone)
+                            .gender(StringUtils.equals(gender, "Nam"))
+                            .build()
+            );
 
-        String captcha = CaptchaUtils.getCaptcha(6);
+            String captcha = CaptchaUtils.getCaptcha(6);
 
-        verificationDao.save(
-                Verification.builder()
-                        .email(email)
-                        .code(captcha)
-                        .createdAt(LocalDateTime.now())
-                        .updatedAt(LocalDateTime.now())
-                        .createdBy(id)
-                        .build()
-        );
+            verificationDao.save(
+                    Verification.builder()
+                            .email(email)
+                            .code(captcha)
+                            .createdAt(LocalDateTime.now())
+                            .updatedAt(LocalDateTime.now())
+                            .createdBy(id)
+                            .build()
+            );
 
-        try {
-            String token = AesUtils.encrypt(StringUtils.join(email, ":", captcha));
-            String url = "http://localhost:8080/auth/verification?token=" + token;
-            MailService.sendMailConfirm(fullName, url, email);
-        } catch (Exception e) {
-            throw new SystemRuntimeException("Error encrypt");
+            try {
+                String token = AesUtils.encrypt(StringUtils.join(email, ":", captcha));
+                String url = "http://localhost:8080/auth/verification?token=" + token;
+                MailService.sendMailConfirm(fullName, url, email);
+            } catch (Exception e) {
+                throw new SystemRuntimeException("Error encrypt");
+            }
+            ApiResponse<Account> response = new ApiResponse<>();
+            response.setStatus(false);
+            response.setMessage("success");
+            ServletUtils.apiResponse(resp, new Gson().toJson(response));
         }
-
-
-
-        ApiResponse<Account> response = new ApiResponse<>();
-        response.setStatus(false);
-        response.setMessage("success");
-        ServletUtils.apiResponse(resp, new Gson().toJson(response));
     }
 
     public void verification(HttpServletRequest req, HttpServletResponse resp) {
         String token = req.getParameter("token");
-        try{
+        try {
             String tokenDecrypt = AesUtils.decrypt(token);
             String[] tokenSplit = tokenDecrypt.split(":");
             String email = tokenSplit[0];
             String code = tokenSplit[1];
+
+            Verification verification = verificationDao.findByEmail(email);
+
+            if (verification != null && StringUtils.equals(verification.getCode(), code)) {
+                if (StringUtils.equals(code, verification.getCode())) {
+                    Account account = accountDao.findByEmail(email);
+                    account.setIsVerified(true);
+                    accountDao.update(account);
+                    ServletUtils.redirect(req, resp, "/auth/verification?success=true");
+                }
+            }
+            ServletUtils.redirect(req, resp, "/auth/verification?success=false");
         } catch (Exception e) {
             throw new SystemRuntimeException("Error decrypt");
         }

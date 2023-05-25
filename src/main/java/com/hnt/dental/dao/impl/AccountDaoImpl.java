@@ -17,9 +17,9 @@ public class AccountDaoImpl extends ConnectionUtils implements AccountDao {
     private static final String SAVE_ACCOUNT = "INSERT INTO accounts" +
             "(email, password, `role`, is_verified, image, create_at, update_at)" +
             "VALUES(?, ?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE_ACCOUNT = "UPDATE accounts" +
-            "SET id= ?, password= ?, `role`=?, is_verified=?, image=?, create_at=?, update_at=?" +
-            "WHERE email=?";
+    private static final String UPDATE_ACCOUNT = "UPDATE accounts " +
+            "SET email= ?, password= ?, `role`=?, is_verified=?, image=?, create_at=?, update_at=? " +
+            "WHERE id=? ";
     private static final String DELETE_ACCOUNT = "DELETE FROM accounts" +
             "WHERE id=?;";
 

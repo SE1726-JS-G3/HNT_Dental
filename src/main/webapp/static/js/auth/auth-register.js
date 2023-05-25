@@ -10,23 +10,27 @@ $(document).ready(function () {
                     required: true,
                     maxlength: 50
                 },
-                fullname: {
+                fullName: {
                     required: true,
-                    maxlength: 100
+                    maxlength: 255
                 },
                 phone: {
                     required: true,
+                    number: true,
                     maxlength: 10
                 },
-                dateOfBirth: {
-                    required: true,
-                    maxlength: 50
+                dob: {
+                    required: true
                 },
 
                 address: {
                     required: true,
                     maxlength: 200
                 },
+                confirmPassword: {
+                    required: true,
+                    equalTo: "#password"
+                }
 
             },
             messages: {
@@ -38,22 +42,26 @@ $(document).ready(function () {
                     required: 'Vui lòng nhập mật khẩu',
                     maxlength: 'Mật khẩu không được quá 50 ký tự',
                 },
-                fullname: {
+                fullName: {
                     required: 'Vui lòng nhập họ và tên',
-                    maxlength: 'họ và tên không được quá 1pp ký tự',
+                    maxlength: 'họ và tên không được quá 255 ký tự',
                 },
                 phone: {
-                    required: 'Vui lòng nhập mật khẩu',
-                    maxlength: 'Số điện thoại không được quá 10 số',
+                    required: 'Vui lòng nhập số điện thoại',
+                    number: 'Số điện thoại không đúng định dạng',
+                    maxlength: 'Số điện thoại không được quá 10 ký tự',
                 },
-                dateOfBirth: {
+                dob: {
                     required: 'Vui lòng nhập ngày sinh',
-                    maxlength: 'Date không phù hợp',
                 },
                 address: {
                     required: 'Vui lòng nhập địa chỉ',
                     maxlength: 'Địa chỉ không được quá 200 ký tự',
                 },
+                confirmPassword: {
+                    required: 'Vui lòng nhập lại mật khẩu',
+                    equalTo: 'Mật khẩu không trùng khớp',
+                }
             },
             submitHandler: function () {
                 getRegister();
@@ -69,11 +77,17 @@ function getRegister() {
         data: $('#register').serialize(),
         success: function (data) {
             switch (data.message) {
-                case 'email_incorrect':
-                    document.getElementById("content").innerHTML = "Email không tồn tại!";
+                case 'email_existed':
+                    document.getElementById("content").style.color = "red";
+                    document.getElementById("content").innerHTML = "Email đã tồn tại!";
                     break;
                 case 'success':
-                    window.location.href = "/auth/login";
+                    document.getElementById("content").style.color = "green";
+                    document.getElementById("content").innerHTML = "Đăng ký thành công! Vui lòng kiểm tra email để xác thực tài khoản!";
+                    break;
+                default:
+                    document.getElementById("content").style.color = "red";
+                    document.getElementById("content").innerHTML = "Đăng ký thất bại!";
                     break;
             }
         },

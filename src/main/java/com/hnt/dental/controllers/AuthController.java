@@ -14,8 +14,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 @WebServlet(name = "AuthController", value = {"/auth/login", "/auth/register",
-        "/auth/logout", "/auth/changePassword", "/auth/forgotPassword", "/auth/verification" ,"/auth/verificationSuccess",
-        "/auth/verificationError"})
+        "/auth/logout", "/auth/changePassword", "/auth/forgotPassword", "/auth/verification", "/auth/verification/result"})
 public class AuthController extends HttpServlet {
 
     private static final AuthService service;
@@ -50,11 +49,8 @@ public class AuthController extends HttpServlet {
             case "/auth/verification":
                 service.verification(req, resp);
                 break;
-            case "/auth/verificationSuccess":
-                ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/verificationSuccess.jsp");
-                break;
-            case "/auth/verificationError":
-                ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/verificationError.jsp");
+            case "/auth/verification/result":
+                ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/verification-result.jsp");
                 break;
             default:
                 // TODO

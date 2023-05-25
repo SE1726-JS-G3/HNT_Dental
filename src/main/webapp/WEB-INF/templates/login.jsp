@@ -34,8 +34,7 @@
     <a href="/home" class="btn btn-icon btn-primary"><i data-feather="home" class="icons"></i></a>
 </div>
 
-<section class="bg-home d-flex bg-light align-items-center"
-         style="background: url('${pageContext.request.contextPath}/static/images/bg/bg-lines-one.png') center;">
+<section class="bg-home d-flex bg-light align-items-center">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-5 col-md-8">
@@ -63,19 +62,12 @@
 
                                 <div class="col-lg-12">
                                     <div class="d-flex justify-content-between">
-                                        <div class="mb-3">
-                                            <div class="form-check">
-                                                <input class="form-check-input align-middle" type="checkbox" value=""
-                                                       id="remember-check">
-                                                <label class="form-check-label" for="remember-check">Remember me</label>
-                                            </div>
-                                        </div>
                                         <a href="/auth/forgot-password" class="text-dark h6 mb-0">Forgot password ?</a>
                                     </div>
                                 </div>
                                 <div class="col-lg-12 mb-0">
                                     <div class="d-grid">
-                                        <button class="btn btn-primary" type="submit">Đăng nhập</button>
+                                        <button class="btn btn-primary" type="submit" id="btn-login">Đăng nhập</button>
                                     </div>
                                 </div>
 

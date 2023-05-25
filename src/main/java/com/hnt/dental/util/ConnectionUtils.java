@@ -1,17 +1,23 @@
 package com.hnt.dental.util;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.sql.*;
+import java.util.ResourceBundle;
 
 public class ConnectionUtils {
-    private static final String URL = "jdbc:mysql://localhost:3306/hnt_dental";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "rootroot@3210";
+
     private static PreparedStatement preparedStatement;
     public static ResultSet rs;
 
+    public static ResourceBundle bundle = ResourceBundle.getBundle("application");
+
     public static Connection getConnection() throws SQLException, ClassNotFoundException {
+        String url = StringUtils.join("jdbc:mysql://", bundle.getString("db.host"), ":",
+                bundle.getString("db.port"), "/", bundle.getString("db.name"),
+                "?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC");
         Class.forName("com.mysql.cj.jdbc.Driver");
-        return DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        return DriverManager.getConnection(url, bundle.getString("db.username"), bundle.getString("db.password"));
     }
 
     private static PreparedStatement getStatement(String sql, Object... args) {

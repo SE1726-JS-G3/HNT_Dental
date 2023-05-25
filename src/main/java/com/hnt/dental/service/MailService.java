@@ -5,12 +5,17 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 public class MailService {
-    public static void send(String to, String sub,
-                            String msg, final String user, final String pass) {
-        Properties props = new Properties();
 
+    public static ResourceBundle bundle = ResourceBundle.getBundle("application");
+
+
+    public static void send(String to, String sub, String msg) {
+        Properties props = new Properties();
+        String username = bundle.getString("mail.username");
+        String password = bundle.getString("mail.password");
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
         props.put("mail.smtp.auth", "true");
@@ -20,13 +25,13 @@ public class MailService {
         Session session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(user, pass);
+                return new PasswordAuthentication(username, password);
             }
         });
 
         try {
             MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(user));
+            message.setFrom(new InternetAddress(username));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
             message.setSubject(sub);
             message.setContent(msg, "text/html; charset=UTF-8");
@@ -94,6 +99,6 @@ public class MailService {
                 "        </div>\n" +
                 "    </body>\n" +
                 "</html>";
-        MailService.send(email, subject, message, "hntdental@gmail.com", "wqkbcrkxgvprcdcc");
+        MailService.send(email, subject, message);
     }
 }
