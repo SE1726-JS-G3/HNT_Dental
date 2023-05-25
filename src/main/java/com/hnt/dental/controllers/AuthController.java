@@ -77,7 +77,7 @@ public class AuthController extends HttpServlet {
                     break;
                 default:
             }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new SystemRuntimeException("Server error");
         }
     }

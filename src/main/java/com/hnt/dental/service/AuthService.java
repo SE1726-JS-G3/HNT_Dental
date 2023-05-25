@@ -70,7 +70,7 @@ public class AuthService {
         ServletUtils.apiResponse(resp, new Gson().toJson(response));
     }
 
-    public void register(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ClassNotFoundException, IOException {
+    public void register(HttpServletRequest req, HttpServletResponse resp) {
         String fullName = req.getParameter("fullName");
         String dob = req.getParameter("dob");
         String gender = req.getParameter("gender");
@@ -78,58 +78,59 @@ public class AuthService {
         String address = req.getParameter("address");
         String password = req.getParameter("password");
         String email = req.getParameter("email");
-        if (accountDao.findByEmail(email) != null) {
-            ApiResponse<Account> response = new ApiResponse<>();
-            response.setStatus(false);
-            response.setMessage("email_existed");
-            ServletUtils.apiResponse(resp, new Gson().toJson(response));
-        } else {
+        try {
+            if (accountDao.findByEmail(email) != null) {
+                ApiResponse<Account> response = new ApiResponse<>();
+                response.setStatus(false);
+                response.setMessage("email_existed");
+                ServletUtils.apiResponse(resp, new Gson().toJson(response));
+            } else {
 
-            Long id = accountDao.save(
-                    Account.builder()
-                            .email(email)
-                            .password(password)
-                            .role(RoleEnum.ROLE_PATIENT.ordinal())
-                            .createdAt(LocalDateTime.now())
-                            .updatedAt(LocalDateTime.now())
-                            .isVerified(false)
-                            .build()
-            );
+                Long id = accountDao.save(
+                        Account.builder()
+                                .email(email)
+                                .password(AesUtils.encrypt(password))
+                                .role(RoleEnum.ROLE_PATIENT.ordinal())
+                                .createdAt(LocalDateTime.now())
+                                .updatedAt(LocalDateTime.now())
+                                .isVerified(false)
+                                .build()
+                );
 
-            patientDao.save(
-                    Patient.builder()
-                            .account(Account.builder().id(id).build())
-                            .fullName(fullName)
-                            .dob(LocalDate.parse(dob, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-                            .address(address)
-                            .phone(phone)
-                            .gender(StringUtils.equals(gender, "Nam"))
-                            .build()
-            );
+                patientDao.save(
+                        Patient.builder()
+                                .account(Account.builder().id(id).build())
+                                .fullName(fullName)
+                                .dob(LocalDate.parse(dob, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                                .address(address)
+                                .phone(phone)
+                                .gender(StringUtils.equals(gender, "Nam"))
+                                .build()
+                );
 
-            String captcha = CaptchaUtils.getCaptcha(6);
+                String captcha = CaptchaUtils.getCaptcha(6);
 
-            verificationDao.save(
-                    Verification.builder()
-                            .email(email)
-                            .code(captcha)
-                            .createdAt(LocalDateTime.now())
-                            .updatedAt(LocalDateTime.now())
-                            .createdBy(id)
-                            .build()
-            );
+                verificationDao.save(
+                        Verification.builder()
+                                .email(email)
+                                .code(captcha)
+                                .createdAt(LocalDateTime.now())
+                                .updatedAt(LocalDateTime.now())
+                                .createdBy(id)
+                                .build()
+                );
 
-            try {
                 String token = AesUtils.encrypt(StringUtils.join(email, ":", captcha));
                 String url = "http://localhost:8080/auth/verification?token=" + token;
                 MailService.sendMailConfirm(fullName, url, email);
-            } catch (Exception e) {
-                throw new SystemRuntimeException("Error encrypt");
+
+                ApiResponse<Account> response = new ApiResponse<>();
+                response.setStatus(false);
+                response.setMessage("success");
+                ServletUtils.apiResponse(resp, new Gson().toJson(response));
             }
-            ApiResponse<Account> response = new ApiResponse<>();
-            response.setStatus(false);
-            response.setMessage("success");
-            ServletUtils.apiResponse(resp, new Gson().toJson(response));
+        } catch (Exception e) {
+            throw new SystemRuntimeException("Error encrypt");
         }
     }
 
