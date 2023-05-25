@@ -12,9 +12,6 @@
     <meta charset="utf-8"/>
     <title>HNT Dental - Register</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health"/>
-    <meta name="Version" content="v1.4.0"/>
-    <link rel="shortcut icon" href="${pageContext.request.contextPath}/static/images/favicon.ico">
     <link href="${pageContext.request.contextPath}/static/css/bootstrap.min.css" class="theme-opt" rel="stylesheet"
           type="text/css"/>
     <link href="${pageContext.request.contextPath}/static/css/icons.min.css" rel="stylesheet" type="text/css"/>
@@ -122,7 +119,7 @@
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
-<script src="${pageContext.request.contextPath}/static/js/auth/auth-register.js"></script>
+<script src="${pageContext.request.contextPath}/static/js/auth/auth_register.js"></script>
 
 </body>
 
