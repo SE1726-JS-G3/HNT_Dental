@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-public class VerificationDaoIpm extends ConnectionUtils implements VerificationDao {
+public class VerificationDaoIpml extends ConnectionUtils implements VerificationDao {
     private static final String SAVE_VERIFICATION = "INSERT INTO verification\n" +
             "(email, code, life_time, created_at, updated_at, created_by)\n" +
             "VALUES(?, ?, UNIX_TIMESTAMP(now() + INTERVAL 180 SECOND), ?, ?, ?)";
@@ -44,7 +44,7 @@ public class VerificationDaoIpm extends ConnectionUtils implements VerificationD
 
 /* Test ham save
     public static void main(String[] args) {
-        VerificationDaoIpm verificationDaoIpm = new VerificationDaoIpm();
+        VerificationDaoIpml verificationDaoIpm = new VerificationDaoIpml();
         try {
             verificationDaoIpm.save(Verification.builder()
                             .email("Huyen@gmail.com")

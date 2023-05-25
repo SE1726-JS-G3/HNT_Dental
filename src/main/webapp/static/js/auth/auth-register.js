@@ -22,6 +22,7 @@ $(document).ready(function () {
                     required: true,
                     maxlength: 50
                 },
+
                 address: {
                     required: true,
                     maxlength: 200

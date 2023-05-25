@@ -7,7 +7,7 @@ import com.hnt.dental.dao.PatientDao;
 import com.hnt.dental.dao.VerificationDao;
 import com.hnt.dental.dao.impl.AccountDaoImpl;
 import com.hnt.dental.dao.impl.PatientDaoImpl;
-import com.hnt.dental.dao.impl.VerificationDaoIpm;
+import com.hnt.dental.dao.impl.VerificationDaoIpml;
 import com.hnt.dental.dto.response.ApiResponse;
 import com.hnt.dental.entities.Account;
 import com.hnt.dental.entities.Patient;
@@ -34,7 +34,7 @@ public class AuthService {
     static {
         accountDao = new AccountDaoImpl();
         patientDao = new PatientDaoImpl();
-        verificationDao = new VerificationDaoIpm();
+        verificationDao = new VerificationDaoIpml();
     }
 
     public void login(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException {
