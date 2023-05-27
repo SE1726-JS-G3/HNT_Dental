@@ -5,7 +5,7 @@
     <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
         <div class="sidebar-brand">
             <a href="home">
-                <img src="${pageContext.request.contextPath}/static/images/logo.png" height="180" width="250" class="logo-light-mode" alt="">
+                <img src="${pageContext.request.contextPath}/static/images/logo.png" height="180" width="200" class="logo-light-mode" alt="">
             </a>
         </div>
 
