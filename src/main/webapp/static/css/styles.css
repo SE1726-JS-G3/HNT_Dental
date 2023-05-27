@@ -3,3 +3,15 @@
     font-weight: normal;
     display: block;
 }
+
+@media not all and (min-resolution: .001dpcm) {
+    @supports (-webkit-appearance:none) {
+
+        .safari_only {
+
+            color: #0000FF;
+            background-color: #CCCCCC;
+
+        }
+    }
+}
