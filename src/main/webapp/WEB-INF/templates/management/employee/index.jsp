@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="en">
@@ -44,44 +45,46 @@
                                 <thead>
                                 <tr>
                                     <th class="border-bottom p-3">ID</th>
-                                    <th class="border-bottom p-3">Tên dịch vụ</th>
-                                    <th class="border-bottom p-3">Thể loại</th>
-                                    <th class="border-bottom p-3">Phí</th>
+                                    <th class="border-bottom p-3">Tên</th>
+                                    <th class="border-bottom p-3">Ngày sinh</th>
+                                    <th class="border-bottom p-3">Giới tính</th>
+                                    <th class="border-bottom p-3">Email</th>
                                     <th class="border-bottom p-3">Trạng thái</th>
                                     <th class="border-bottom p-3 text-center">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td class="p-3">1</td>
-                                    <td class="p-3">Tẩy trắng răng</td>
-                                    <td class="p-3">Nha khoa</td>
-                                    <td class="p-3">100.000</td>
-                                    <td class="p-3">Đang hoạt động</td>
-                                    <td class="p-3 text-center">
-                                        <a href="#">
-                                            <button class="btn btn-primary">Sửa</button>
-                                        </a>
-                                        <a href="#">
-                                            <button class="btn btn-danger">Xóa</button>
-                                        </a>
-                                    </td>
-                                </tr>
+                                <c:forEach items="${employees}" var="e" >
+                                    <tr>
+                                        <td>${e.id}</td>
+                                        <td>${e.name}</td>
+                                        <td>${e.dob}</td>
+                                        <td>${e.gender}</td>
+                                        <td>${e.email}</td>
+                                        <td>${e.status}</td>
+                                        <td class="text-center">
+                                            <a href="#">
+                                                <button class="btn btn-primary">Sửa</button>
+                                            </a>
+                                            <a href="#">
+                                                <button class="btn btn-danger">Xóa</button>
+                                            </a>
+                                        <td>
+                                    </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
+                <c:set var="page" value="${currentPage}"/>
                 <div class="row text-center">
                     <div class="col-12 mt-4">
                         <div class="d-md-flex align-items-center text-center justify-content-between">
                             <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                <li class="page-item active pl-1"><a class="page-link"
-                                                                href="#">1</a>
-                                </li>
-                                <li class="page-item pl-1"><a class="page-link"
-                                                         href="#">2</a>
-                                </li>
+                                <c:forEach begin="${1}" end="${totalPage}" var="i">
+                                    <li class="page-item ${i==page?"active":""}"><a class="page-link" href="${url}?page=${i}">${i}</a></li>
+                                </c:forEach>
                             </ul>
                         </div>
                     </div>

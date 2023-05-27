@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface GenericDao<T> {
-    List<T> getAll() throws SQLException;
+    List<T> getAll(Integer offset, Integer limit) throws SQLException;
 
     Optional<T> get(int id) throws SQLException;
 

@@ -20,7 +20,7 @@ public class VerificationDaoImpl implements VerificationDao {
     private static final String DELETE_VERIFICATION = "DELETE FROM verification WHERE email = ?";
 
     @Override
-    public List<Verification> getAll() throws SQLException {
+    public List<Verification> getAll(Integer offset, Integer limit) throws SQLException {
         return null;
     }
 

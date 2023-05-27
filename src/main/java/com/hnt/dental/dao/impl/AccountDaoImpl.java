@@ -41,7 +41,7 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public List<Account> getAll() throws SQLException {
+    public List<Account> getAll(Integer offset, Integer limit) throws SQLException {
         ResultSet rs = ConnectionUtils.executeQuery(GET_ALL_ACCOUNT);
         List<Account> list = new ArrayList<>();
         while (true) {

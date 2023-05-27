@@ -3,10 +3,12 @@ package com.hnt.dental.util;
 public class PagingUtils {
     private PagingUtils() {
     }
-    public static int getCurrentItem(int pageNumber, int pageSize) {
-        return (pageNumber - 1) * pageSize;
+
+    public static final int DEFAULT_PAGE_SIZE = 2;
+    public static int getOffset(int pageNumber) {
+        return (pageNumber - 1) * DEFAULT_PAGE_SIZE;
     }
-    public static int getTotalPage(int totalItem, int pageSize) {
-        return (int) Math.ceil((double) totalItem / pageSize);
+    public static int getTotalPage(int totalItem) {
+        return (int) Math.ceil((double) totalItem / DEFAULT_PAGE_SIZE);
     }
 }
