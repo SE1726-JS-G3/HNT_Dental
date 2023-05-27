@@ -200,6 +200,7 @@ public class AuthService {
 
             Verification verification = verificationDao.findByEmail(email);
 
+
             if (verification != null && StringUtils.equals(verification.getCode(), code) && (StringUtils.equals(code, verification.getCode()))) {
                 Account account = accountDao.findByEmail(email);
                 account.setPassword(AesUtils.encrypt(password));
