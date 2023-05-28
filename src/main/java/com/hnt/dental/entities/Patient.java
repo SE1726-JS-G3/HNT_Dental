@@ -1,13 +1,14 @@
 package com.hnt.dental.entities;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 public class Patient extends BaseEntity{
     private Account account;
     private String fullName;

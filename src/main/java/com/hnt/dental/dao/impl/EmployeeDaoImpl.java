@@ -8,6 +8,8 @@ import com.hnt.dental.util.DateUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +21,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
             "INNER JOIN accounts a ON e.id = a.id " +
             "LIMIT ?, ?";
 
+    private static final String SAVE_EMPLOYEE = "INSERT INTO hnt_dental.employees" +
+            "(id, full_name, dob, gender, phone, address, salary, status, created_at, updated_at, created_by) " +
+            "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
     private static final String COUNT_EMPLOYEE = "SELECT COUNT(*) FROM employees";
 
     @Override
@@ -43,6 +48,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
         }
         return employees;
     }
+
     @Override
     public Optional<Employee> get(int id) throws SQLException {
 
@@ -51,12 +57,13 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     @Override
     public Long save(Employee employee) throws SQLException, ClassNotFoundException {
+        ConnectionUtils.executeUpdate(SAVE_EMPLOYEE, employee.getAccount().getId(), employee.getFullName(), employee.getDob(), employee.getGender(), employee.getPhone(), employee.getAddress(),
+                employee.getSalary(), employee.isStatus(), employee.getCreatedAt(), employee.getUpdatedAt(), employee.getCreatedBy());
         return null;
     }
 
     @Override
     public void update(Employee employee) {
-
     }
 
     @Override

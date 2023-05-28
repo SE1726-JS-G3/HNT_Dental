@@ -49,6 +49,21 @@ public class EmployeeController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getServletPath();
-        // TODO
+        try {
+            switch (action) {
+                case "/management/employee/create":
+                    employeeService.create(req, resp);
+                    break;
+                case "/management/employee/update":
+                    req.getRequestDispatcher("/WEB-INF/templates/management/employee/update.jsp").forward(req, resp);
+                    break;
+                case "/management/employee/delete":
+                    req.getRequestDispatcher("/WEB-INF/templates/management/employee/delete.jsp").forward(req, resp);
+                    break;
+                default:
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
