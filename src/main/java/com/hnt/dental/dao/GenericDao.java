@@ -11,7 +11,7 @@ public interface GenericDao<T> {
 
     Long save(T t) throws SQLException, ClassNotFoundException;
 
-    void update(T t);
+    void update(T t) throws SQLException;
 
-    void delete(T t);
+    void delete(T t) throws SQLException;
 }

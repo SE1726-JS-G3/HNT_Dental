@@ -21,6 +21,7 @@
           <div class="col-md-8 col-sm-12 row">
             <div class="col-md-4">
               <h5 class="mb-0">Dịch vụ</h5>
+              <h5 class="mb-0">Đây là quản lý lịch sử cuộc hẹn</h5>
             </div>
             <div class="col-md-8">
               <div class="search-bar p-0 d-lg-block ms-2">
@@ -52,10 +53,11 @@
                 <thead>
                 <tr>
                   <th class="border-bottom p-3">ID</th>
-                  <th class="border-bottom p-3">Loại dịch vụ</th>
-                  <th class="border-bottom p-3"></th>
+                    <th class="border-bottom p-3">Tên khách hàng</th>
+                  <th class="border-bottom p-3">Ngày sinh</th>
                   <th class="border-bottom p-3">Giới tính</th>
                   <th class="border-bottom p-3">Điện thoại</th>
+                  <th class="border-bottom p-3">Loại dịch vụ</th>
                   <th class="border-bottom p-3">Ngày khám bệnh gần nhất</th>
                   <th class="border-bottom p-3 text-center">Tác vụ</th>
                 </tr>
@@ -63,10 +65,11 @@
                 <tbody>
                 <tr>
                   <td class="p-3">1</td>
-                  <td class="p-3">Khương Văn Hùng</td>
+                  <td class="p-3">Nguyễn Thị Huyền</td>
                   <td class="p-3">24/08/2001</td>
                   <td class="p-3">Nam</td>
                   <td class="p-3">0888195313</td>
+                  <td class="p-3">Nhổ răng</td>
                   <td class="p-3">27/05/2023</td>
                   <td class="p-3 text-center">
                     <a href="#">

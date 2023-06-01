@@ -31,7 +31,7 @@
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-12">
-                        <a href="#">
+                        <a href="${pageContext.request.contextPath}/management/employee/create">
                             <button class="btn btn-primary">Thêm mới</button>
                         </a>
                     </div>
@@ -54,7 +54,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:forEach items="${employees}" var="e" >
+                                <c:forEach items="${employees}" var="e">
                                     <tr>
                                         <td>${e.id}</td>
                                         <td>${e.name}</td>
@@ -64,7 +64,10 @@
                                         <td>${e.status}</td>
                                         <td class="text-center">
                                             <a href="#">
-                                                <button class="btn btn-primary">Sửa</button>
+                                                <button class="btn btn-primary"
+                                                        onclick="window.location.href='${pageContext.request.contextPath}/management/employee/update?id=${e.id}'"
+                                                >Sửa
+                                                </button>
                                             </a>
                                             <a href="#">
                                                 <button class="btn btn-danger">Xóa</button>
@@ -83,7 +86,9 @@
                         <div class="d-md-flex align-items-center text-center justify-content-between">
                             <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
                                 <c:forEach begin="${1}" end="${totalPage}" var="i">
-                                    <li class="page-item ${i==page?"active":""}"><a class="page-link" href="${url}?page=${i}">${i}</a></li>
+                                    <li class="page-item ${i==page?"active":""}"><a class="page-link"
+                                                                                    href="${url}?page=${i}">${i}</a>
+                                    </li>
                                 </c:forEach>
                             </ul>
                         </div>

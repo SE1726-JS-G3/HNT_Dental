@@ -10,79 +10,87 @@ public class ConnectionUtils {
     private ConnectionUtils() {
     }
 
-    private static PreparedStatement preparedStatement;
+    private static Connection conn = null;
 
     private static final ResourceBundle bundle = ResourceBundle.getBundle("application");
 
-    private static Connection getConnection() throws SQLException, ClassNotFoundException {
+    private static Connection getConnection() throws SQLException {
         String url = StringUtils.join("jdbc:mysql://", bundle.getString("db.host"), ":",
                 bundle.getString("db.port"), "/", bundle.getString("db.name"),
                 "?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC");
-        Class.forName("com.mysql.cj.jdbc.Driver");
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         return DriverManager.getConnection(url, bundle.getString("db.username"), bundle.getString("db.password"));
     }
 
-    private static PreparedStatement getStatement(String sql, Object... args) {
+    public static ResultSet executeQuery(String sql, Object... params) throws SQLException {
+        conn = getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        for (int i = 0; i < params.length; i++) {
+            stmt.setObject(i + 1, params[i]);
+        }
+        return stmt.executeQuery();
+    }
+
+    public static void executeUpdate(String sql, Object... params) throws SQLException {
+        conn = getConnection();
+        PreparedStatement stmt = null;
         try {
-            preparedStatement = getConnection().prepareStatement(sql);
-            for (int i = 0; i < args.length; i++) {
-                preparedStatement.setObject(i + 1, args[i]);
+            conn.setAutoCommit(false);
+            stmt = conn.prepareStatement(sql);
+            for (int i = 0; i < params.length; i++) {
+                stmt.setObject(i + 1, params[i]);
             }
-            return preparedStatement;
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static ResultSet executeQuery(String sql, Object... args) {
-        try {
-            preparedStatement = getStatement(sql, args);
-            assert preparedStatement != null;
-            return preparedStatement.executeQuery();
+            stmt.executeUpdate();
+            conn.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static boolean executeUpdate(String sql, Object... args) {
-        try {
-            preparedStatement = getStatement(sql, args);
-            assert preparedStatement != null;
-            return preparedStatement.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public static Long executeUpdateForIdentity(String sql, Object... args) {
-        try (Connection connection = getConnection()){
-            preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            for (int i = 0; i < args.length; i++) {
-                preparedStatement.setObject(i + 1, args[i]);
+            conn.rollback();
+            throw e;
+        } finally {
+            if (stmt != null) {
+                stmt.close();
             }
+            conn.setAutoCommit(true);
+            conn.close();
+        }
+    }
 
-            long id;
-
-            int affectedRows = preparedStatement.executeUpdate();
-
+    public static Long executeUpdateForIdentity(String sql, Object... params) throws SQLException {
+        conn = getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            for (int i = 0; i < params.length; i++) {
+                stmt.setObject(i + 1, params[i]);
+            }
+            int affectedRows = stmt.executeUpdate();
             if (affectedRows == 0) {
-                throw new SQLException("Creating user failed, no rows affected.");
+                throw new SQLException("Insert failed, no rows affected.");
             }
+            rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getLong(1);
+            } else {
+                throw new SQLException("Insert failed, no ID obtained.");
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            conn.close();
+        }
+    }
 
-            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    id = generatedKeys.getLong(1);
-                } else {
-                    throw new SQLException("Creating user failed, no ID obtained.");
-                }
-            }
-            return id;
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
+    public static void closeConnection() throws SQLException {
+        if (conn != null) {
+            conn.close();
         }
     }
 }

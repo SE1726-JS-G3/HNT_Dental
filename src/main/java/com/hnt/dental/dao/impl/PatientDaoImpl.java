@@ -24,7 +24,7 @@ public class PatientDaoImpl implements PatientDao {
     }
 
     @Override
-    public Long save(Patient patient) {
+    public Long save(Patient patient) throws SQLException {
         ConnectionUtils.executeUpdate(SAVE_PATIENT, patient.getAccount().getId(),patient.getFullName(),patient.getDob(),
                 patient.getGender(),patient.getPhone(),patient.getAddress(),patient.getDescription(),patient.getCreatedAt()
         ,patient.getUpdatedAt(),patient.getCreatedBy());

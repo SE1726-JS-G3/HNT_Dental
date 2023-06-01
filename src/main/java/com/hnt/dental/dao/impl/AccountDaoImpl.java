@@ -54,6 +54,7 @@ public class AccountDaoImpl implements AccountDao {
                     .isVerified(rs.getBoolean("is_verified"))
                     .build());
         }
+        ConnectionUtils.closeConnection();
         return list;
     }
 
@@ -70,6 +71,7 @@ public class AccountDaoImpl implements AccountDao {
                     .build());
 
         }
+        ConnectionUtils.closeConnection();
         return Optional.empty();
     }
 
@@ -80,13 +82,13 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public void update(Account account) {
+    public void update(Account account) throws SQLException {
         ConnectionUtils.executeUpdate(UPDATE_ACCOUNT, account.getEmail(), account.getPassword(), account.getRole(),
                 account.getIsVerified(), account.getImage(), account.getCreatedAt(), account.getUpdatedAt(), account.getId());
     }
 
     @Override
-    public void delete(Account account) {
+    public void delete(Account account) throws SQLException {
         ConnectionUtils.executeUpdate(DELETE_ACCOUNT,account.getId());
 
     }

@@ -39,11 +39,11 @@ public class VerificationDaoImpl implements VerificationDao {
 
     @Override
     public void update(Verification verification) {
-
+        // TODO document why this method is empty
     }
 
     @Override
-    public void delete(Verification verification) {
+    public void delete(Verification verification) throws SQLException {
         ConnectionUtils.executeUpdate(DELETE_VERIFICATION, verification.getEmail());
     }
 
@@ -59,6 +59,7 @@ public class VerificationDaoImpl implements VerificationDao {
                     .lifeTime(rs.getLong("life_time"))
                     .build();
         }
+        ConnectionUtils.closeConnection();
         return null;
     }
 }

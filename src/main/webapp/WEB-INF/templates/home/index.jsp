@@ -3,148 +3,30 @@
 <!doctype html>
 <html lang="en">
 
-<head>
-    <meta charset="utf-8"/>
-    <title>HNT Dental - Home</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="${pageContext.request.contextPath}/static/libs/tobii/css/tobii.min.css" rel="stylesheet"
-          type="text/css"/>
-    <link href="${pageContext.request.contextPath}/static/css/bootstrap.min.css" class="theme-opt" rel="stylesheet"
-          type="text/css"/>
-    <link href="${pageContext.request.contextPath}/static/css/icons.min.css" rel="stylesheet" type="text/css"/>
-    <link href="${pageContext.request.contextPath}/static/libs/remixicon/fonts/remixicon.css" rel="stylesheet"
-          type="text/css"/>
-    <link href="${pageContext.request.contextPath}/static/libs/@iconscout/unicons/css/line.css" type="text/css"
-          rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/static/css/style.min.css" class="theme-opt" rel="stylesheet"
-          type="text/css"/>
-</head>
+<jsp:include page="layout/header.jsp"/>
 
 <body>
-<div id="preloader">
-    <div id="status">
-        <div class="spinner">
-            <div class="double-bounce1"></div>
-            <div class="double-bounce2"></div>
-        </div>
-    </div>
-</div>
+<jsp:include page="layout/preloader.jsp"/>
 
-<header id="topnav" class="navigation sticky">
-    <div class="container">
+<jsp:include page="layout/menu-header-default.jsp"/>
 
-        <div>
-            <a class="logo" href="home">
-                <img src="assets/images/logo-light.png" height="24" class="l-light" alt="">
-                <img src="assets/images/logo-dark.png" class="l-dark" height="24" alt="">
-            </a>
-        </div>
-
-        <div class="menu-extras">
-            <div class="menu-item">
-                <a class="navbar-toggle" id="isToggle" onclick="toggleMenu()">
-                    <div class="lines">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                </a>
-            </div>
-        </div>
-
-        <ul class="dropdowns list-inline mb-0">
-
-            <li class="list-inline-item mb-0 ms-1">
-                <a href="javascript:void(0)" class="btn btn-icon btn-pills btn-primary" data-bs-toggle="offcanvas"
-                   data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
-                    <i class="uil uil-search"></i>
-                </a>
-            </li>
-
-            <li class="list-inline-item mb-0 ms-1">
-                <div class="dropdown dropdown-primary">
-                    <c:if test="${sessionScope.account != null}">
-                        <c:if test="${sessionScope.account.img != 'default'}">
-                            <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                    src="data:image/png;base64,${sessionScope.account.img}"
-                                    class="avatar avatar-ex-small rounded-circle" alt=""></button>
-                        </c:if>
-                        <c:if test="${sessionScope.account.img == 'default'}">
-                            <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                    src="assets/images/avata.png" class="avatar avatar-ex-small rounded-circle" alt="">
-                            </button>
-                        </c:if>
-                    </c:if>
-
-                    <c:if test="${sessionScope.account == null}">
-                        <button class="btn btn-primary p-1" onclick="window.location.href = '/auth/login'">
-                            Login
-                        </button>
-                    </c:if>
-                    <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3"
-                         style="min-width: 200px;">
-                        <c:if test="${sessionScope.account.accountname != null}">
-                            <a class="dropdown-item d-flex align-items-center text-" href="#">
-                                <c:if test="${sessionScope.account.img != 'default'}">
-                                    <img src="data:image/png;base64,${sessionScope.account.img}"
-                                         class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                </c:if>
-                                <c:if test="${sessionScope.account.img == 'default'}">
-                                    <img src="assets/images/avata.png"
-                                         class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                </c:if>
-                                <div class="flex-1 ms-2">
-                                    <span class="d-block mb-1">${sessionScope.account.accountname}</span>
-                                </div>
-                            </a>
-                        </c:if>
-                        <div class="dropdown-divider border-top"></div>
-                        <c:if test="${sessionScope.account != null}">
-                            <a class="dropdown-item text-" href="account?action=profile"><span
-                                    class="mb-0 d-inline-block me-1"><i
-                                    class="uil uil-sign-out-alt align-middle h6"></i></span> Tài khoản của tôi</a>
-                        </c:if>
-                        <c:if test="${sessionScope.account != null}">
-                            <a class="dropdown-item text-" href="account?action=logout"><span
-                                    class="mb-0 d-inline-block me-1"><i
-                                    class="uil uil-sign-out-alt align-middle h6"></i></span> Đăng xuất</a>
-                        </c:if>
-                        <c:if test="${sessionScope.account == null}">
-                            <a class="dropdown-item text-" href="account?action=login"><span
-                                    class="mb-0 d-inline-block me-1"><i
-                                    class="uil uil-sign-out-alt align-middle h6"></i></span> Đăng Nhập</a>
-                        </c:if>
-                    </div>
-                </div>
-            </li>
-
-        </ul>
-
-        <div id="navigation">
-
-            <ul class="navigation-menu nav-light nav-left">
-                <li><a href="home" class="sub-menu-item">Trang chủ</a></li>
-                <li><a href="doctor?action=all" class="sub-menu-item">Bác sĩ</a></li>
-                <li><a href="service?action=all" class="sub-menu-item">Dịch vụ</a></li>
-                <li><a href="contact" class="sub-menu-item">Liên hệ</a></li>
-                <li><a href="blogs" class="sub-menu-item">Tin tức & chủ đề</a></li>
-            </ul>
-
-        </div>
-    </div>
-</header>
-<section class="bg-half-260 d-table w-100" style="background: url('assets/images/bg/banner.jpg') center;">
+<section class="bg-half-260 d-table w-100"
+         style="background-size: cover; background: url('${pageContext.request.contextPath}/static/images/banner.jpg') no-repeat center;">
     <div class="bg-overlay bg-overlay-"></div>
     <div class="container">
         <div class="row mt-5 mt-lg-0">
             <div class="col-12">
                 <div class="heading-title">
-                    <img src="assets/images/logo-icon.png" height="50" alt="">
-                    <h4 class="display-4 fw-bold text-white title- mt-3 mb-4">Nền Tảng <br> Hỗ Trợ Y Tế Trực Tuyến</h4>
-                    <p class="para-desc text-white-50 mb-0">Nếu bạn hay người thân cần sự trợ giúp ngay lập tức, điều
-                        trị khẩn cấp trong một cuộc tư vấn đơn giản.</p>
+                    <img src="${pageContext.request.contextPath}/static/images/logo_white.png" height="300" width="300"
+                         alt="">
+                    <h4 class="display-4 fw-bold text-white title- mt-3 mb-4">Nền Tảng <br> Hỗ Trợ chăm sóc răng miệng</h4>
+                    <p class="para-desc text-white-50 mb-0">Chúng tôi luôn đồng hành cùng bạn trên con đường chăm sóc
+                        răng miệng</p>
+                    <div class="mt-4">
+                        <a href="https://www.youtube.com/watch?v=QIvIN8M91x4" data-bs-toggle="modal"
+                           data-bs-target="#watchvideomodal"
+                           class="btn btn-primary mt-2 me-2"><i class="mdi mdi-play"></i> Xem video</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -328,6 +210,8 @@
     </div>
 </section>
 
+
+<jsp:include page="layout/footer.jsp"/>
 <a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i
         data-feather="arrow-up" class="icons"></i></a>
 
@@ -340,12 +224,8 @@
         </div>
     </div>
 </div>
-
-<!-- javascript -->
 <script src="${pageContext.request.contextPath}/static/libs/tobii/js/tobii.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/libs/feather-icons/feather.min.js"></script>
-<!-- Main Js -->
-<!-- JAVASCRIPT -->
 <script src="${pageContext.request.contextPath}/static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>

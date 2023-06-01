@@ -34,7 +34,7 @@ public class EmployeeController extends HttpServlet {
                     req.getRequestDispatcher("/WEB-INF/templates/management/employee/create.jsp").forward(req, resp);
                     break;
                 case "/management/employee/update":
-                    req.getRequestDispatcher("/WEB-INF/templates/management/employee/update.jsp").forward(req, resp);
+                    employeeService.updateRender(req, resp);
                     break;
                 case "/management/employee/delete":
                     req.getRequestDispatcher("/WEB-INF/templates/management/employee/delete.jsp").forward(req, resp);
@@ -55,7 +55,7 @@ public class EmployeeController extends HttpServlet {
                     employeeService.create(req, resp);
                     break;
                 case "/management/employee/update":
-                    req.getRequestDispatcher("/WEB-INF/templates/management/employee/update.jsp").forward(req, resp);
+                    employeeService.update(req, resp);
                     break;
                 case "/management/employee/delete":
                     req.getRequestDispatcher("/WEB-INF/templates/management/employee/delete.jsp").forward(req, resp);
