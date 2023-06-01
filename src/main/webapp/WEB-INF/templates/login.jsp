@@ -70,7 +70,7 @@
 
                                 <div class="col-12 text-center">
                                     <p class="mb-0 mt-3"><small class="text-dark me-2">Chưa có tài khoản ?</small> <a
-                                            href="/auth/register" class="text-dark fw-bold">Đăng ký</a></p>
+                                            href="${pageContext.request.contextPath}/auth/register" class="text-dark fw-bold">Đăng ký</a></p>
                                 </div>
                             </div>
                         </form>

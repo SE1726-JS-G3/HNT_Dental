@@ -28,7 +28,7 @@
                         <ul class="list-unstyled footer-list mt-4">
                             <li class="d-flex align-items-center">
                                 <i data-feather="mail" class="fea icon-sm text-foot align-middle"></i>
-                                <a href="mailto:support@HNT Dentalcare.ml" class="text-foot ms-2">support@HNT Dentalcare.ml</a>
+                                <a href="mailto:support@HNT Dentalcare.ml" class="text-foot ms-2">hntdental@gmail.com</a>
                             </li>
 
                             <li class="d-flex align-items-center">

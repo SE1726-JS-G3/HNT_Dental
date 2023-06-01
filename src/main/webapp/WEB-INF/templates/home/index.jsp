@@ -153,7 +153,7 @@
         <div class="row justify-content-center">
             <div class="col-12">
                 <div class="section-title text-center mb-4 pb-2">
-                    <span class="badge badge-pill badge-soft-primary mb-3">Dịch vụ bác sĩ </span>
+                    <span class="badge badge-pill badge-soft-primary mb-3">Dịch vụ bác sĩ</span>
                     <h4 class="title mb-4">Đội ngũ chuyên gia</h4>
                     <p class="text-muted mx-auto para-desc mb-0">Doctris quy tụ đội ngũ chuyên gia, bác sĩ, dược sĩ và
                         điều dưỡng được đào tạo bài bản đến chuyên sâu tại Việt nam và nhiều nước có nên y học phát
