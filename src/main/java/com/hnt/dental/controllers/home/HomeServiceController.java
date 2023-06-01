@@ -25,8 +25,6 @@ public class HomeServiceController extends HttpServlet {
                 break;
             default:
         }
-
-
     }
 
     @Override

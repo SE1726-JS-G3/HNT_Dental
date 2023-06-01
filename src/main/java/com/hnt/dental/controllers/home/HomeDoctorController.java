@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet(name = "HomeServiceController", value = {
+@WebServlet(name = "HomeDoctorController", value = {
         "/doctor",
         "/doctor/detail"
 })
