@@ -8,11 +8,11 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet(name = "DoctorController", value = {
+@WebServlet(name = "HomeServiceController", value = {
         "/doctor",
         "/doctor/detail"
 })
-public class DoctorController extends HttpServlet {
+public class HomeDoctorController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getServletPath();

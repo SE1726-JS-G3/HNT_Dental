@@ -1,11 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: hungkv
-  Date: 5/27/2023
-  Time: 4:17 PM
-  To change this template use File | Settings | File Templates.
---%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="en">

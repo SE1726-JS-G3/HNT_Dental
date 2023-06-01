@@ -15,8 +15,25 @@ import java.io.IOException;
         "/management/service/delete"
 })
 public class ServiceController extends HttpServlet {
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/templates/management/service/index.jsp").forward(req, resp);
-    }
 
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getServletPath();
+        System.out.println(action);
+        switch (action) {
+            case "/management/service":
+                req.getRequestDispatcher("/WEB-INF/templates/management/service/index.jsp").forward(req, resp);
+                break;
+            case "/management/service/create":
+                req.getRequestDispatcher("/WEB-INF/templates/management/service/create.jsp").forward(req, resp);
+                break;
+            case "/management/service/update":
+                req.getRequestDispatcher("/WEB-INF/templates/management/service/update.jsp").forward(req, resp);
+                break;
+            case "/management/service/delete":
+                req.getRequestDispatcher("/WEB-INF/templates/management/service/delete.jsp").forward(req, resp);
+                break;
+            default:
+        }
+    }
 }
