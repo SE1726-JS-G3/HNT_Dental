@@ -1,6 +1,6 @@
-# HNT Dental Clinic
+# HNT Dental 
 
-## Web Application for HNT Dental Clinic
+## Web Application for HNT Dental
 
 ## Development Environment
 ### Install JDK 17 and MySQL 8.0
