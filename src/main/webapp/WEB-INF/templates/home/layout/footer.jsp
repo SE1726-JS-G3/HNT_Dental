@@ -1,6 +1,4 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
 <footer class="bg-footer">
     <div class="container">
         <div class="row">
@@ -16,10 +14,10 @@
                     <div class="col-md-6 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
                         <h5 class="text-light title- footer-head">HNT Dental</h5>
                         <ul class="list-unstyled footer-list mt-4">
-                            <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Liên hệ</a></li>
-                            <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Dịch vụ</a></li>
-                            <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Bác sĩ</a></li>
-                            <li><a href="#" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Blog</a></li>
+                            <li><a href="/contact"  class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Liên hệ</a></li>
+                            <li><a href="/service" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Dịch vụ</a></li>
+                            <li><a href="/doctor" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Bác sĩ</a></li>
+                            <li><a href="/blog"  class="text-foot"><i class="mdi mdi-chevron-right me-1"></i> Blog</a></li>
                         </ul>
                     </div>
 
@@ -60,4 +58,3 @@
         </div>
     </div>
 </footer>
-</html>

@@ -41,7 +41,7 @@
                                  style="display: block;margin-left: auto;margin-right: auto;" class="img-fluid" alt="">
                         </div>
                         <div class="card-body">
-                            <a href="#" class="title text-dark h5 d-block mb-0">Khuong Hùng</a>
+                            <a href="#" class="title text-dark h5 d-block mb-0">Nguyen Thi Huyen</a>
                             <small class="text-muted speciality">Răng hàm mặt</small>
                             <br>
                             <small class="text-muted speciality">Chức vụ : Trưởng phòng</small>
@@ -77,7 +77,7 @@
                                  style="display: block;margin-left: auto;margin-right: auto;" class="img-fluid" alt="">
                         </div>
                         <div class="card-body">
-                            <a href="#" class="title text-dark h5 d-block mb-0">Khuong Hùng</a>
+                            <a href="#" class="title text-dark h5 d-block mb-0">Nguyen Thi Huyen</a>
                             <small class="text-muted speciality">Răng hàm mặt</small>
                             <br>
                             <small class="text-muted speciality">Chức vụ : Trưởng phòng</small>
@@ -113,7 +113,7 @@
                                  style="display: block;margin-left: auto;margin-right: auto;" class="img-fluid" alt="">
                         </div>
                         <div class="card-body">
-                            <a href="#" class="title text-dark h5 d-block mb-0">Khuong Hùng</a>
+                            <a href="#" class="title text-dark h5 d-block mb-0">Nguyen Thi Huyen</a>
                             <small class="text-muted speciality">Răng hàm mặt</small>
                             <br>
                             <small class="text-muted speciality">Chức vụ : Trưởng phòng</small>
@@ -149,7 +149,7 @@
                                  style="display: block;margin-left: auto;margin-right: auto;" class="img-fluid" alt="">
                         </div>
                         <div class="card-body">
-                            <a href="#" class="title text-dark h5 d-block mb-0">Khuong Hùng</a>
+                            <a href="#" class="title text-dark h5 d-block mb-0">Nguyen Thi Huyen</a>
                             <small class="text-muted speciality">Răng hàm mặt</small>
                             <br>
                             <small class="text-muted speciality">Chức vụ : Trưởng phòng</small>
@@ -185,7 +185,7 @@
                                  style="display: block;margin-left: auto;margin-right: auto;" class="img-fluid" alt="">
                         </div>
                         <div class="card-body">
-                            <a href="#" class="title text-dark h5 d-block mb-0">Khuong Hùng</a>
+                            <a href="#" class="title text-dark h5 d-block mb-0">Nguyen Thi Huyen</a>
                             <small class="text-muted speciality">Răng hàm mặt</small>
                             <br>
                             <small class="text-muted speciality">Chức vụ : Trưởng phòng</small>
@@ -221,7 +221,7 @@
                                  style="display: block;margin-left: auto;margin-right: auto;" class="img-fluid" alt="">
                         </div>
                         <div class="card-body">
-                            <a href="#" class="title text-dark h5 d-block mb-0">Khuong Hùng</a>
+                            <a href="#" class="title text-dark h5 d-block mb-0">Nguyen Thi Huyen</a>
                             <small class="text-muted speciality">Răng hàm mặt</small>
                             <br>
                             <small class="text-muted speciality">Chức vụ : Trưởng phòng</small>
@@ -257,7 +257,7 @@
                                  style="display: block;margin-left: auto;margin-right: auto;" class="img-fluid" alt="">
                         </div>
                         <div class="card-body">
-                            <a href="#" class="title text-dark h5 d-block mb-0">Khuong Hùng</a>
+                            <a href="#" class="title text-dark h5 d-block mb-0">Nguyen Thi Huyen</a>
                             <small class="text-muted speciality">Răng hàm mặt</small>
                             <br>
                             <small class="text-muted speciality">Chức vụ : Trưởng phòng</small>
@@ -293,7 +293,7 @@
                                  style="display: block;margin-left: auto;margin-right: auto;" class="img-fluid" alt="">
                         </div>
                         <div class="card-body">
-                            <a href="#" class="title text-dark h5 d-block mb-0">Khuong Hùng</a>
+                            <a href="#" class="title text-dark h5 d-block mb-0">Nguyen Thi Huyen</a>
                             <small class="text-muted speciality">Răng hàm mặt</small>
                             <br>
                             <small class="text-muted speciality">Chức vụ : Trưởng phòng</small>

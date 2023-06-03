@@ -23,7 +23,7 @@ $(document).ready(function () {
 
 function getForgotPassword() {
     $.ajax({
-        url: '/auth/forgotPassword',
+        url: 'auth/forgot',
         type: 'POST',
         data: $('#forgot').serialize(),
         success: function (data) {

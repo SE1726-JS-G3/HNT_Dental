@@ -66,7 +66,7 @@
                     </div>
                     <div class="card-body p-0 mt-3">
                         <h5>Email</h5>
-                        <a href="mailto:support@doctriscare.ml" class="link">support@doctriscare.ml</a>
+                        <a href="mailto:support@doctriscare.ml" class="link">hntdentail@gmail.com</a>
                     </div>
                 </div>
             </div><!--end col-->
@@ -78,7 +78,7 @@
                     </div>
                     <div class="card-body p-0 mt-3">
                         <h5>Địa chỉ</h5>
-                        <a href="https://goo.gl/maps/G8Dyw5XUAiFcHrss5" class="link">Lê Thánh Tông, Tp. Ninh Bình, Ninh Bình</a>
+                        <a href="https://goo.gl/maps/G8Dyw5XUAiFcHrss5" class="link"> Me Linh , Ha Noi</a>
                     </div>
                 </div>
             </div>

@@ -21,8 +21,8 @@ public class AccountDaoImpl implements AccountDao {
     private static final String UPDATE_ACCOUNT = "UPDATE accounts " +
             "SET email= ?, password= ?, `role`=?, is_verified=?, image=?, create_at=?, update_at=? " +
             "WHERE id=? ";
-    private static final String DELETE_ACCOUNT = "DELETE FROM accounts" +
-            "WHERE id=?;";
+    private static final String DELETE_ACCOUNT = "DELETE FROM accounts " +
+            "WHERE id=? ";
 
     @Override
     public Account findByEmail(String email) throws SQLException {
@@ -41,7 +41,7 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public List<Account> getAll(Integer offset, Integer limit) throws SQLException {
+    public List<Account> getAll(Integer offset, Integer limit, String search) throws SQLException {
         ResultSet rs = ConnectionUtils.executeQuery(GET_ALL_ACCOUNT);
         List<Account> list = new ArrayList<>();
         while (true) {

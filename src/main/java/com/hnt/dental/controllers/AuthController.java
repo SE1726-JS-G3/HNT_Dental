@@ -19,7 +19,10 @@ import java.sql.SQLException;
         "/auth/verification",
         "/auth/verification/result",
         "/auth/forgot",
-        "/auth/forgot/confirm"
+        "/auth/forgot/confirm",
+        "/auth/profile",
+        "/auth/booking-history",
+        "/auth/my-patient"
 })
 public class AuthController extends HttpServlet {
 
@@ -53,6 +56,16 @@ public class AuthController extends HttpServlet {
                 break;
             case "/auth/verification/result":
                 ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/verification-result.jsp");
+                break;
+            case "/auth/profile":
+                ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/profile.jsp");
+                break;
+
+            case "/auth/booking-history":
+                ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/booking-history.jsp");
+                break;
+            case "/auth/my-patient":
+                ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/my-patient.jsp");
                 break;
             default:
         }

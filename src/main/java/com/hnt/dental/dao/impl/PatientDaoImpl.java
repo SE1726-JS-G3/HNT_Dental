@@ -14,7 +14,7 @@ public class PatientDaoImpl implements PatientDao {
             "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     @Override
-    public List<Patient> getAll(Integer offset, Integer limit) throws SQLException {
+    public List<Patient> getAll(Integer offset, Integer limit, String search) throws SQLException {
         return null;
     }
 

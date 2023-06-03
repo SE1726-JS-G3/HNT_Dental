@@ -17,15 +17,16 @@
                         </div>
                         <div class="col-md-8">
                             <div class="search-bar p-0 d-lg-block ms-2">
-                                <div id="search" class="menu-search mb-0">
-                                    <form action="#" method="POST" id="searchform"
-                                          class="searchform">
-                                        <div>
-                                            <input type="text" class="form-control border rounded-pill" name="txt"
-                                                   id="s" placeholder="Tìm kiếm tên dịch vụ...">
-                                            <input type="submit" id="searchsubmit" value="Search">
-                                        </div>
-                                    </form>
+                                <div class="row mb-0">
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control border rounded-pill" name="txt"
+                                               value="${search}"
+                                               id="search" placeholder="Tìm kiếm nhân viên...">
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <button class="btn btn-primary rounded-pill" id="btn-search">Tìm kiếm</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -70,7 +71,10 @@
                                                 </button>
                                             </a>
                                             <a href="#">
-                                                <button class="btn btn-danger">Xóa</button>
+                                                <button class="btn btn-danger"
+                                                        onclick="window.location.href='${pageContext.request.contextPath}/management/employee/delete?id=${e.id}'"
+                                                >Xóa
+                                                </button>
                                             </a>
                                         <td>
                                     </tr>
@@ -87,7 +91,7 @@
                             <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
                                 <c:forEach begin="${1}" end="${totalPage}" var="i">
                                     <li class="page-item ${i==page?"active":""}"><a class="page-link"
-                                                                                    href="${url}?page=${i}">${i}</a>
+                                                                                    href="${url}?page=${i}&search=${search}">${i}</a>
                                     </li>
                                 </c:forEach>
                             </ul>
@@ -105,5 +109,15 @@
 <script src="${pageContext.request.contextPath}/static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#btn-search").click(function () {
+            let search = $("#search").val();
+            window.location.href = "${url}?search=" + search;
+        });
+    });
+</script>
 </body>
 </html>

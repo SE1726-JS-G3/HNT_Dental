@@ -18,6 +18,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -44,10 +46,13 @@ public class EmployeeService {
             pageNumber = Integer.parseInt(page);
         }
 
-        Integer totalItem = employeeDao.count();
+        if(StringUtils.isEmpty(search)) {
+            search = "";
+        }
+        Integer totalItem = employeeDao.count(renderSearch(search.trim()));
         Integer totalPage = PagingUtils.getTotalPage(totalItem);
 
-        List<Employee> employees = employeeDao.getAll(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE);
+        List<Employee> employees = employeeDao.getAll(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE, renderSearch(search.trim()));
 
         req.setAttribute("employees", EmployeeResDto.convert(employees));
         req.setAttribute("totalPage", totalPage);
@@ -159,6 +164,20 @@ public class EmployeeService {
         req.setAttribute("employee", employee);
         req.setAttribute("error", error);
         ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/employee/update.jsp");
+    }
+
+    private String renderSearch(String search){
+        if(search.matches("\\d{2}/\\d{2}/\\d{4}")){
+            String[] date = search.split("/");
+            return StringUtils.join(date[2], "-", date[1], "-", date[0]);
+        }
+        return search;
+    }
+
+    public void delete(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
+        employeeDao.delete(Employee.builder().id((long) id).build());
+        ServletUtils.redirect(req, resp, "/management/employee");
     }
 }
 

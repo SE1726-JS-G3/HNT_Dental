@@ -37,7 +37,7 @@ public class EmployeeController extends HttpServlet {
                     employeeService.updateRender(req, resp);
                     break;
                 case "/management/employee/delete":
-                    req.getRequestDispatcher("/WEB-INF/templates/management/employee/delete.jsp").forward(req, resp);
+                    employeeService.delete(req, resp);
                     break;
                 default:
             }
@@ -56,9 +56,6 @@ public class EmployeeController extends HttpServlet {
                     break;
                 case "/management/employee/update":
                     employeeService.update(req, resp);
-                    break;
-                case "/management/employee/delete":
-                    req.getRequestDispatcher("/WEB-INF/templates/management/employee/delete.jsp").forward(req, resp);
                     break;
                 default:
             }
