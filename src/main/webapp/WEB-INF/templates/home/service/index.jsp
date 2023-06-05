@@ -49,9 +49,9 @@
             </div>
             <div class="card-body">
               <a href="#" class="title text-dark h5 d-block mb-0">Nhổ răng</a>
-              <small class="text-muted speciality">Răng hàm mặt</small>
+              <small class="text-muted speciality">Mô tả</small>
               <br>
-              <small class="text-muted speciality">Chức vụ : Trưởng phòng</small>
+              <small class="text-muted speciality">Chi tiết</small>
               <div class="d-flex justify-content-between align-items-center mt-2">
                 <ul class="list-unstyled mb-0">
                   <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
@@ -62,7 +62,7 @@
                 </ul>
                 <p class="text-muted mb-0">6 feedbacks</p>
               </div>
-              <small class="text-muted speciality">Phí đặt lịch : <fmt:formatNumber
+              <small class="text-muted speciality">Phí dịch vụ : <fmt:formatNumber
                       pattern="#,###,###,###" value="345678"/> đ</small>
               <div class="pt-2">
                 <button class="btn btn-soft-primary"
@@ -80,7 +80,7 @@
         <div class="col-xl-4 col-lg-4 col-md-6 mt-2 pt-2">
           <div class="card team border-0 rounded shadow overflow-hidden">
             <div class="team-person position-relative overflow-hidden">
-              <img src="https://tamanhhospital.vn/wp-content/uploads/2021/03/bac-si-tang-ha-nam-anh.png"
+              <img src="https://th.bing.com/th/id/R.42a62d32d8e84b85ccd9e5814eb7d3f1?rik=%2f684dTD9hHePWw&riu=http%3a%2f%2fnhakhoahanquoc.com.vn%2fwp-content%2fuploads%2f2016%2f11%2fnieng-rang-mac-cai-su-3.jpg&ehk=k2WIgbvZgqkUTsfaSzClEZu9c5te4PlkG8ufxxbVkgQ%3d&risl=&pid=ImgRaw&r=0"
                    style="display: block;margin-left: auto;margin-right: auto;" class="img-fluid" alt="">
             </div>
             <div class="card-body">
@@ -116,7 +116,7 @@
         <div class="col-xl-4 col-lg-4 col-md-6 mt-2 pt-2">
           <div class="card team border-0 rounded shadow overflow-hidden">
             <div class="team-person position-relative overflow-hidden">
-              <img src="https://tamanhhospital.vn/wp-content/uploads/2021/03/bac-si-tang-ha-nam-anh.png"
+              <img src="https://nhakhoaanna.com/wp-content/uploads/2020/12/rang-su-HT-smile.jpg"
                    style="display: block;margin-left: auto;margin-right: auto;" class="img-fluid" alt="">
             </div>
             <div class="card-body">
@@ -152,7 +152,7 @@
         <div class="col-xl-4 col-lg-4 col-md-6 mt-2 pt-2">
           <div class="card team border-0 rounded shadow overflow-hidden">
             <div class="team-person position-relative overflow-hidden">
-              <img src="https://tamanhhospital.vn/wp-content/uploads/2021/03/bac-si-tang-ha-nam-anh.png"
+              <img src="https://nhakhoaparis.vn/wp-content/uploads/2021/12/sau-rang.jpg"
                    style="display: block;margin-left: auto;margin-right: auto;" class="img-fluid" alt="">
             </div>
             <div class="card-body">
@@ -188,7 +188,7 @@
         <div class="col-xl-4 col-lg-4 col-md-6 mt-2 pt-2">
           <div class="card team border-0 rounded shadow overflow-hidden">
             <div class="team-person position-relative overflow-hidden">
-              <img src="https://tamanhhospital.vn/wp-content/uploads/2021/03/bac-si-tang-ha-nam-anh.png"
+              <img src="https://www.jameslambperio.com/wp-content/uploads/2017/10/new.jpg"
                    style="display: block;margin-left: auto;margin-right: auto;" class="img-fluid" alt="">
             </div>
             <div class="card-body">
@@ -224,7 +224,7 @@
         <div class="col-xl-4 col-lg-4 col-md-6 mt-2 pt-2">
           <div class="card team border-0 rounded shadow overflow-hidden">
             <div class="team-person position-relative overflow-hidden">
-              <img src="https://tamanhhospital.vn/wp-content/uploads/2021/03/bac-si-tang-ha-nam-anh.png"
+              <img src="https://nhakhoanganphuong.com/wp-content/uploads/2022/03/lay-cao-rang.jpg"
                    style="display: block;margin-left: auto;margin-right: auto;" class="img-fluid" alt="">
             </div>
             <div class="card-body">
@@ -257,78 +257,6 @@
             </div>
           </div>
         </div>
-        <div class="col-xl-4 col-lg-4 col-md-6 mt-2 pt-2">
-          <div class="card team border-0 rounded shadow overflow-hidden">
-            <div class="team-person position-relative overflow-hidden">
-              <img src="https://tamanhhospital.vn/wp-content/uploads/2021/03/bac-si-tang-ha-nam-anh.png"
-                   style="display: block;margin-left: auto;margin-right: auto;" class="img-fluid" alt="">
-            </div>
-            <div class="card-body">
-              <a href="#" class="title text-dark h5 d-block mb-0">Huyỳen</a>
-              <small class="text-muted speciality">Răng hàm mặt</small>
-              <br>
-              <small class="text-muted speciality">Chức vụ : Trưởng phòng</small>
-              <div class="d-flex justify-content-between align-items-center mt-2">
-                <ul class="list-unstyled mb-0">
-                  <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                  <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                  <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                  <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                  <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                </ul>
-                <p class="text-muted mb-0">6 feedbacks</p>
-              </div>
-              <small class="text-muted speciality">Phí đặt lịch : <fmt:formatNumber
-                      pattern="#,###,###,###" value="345678"/> đ</small>
-              <div class="pt-2">
-                <button class="btn btn-soft-primary"
-                        onclick="window.location.href = 'book?type=appointment&id=${d.doctor_id}'">Đặt
-                  lịch
-                </button>
-                <button class="btn btn-soft-primary"
-                        onclick="window.location.href = 'doctor?action=detail&id=${d.doctor_id}'">Chi
-                  tiết
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-4 col-lg-4 col-md-6 mt-2 pt-2">
-          <div class="card team border-0 rounded shadow overflow-hidden">
-            <div class="team-person position-relative overflow-hidden">
-              <img src="https://tamanhhospital.vn/wp-content/uploads/2021/03/bac-si-tang-ha-nam-anh.png"
-                   style="display: block;margin-left: auto;margin-right: auto;" class="img-fluid" alt="">
-            </div>
-            <div class="card-body">
-              <a href="#" class="title text-dark h5 d-block mb-0">Khuong Hùng</a>
-              <small class="text-muted speciality">Răng hàm mặt</small>
-              <br>
-              <small class="text-muted speciality">Chức vụ : Trưởng phòng</small>
-              <div class="d-flex justify-content-between align-items-center mt-2">
-                <ul class="list-unstyled mb-0">
-                  <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                  <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                  <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                  <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                  <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                </ul>
-                <p class="text-muted mb-0">6 feedbacks</p>
-              </div>
-              <small class="text-muted speciality">Phí đặt lịch : <fmt:formatNumber
-                      pattern="#,###,###,###" value="345678"/> đ</small>
-              <div class="pt-2">
-                <button class="btn btn-soft-primary"
-                        onclick="window.location.href = 'book?type=appointment&id=${d.doctor_id}'">Đặt
-                  lịch
-                </button>
-                <button class="btn btn-soft-primary"
-                        onclick="window.location.href = 'doctor?action=detail&id=${d.doctor_id}'">Chi
-                  tiết
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>1
       </div>
       <div class="col-lg-3 col-md-3 mt-3 pt-2">
         <div class="card border-0 sidebar sticky-bar rounded shadow">

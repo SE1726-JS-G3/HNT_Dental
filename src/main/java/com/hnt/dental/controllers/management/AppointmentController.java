@@ -17,6 +17,6 @@ import java.io.IOException;
 public class AppointmentController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        req.getRequestDispatcher("/WEB-INF/templates/management/appointment/booking_detail.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/templates/management/appointment/index.jsp").forward(req, resp);
     }
 }

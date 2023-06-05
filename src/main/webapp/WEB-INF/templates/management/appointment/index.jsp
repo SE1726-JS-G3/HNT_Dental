@@ -64,7 +64,9 @@
                   <th class="border-bottom p-3">Thời gian</th>
                   <th class="border-bottom p-3">Bác sĩ</th>
                   <th class="border-bottom p-3">Giá tiền</th>
+
                   <th class="border-bottom p-3 text-center">Tác vụ</th>
+                    <th class="border-bottom p-3">Trạng thái</th>
                 </tr>
                 </thead>
                 <tbody>
