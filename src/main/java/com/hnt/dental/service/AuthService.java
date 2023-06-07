@@ -130,7 +130,7 @@ public class AuthService {
                 ServletUtils.apiResponse(resp, new Gson().toJson(response));
             }
         } catch (Exception e) {
-            throw new SystemRuntimeException("Error encrypt");
+            throw new SystemRuntimeException(e.getMessage());
         }
     }
 
