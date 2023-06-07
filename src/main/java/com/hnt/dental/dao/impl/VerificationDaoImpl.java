@@ -12,8 +12,8 @@ import java.util.Optional;
 
 public class VerificationDaoImpl implements VerificationDao {
     private static final String SAVE_VERIFICATION = "INSERT INTO verification\n" +
-            "(email, code, life_time, created_at, updated_at, created_by)\n" +
-            "VALUES(?, ?, UNIX_TIMESTAMP(now() + INTERVAL 180 SECOND), ?, ?, ?)";
+            "(email, code, life_time, created_at, updated_at) " +
+            "VALUES(?, ?, UNIX_TIMESTAMP(now() + INTERVAL 180 SECOND), ?, ?)";
 
     private static final String FIND_BY_EMAIL = "SELECT * FROM verification WHERE email = ?";
 
@@ -31,8 +31,8 @@ public class VerificationDaoImpl implements VerificationDao {
 
     @Override
     public Long save(Verification verification) throws SQLException, ClassNotFoundException {
-        ConnectionUtils.executeUpdate(SAVE_VERIFICATION, verification.getEmail(), verification.getCode(), verification.getCreatedAt(), verification.getUpdatedAt()
-                , verification.getCreatedBy());
+        ConnectionUtils.executeUpdate(SAVE_VERIFICATION, verification.getEmail(), verification.getCode(),
+                verification.getCreatedAt(), verification.getUpdatedAt());
         return null;
     }
 

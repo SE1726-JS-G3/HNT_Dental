@@ -10,8 +10,8 @@ import java.util.Optional;
 
 public class PatientDaoImpl implements PatientDao {
     private static final String SAVE_PATIENT = "INSERT INTO patients" +
-            "(id, full_name, dob, gender, phone, address, description, created_at, updated_at, created_by)" +
-            "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "(id, full_name, dob, gender, phone, address, description, created_at, updated_at)" +
+            "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     @Override
     public List<Patient> getAll(Integer offset, Integer limit, String search) throws SQLException {
@@ -27,7 +27,7 @@ public class PatientDaoImpl implements PatientDao {
     public Long save(Patient patient) throws SQLException {
         ConnectionUtils.executeUpdate(SAVE_PATIENT, patient.getAccount().getId(),patient.getFullName(),patient.getDob(),
                 patient.getGender(),patient.getPhone(),patient.getAddress(),patient.getDescription(),patient.getCreatedAt()
-        ,patient.getUpdatedAt(),patient.getCreatedBy());
+        ,patient.getUpdatedAt());
         return patient.getAccount().getId();
     }
 

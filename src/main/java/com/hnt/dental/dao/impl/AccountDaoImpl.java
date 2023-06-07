@@ -16,10 +16,10 @@ public class AccountDaoImpl implements AccountDao {
     private static final String GET_ALL_ACCOUNT = "SELECT * FROM accounts";
     private static final String GET_ACCOUNT_BY_ID = "SELECT * FROM accounts where id = ?";
     private static final String SAVE_ACCOUNT = "INSERT INTO accounts" +
-            "(email, password, `role`, is_verified, image, create_at, update_at)" +
+            "(email, password, `role`, is_verified, image, created_at, updated_at)" +
             "VALUES(?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_ACCOUNT = "UPDATE accounts " +
-            "SET email= ?, password= ?, `role`=?, is_verified=?, image=?, create_at=?, update_at=? " +
+            "SET email= ?, password= ?, `role`=?, is_verified=?, image=?, created_at=?, updated_at=? " +
             "WHERE id=? ";
     private static final String DELETE_ACCOUNT = "DELETE FROM accounts " +
             "WHERE id=? ";

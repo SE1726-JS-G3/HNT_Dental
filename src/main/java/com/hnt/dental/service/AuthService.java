@@ -116,7 +116,6 @@ public class AuthService {
                                 .code(captcha)
                                 .createdAt(LocalDateTime.now())
                                 .updatedAt(LocalDateTime.now())
-                                .createdBy(id)
                                 .build()
                 );
 

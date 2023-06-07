@@ -20,7 +20,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     private static AccountDao accountDao;
 
-static {
+    static {
         accountDao = new AccountDaoImpl();
     }
 
@@ -33,16 +33,15 @@ static {
             "LIMIT ?, ?";
 
     private static final String SAVE_EMPLOYEE = "INSERT INTO employees" +
-            "(id, full_name, dob, gender, phone, address, salary, status, created_at, updated_at, created_by) " +
-            "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+            "(id, full_name, dob, gender, phone, address, salary, status, created_at, updated_at) " +
+            "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
     private static final String COUNT_EMPLOYEE = "SELECT COUNT(*) FROM employees e " +
             "INNER JOIN accounts a ON e.id = a.id " +
             "WHERE LOWER(e.full_name) LIKE ? " +
             "OR LOWER(a.email) LIKE ? " +
             "OR LOWER(e.dob) LIKE ? ";
     private static final String UPDATE_EMPLOYEE = "UPDATE employees " +
-            "SET full_name=?, dob=?, gender=?, phone=?, address=?, salary=?, status=?, created_at=?, updated_at=?, " +
-            " created_by=? " +
+            "SET full_name=?, dob=?, gender=?, phone=?, address=?, salary=?, status=?, created_at=?, updated_at=? " +
             "WHERE id=?";
 
     private static final String GET_EMPLOYEE_BY_ID = "SELECT * FROM hnt_dental.employees where id=?";
@@ -101,8 +100,7 @@ static {
     public Long save(Employee employee) throws SQLException, ClassNotFoundException {
         ConnectionUtils.executeUpdate(SAVE_EMPLOYEE, employee.getAccount().getId(), employee.getFullName(),
                 employee.getDob(), employee.getGender(), employee.getPhone(), employee.getAddress(),
-                employee.getSalary(), employee.isStatus(), employee.getCreatedAt(), employee.getUpdatedAt(),
-                employee.getCreatedBy());
+                employee.getSalary(), employee.isStatus(), employee.getCreatedAt(), employee.getUpdatedAt());
         return null;
     }
 
@@ -110,8 +108,7 @@ static {
     public void update(Employee employee) throws SQLException {
         ConnectionUtils.executeUpdate(UPDATE_EMPLOYEE, employee.getFullName(),
                 employee.getDob(), employee.getGender(), employee.getPhone(), employee.getAddress(),
-                employee.getSalary(), employee.isStatus(), employee.getCreatedAt(), employee.getUpdatedAt(),
-                employee.getCreatedBy(), employee.getAccount().getId());
+                employee.getSalary(), employee.isStatus(), employee.getCreatedAt(), employee.getUpdatedAt(), employee.getAccount().getId());
     }
 
     @Override

@@ -71,6 +71,7 @@ $(document).ready(function () {
 );
 
 function getRegister() {
+    document.getElementById('btn-register').disabled = true;
     $.ajax({
         url: '/auth/register',
         type: 'POST',
@@ -90,9 +91,13 @@ function getRegister() {
                     document.getElementById("content").innerHTML = "Đăng ký thất bại!";
                     break;
             }
+            document.getElementById('btn-register').disabled = false;
         },
         error: function (data) {
             console.log(data);
+            document.getElementById("content").style.color = "red";
+            document.getElementById("content").innerHTML = "Đăng ký thất bại!";
+            document.getElementById('btn-register').disabled = false;
         }
     });
 }
