@@ -76,7 +76,11 @@ function getRegister() {
         url: '/auth/register',
         type: 'POST',
         data: $('#register').serialize(),
+        beforeSend: function () {
+            $('.preloader-custom').preloader();
+        },
         success: function (data) {
+            $('.preloader-custom').preloader('remove');
             switch (data.message) {
                 case 'email_existed':
                     document.getElementById("content").style.color = "red";
@@ -98,6 +102,7 @@ function getRegister() {
             document.getElementById("content").style.color = "red";
             document.getElementById("content").innerHTML = "Đăng ký thất bại!";
             document.getElementById('btn-register').disabled = false;
+            $('.preloader-custom').preloader('remove');
         }
     });
 }
