@@ -17,4 +17,5 @@ public class Doctors extends BaseEntity{
     private String position;
     private String description;
     private DoctorRank doctorRank;
+    private String image;
 }

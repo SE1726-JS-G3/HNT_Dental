@@ -1,5 +1,7 @@
 package com.hnt.dental.controllers.home;
 
+import com.hnt.dental.entities.Service;
+import com.hnt.dental.service.DoctorService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -13,12 +15,17 @@ import java.io.IOException;
         "/doctor/detail"
 })
 public class HomeDoctorController extends HttpServlet {
+    private static final DoctorService service;
+
+    static {
+        service = new DoctorService();
+    }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getServletPath();
         switch (action) {
             case "/doctor":
-                req.getRequestDispatcher("/WEB-INF/templates/home/doctor/index.jsp").forward(req, resp);
+                service.getAll(req, resp);
                 break;
             case "/doctor/detail":
                 req.getRequestDispatcher("/WEB-INF/templates/home/doctor/detail.jsp").forward(req, resp);
