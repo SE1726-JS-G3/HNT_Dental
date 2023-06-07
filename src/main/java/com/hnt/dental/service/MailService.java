@@ -1,10 +1,18 @@
 package com.hnt.dental.service;
 
-import jakarta.mail.*;
-import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeMessage;
 
-import java.util.Properties;
+import com.hnt.dental.dto.mail.EmailDto;
+import com.hnt.dental.dto.mail.MailerDto;
+import com.hnt.dental.util.FileUtils;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.commons.text.StringSubstitutor;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class MailService {
@@ -12,93 +20,37 @@ public class MailService {
     private static final ResourceBundle bundle = ResourceBundle.getBundle("application");
 
 
-    public static void send(String to, String sub, String msg) {
-        Properties props = new Properties();
-        String username = bundle.getString("mail.username");
-        String password = bundle.getString("mail.password");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.allow8bitmime", "true");
-        props.put("mail.smtps.allow8bitmime", "true");
-        Session session = Session.getInstance(props, new Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(username, password);
-            }
-        });
-
-        try {
-            MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(username));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-            message.setSubject(sub);
-            message.setContent(msg, "text/html; charset=UTF-8");
-            Transport.send(message);
-
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
+    public boolean sendEmail(EmailDto emailDto) throws UnirestException {
+        String apiKey = bundle.getString("mailgun.api_key");
+        String domain = bundle.getString("mailgun.domain");
+        String from = bundle.getString("mailgun.email");
+        String fromName = bundle.getString("mailgun.name");
+        HttpResponse<String> request = Unirest.post("https://api.mailgun.net/v3/" + domain + "/messages")
+                .basicAuth("api", apiKey)
+                .queryString("from", fromName + " <" + from + ">")
+                .queryString("to", emailDto.getTo().get(0).getEmail())
+                .queryString("subject", emailDto.getSubject())
+                .queryString("html", emailDto.getHtmlPart())
+                .asString();
+        System.out.println(request.getBody());
+        return request.getStatus() == 200;
     }
 
-    public static void sendMailConfirm(String username, String link, String email) {
-        String subject = "[Doctris] Please verify your email.";
-        String message = "<!doctype html>\n" +
-                "<html lang=\"en\" dir=\"ltr\">\n" +
-                "\n" +
-                "    <head>\n" +
-                "        <meta charset=\"utf-8\" />\n" +
-                "        <title>HNT Dental - Khám răng</title>\n" +
-                "        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
-                "        <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap\" rel=\"stylesheet\">\n" +
-                "    </head>\n" +
-                "\n" +
-                "    <body style=\"font-family: Inter, sans-serif; font-size: 15px; font-weight: 400;\">\n" +
-                "\n" +
-                "        <div style=\"margin-top: 50px;\">\n" +
-                "            <table cellpadding=\"0\" cellspacing=\"0\" style=\"font-family: Inter, sans-serif; font-size: 15px; font-weight: 400; max-width: 600px; border: none; margin: 0 auto; border-radius: 6px; overflow: hidden; background-color: #fff; box-shadow: 0 0 3px rgba(60, 72, 88, 0.15);\">\n" +
-                "                <thead>\n" +
-                "                    <tr style=\"background-color: #396cf0; padding: 3px 0; border: none; line-height: 68px; text-align: center; color: #fff; font-size: 24px; letter-spacing: 1px;\">\n" +
-                "                        <th scope=\"col\"><img src=\"../assets/images/logo-light.png\" height=\"22\" alt=\"\"></th>\n" +
-                "                    </tr>\n" +
-                "                </thead>\n" +
-                "                <tbody>\n" +
-                "                    <tr>\n" +
-                "                        <td style=\"padding: 48px 24px 0; color: #161c2d; font-size: 18px; font-weight: 600;\">\n" +
-                "                            Hello, " + username +
-                "                        </td>\n" +
-                "                    </tr>\n" +
-                "                    <tr>\n" +
-                "                        <td style=\"padding: 15px 24px 15px; color: #8492a6;\">\n" +
-                "                            Thanks for creating an HNT Dental account. To continue, please confirm your email address by clicking the button below :\n" +
-                "                        </td>\n" +
-                "                    </tr>\n" +
-                "                    <tr>\n" +
-                "                        <td style=\"padding: 15px 24px;\">\n" +
-                "                            <a href="+ link +" style=\"padding: 8px 20px; outline: none; text-decoration: none; font-size: 16px; letter-spacing: 0.5px; transition: all 0.3s; font-weight: 600; border-radius: 6px; background-color: #396cf0; border: 1px solid #396cf0; color: #ffffff;\">Confirm Email Address</a>\n" +
-                "                        </td>\n" +
-                "                    </tr>\n" +
-                "                    <tr>\n" +
-                "                        <td style=\"padding: 15px 24px 0; color: #8492a6;\">\n" +
-                "                            This link will be active for 30 min from the time this email was sent.\n" +
-                "                        </td>\n" +
-                "                    </tr>\n" +
-                "                    <tr>\n" +
-                "                        <td style=\"padding: 15px 24px 15px; color: #8492a6;\">\n" +
-                "                            HNT Dental <br> Support Team\n" +
-                "                        </td>\n" +
-                "                    </tr>\n" +
-                "                    <tr>\n" +
-                "                        <td style=\"padding: 16px 8px; color: #8492a6; background-color: #f8f9fc; text-align: center;\">\n" +
-                "                            © <script>document.write(new Date().getFullYear())</script> HNT Dental.\n" +
-                "                        </td>\n" +
-                "                    </tr>\n" +
-                "                </tbody>\n" +
-                "            </table>\n" +
-                "        </div>\n" +
-                "    </body>\n" +
-                "</html>";
-        MailService.send(email, subject, message);
+    public static void sendMailConfirm(String username, String link, String email) throws IOException, UnirestException {
+        String mailBody = FileUtils.readFile("email/register.html");
+        Map<String, String> mailAttributes = new HashMap<>();
+        mailAttributes.put("name",username);
+        mailAttributes.put("link",link);
+        StringSubstitutor stringSubstitutor = new StringSubstitutor(mailAttributes);
+        mailBody = stringSubstitutor.replace(mailBody);
+        EmailDto emailDto = EmailDto.builder()
+                .to(List.of(MailerDto.builder()
+                        .email(email)
+                        .name(username)
+                        .build()))
+                .subject("Xác nhận đăng ký tài khoản")
+                .htmlPart(mailBody)
+                .build();
+        new MailService().sendEmail(emailDto);
     }
 }
