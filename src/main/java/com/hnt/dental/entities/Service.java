@@ -1,13 +1,14 @@
 package com.hnt.dental.entities;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 public class Service extends BaseEntity{
     private String name;
     private String description;
-    private Long image;
+    private String image;
 }

@@ -1,5 +1,6 @@
 package com.hnt.dental.controllers.home;
 
+import com.hnt.dental.service.ServiceService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -13,12 +14,22 @@ import java.io.IOException;
         "/service/detail"
 })
 public class HomeServiceController extends HttpServlet {
+
+    private static final ServiceService service;
+
+    static {
+        service = new ServiceService();
+    }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getServletPath();
         switch (action) {
             case "/service":
-                req.getRequestDispatcher("/WEB-INF/templates/home/service/index.jsp").forward(req, resp);
+                try {
+                    service.getAll(req, resp);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
                 break;
             case "/service/detail":
                 req.getRequestDispatcher("/WEB-INF/templates/home/service/detail.jsp").forward(req, resp);

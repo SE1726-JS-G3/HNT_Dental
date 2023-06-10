@@ -59,7 +59,7 @@
 
                                 <div class="col-lg-12">
                                     <div class="d-flex justify-content-between">
-                                        <a href="/auth/forgot-password" class="text-dark h6 mb-0">Forgot password ?</a>
+                                        <a href="${pageContext.request.contextPath}/auth/forgot" class="text-dark h6 mb-0">Forgot password ?</a>
                                     </div>
                                 </div>
                                 <div class="col-lg-12 mb-0">

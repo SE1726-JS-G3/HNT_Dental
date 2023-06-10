@@ -12,9 +12,10 @@
         </div>
 
         <ul class="list-unstyled sidebar-nav mb-0">
-            <li class="navbar-item"><a href="#" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i>Thông tin tài khoản</a></li>
+            <li class="navbar-item"><a href=" /auth/profile" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i>Thông tin tài khoản</a></li>
             <li class="navbar-item"><a href=" /auth/booking-history" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i> Lịch sử dịch vụ</a></li>
             <li class="navbar-item"><a href="/auth/my-patient" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i> Bệnh nhân của tôi</a></li>
+            <li class="navbar-item"><a href="/auth/my-appointment" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i> Lịch hẹn của tôi</a></li>
         </ul>
     </div>
 </div>
