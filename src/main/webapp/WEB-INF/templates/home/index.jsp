@@ -17,15 +17,11 @@
         <div class="row mt-5 mt-lg-0">
             <div class="col-12">
                 <div class="heading-title">
-                    <img src="${pageContext.request.contextPath}/static/images/logo_white.png" height="300" width="300"
-                         alt="">
                     <h4 class="display-4 fw-bold text-white title- mt-3 mb-4">Nền Tảng <br> Hỗ Trợ chăm sóc răng miệng</h4>
                     <p class="para-desc text-white-50 mb-0">Chúng tôi luôn đồng hành cùng bạn trên con đường chăm sóc
                         răng miệng</p>
                     <div class="mt-4">
-                        <a href="https://www.youtube.com/watch?v=QIvIN8M91x4" data-bs-toggle="modal"
-                           data-bs-target="#watchvideomodal"
-                           class="btn btn-primary mt-2 me-2"><i class="mdi mdi-play"></i> Xem video</a>
+                        <a class="btn btn-primary mt-2 me-2"> Đặt lịch ngay</a>
                     </div>
                 </div>
             </div>

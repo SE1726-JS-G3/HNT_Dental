@@ -1,7 +1,10 @@
 package com.hnt.dental.dao.impl;
 
 import com.hnt.dental.dao.DoctorDao;
+import com.hnt.dental.dto.response.DoctorDetailDto;
 import com.hnt.dental.dto.response.DoctorSummaryRes;
+import com.hnt.dental.dto.response.FeedbackDoctorDto;
+import com.hnt.dental.dto.response.ServiceResDto;
 import com.hnt.dental.entities.Doctors;
 import com.hnt.dental.util.ConnectionUtils;
 
@@ -13,6 +16,23 @@ import java.util.Optional;
 
 public class DoctorDaoImpl implements DoctorDao {
 
+    private static final String SQL_GET_DOCTOR_BY_ID = "select * from doctors " +
+            "where id = ?";
+    private static final String SQL_GET_ALL_SERVICE_BY_ID_DOCTOR = "select s.id, s.name, GROUP_CONCAT(st.name SEPARATOR ',')" +
+            " as type, CONCAT(MIN(sf.fee), ' ~ ', MAX(sf.fee)) as fee, s.image from service s " +
+            "inner join service_doctor sd on sd.id_service = s.id " +
+            "inner join doctors d on d.id = sd.id_doctor " +
+            "inner join service_fee sf on sf.service_id = s.id " +
+            "inner join service_type st on st.id = sf.service_type " +
+            "where sd.id_doctor = ? " +
+            "group by s.id";
+
+    private static final String SQL_GET_COMMENT_DOCTOR = "SELECT " +
+            "f.id, p.full_name, f.created_at, p.image, f.description, star " +
+            "from feedback f " +
+            "inner join booking b on f.booking_id = b.id " +
+            "inner join patients p on p.id = b.account_id " +
+            "where f.doctor_id = ?";
     private static final String SQL_GET_SUMMARY = "SELECT" +
             "  d.id," +
             "  d.full_name," +
@@ -47,6 +67,46 @@ public class DoctorDaoImpl implements DoctorDao {
         return Optional.empty();
     }
 
+    public Optional<DoctorDetailDto> getDoctorDetail(Long id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_DOCTOR_BY_ID, id);
+        if (rs.next()) {
+            return Optional.ofNullable(DoctorDetailDto.builder()
+                    .id(rs.getLong("id"))
+                    .fullName(rs.getString("full_name"))
+                    .position(rs.getString("position"))
+                    .image(rs.getString("image"))
+                    .description(rs.getString("description"))
+                    .rankName(rs.getString("rank_id"))
+                    .dob(rs.getDate("dob"))
+                    .build());
+        }
+        ConnectionUtils.closeConnection();
+        return Optional.empty();
+    }
+
+    @Override
+    public List<ServiceResDto> getAllServiceByIdDoctor(Long id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_ALL_SERVICE_BY_ID_DOCTOR, id);
+        List<ServiceResDto> result = new ArrayList<>();
+        while (rs.next()) {
+            result.add(ServiceResDto.builder()
+                    .id(rs.getLong("id"))
+                    .name(rs.getString("name"))
+                    .type(rs.getString("type"))
+                    .fee(rs.getString("fee"))
+                    .image(rs.getString("image"))
+                    .build());
+        }
+        return result;
+    }
+
+    @Override
+    public List<FeedbackDoctorDto> getFeedbackDoctor(Long id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_COMMENT_DOCTOR, id);
+        List<FeedbackDoctorDto> result = new ArrayList<>();
+        return null;
+    }
+
     @Override
     public Long save(Doctors doctors) throws SQLException, ClassNotFoundException {
         return null;
@@ -78,6 +138,12 @@ public class DoctorDaoImpl implements DoctorDao {
         }
         ConnectionUtils.closeConnection();
         return result;
+    }
+
+    @Override
+    public List<DoctorDetailDto> getDoctorDetailDto() throws SQLException {
+        //
+        return null;
     }
 
     @Override

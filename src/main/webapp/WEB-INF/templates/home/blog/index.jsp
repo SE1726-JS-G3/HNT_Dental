@@ -40,49 +40,231 @@
   </div>
 </div>
 
+
+
+<!-- Start -->
 <section class="section">
   <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-lg-8 row">
-        <c:forEach items="${listblog}" var="b">
-          <div class="col-lg-4 col-md-6 col-12 mb-4 pb-2">
-            <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-              <img src="data:image/png;base64,${b.img}" class="img-fluid" alt="">
-              <div class="card-body p-4">
-                <ul class="list-unstyled mb-2">
-                  <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i><fmt:formatDate pattern="dd/MM/yyyy" value="${b.date}" /></li>
-                </ul>
-                <a href=# class="text-dark title h7">${b.title}</a>
-                <c:set var = "detail" value = "${b.describe}"/>
-
-                <div class="post-meta d-flex justify-content-between mt-3">
-                  <ul class="list-unstyled mb-0">
-                    <li class="list-inline-item me-2 mb-0" style="color:gray">${b.category.name}</li>
-                  </ul>
-
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </c:forEach>
-      </div>
-
-
-    </div>
-
-    <c:set var="page" value="${page}"/>
-    <div class="row text-center">
-      <div class="col-12 mt-4">
-        <div class="d-md-flex align-items-center text-center justify-content-between">
-          <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-          </ul>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4">
+          <input type="text" class="form-select form-control" name="txt"
+                 value="${search}"
+                 id="search" placeholder="Tìm kiếm bài viết...">
+        </div>
+        <div class="col-lg-2">
+          <button class="btn btn-primary rounded-pill" id="btn-search">Tìm kiếm</button>
+        </div>
+        <div class="col-lg-4">
+          <select class="form-select form-control">
+            <option value="EY">Category1</option>
+            <option value="EY">Category2</option>
+            <option value="GY">Category3</option>
+            <option value="PS">Category4</option>
+          </select>
+        </div>
+        <div class="col-lg-2">
+          <button class="btn btn-primary rounded-pill" id="btn-search">Lọc</button>
         </div>
       </div>
+      <br>
     </div>
-  </div>
-</section>
+    <div class="row">
+      <div class="col-lg-4 col-md-6 col-12 mb-4 pb-2">
+        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
+          <img src="https://shreethemes.in/doctris/layouts/assets/images/blog/01.jpg" class="img-fluid" alt="">
+          <div class="card-body p-4">
+            <ul class="list-unstyled mb-2">
+              <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020</li>
+              <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
+            </ul>
+            <a href="blog-detail.html" class="text-dark title h5">Easily connect to doctor and make a treatment</a>
+            <div class="post-meta d-flex justify-content-between mt-3">
+              <ul class="list-unstyled mb-0">
+                <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i class="mdi mdi-heart-outline me-1"></i>33</a></li>
+                <li class="list-inline-item"><a href="#" class="text-muted comments"><i class="mdi mdi-comment-outline me-1"></i>08</a></li>
+              </ul>
+              <a href="blog-detail.html" class="link">Read More <i class="mdi mdi-chevron-right align-middle"></i></a>
+            </div>
+          </div>
+        </div>
+      </div><!--end col-->
 
+      <div class="col-lg-4 col-md-6 col-12 mb-4 pb-2">
+        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
+          <img src="https://shreethemes.in/doctris/layouts/assets/images/blog/02.jpg" class="img-fluid" alt="">
+          <div class="card-body p-4">
+            <ul class="list-unstyled mb-2">
+              <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020</li>
+              <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
+            </ul>
+            <a href="blog-detail.html" class="text-dark title h5">Lockdowns lead to fewer people seeking medical care</a>
+            <div class="post-meta d-flex justify-content-between mt-3">
+              <ul class="list-unstyled mb-0">
+                <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i class="mdi mdi-heart-outline me-1"></i>33</a></li>
+                <li class="list-inline-item"><a href="#" class="text-muted comments"><i class="mdi mdi-comment-outline me-1"></i>08</a></li>
+              </ul>
+              <a href="blog-detail.html" class="link">Read More <i class="mdi mdi-chevron-right align-middle"></i></a>
+            </div>
+          </div>
+        </div>
+      </div><!--end col-->
+
+      <div class="col-lg-4 col-md-6 col-12 mb-4 pb-2">
+        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
+          <img src="https://shreethemes.in/doctris/layouts/assets/images/blog/04.jpg" class="img-fluid" alt="">
+          <div class="card-body p-4">
+            <ul class="list-unstyled mb-2">
+              <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020</li>
+              <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
+            </ul>
+            <a href="blog-detail.html" class="text-dark title h5">medicine research course for doctors</a>
+            <div class="post-meta d-flex justify-content-between mt-3">
+              <ul class="list-unstyled mb-0">
+                <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i class="mdi mdi-heart-outline me-1"></i>33</a></li>
+                <li class="list-inline-item"><a href="#" class="text-muted comments"><i class="mdi mdi-comment-outline me-1"></i>08</a></li>
+              </ul>
+              <a href="blog-detail.html" class="link">Read More <i class="mdi mdi-chevron-right align-middle"></i></a>
+            </div>
+          </div>
+        </div>
+      </div><!--end col-->
+
+      <div class="col-lg-4 col-md-6 col-12 mb-4 pb-2">
+        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
+          <img src="https://shreethemes.in/doctris/layouts/assets/images/blog/04.jpg" class="img-fluid" alt="">
+          <div class="card-body p-4">
+            <ul class="list-unstyled mb-2">
+              <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020</li>
+              <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
+            </ul>
+            <a href="blog-detail.html" class="text-dark title h5">Comparing Nitrogen And Mechanical Freezers</a>
+            <div class="post-meta d-flex justify-content-between mt-3">
+              <ul class="list-unstyled mb-0">
+                <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i class="mdi mdi-heart-outline me-1"></i>33</a></li>
+                <li class="list-inline-item"><a href="#" class="text-muted comments"><i class="mdi mdi-comment-outline me-1"></i>08</a></li>
+              </ul>
+              <a href="blog-detail.html" class="link">Read More <i class="mdi mdi-chevron-right align-middle"></i></a>
+            </div>
+          </div>
+        </div>
+      </div><!--end col-->
+
+      <div class="col-lg-4 col-md-6 col-12 mb-4 pb-2">
+        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
+          <img src="https://shreethemes.in/doctris/layouts/assets/images/blog/05.jpg" class="img-fluid" alt="">
+          <div class="card-body p-4">
+            <ul class="list-unstyled mb-2">
+              <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020</li>
+              <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
+            </ul>
+            <a href="blog-detail.html" class="text-dark title h5">It Is Very Important To Wear Proper Clothing</a>
+            <div class="post-meta d-flex justify-content-between mt-3">
+              <ul class="list-unstyled mb-0">
+                <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i class="mdi mdi-heart-outline me-1"></i>33</a></li>
+                <li class="list-inline-item"><a href="#" class="text-muted comments"><i class="mdi mdi-comment-outline me-1"></i>08</a></li>
+              </ul>
+              <a href="blog-detail.html" class="link">Read More <i class="mdi mdi-chevron-right align-middle"></i></a>
+            </div>
+          </div>
+        </div>
+      </div><!--end col-->
+
+      <div class="col-lg-4 col-md-6 col-12 mb-4 pb-2">
+        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
+          <img src="https://shreethemes.in/doctris/layouts/assets/images/blog/06.jpg" class="img-fluid" alt="">
+          <div class="card-body p-4">
+            <ul class="list-unstyled mb-2">
+              <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020</li>
+              <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
+            </ul>
+            <a href="blog-detail.html" class="text-dark title h5">Hollowed-Out Faces More Cuts Amid Virus</a>
+            <div class="post-meta d-flex justify-content-between mt-3">
+              <ul class="list-unstyled mb-0">
+                <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i class="mdi mdi-heart-outline me-1"></i>33</a></li>
+                <li class="list-inline-item"><a href="#" class="text-muted comments"><i class="mdi mdi-comment-outline me-1"></i>08</a></li>
+              </ul>
+              <a href="blog-detail.html" class="link">Read More <i class="mdi mdi-chevron-right align-middle"></i></a>
+            </div>
+          </div>
+        </div>
+      </div><!--end col-->
+
+      <div class="col-lg-4 col-md-6 col-12 mb-4 pb-2">
+        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
+          <img src="https://shreethemes.in/doctris/layouts/assets/images/blog/07.jpg" class="img-fluid" alt="">
+          <div class="card-body p-4">
+            <ul class="list-unstyled mb-2">
+              <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020</li>
+              <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
+            </ul>
+            <a href="blog-detail.html" class="text-dark title h5">A Researcher Is Research On Coronavirus In Lab</a>
+            <div class="post-meta d-flex justify-content-between mt-3">
+              <ul class="list-unstyled mb-0">
+                <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i class="mdi mdi-heart-outline me-1"></i>33</a></li>
+                <li class="list-inline-item"><a href="#" class="text-muted comments"><i class="mdi mdi-comment-outline me-1"></i>08</a></li>
+              </ul>
+              <a href="blog-detail.html" class="link">Read More <i class="mdi mdi-chevron-right align-middle"></i></a>
+            </div>
+          </div>
+        </div>
+      </div><!--end col-->
+
+      <div class="col-lg-4 col-md-6 col-12 mb-4 pb-2">
+        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
+          <img src="https://shreethemes.in/doctris/layouts/assets/images/blog/08.jpg" class="img-fluid" alt="">
+          <div class="card-body p-4">
+            <ul class="list-unstyled mb-2">
+              <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020</li>
+              <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
+            </ul>
+            <a href="blog-detail.html" class="text-dark title h5">Using Spectroscopy To Assess Food Quality</a>
+            <div class="post-meta d-flex justify-content-between mt-3">
+              <ul class="list-unstyled mb-0">
+                <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i class="mdi mdi-heart-outline me-1"></i>33</a></li>
+                <li class="list-inline-item"><a href="#" class="text-muted comments"><i class="mdi mdi-comment-outline me-1"></i>08</a></li>
+              </ul>
+              <a href="blog-detail.html" class="link">Read More <i class="mdi mdi-chevron-right align-middle"></i></a>
+            </div>
+          </div>
+        </div>
+      </div><!--end col-->
+
+      <div class="col-lg-4 col-md-6 col-12 mb-4 pb-2">
+        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
+          <img src="https://shreethemes.in/doctris/layouts/assets/images/blog/09.jpg" class="img-fluid" alt="">
+          <div class="card-body p-4">
+            <ul class="list-unstyled mb-2">
+              <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020</li>
+              <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
+            </ul>
+            <a href="blog-detail.html" class="text-dark title h5">You Have To Wash Your Hands For 20 Seconds</a>
+            <div class="post-meta d-flex justify-content-between mt-3">
+              <ul class="list-unstyled mb-0">
+                <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i class="mdi mdi-heart-outline me-1"></i>33</a></li>
+                <li class="list-inline-item"><a href="#" class="text-muted comments"><i class="mdi mdi-comment-outline me-1"></i>08</a></li>
+              </ul>
+              <a href="blog-detail.html" class="link">Read More <i class="mdi mdi-chevron-right align-middle"></i></a>
+            </div>
+          </div>
+        </div>
+      </div><!--end col-->
+    </div><!--end row-->
+
+    <div class="row text-center">
+      <div class="col-12">
+        <ul class="pagination justify-content-center mb-0 list-unstyled">
+          <li class="page-item"><a class="page-link" href="javascript:void(0)" aria-label="Previous">Prev</a></li>
+          <li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a></li>
+          <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>
+          <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
+          <li class="page-item"><a class="page-link" href="javascript:void(0)" aria-label="Next">Next</a></li>
+        </ul><!--end pagination-->
+      </div><!--end col-->
+    </div><!--end row-->
+  </div><!--end container-->
+</section><!--end section-->
+<!-- End -->
 <jsp:include page="../layout/footer.jsp"/>
 <a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i
         data-feather="arrow-up" class="icons"></i></a>

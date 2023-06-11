@@ -30,85 +30,73 @@
     </div>
 </section>
 
+<!-- Start -->
 <section class="section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-9 col-lg-9 row align-items-center">
 
-                <c:forEach items="${doctors}" var="d">
-                    <div class="col-xl-4 col-lg-4 col-md-6 mt-2 pt-2">
-                        <div class="card team border-0 rounded shadow overflow-hidden">
-                            <div class="team-person position-relative overflow-hidden">
-                                <img src="${d.image}"
-                                     style="display: block;margin-left: auto;margin-right: auto;" class="img-fluid"
-                                     alt="">
-                            </div>
-                            <div class="card-body" style="height: 250px">
-                                <a href="#" class="text-dark d-block mb-0">${d.fullName}</a>
-                                <small class="text-muted speciality">Cập bâc: ${d.rankName}</small>
-                                <br>
-                                <small class="text-muted speciality">Thông tin: ${d.description}</small>
-                                <div class="d-flex justify-content-between align-items-center mt-2">
-                                    <ul class="list-unstyled mb-0">
-                                        <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                        <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                        <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                        <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                        <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                    </ul>
-                                    <p class="text-muted mb-0">6 feedbacks</p>
-                                </div>
-                                <div class="pt-2">
-                                    <button class="btn btn-soft-primary"
-                                            onclick="window.location.href = 'doctor?action=detail&id=${d.id}'">
-                                        Chi
-                                        tiết
-                                    </button>
-                                </div>
-                            </div>
+    <div class="container">
+        <div class="row align-items-center">
+
+            <div class="col-md-12">
+                <div class="search-bar p-0 d-lg-block ms-2">
+                    <div class="row mb-0">
+                        <div class="col-lg-8">
+                            <input type="text" class="form-select form-control" name="txt"
+                                   value="${search}"
+                                   id="search" placeholder="Tìm kiếm bác sĩ...">
+                        </div>
+
+                        <div class="col-lg-4">
+                            <button class="btn btn-primary rounded-pill" id="btn-search">Tìm kiếm</button>
+                            <br><br>
                         </div>
                     </div>
-                </c:forEach>
+                </div>
             </div>
-            <div class="col-lg-3 col-md-12 mt-3 pt-2">
-                <div class="card border-0 sidebar sticky-bar rounded shadow">
-                    <div class="card-body">
-                        <div class="widget mb-4 pb-2">
-                            <h5 class="widget-title">Tìm kiếm</h5>
-                            <div class="row align-items-center">
-                                <div class="col-12">
-                                    <div class="col-12">
-                                        <input type="text" class="form-control border " name="txt"
-                                               value="${search}"
-                                               id="search" placeholder="Tìm kiếm nhân viên...">
+
+            <c:forEach items="${doctors}" var="d">
+                <div class="col-lg-6 col-md-12">
+                    <div class="card team border-0 rounded shadow overflow-hidden">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <div class="team-person position-relative overflow-hidden">
+                                    <img src="${d.image}"
+                                         class="img-fluid" alt="">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card-body">
+                                    <a href="#" class="title text-dark h5 d-block mb-0">${d.fullName}</a>
+                                    <small class="text-muted speciality">Cập bâc: ${d.rankName}</small>
+                                    <br>
+                                    <small class="text-muted speciality">Thông tin: ${d.description}</small>
+                                    <div class="d-flex justify-content-between align-items-center mt-2">
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                        </ul>
+                                        <p class="text-muted mb-0">5 Star</p>
                                     </div>
-                                    <br/>
-                                    <div class="col-12 d-flex justify-content-center">
-                                        <button class="btn btn-primary" id="btn-search">Tìm kiếm</button>
+                                    <div class="pt-2">
+                                        <button class="btn btn-soft-primary"
+                                                onclick="window.location.href = 'doctor?action=detail&id=${d.id}'">
+                                            Chi
+                                            tiết
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                <!--end col-->
+            </c:forEach>
         </div>
-        <c:set var="page" value="${currentPage}"/>
-        <div class="row text-center">
-            <div class="col-12 mt-4">
-                <div class="d-md-flex align-items-center text-center justify-content-between">
-                    <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                        <c:forEach begin="${1}" end="${totalPage}" var="i">
-                            <li class="page-item ${i==page?"active":""}"><a class="page-link"
-                                                                            href="${url}?page=${i}&search=${search}">${i}</a>
-                            </li>
-                        </c:forEach>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+    </div><!--end container-->
+</section><!--end section-->
+<!-- End -->
 
 <jsp:include page="../layout/footer.jsp"/>
 <a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i

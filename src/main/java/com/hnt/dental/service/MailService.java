@@ -53,4 +53,12 @@ public class MailService {
                 .build();
         new MailService().sendEmail(emailDto);
     }
+
+    public static void main(String[] args) {
+        try {
+            sendMailConfirm("Huy","https://google.com","huy@gmail");
+        } catch (IOException | UnirestException e) {
+            e.printStackTrace();
+        }
+    }
 }

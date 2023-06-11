@@ -22,6 +22,7 @@ import java.sql.SQLException;
         "/auth/forgot/confirm",
         "/auth/profile",
         "/auth/booking-history",
+        "/auth/my-appointment",
         "/auth/my-patient"
 })
 public class AuthController extends HttpServlet {
@@ -66,6 +67,9 @@ public class AuthController extends HttpServlet {
                 break;
             case "/auth/my-patient":
                 ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/my-patient.jsp");
+                break;
+            case "/auth/my-appointment":
+                ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/my-appointment.jsp");
                 break;
             default:
         }
