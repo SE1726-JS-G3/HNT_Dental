@@ -28,7 +28,7 @@ public class HomeDoctorController extends HttpServlet {
                 service.getAll(req, resp);
                 break;
             case "/doctor/detail":
-                req.getRequestDispatcher("/WEB-INF/templates/home/doctor/detail.jsp").forward(req, resp);
+                service.getDoctorById(req, resp);
                 break;
             default:
         }

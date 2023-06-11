@@ -13,15 +13,15 @@
                     <div class="col-md-5">
                         <div class="slider slider-for">
                             <div><img
-                                    src="https://www.fvhospital.com/wp-content/uploads/2018/11/Dr-Truong-Hieu-Nghia.jpg"
+                                    src="${doctorDetailDto.image}"
                                     class="img-fluid rounded" alt=""></div>
                         </div>
                     </div>
 
                     <div class="col-md-7 mt-4 mt-sm-0 pt-2 pt-sm-0">
                         <div class="section-title ms-md-4">
-                            <h4 class="title">Khương Văn Hùng</h4>
-                            <p class="text-muted">Chuyên Khoa</p>
+                            <h4 class="title">${doctorDetailDto.fullName}</h4>
+                            <p class="text-muted">${doctorDetailDto.position}</p>
                             <ul class="list-unstyled text-warning h5 mb-0">
                                 <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
                                 <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
@@ -33,11 +33,7 @@
 
                             <h5 class="mt-4 py-2">Mô tả :</h5>
                             <p class="text-muted">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, quibusdam
-                                voluptatibus
-                                pariatur consequatur voluptas quae placeat, quia id doloremque explicabo, fugiat
-                                voluptatum
-                                doloribus. Quisquam, quod, soluta. Quisquam, quod, soluta.
+                                ${doctorDetailDto.description}
                             </p>
                         </div>
                     </div>
@@ -49,92 +45,83 @@
                         <div class="widget mb-4 pb-2">
                             <h5 class="widget-title">Services of doctor</h5>
                             <div class="mt-4">
+
+                                <c:forEach items="${services}" var="s">
                                 <div class="clearfix post-recent">
                                     <div class="post-recent-thumb float-start"><a href="jvascript:void(0)"> <img
                                             alt="img"
-                                            src="https://shreethemes.in/doctris/layouts/assets/images/blog/07.jpg"
+                                            src="${s.image}"
                                             class="img-fluid rounded"></a>
                                     </div>
-                                    <div class="post-recent-content float-start"><a href="jvascript:void(0)">Consultant
-                                        Business</a><span class="text-muted mt-2">15th June, 2019</span></div>
-                                </div>
-                                <div class="clearfix post-recent">
-                                    <div class="post-recent-thumb float-start"><a href="jvascript:void(0)"> <img
-                                            alt="img"
-                                            src="https://shreethemes.in/doctris/layouts/assets/images/blog/07.jpg"
-                                            class="img-fluid rounded"></a>
-                                    </div>
-                                    <div class="post-recent-content float-start"><a href="jvascript:void(0)">Look On The
-                                        Glorious Balance</a> <span class="text-muted mt-2">15th June, 2019</span></div>
-                                </div>
-                                <div class="clearfix post-recent">
-                                    <div class="post-recent-thumb float-start"><a href="jvascript:void(0)"> <img
-                                            alt="img"
-                                            src="https://shreethemes.in/doctris/layouts/assets/images/blog/07.jpg"
-                                            class="img-fluid rounded"></a>
-                                    </div>
-                                    <div class="post-recent-content float-start"><a href="jvascript:void(0)">Research
-                                        Financial.</a> <span class="text-muted mt-2">15th June, 2019</span></div>
-                                </div>
+                                    <div class="post-recent-content float-start"><a
+                                            href="jvascript:void(0)">${s.name}</a>
+                                        <span class="text-muted mt-2"><b>Loại:</b> ${s.type}</span>
+                                        <br>
+                                        <span class="text-muted mt-2"><b>Giá tiền:</b> ${s.fee}</span></div>
                             </div>
+                            </c:forEach>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="container mt-4">
-            <div class="row">
-                <div class="col-12">
-                    <h5 class="card-title mt-4 mb-0">Đánh giá :</h5>
-                    <ul class="media-list list-unstyled mb-0">
-                        <li class="mt-4">
-                            <div class="d-flex justify-content-between">
-                                <div class="d-flex align-items-center">
-                                    <a class="pe-3" href="#">
-                                        <img src="https://www.fvhospital.com/wp-content/uploads/2018/11/Dr-Truong-Hieu-Nghia.jpg"
-                                             class="img-fluid avatar avatar-md-sm rounded-circle shadow" alt="img">
-                                    </a>
-                                    <div class="commentor-detail">
-                                        <h6 class="mb-0"><a href="javascript:void(0)" class="text-dark media-heading">Hoàng
-                                            Bùi</a></h6>
-                                        <small class="text-muted">13/06/2021</small>
-                                        <ul class="list-unstyled text-warning h5 mb-0">
-                                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                        </ul>
-                                    </div>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <h5 class="card-title mt-4 mb-0">Đánh giá :</h5>
+                <ul class="media-list list-unstyled mb-0">
+                    <li class="mt-4">
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <a class="pe-3" href="#">
+                                    <img src="https://www.fvhospital.com/wp-content/uploads/2018/11/Dr-Truong-Hieu-Nghia.jpg"
+                                         class="img-fluid avatar avatar-md-sm rounded-circle shadow" alt="img">
+                                </a>
+                                <div class="commentor-detail">
+                                    <h6 class="mb-0"><a href="javascript:void(0)" class="text-dark media-heading">Hoàng
+                                        Bùi</a></h6>
+                                    <small class="text-muted">13/06/2021</small>
+                                    <ul class="list-unstyled text-warning h5 mb-0">
+                                        <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                    </ul>
                                 </div>
                             </div>
-                            <div class="mt-3">
-                                <p class="text-muted font-italic p-3 bg-light rounded">" There are many variations of
-                                    passages of Lorem Ipsum available, but the majority have suffered alteration in some
-                                    form, by injected humour "</p>
-                            </div>
-                        </li>
-                    </ul>
+                        </div>
+                        <div class="mt-3">
+                            <p class="text-muted font-italic p-3 bg-light rounded">" There are many variations of
+                                passages of Lorem Ipsum available, but the majority have suffered alteration in some
+                                form, by injected humour "</p>
+                        </div>
+                    </li>
+                </ul>
 
-                    <div class="row text-center">
-                        <!-- PAGINATION START -->
-                        <div class="col-12 mt-4">
-                            <div class="d-md-flex align-items-center text-center justify-content-between">
-                                <span class="text-muted me-3">Showing 1 - 10 out of 50</span>
-                                <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                    <li class="page-item"><a class="page-link" href="javascript:void(0)" aria-label="Previous">Prev</a></li>
-                                    <li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="javascript:void(0)" aria-label="Next">Next</a></li>
-                                </ul>
-                            </div>
-                        </div><!--end col-->
-                        <!-- PAGINATION END -->
-                    </div><!--end row-->
-                </div>
+                <div class="row text-center">
+                    <!-- PAGINATION START -->
+                    <div class="col-12 mt-4">
+                        <div class="d-md-flex align-items-center text-center justify-content-between">
+                            <span class="text-muted me-3">Showing 1 - 10 out of 50</span>
+                            <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
+                                <li class="page-item"><a class="page-link" href="javascript:void(0)"
+                                                         aria-label="Previous">Prev</a></li>
+                                <li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a></li>
+                                <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>
+                                <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
+                                <li class="page-item"><a class="page-link" href="javascript:void(0)" aria-label="Next">Next</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div><!--end col-->
+                    <!-- PAGINATION END -->
+                </div><!--end row-->
             </div>
         </div>
+    </div>
     </div>
 </section>
 

@@ -2,18 +2,22 @@ package com.hnt.dental.service;
 
 import com.hnt.dental.dao.DoctorDao;
 import com.hnt.dental.dao.impl.DoctorDaoImpl;
+import com.hnt.dental.dto.response.DoctorDetailDto;
 import com.hnt.dental.dto.response.DoctorSummaryRes;
 import com.hnt.dental.dto.response.EmployeeResDto;
+import com.hnt.dental.dto.response.ServiceResDto;
 import com.hnt.dental.util.PagingUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
+import java.util.Optional;
 
 public class DoctorService {
 
     private static final DoctorDao dao;
+
 
     static {
         dao = new DoctorDaoImpl();
@@ -47,4 +51,23 @@ public class DoctorService {
             System.out.println(e.getMessage());
         }
     }
+
+    public void getDoctorById(HttpServletRequest req, HttpServletResponse resp){
+        String id = req.getParameter("id");
+        try {
+            Optional<DoctorDetailDto> doctorDetailDto = dao.getDoctorDetail(Long.valueOf(id));
+            List<ServiceResDto> getAllServiceByIdDoctor = dao.getAllServiceByIdDoctor(Long.valueOf(id));
+
+            req.setAttribute("services", getAllServiceByIdDoctor);
+            req.setAttribute("doctorDetailDto", doctorDetailDto.get());
+            req.setAttribute("id",id);
+            req.setAttribute("url", "/doctor");
+            req.getRequestDispatcher("/WEB-INF/templates/home/doctor/detail.jsp").forward(req, resp);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+
 }
