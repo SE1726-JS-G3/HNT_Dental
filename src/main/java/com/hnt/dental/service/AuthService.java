@@ -120,7 +120,7 @@ public class AuthService {
                 );
 
                 String token = AesUtils.encrypt(StringUtils.join(email, ":", captcha));
-                String url = "http://localhost:8080/auth/verification?token=" + token;
+                String url = "http://hntdental.azurewebsites.net/auth/verification?token=" + token;
                 MailService.sendMailConfirm(fullName, url, email);
 
                 ApiResponse<Account> response = new ApiResponse<>();
