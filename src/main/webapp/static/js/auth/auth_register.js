@@ -106,3 +106,19 @@ function getRegister() {
         }
     });
 }
+
+function showTerms(){
+    Swal.fire({
+        confirmButtonColor: '#396cf0',
+        html:
+            'Về phương hướng hợp tác thời gian tới, Bộ trưởng Bùi Thanh Sơn đề nghị hai Bộ Ngoại giao phối hợp ' +
+            'thúc đẩy trao đổi đoàn cấp cao và các cấp, nhất là trong năm 2023 nhân kỷ niệm 10 năm thiết lập quan hệ đối ' +
+            'tác chiến lược Việt Nam-Thái Lan; phát huy vai trò cầu nối thúc đẩy triển khai hiệu quả Chương trình Hành' +
+            ' động triển khai quan hệ đối tác chiến lược tăng cường Việt Nam-Thái Lan giai đoạn 2022-2027, đặc biệt là ' +
+            'sáng kiến “Ba kết nối” (kết nối chuỗi cung ứng; kết nối kinh tế, doanh nghiệp và địa phương; kết nối các chiến ' +
+            'lược tăng trưởng bền vững giữa hai nước); thúc đẩy hợp tác trên các lĩnh vực mới như kinh tế số, kinh tế xanh, ' +
+            'chuyển đổi năng lượng... Bộ trưởng cũng đề nghị hai bên tiếp tục tích cực phối hợp tham vấn, ủng hộ lẫn nhau tại ' +
+            'các cơ chế đa phương, nhất là tại Liên hợp quốc, ASEAN và hợp tác Tiểu vùng sông Mê Công.',
+        showCloseButton: true,
+    })
+}

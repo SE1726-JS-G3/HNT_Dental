@@ -67,7 +67,7 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="mb-3">
-                                        <label class="form-label" for="address">Address <span class="text-danger">*</span></label>
+                                        <label class="form-label" for="address">Address </label>
                                         <input type="text" class="form-control" placeholder="Address" id="address"
                                                name="address">
                                     </div>
@@ -96,7 +96,15 @@
                                                name="confirmPassword">
                                     </div>
                                 </div>
-
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input align-middle" type="checkbox" value="" id="accept-tnc-check">
+                                            <label class="form-check-label" for="accept-tnc-check">Đồng ý điều khoản </label>
+                                            <a onclick="showTerms()" class="text-primary">Xem điều khoản</a>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-lg-12 mb-0">
                                     <div class="d-grid">
                                         <button class="btn btn-primary" id="btn-register">Create Account</button>
@@ -120,6 +128,7 @@
 <script src="${pageContext.request.contextPath}/static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="${pageContext.request.contextPath}/static/js/auth/auth_register.js"></script>
 
 </body>
