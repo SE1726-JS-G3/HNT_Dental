@@ -43,7 +43,7 @@
                 <div class="card border-0 sidebar rounded shadow">
                     <div class="card-body">
                         <div class="widget mb-4 pb-2">
-                            <h5 class="widget-title">Services of doctor</h5>
+                            <h5 class="widget-title">Dịch vụ của bác sĩ</h5>
                             <div class="mt-4">
 
                                 <c:forEach items="${services}" var="s">
@@ -73,32 +73,34 @@
             <div class="col-12">
                 <h5 class="card-title mt-4 mb-0">Đánh giá :</h5>
                 <ul class="media-list list-unstyled mb-0">
+
+                    <c:forEach items="${feedbacks}" var="f">
                     <li class="mt-4">
                         <div class="d-flex justify-content-between">
                             <div class="d-flex align-items-center">
                                 <a class="pe-3" href="#">
-                                    <img src="https://www.fvhospital.com/wp-content/uploads/2018/11/Dr-Truong-Hieu-Nghia.jpg"
+                                    <img src="${f.image}"
                                          class="img-fluid avatar avatar-md-sm rounded-circle shadow" alt="img">
                                 </a>
                                 <div class="commentor-detail">
-                                    <h6 class="mb-0"><a href="javascript:void(0)" class="text-dark media-heading">Hoàng
-                                        Bùi</a></h6>
-                                    <small class="text-muted">13/06/2021</small>
+                                    <h6 class="mb-0"><a href="javascript:void(0)" class="text-dark media-heading">${f.fullName}</a></h6>
+                                    <small class="text-muted">${f.createdAt}</small>
                                     <ul class="list-unstyled text-warning h5 mb-0">
-                                        <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                        <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                        <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                        <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                        <c:forEach var = "i" begin = "1" end = "${f.star}">
+                                            <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                        </c:forEach>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                         <div class="mt-3">
-                            <p class="text-muted font-italic p-3 bg-light rounded">" There are many variations of
-                                passages of Lorem Ipsum available, but the majority have suffered alteration in some
-                                form, by injected humour "</p>
+
+                            <p class="text-muted font-italic p-3 bg-light rounded">${f.description}</p>
+
                         </div>
                     </li>
+                    </c:forEach>
+
                 </ul>
 
                 <div class="row text-center">

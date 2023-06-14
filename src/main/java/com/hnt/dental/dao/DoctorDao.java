@@ -2,7 +2,6 @@ package com.hnt.dental.dao;
 
 import com.hnt.dental.dto.response.DoctorDetailDto;
 import com.hnt.dental.dto.response.DoctorSummaryRes;
-import com.hnt.dental.dto.response.FeedbackDoctorDto;
 import com.hnt.dental.dto.response.ServiceResDto;
 import com.hnt.dental.entities.Doctors;
 
@@ -16,6 +15,5 @@ public interface DoctorDao extends GenericDao<Doctors> {
     List<DoctorDetailDto> getDoctorDetailDto() throws SQLException;
     Optional<DoctorDetailDto> getDoctorDetail(Long id) throws SQLException;
     List<ServiceResDto> getAllServiceByIdDoctor(Long id) throws SQLException;
-    List<FeedbackDoctorDto> getFeedbackDoctor(Long id) throws SQLException;
     Integer countListDoctorSummary(String search) throws SQLException;
 }

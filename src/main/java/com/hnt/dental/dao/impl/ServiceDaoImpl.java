@@ -1,7 +1,7 @@
 package com.hnt.dental.dao.impl;
 
 import com.hnt.dental.dao.ServiceDao;
-import com.hnt.dental.dto.response.ServiceResDto;
+import com.hnt.dental.dto.response.*;
 import com.hnt.dental.entities.Service;
 import com.hnt.dental.util.ConnectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -31,6 +31,24 @@ public class ServiceDaoImpl implements ServiceDao {
             "INNER JOIN service_type st on sf.service_type = st.id  " +
             "where ( s.name like ? or st.name  like ? ) order by s.id ";
 
+
+    private static final String SQL_GET_SERVICE_DETAIL_BY_SERVICE_ID = "SELECT s.id, s.name, sf.fee, st.name as type, s.image, s.description  FROM service s " +
+            "inner join service_fee sf on sf.service_id = s.id " +
+            "inner join service_type st on sf.service_type = st.id " +
+            "where  s.id = ? and st.id = ?";
+
+    private static final String SQL_GET_TYPE_BY_SERVICE_ID = "SELECT st.id, st.name FROM service_type st " +
+            "inner join service_fee sf on sf.service_type = st.id " +
+            "inner join service s on s.id = sf.service_id " +
+            "where s.id = ? ";
+
+    private static final String SQL_GET_DOCTOR_BY_ID_SERVICE_AND_ID_TYPE = "SELECT d.id, d.full_name, d.image, st.name as type , dr.name as rankName from doctors d " +
+            "            inner join service_doctor sd on sd.id_doctor = d.id " +
+            "            inner join doctor_rank dr on d.rank_id = dr.id " +
+            "            inner join service s on sd.id_service = s.id " +
+            "            inner join service_fee sf on sf.service_id = s.id " +
+            "            inner join service_type st on st.id = sf.service_type " +
+            "            where s.id = ? and st.id = ?";
 
     @Override
     public List<Service> getAll(Integer offset, Integer limit, String search) throws SQLException {
@@ -75,6 +93,7 @@ public class ServiceDaoImpl implements ServiceDao {
         ConnectionUtils.closeConnection();
         return result;
     }
+
     @Override
     public Integer countListService(String search) throws SQLException {
         search = "%" + search + "%";
@@ -85,5 +104,63 @@ public class ServiceDaoImpl implements ServiceDao {
         ConnectionUtils.closeConnection();
         return null;
     }
+
+    @Override
+    public ServiceDetailDto getServiceDetailByServiceId(Long id, Long typeId) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_SERVICE_DETAIL_BY_SERVICE_ID, id, typeId);
+        if (rs.next()) {
+            return ServiceDetailDto.builder()
+                    .id(rs.getLong("id"))
+                    .name(rs.getString("name"))
+                    .image(rs.getString("image"))
+                    .fee(rs.getString("fee"))
+                    .type(rs.getString("type"))
+                    .description(rs.getString("description"))
+                    .build();
+        }
+        return null;
+    }
+
+    @Override
+    public List<ServiceTypeDto> getTypeByServiceId(Long id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_TYPE_BY_SERVICE_ID, id);
+        List<ServiceTypeDto> result = new ArrayList<>();
+        while (rs.next()) {
+            result.add(
+                    ServiceTypeDto.builder()
+                            .idType(rs.getLong("id"))
+                            .nameType(rs.getString("name"))
+                            .build());
+        }
+        return result;
+    }
+
+    @Override
+    public List<DoctorByServiceIdDto> getDoctorByServiceIdAndServiceType(Long id, Long idType) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_DOCTOR_BY_ID_SERVICE_AND_ID_TYPE, id, idType);
+        List<DoctorByServiceIdDto> result = new ArrayList<>();
+        while (rs.next()) {
+            result.add(
+                    DoctorByServiceIdDto.builder()
+                            .id(rs.getLong("id"))
+                            .fullName(rs.getString("full_name"))
+                            .image(rs.getString("image"))
+                            .rankName(rs.getString("rankName"))
+                            .type(rs.getString("type"))
+                            .build());
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        try {
+            ServiceDaoImpl serviceDao = new ServiceDaoImpl();
+            List<DoctorByServiceIdDto> allServiceDao = serviceDao.getDoctorByServiceIdAndServiceType(5L, 1L);
+            System.out.println(allServiceDao.size());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

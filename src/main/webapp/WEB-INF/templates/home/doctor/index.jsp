@@ -80,10 +80,7 @@
                                         <p class="text-muted mb-0">5 Star</p>
                                     </div>
                                     <div class="pt-2">
-                                        <button class="btn btn-soft-primary"
-                                                onclick="window.location.href = 'doctor?action=detail&id=${d.id}'">
-                                            Chi
-                                            tiết
+                                        <button class="btn btn-soft-primary" onclick="window.location.href = '/doctor/detail?id=${d.id}'">Chi tiết
                                         </button>
                                     </div>
                                 </div>
@@ -93,6 +90,20 @@
                 </div>
                 <!--end col-->
             </c:forEach>
+        </div>
+        <c:set var="page" value="${currentPage}"/>
+        <div class="row text-center">
+            <div class="col-12 mt-4">
+                <div class="d-md-flex align-items-center text-center justify-content-between">
+                    <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
+                        <c:forEach begin="${1}" end="${totalPage}" var="i">
+                            <li class="page-item ${i==page?"active":""}"><a class="page-link"
+                                                                            href="${url}?page=${i}&search=${search}">${i}</a>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div><!--end container-->
 </section><!--end section-->
