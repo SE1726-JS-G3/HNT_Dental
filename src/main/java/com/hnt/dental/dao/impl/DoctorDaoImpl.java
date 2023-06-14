@@ -3,7 +3,6 @@ package com.hnt.dental.dao.impl;
 import com.hnt.dental.dao.DoctorDao;
 import com.hnt.dental.dto.response.DoctorDetailDto;
 import com.hnt.dental.dto.response.DoctorSummaryRes;
-import com.hnt.dental.dto.response.FeedbackDoctorDto;
 import com.hnt.dental.dto.response.ServiceResDto;
 import com.hnt.dental.entities.Doctors;
 import com.hnt.dental.util.ConnectionUtils;
@@ -15,9 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class DoctorDaoImpl implements DoctorDao {
-
-    private static final String SQL_GET_DOCTOR_BY_ID = "select * from doctors " +
-            "where id = ?";
     private static final String SQL_GET_ALL_SERVICE_BY_ID_DOCTOR = "select s.id, s.name, GROUP_CONCAT(st.name SEPARATOR ',')" +
             " as type, CONCAT(MIN(sf.fee), ' ~ ', MAX(sf.fee)) as fee, s.image from service s " +
             "inner join service_doctor sd on sd.id_service = s.id " +
@@ -26,13 +22,9 @@ public class DoctorDaoImpl implements DoctorDao {
             "inner join service_type st on st.id = sf.service_type " +
             "where sd.id_doctor = ? " +
             "group by s.id";
+    private static final String SQL_GET_DOCTOR_BY_ID = "select * from doctors " +
+            "where id = ?";
 
-    private static final String SQL_GET_COMMENT_DOCTOR = "SELECT " +
-            "f.id, p.full_name, f.created_at, p.image, f.description, star " +
-            "from feedback f " +
-            "inner join booking b on f.booking_id = b.id " +
-            "inner join patients p on p.id = b.account_id " +
-            "where f.doctor_id = ?";
     private static final String SQL_GET_SUMMARY = "SELECT" +
             "  d.id," +
             "  d.full_name," +
@@ -99,14 +91,6 @@ public class DoctorDaoImpl implements DoctorDao {
         }
         return result;
     }
-
-    @Override
-    public List<FeedbackDoctorDto> getFeedbackDoctor(Long id) throws SQLException {
-        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_COMMENT_DOCTOR, id);
-        List<FeedbackDoctorDto> result = new ArrayList<>();
-        return null;
-    }
-
     @Override
     public Long save(Doctors doctors) throws SQLException, ClassNotFoundException {
         return null;

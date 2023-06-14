@@ -32,7 +32,11 @@ public class HomeServiceController extends HttpServlet {
                 }
                 break;
             case "/service/detail":
-                req.getRequestDispatcher("/WEB-INF/templates/home/service/detail.jsp").forward(req, resp);
+                try {
+                    service.getServiceById(req, resp);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
                 break;
             default:
         }

@@ -48,7 +48,7 @@
                            id="search" placeholder="Tìm kiếm bác sĩ...">
                 </div>
                 <div class="col-lg-2">
-                    <button class="btn btn-primary rounded-pill" id="btn-search">Tìm kiếm</button>
+                    <button class="btn btn-primary rounded-pill" id="btn-search-1">Tìm kiếm</button>
                 </div>
                 <div class="col-lg-4">
                     <select class="form-select form-control">
@@ -59,7 +59,7 @@
                     </select>
                 </div>
                 <div class="col-lg-2">
-                    <button class="btn btn-primary rounded-pill" id="btn-search">Lọc</button>
+                    <button class="btn btn-primary rounded-pill" id="btn-search-2">Lọc</button>
                 </div>
             </div>
             <br>
@@ -91,10 +91,7 @@
                                 </ul>
                             </div>
                             <div class="pt-2">
-                                <button class="btn btn-soft-primary"
-                                        onclick="window.location.href = 'doctor?action=detail&id=${s.id}'">
-                                    Chi
-                                    tiết
+                                <button class="btn btn-soft-primary" onclick="window.location.href = '/service/detail?id=${s.id}'">Chi tiết
                                 </button>
                             </div>
                         </div>

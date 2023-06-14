@@ -106,3 +106,25 @@ function getRegister() {
         }
     });
 }
+
+function showTerms() {
+    Swal.fire({
+        confirmButtonColor: '#396cf0',
+        html:
+            '1.Quy định về việc sử dụng dịch vụ:\n' +
+
+            '- Người dùng cần phải tuân thủ các quy định và hướng dẫn được đưa ra trên trang web.\n' +
+            '- Việc sử dụng dịch vụ phải tuân thủ các quy định pháp luật hiện hành.\n' +
+            '2.Quy định về bảo mật thông tin:\n' +
+            '- Các thông tin liên quan đến người dùng sẽ được bảo mật tuyệt đối và không được tiết lộ cho bất kỳ bên thứ ba nào mà không có sự đồng ý của người dùng.\n' +
+            '- Trong trường hợp có sự cố liên quan đến bảo mật thông tin, phòng khám nha khoa sẽ thông báo ngay cho người dùng để có biện pháp xử lý kịp thời.\n' +
+            '3.Quy định về thanh toán và hoàn tiền:\n' +
+            '- Người dùng sẽ phải thanh toán đầy đủ số tiền theo quy định sau khi sử dụng dịch vụ.\n' +
+            '- Trường hợp người dùng muốn hủy bỏ dịch vụ đã đăng ký, phòng khám nha khoa sẽ xử lý và hoàn tiền cho người dùng theo quy định.\n' +
+            '4.Quy định về giải quyết tranh chấp:\n' +
+            '- Trong trường hợp có tranh chấp liên quan đến việc sử dụng dịch vụ, các bên sẽ cố gắng giải quyết bằng thỏa thuận hòa giải.\n' +
+            '- Nếu không thể giải quyết được, tranh chấp sẽ được chuyển đến cơ quan có thẩm quyền để giải quyết.',
+
+        showCloseButton: true,
+    })
+}
