@@ -73,7 +73,7 @@
                     <div class="card team border-0 rounded shadow overflow-hidden">
                         <div class="team-person position-relative overflow-hidden">
                             <img src="${s.image}"
-                                 style="display: block;margin-left: auto;margin-right: auto;" class="img-fluid"
+                                 style="display: block;margin-left: auto;margin-right: auto; width: 400px; height: 200px" class="img-fluid"
                                  alt="">
                         </div>
                         <div class="card-body" style="height: 250px">

@@ -9,25 +9,48 @@
 <jsp:include page="layout/preloader.jsp"/>
 
 <jsp:include page="layout/menu-header-default.jsp"/>
-
-<section class="bg-half-260 d-table w-100"
-         style="background-size: cover; background: url('${pageContext.request.contextPath}/static/images/banner.jpg') no-repeat center;">
-    <div class="bg-overlay bg-overlay-"></div>
+<section class="bg-half-170 d-table w-100" id="home" style="background-size:cover;background-repeat: no-repeat;background-position: center -300px;background-image: url('${pageContext.request.contextPath}/static/images/banner.jpg') ">
+    <div class="bg-overlay bg-overlay-dark"></div>
     <div class="container">
-        <div class="row mt-5 mt-lg-0">
-            <div class="col-12">
-                <div class="heading-title">
-                    <h4 class="display-4 fw-bold text-white title- mt-3 mb-4">Nền Tảng <br> Hỗ Trợ chăm sóc răng miệng</h4>
-                    <p class="para-desc text-white-50 mb-0">Chúng tôi luôn đồng hành cùng bạn trên con đường chăm sóc
+        <div class="row justify-content-center mt-5">
+            <div class="col-xl-10">
+                <div class="heading-title text-center pt-5">
+                    <img src="#" height="50" alt="">
+                    <h4 class="heading fw-bold text-white title-dark mt-3 mb-4">Hệ thống đặt lịch trực tuyến</h4>
+                    <p class="para-desc mx-auto text-white-50 mb-0">Chúng tôi luôn đồng hành cùng bạn trên con đường chăm sóc
                         răng miệng</p>
-                    <div class="mt-4">
-                        <a class="btn btn-primary mt-2 me-2"> Đặt lịch ngay</a>
+
+                    <div class="mt-4 pt-2">
+                        <form class="rounded text-start shadow p-4 bg-white-50">
+                            <div class="row align-items-center">
+                                <div class="col-md">
+                                    <div class="input-group bg-white border rounded" style="opacity: 0.7;">
+                                        <span class="input-group-text border-0"><i class="ri-map-pin-line text-primary h5 fw-normal mb-0"></i></span>
+                                        <input name="name" id="location" type="text" class="form-control border-0" placeholder="Bác sĩ:">
+                                    </div>
+                                </div><!--end col-->
+
+                                <div class="col-md mt-4 mt-sm-0">
+                                    <div class="input-group bg-white border rounded" style="opacity: 0.7;">
+                                        <span class="input-group-text border-0"><i class="ri-user-2-line text-primary h5 fw-normal mb-0"></i></span>
+                                        <input name="name" id="name" type="text" class="form-control border-0" placeholder="Dịch vụ:">
+                                    </div>
+                                </div><!--end col-->
+
+                                <div class="col-md-auto mt-4 mt-sm-0">
+                                    <div class="d-grid d-md-block">
+                                        <button type="submit" class="btn btn-primary">Đặt lịch ngay</button>
+                                    </div>
+                                </div><!--end col-->
+                            </div><!--end row-->
+                        </form><!--end form-->
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
+            </div><!--end col-->
+        </div><!--end row-->
+    </div><!--end container-->
+</section><!--end section-->
+
 
 <section class="section">
     <div class="container">
