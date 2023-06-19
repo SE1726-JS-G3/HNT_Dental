@@ -9,21 +9,7 @@
 <jsp:include page="layout/preloader.jsp"/>
 
 <jsp:include page="layout/menu-header-default.jsp"/>
-<<<<<<< Updated upstream
 
-<section class="bg-half-260 d-table w-100"
-         style="background-size: cover; background: url('${pageContext.request.contextPath}/static/images/banner.jpg') no-repeat center;">
-    <div class="bg-overlay bg-overlay-"></div>
-    <div class="container">
-        <div class="row mt-5 mt-lg-0">
-            <div class="col-12">
-                <div class="heading-title">
-                    <h4 class="display-4 fw-bold text-white title- mt-3 mb-4">Nền Tảng <br> Hỗ Trợ chăm sóc răng miệng</h4>
-                    <p class="para-desc text-white-50 mb-0">Chúng tôi luôn đồng hành cùng bạn trên con đường chăm sóc
-                        răng miệng</p>
-                    <div class="mt-4">
-                        <a class="btn btn-primary mt-2 me-2"> Đặt lịch ngay</a>
-=======
 <section class="bg-half-170 d-table w-100" id="home"
          style="background-size:cover;background-repeat: no-repeat;background-position: center -300px;background-image: url('${pageContext.request.contextPath}/static/images/banner.jpg') ">
     <div class="bg-overlay bg-overlay-dark"></div>
@@ -65,7 +51,6 @@
                                 </div><!--end col-->
                             </div><!--end row-->
                         </form><!--end form-->
->>>>>>> Stashed changes
                     </div>
                 </div>
             </div>
