@@ -71,5 +71,9 @@ public class DoctorService {
 
     }
 
+    public List<DoctorDetailDto> getTopDoctor() throws Exception {
+        return dao.getTopDoctor();
+    }
+
 
 }

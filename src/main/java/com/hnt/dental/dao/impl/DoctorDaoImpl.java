@@ -48,6 +48,8 @@ public class DoctorDaoImpl implements DoctorDao {
             "    d.full_name LIKE ?" +
             "  ORDER BY" +
             "    d.id";
+    private static final String SQL_GET_TOP_DOCTOR = "select * from doctors\n" +
+            "ORDER BY RAND() LIMIT 4";
 
     @Override
     public List<Doctors> getAll(Integer offset, Integer limit, String search) throws SQLException {
@@ -139,5 +141,23 @@ public class DoctorDaoImpl implements DoctorDao {
         }
         ConnectionUtils.closeConnection();
         return null;
+    }
+
+    @Override
+    public List<DoctorDetailDto> getTopDoctor() throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_TOP_DOCTOR);
+        List<DoctorDetailDto> result = new ArrayList<>();
+        while (rs.next()) {
+            result.add(DoctorDetailDto.builder()
+                    .id(rs.getLong("id"))
+                    .fullName(rs.getString("full_name"))
+                    .position(rs.getString("position"))
+                    .image(rs.getString("image"))
+                    .description(rs.getString("description"))
+                    .rankName(rs.getString("rank_id"))
+                    .dob(rs.getDate("dob"))
+                    .build());
+        }
+        return result;
     }
 }

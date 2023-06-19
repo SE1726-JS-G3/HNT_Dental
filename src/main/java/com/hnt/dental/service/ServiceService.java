@@ -28,6 +28,7 @@ public class ServiceService {
     public void getAll(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String page = req.getParameter("page");
         String search = req.getParameter("search");
+        String typeID = req.getParameter("typeId");
         int pageNumber = 1;
 
         if (StringUtils.isNotEmpty(page)) {
@@ -36,14 +37,21 @@ public class ServiceService {
         if (StringUtils.isEmpty(search)) {
             search = "";
         }
+
+        if (StringUtils.isEmpty(typeID)) {
+            typeID = "";
+        }
+
         Integer totalItem = dao.countListService(search.trim());
         Integer totalPage = PagingUtils.getTotalPage(totalItem);
-        List<ServiceResDto> serviceResDtos = dao.getAllServiceDao(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE, search.trim());
-
+        List<ServiceResDto> serviceResDtos = dao.getAllServiceDao(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE, search.trim(), typeID);
+        List<ServiceTypeDto> serviceTypeDtos = dao.getALlType();
         req.setAttribute("services", serviceResDtos);
         req.setAttribute("totalPage", totalPage);
         req.setAttribute("currentPage", pageNumber);
         req.setAttribute("search", search);
+        req.setAttribute("typeId", typeID);
+        req.setAttribute("types", serviceTypeDtos);
         req.setAttribute("url", "/" +
                 "service");
         ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/service/index.jsp");
@@ -76,4 +84,15 @@ public class ServiceService {
             // bh làm cách nào để chỉnh type ở detail nó call lại vào đây là oke
         }
     }
+    public List<ServiceSearchHomeDto> getAllServiceHome() throws Exception {
+        return dao.getAllServiceHome();
+    }
+    public List<ServiceDetailDto> getTopService() throws Exception {
+        return dao.getTopService();
+    }
+
+    public List<ServiceTypeDto> getAllType(Long id) throws Exception {
+        return dao.getTypeByServiceId(id);
+    }
+
 }

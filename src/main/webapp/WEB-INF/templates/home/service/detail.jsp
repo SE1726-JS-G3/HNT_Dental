@@ -20,7 +20,7 @@
                     <div class="col-md-5">
                         <div class="slider slider-for">
                             <div><img
-                                    src="https://nkluck.vn/home/images/NewFolder/dich-vu-nha-khoa-1.png"
+                                    src="${services.image}"
                                     class="img-fluid rounded" alt=""></div>
                         </div>
                     </div>
@@ -31,9 +31,13 @@
 
                             <div class="row">
                                 <div class="col">
-                                    <select class="form-select form-control">
+                                    <select class="form-select form-control" onchange="redirectToService(this.value)">
                                         <c:forEach items="${types}" var="s">
-                                            <option value="PS">${s.nameType}</option>
+                                            <option
+                                                    <c:if test="${s.idType == typeId}">
+                                                        selected
+                                                    </c:if>
+                                                    value="${s.idType}">${s.nameType}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -48,6 +52,11 @@
                                 <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
                                 <li class="list-inline-item me-2 h6 text-muted">(100 Đánh giá)</li>
                             </ul>
+
+                            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal" onclick='window.location.href= "/appointment?serviceId=${services.id}"'>
+                                Đặt lịch khám
+                            </button>
 
                             <h5 class="mt-4 py-2">Mô tả :</h5>
                             <p class="text-muted">
@@ -66,13 +75,13 @@
 
                                 <c:forEach items="${doctors}" var="d">
                                     <div class="clearfix post-recent">
-                                        <div class="post-recent-thumb float-start"><a href="jvascript:void(0)"> <img
+                                        <div class="post-recent-thumb float-start"><a href="${pageContext.request.contextPath}/doctor/detail?id=${d.id}"> <img
                                                 alt="img"
                                                 src="${d.image}"
                                                 class="img-fluid rounded"></a>
                                         </div>
                                         <div class="post-recent-content float-start"><a
-                                                href="jvascript:void(0)">${d.fullName}</a>
+                                                href="${pageContext.request.contextPath}/doctor/detail?id=${d.id}">${d.fullName}</a>
                                             <span class="text-muted mt-2"> ${d.rankName}</span>
                                             <br>
                                             <span class="text-muted mt-2"> ${d.type}</span></div>
@@ -172,6 +181,10 @@
             window.location.href = "${url}?search=" + search;
         });
     });
+
+    function redirectToService(id) {
+        window.location.href = "/service/detail?id=" + ${id} + "&typeId=" + id;
+    }
 </script>
 </body>
 
