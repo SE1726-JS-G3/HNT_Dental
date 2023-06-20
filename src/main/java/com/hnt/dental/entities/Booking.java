@@ -2,9 +2,7 @@ package com.hnt.dental.entities;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 
 @Setter
 @Getter
@@ -22,7 +20,7 @@ public class Booking extends BaseEntity{
     private LocalDate date;
     private LocalTime time;
     private int fee;
-    private String decription;
+    private String description;
     private boolean status;
     private String payment;
 }

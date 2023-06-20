@@ -179,20 +179,19 @@
                                     <div class="mb-3">
                                         <label class="form-label">Phương thức thanh toán<span
                                                 class="text-danger">*</span></label>
-                                        <select name="payment" oninvalid="Select(this);" oninput="Select(this);"
+                                        <select name="payment"
                                                 id="mySelect" class="form-control department-name select2input">
-                                            <option selected="">Chọn phương thức thanh toán</option>
                                             <option
-                                                    <c:if test="${appointment.payment == 'default'}">
+                                                    <c:if test="${appointment.payment == 'CASH'}">
                                                         selected
                                                     </c:if>
-                                                    value="default">Thanh toán sau khi khám
+                                                    value="CASH">Thanh toán sau khi khám
                                             </option>
                                             <option
-                                                    <c:if test="${appointment.payment == 'vnpay'}">
+                                                    <c:if test="${appointment.payment == 'VNPAY'}">
                                                         selected
                                                     </c:if>
-                                                    value="vnpay">Thanh toán thông qua VNPay
+                                                    value="VNPAY">Thanh toán thông qua VNPay
                                             </option>
                                         </select>
 

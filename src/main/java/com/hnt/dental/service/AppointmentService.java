@@ -19,7 +19,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -121,7 +120,7 @@ public class AppointmentService {
                     .date(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy")))
                     .time(LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm")))
                     .status(false)
-                    .decription(decription)
+                    .description(decription)
                     .payment(payment)
                     .build());
 

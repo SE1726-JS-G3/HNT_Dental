@@ -1,6 +1,7 @@
 package com.hnt.dental.controllers.home;
 
 import com.hnt.dental.service.AppointmentService;
+import com.hnt.dental.service.VNPayService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,23 +12,34 @@ import java.io.IOException;
 
 @WebServlet(name = "HomeAppoinmentController", value = {
         "/appointment",
-        "/appointment/create",
-        "/appointment/success"
+        "/appointment/payment",
+        "/appointment/success",
+        "/appointment/payment/verify",
+        "/appointment/payment/cancel",
+        "/appointment/payment/success"
 })
 public class HomeAppoinmentController extends HttpServlet {
-
     private static final AppointmentService service;
-
+    private static final VNPayService vnPayService;
 
     static {
         service = new AppointmentService();
-
+        vnPayService = new VNPayService();
     }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getServletPath();
         try {
-            service.renderData(req, resp);
+            switch (action) {
+                case "/appointment":
+                    service.renderData(req, resp);
+                    break;
+                case "/appointment/payment":
+                    String url = vnPayService.renderPayment(6L, "booking6", 1000000000, req);
+                    resp.sendRedirect(url);
+                    break;
+                default:
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

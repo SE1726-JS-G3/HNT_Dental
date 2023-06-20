@@ -1,14 +1,10 @@
 package com.hnt.dental.dao.impl;
 
 import com.hnt.dental.dao.AppointmentDao;
-import com.hnt.dental.entities.Account;
 import com.hnt.dental.entities.Booking;
-import com.hnt.dental.entities.Employee;
-import com.hnt.dental.entities.Service;
 import com.hnt.dental.util.ConnectionUtils;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +27,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
     public Long save(Booking booking) throws SQLException, ClassNotFoundException {
         return ConnectionUtils.executeUpdateForIdentity(SAVE_APPOINTMENT, booking.getName(), booking.getPhone(), booking.getEmail(), booking.getAge(),
                 booking.getService().getId(), booking.getAccount().getId(), booking.getEmployee().getId(), booking.getDate(), booking.getTime(),
-                booking.getFee(), booking.getDecription(), booking.isStatus(), booking.getCreatedAt(), booking.getUpdatedAt());
+                booking.getFee(), booking.getDescription(), booking.isStatus(), booking.getCreatedAt(), booking.getUpdatedAt());
     }
 
     @Override
