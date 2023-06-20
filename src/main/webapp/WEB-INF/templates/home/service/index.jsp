@@ -13,6 +13,8 @@
 <jsp:include page="../layout/header.jsp"/>
 
 <body>
+<jsp:include page="../layout/preloader.jsp"/>
+
 <jsp:include page="../layout/menu-header-white.jsp"/>
 
 <section class="bg-half-150 bg-light d-table w-100">
@@ -43,21 +45,17 @@
                 <div class="col-lg-4">
                     <input type="text" class="form-select form-control" name="txt"
                            value="${search}"
-                           id="search" placeholder="Tìm kiếm dịch vụ...">
+                           id="search" placeholder="Tìm kiếm bác sĩ...">
                 </div>
                 <div class="col-lg-2">
-                    <button class="btn btn-primary rounded-pill" id="btn-search">Tìm kiếm</button>
+                    <button class="btn btn-primary rounded-pill" id="btn-search-1">Tìm kiếm</button>
                 </div>
                 <div class="col-lg-4">
-                    <select class="form-select form-control" onchange="redirectToService(this.value)">
-                        <option value="0">Tất cả</option>
-                        <c:forEach items="${types}" var="t">
-                            <option
-                                    <c:if test="${t.idType == typeId}">
-                                        selected
-                                    </c:if>
-                                    value="${t.idType}">${t.nameType}</option>
-                        </c:forEach>
+                    <select class="form-select form-control">
+                        <option value="EY">Tất cả</option>
+                        <option value="EY">Thường</option>
+                        <option value="GY">VIP1</option>
+                        <option value="PS">VIP2</option>
                     </select>
                 </div>
                 <div class="col-lg-2">
@@ -71,36 +69,12 @@
             <div class="col-lg-12 col-lg-12 row align-items-center">
 
                 <c:forEach items="${services}" var="s">
-<<<<<<< Updated upstream
-                <div class="col-xl-3 col-lg-3 col-md-6 mt-2 pt-2">
-                    <div class="card team border-0 rounded shadow overflow-hidden">
-                        <div class="team-person position-relative overflow-hidden">
-                            <img src="${s.image}"
-                                 style="display: block;margin-left: auto;margin-right: auto;" class="img-fluid"
-                                 alt="">
-                        </div>
-                        <div class="card-body" style="height: 250px">
-                            <a href="#" class="text-dark d-block mb-0">${s.name}</a>
-                            <small class="text-muted speciality">Loại dịch vụ : ${s.type}</small>
-                            <br>
-                            <small class="text-muted speciality">Gía tiền: ${s.fee}</small>
-                            <div class="d-flex justify-content-between align-items-center mt-2">
-                                <ul class="list-unstyled mb-0">
-                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
-                                </ul>
-=======
                     <div class="col-xl-3 col-lg-3 col-md-6 mt-2 pt-2">
                         <div class="card team border-0 rounded shadow overflow-hidden">
                             <div class="team-person position-relative overflow-hidden">
                                 <img src="${s.image}"
-                                     style="display: block;margin-left: auto;margin-right: auto; width: 400px; height: 200px"
-                                     class="img-fluid"
+                                     style="display: block;margin-left: auto;margin-right: auto; width: 400px; height: 200px" class="img-fluid"
                                      alt="">
->>>>>>> Stashed changes
                             </div>
                             <div class="card-body" style="height: 250px">
                                 <a href="#" class="text-dark d-block mb-0">${s.name}</a>
@@ -117,8 +91,7 @@
                                     </ul>
                                 </div>
                                 <div class="pt-2">
-                                    <button class="btn btn-soft-primary"
-                                            onclick="window.location.href = '/service/detail?id=${s.id}'">Chi tiết
+                                    <button class="btn btn-soft-primary" onclick="window.location.href = '/service/detail?id=${s.id}'">Chi tiết
                                     </button>
                                 </div>
                             </div>
@@ -164,27 +137,7 @@
 <script src="${pageContext.request.contextPath}/static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $("#btn-search").click(function () {
-            let search = $("#search").val();
-            if (search == null || search == "") {
-                window.location.href = "${url}";
-            } else {
-                window.location.href = "${url}?search=" + search;
-            }
-        });
-    })
-    ;
 
-    function redirectToService(id) {
-        if (id == 0)
-            window.location.href = "${url}";
-        else
-            window.location.href = "${url}?typeId=" + id;
-    }
-</script>
 </body>
 
 </html>
