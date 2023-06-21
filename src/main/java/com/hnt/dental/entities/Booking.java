@@ -1,5 +1,6 @@
 package com.hnt.dental.entities;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -8,7 +9,7 @@ import java.time.LocalTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 public class Booking extends BaseEntity{
     private String name;
     private int phone;

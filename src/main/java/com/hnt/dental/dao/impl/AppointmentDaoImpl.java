@@ -10,8 +10,8 @@ import java.util.Optional;
 
 public class AppointmentDaoImpl implements AppointmentDao {
     private static final String SAVE_APPOINTMENT = "INSERT INTO booking " +
-            "(name, phone, email, age, service_id, account_id, staff_id, `date`, `time`, fee, decription, status, created_at, updated_at) " +
-            "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+            "(name, phone, email, age, service_id, account_id, `date`, `time`, fee, decription, status, created_at, updated_at) " +
+            "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
 
     @Override
     public List<Booking> getAll(Integer offset, Integer limit, String search) throws SQLException {
@@ -26,7 +26,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
     @Override
     public Long save(Booking booking) throws SQLException, ClassNotFoundException {
         return ConnectionUtils.executeUpdateForIdentity(SAVE_APPOINTMENT, booking.getName(), booking.getPhone(), booking.getEmail(), booking.getAge(),
-                booking.getService().getId(), booking.getAccount().getId(), booking.getEmployee().getId(), booking.getDate(), booking.getTime(),
+                booking.getService().getId(), booking.getAccount().getId(), booking.getDate(), booking.getTime(),
                 booking.getFee(), booking.getDescription(), booking.isStatus(), booking.getCreatedAt(), booking.getUpdatedAt());
     }
 

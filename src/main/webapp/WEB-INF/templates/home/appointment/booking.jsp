@@ -53,7 +53,7 @@
                                     ${error}
                             </p>
                         </c:if>
-                        <form action="${pageContext.request.contextPath}/appointment" method="POST">
+                        <form action="${pageContext.request.contextPath}/appointment" method="POST" id="bookingForm">
                             <input name="id" value="${id}" hidden>
                             <input name="typeId" value="${typeId}" hidden>
                             <div class="row">
@@ -197,7 +197,7 @@
 
                                     </div>
                                 </div><!--end col-->
-                                <button type="submit" class="btn btn-primary mt-3" data-bs-toggle="modal"
+                                <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" onclick="onClickSubmit()"
                                         data-bs-target="#exampleModal">
                                     Đặt lịch khám
                                 </button>
@@ -320,6 +320,7 @@
 <script src="${pageContext.request.contextPath}/static/libs/date/flatpickr.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/libs/date/jquery.timepicker.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/libs/date/timepicker.init.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 
     function redirectToService(id) {
@@ -334,6 +335,21 @@
         dateFormat: "d/m/Y",
         locale: "vn"
     });
+
+    function onClickSubmit(){
+        Swal.fire({
+            title: 'Bạn có chắc chắn muốn đặt lịch không?',
+            text: "Bạn sẽ không thể hoàn tác lại điều này!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById("bookingForm").submit();
+            }
+        })
+    }
 </script>
 </body>
 

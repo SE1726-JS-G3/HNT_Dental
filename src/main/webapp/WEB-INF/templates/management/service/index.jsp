@@ -11,19 +11,16 @@
     <div class="container-fluid">
       <div class="layout-specing">
         <div class="row">
-          <div class="col-md-8 col-sm-12 row">
+          <div class="col-md-6 row">
             <div class="col-md-4">
               <h5 class="mb-0">Dịch vụ</h5>
-              <h5 class="mb-0"></h5>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-7">
               <div class="search-bar p-0 d-lg-block ms-2">
                 <div id="search" class="menu-search mb-0">
-                  <form action="#" method="POST" id="searchform"
-                        class="searchform">
+                  <form action="servicemanage?action=search" method="POST" id="searchform" class="searchform">
                     <div>
-                      <input type="text" class="form-control border rounded-pill" name="txt"
-                             id="s" placeholder="Tìm kiếm tên dịch vụ...">
+                      <input type="text" class="form-control border rounded-pill" name="txt" id="s" placeholder="Tìm kiếm tên dịch vụ...">
                       <input type="submit" id="searchsubmit" value="Search">
                     </div>
                   </form>
@@ -31,10 +28,30 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4 col-sm-12">
-            <a href="#">
-              <button class="btn btn-primary">Thêm mới</button>
-            </a>
+          <div class="col-md-4">
+            <form action="servicemanage?action=filter" method="POST" onSubmit="document.getElementById('submit').disabled = true;">
+              <div class="justify-content-md-end row">
+                <div class="col-md-10 row align-items-center">
+                  <div class="col-md-4">
+                    <label class="form-label">Trạng thái</label>
+                  </div>
+                  <div class="col-md-7">
+                    <select name="category" class="form-select">
+                      <option <c:if test="${category1 == 'all'}"> selected </c:if> value="all">Tất cả</option>
+                      <c:forEach items="${category}" var="s">
+                        <option <c:if test="${category1 == s.id}"> selected </c:if> value="${s.id}">${s.name}</option>
+                      </c:forEach>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <button type="submit" class="btn btn-primary">Lọc</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-md-2">
+            <a href="servicemanage?action=add"><button class="btn btn-primary">Thêm mới</button></a>
           </div>
         </div>
 
@@ -48,7 +65,6 @@
                   <th class="border-bottom p-3">ID</th>
                     <th class="border-bottom p-3">Tên dịch vụ</th>
                   <th class="border-bottom p-3">Gói dich vụ</th>
-                  <th class="border-bottom p-3 text-center">Mô tả</th>
                   <th class="border-bottom p-3">Phí</th>
                   <th class="border-bottom p-3">Trạng thái</th>
                   <th class="border-bottom p-3 text-center">Tác vụ</th>
@@ -59,9 +75,8 @@
                   <td class="p-3">1</td>
                   <td class="p-3">Lấy cao răng</td>
                   <td class="p-3">VIP1</td>
-                  <td class="p-3">Được thực hiện bởi bác sĩ rank 2 có kinh nghiệm 2 năm, tốt nghiệp thạc sĩ</td>
                   <td class="p-3">50</td>
-                  <td class="p-3">Khả dụng</td>
+                  <td class="p-3">Active</td>
                   <td class="p-3 text-center">
                     <a href="#">
                       <button class="btn btn-primary">Chuyển trạng thái</button>
@@ -75,9 +90,8 @@
                   <td class="p-3">2</td>
                   <td class="p-3">Niêng răng trong suốt</td>
                   <td class="p-3">THƯỜNG</td>
-                  <td class="p-3">Được thực hiện bởi bác sĩ rank 1</td>
                   <td class="p-3">1000000</td>
-                  <td class="p-3">Khả dụng</td>
+                  <td class="p-3">Active</td>
                   <td class="p-3 text-center">
                     <a href="#">
                       <button class="btn btn-primary">Chuyển trạng thái</button>

@@ -12,11 +12,23 @@ import java.io.IOException;
         "/management/appointment",
         "/management/appointment/create",
         "/management/appointment/update",
+        "/management/appointment/detail",
         "/management/appointment/delete"
 })
 public class AppointmentController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        req.getRequestDispatcher("/WEB-INF/templates/management/appointment/index.jsp").forward(req, resp);
+        String action = req.getServletPath();
+        switch (action) {
+            case "/management/appointment":
+                req.getRequestDispatcher("/WEB-INF/templates/management/appointment/index.jsp").forward(req, resp);
+                break;
+            case "/management/appointment/detail":
+                req.getRequestDispatcher("/WEB-INF/templates/management/appointment/booking_detail.jsp").forward(req, resp);
+                break;
+            default:
+        }
+
+
     }
 }

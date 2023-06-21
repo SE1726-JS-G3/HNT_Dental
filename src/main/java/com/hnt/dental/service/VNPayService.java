@@ -12,7 +12,7 @@ import java.util.*;
 public class VNPayService {
     private static final ResourceBundle bundle = ResourceBundle.getBundle("application");
 
-    public String renderPayment(Long bookingId, String txnRef, int amount, HttpServletRequest request) {
+    public String renderPayment(Long bookingId, double amount, HttpServletRequest request) {
         String vnpVersion = "2.0.0";
         String vnpCommand = "pay";
 
@@ -26,7 +26,7 @@ public class VNPayService {
         vnpParams.put("vnp_Amount", String.valueOf(amount));
         vnpParams.put("vnp_CurrCode", "VND");
         vnpParams.put("vnp_BankCode", "");
-        vnpParams.put("vnp_TxnRef", bundle.getString("vnp.tmnCode") + txnRef);
+        vnpParams.put("vnp_TxnRef", "bookingId" + bookingId);
         vnpParams.put("vnp_OrderInfo", StringUtils.join("bookingId: ", bookingId));
         vnpParams.put("vnp_OrderType", orderType);
 

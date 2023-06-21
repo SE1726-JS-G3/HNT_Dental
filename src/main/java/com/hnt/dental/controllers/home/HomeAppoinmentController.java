@@ -34,9 +34,7 @@ public class HomeAppoinmentController extends HttpServlet {
                 case "/appointment":
                     service.renderData(req, resp);
                     break;
-                case "/appointment/payment":
-                    String url = vnPayService.renderPayment(6L, "booking6", 1000000000, req);
-                    resp.sendRedirect(url);
+                case "/appointment/success":
                     break;
                 default:
             }

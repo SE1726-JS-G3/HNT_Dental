@@ -1,16 +1,16 @@
 package com.hnt.dental.service;
 
+import com.hnt.dental.constant.PaymentEnum;
 import com.hnt.dental.dao.AppointmentDao;
+import com.hnt.dental.dao.PaymentDao;
 import com.hnt.dental.dao.ServiceDao;
 import com.hnt.dental.dao.impl.AppointmentDaoImpl;
+import com.hnt.dental.dao.impl.PaymentDaoImpl;
 import com.hnt.dental.dao.impl.ServiceDaoImpl;
 import com.hnt.dental.dto.AppointmentDto;
 import com.hnt.dental.dto.response.ServiceDetailDto;
 import com.hnt.dental.dto.response.ServiceTypeDto;
-import com.hnt.dental.entities.Account;
-import com.hnt.dental.entities.Booking;
-import com.hnt.dental.entities.Employee;
-import com.hnt.dental.entities.Service;
+import com.hnt.dental.entities.*;
 import com.hnt.dental.util.ServletUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -27,10 +28,14 @@ public class AppointmentService {
 
     private static final ServiceDao dao;
     private static final AppointmentDao adao;
+    private static final PaymentDao pdao;
+    private static final VNPayService vnPayService;
 
     static {
         dao = new ServiceDaoImpl();
         adao = new AppointmentDaoImpl();
+        pdao = new PaymentDaoImpl();
+        vnPayService = new VNPayService();
     }
 
     public void renderData(HttpServletRequest req, HttpServletResponse resp) throws Exception {
@@ -98,6 +103,8 @@ public class AppointmentService {
                 throw new Exception("Payment is required");
             }
 
+            ServiceDetailDto serviceResDtos = dao.getServiceDetailByServiceId(Long.valueOf(sid), Long.valueOf(typeId));
+
             dto = AppointmentDto.builder()
                     .name(name)
                     .phone(Integer.parseInt(phone))
@@ -112,8 +119,7 @@ public class AppointmentService {
             Long id = adao.save(Booking.builder()
                     .name(name)
                     .account(Account.builder().id(1L).build())
-                    .employee(Employee.builder().id(1L).build())
-                    .service(Service.builder().id(Long.parseLong(req.getParameter("id"))).build())
+                    .service(Service.builder().id(serviceResDtos.getId()).build())
                     .phone(Integer.parseInt(phone))
                     .email(email)
                     .age(Integer.parseInt(age))
@@ -124,6 +130,26 @@ public class AppointmentService {
                     .payment(payment)
                     .build());
 
+            pdao.save(
+                    Payment.builder()
+                            .account(Account.builder().id(1L).build())
+                            .booking(Booking.builder().id(id).build())
+                            .serviceFee(ServiceFee.builder().fee(Double.valueOf(serviceResDtos.getFee())).build())
+                            .status(false)
+                            .type(PaymentEnum.getPaymentEnum(payment).ordinal())
+                            .created_at(LocalDateTime.now())
+                            .updated_at(LocalDateTime.now())
+                            .build()
+            );
+
+            if(PaymentEnum.getPaymentEnum(payment) == PaymentEnum.CASH){
+                ServletUtils.redirect(req, resp, "/appointment/success");
+                return;
+            } else {
+                String url = vnPayService.renderPayment(id, Double.parseDouble(serviceResDtos.getFee()), req);
+                ServletUtils.redirect(req, resp, url);
+                return;
+            }
         } catch (Exception e) {
             error = e.getMessage();
         }
