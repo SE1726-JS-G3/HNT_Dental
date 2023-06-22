@@ -53,7 +53,7 @@
                                     ${error}
                             </p>
                         </c:if>
-                        <form action="${pageContext.request.contextPath}/appointment" method="POST" id="bookingForm">
+                        <form action="${pageContext.request.contextPath}/booking" method="POST" id="bookingForm">
                             <input name="id" value="${id}" hidden>
                             <input name="typeId" value="${typeId}" hidden>
                             <div class="row">

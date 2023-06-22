@@ -1,13 +1,13 @@
 package com.hnt.dental.service;
 
 import com.hnt.dental.constant.PaymentEnum;
-import com.hnt.dental.dao.AppointmentDao;
+import com.hnt.dental.dao.BookingDao;
 import com.hnt.dental.dao.PaymentDao;
 import com.hnt.dental.dao.ServiceDao;
-import com.hnt.dental.dao.impl.AppointmentDaoImpl;
+import com.hnt.dental.dao.impl.BookingDaoImpl;
 import com.hnt.dental.dao.impl.PaymentDaoImpl;
 import com.hnt.dental.dao.impl.ServiceDaoImpl;
-import com.hnt.dental.dto.AppointmentDto;
+import com.hnt.dental.dto.response.BookingDto;
 import com.hnt.dental.dto.response.ServiceDetailDto;
 import com.hnt.dental.dto.response.ServiceTypeDto;
 import com.hnt.dental.entities.*;
@@ -26,16 +26,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
-public class AppointmentService {
+public class BookingService {
 
     private static final ServiceDao dao;
-    private static final AppointmentDao adao;
+    private static final BookingDao adao;
     private static final PaymentDao pdao;
     private static final VNPayService vnPayService;
 
     static {
         dao = new ServiceDaoImpl();
-        adao = new AppointmentDaoImpl();
+        adao = new BookingDaoImpl();
         pdao = new PaymentDaoImpl();
         vnPayService = new VNPayService();
     }
@@ -54,7 +54,7 @@ public class AppointmentService {
             req.setAttribute("types", getType);
             req.setAttribute("typeId", typeId);
             req.setAttribute("id", id);
-            ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/appointment/booking.jsp");
+            ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/booking/booking.jsp");
 
         }
     }
@@ -71,7 +71,7 @@ public class AppointmentService {
         String time = req.getParameter("time");
         String decription = req.getParameter("decription");
         String payment = req.getParameter("payment");
-        AppointmentDto dto = null;
+        BookingDto dto = null;
         try {
             if (name == null || name.isEmpty()) {
                 throw new Exception("Name is required");
@@ -107,7 +107,7 @@ public class AppointmentService {
 
             ServiceDetailDto serviceResDtos = dao.getServiceDetailByServiceId(Long.valueOf(sid), Long.valueOf(typeId));
 
-            dto = AppointmentDto.builder()
+            dto = BookingDto.builder()
                     .name(name)
                     .phone(Integer.parseInt(phone))
                     .email(email)
@@ -145,7 +145,7 @@ public class AppointmentService {
             );
 
             if (PaymentEnum.getPaymentEnum(payment) == PaymentEnum.CASH) {
-                ServletUtils.redirect(req, resp, "/appointment/success");
+                ServletUtils.redirect(req, resp, "/booking/success");
             } else {
                 String url = vnPayService.renderPayment(id, Double.parseDouble(serviceResDtos.getFee()), req);
                 ServletUtils.redirect(req, resp, url);
@@ -167,9 +167,9 @@ public class AppointmentService {
             req.setAttribute("types", getType);
             req.setAttribute("typeId", typeId);
             req.setAttribute("id", sid);
-            ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/appointment/booking.jsp");
+            ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/booking/booking.jsp");
         } else {
-            ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/appointment/booking-success.jsp");
+            ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/booking/booking-success.jsp");
         }
     }
 
@@ -190,9 +190,9 @@ public class AppointmentService {
             } else {
                 throw new SystemRuntimeException("Payment not found");
             }
-            ServletUtils.redirect(req, resp, "/appointment/success");
+            ServletUtils.redirect(req, resp, "/booking/success");
         } else {
-            ServletUtils.redirect(req, resp, "/appointment/fail");
+            ServletUtils.redirect(req, resp, "/booking/fail");
         }
     }
 }

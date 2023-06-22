@@ -54,7 +54,7 @@
                             </ul>
 
                             <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" onclick='window.location.href= "/appointment?serviceId=${services.id}"'>
+                                    data-bs-target="#exampleModal" onclick='window.location.href= "/booking?serviceId=${services.id}"'>
                                 Đặt lịch khám
                             </button>
 

@@ -1,8 +1,7 @@
 package com.hnt.dental.controllers.home;
 
 import com.hnt.dental.exception.SystemRuntimeException;
-import com.hnt.dental.service.AppointmentService;
-import com.hnt.dental.service.VNPayService;
+import com.hnt.dental.service.BookingService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,18 +10,18 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet(name = "HomeAppoinmentController", value = {
-        "/appointment",
-        "/appointment/success",
-        "/appointment/payment/verify",
-        "/appointment/payment/cancel",
-        "/appointment/payment/success"
+@WebServlet(name = "HomeBookingController", value = {
+        "/booking",
+        "/booking/success",
+        "/booking/payment/verify",
+        "/booking/payment/cancel",
+        "/booking/payment/success"
 })
-public class HomeAppoinmentController extends HttpServlet {
-    private static final AppointmentService service;
+public class HomeBookingController extends HttpServlet {
+    private static final BookingService service;
 
     static {
-        service = new AppointmentService();
+        service = new BookingService();
     }
 
     @Override
@@ -30,12 +29,12 @@ public class HomeAppoinmentController extends HttpServlet {
         String action = req.getServletPath();
         try {
             switch (action) {
-                case "/appointment":
+                case "/booking":
                     service.renderData(req, resp);
                     break;
-                case "/appointment/success":
+                case "/booking/success":
                     break;
-                case "/appointment/payment/verify":
+                case "/booking/payment/verify":
                     service.paymentCallback(req, resp);
                     break;
                 default:
