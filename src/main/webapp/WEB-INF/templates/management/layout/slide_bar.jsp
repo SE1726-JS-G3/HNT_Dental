@@ -11,12 +11,12 @@
 
         <ul class="sidebar-menu pt-3">
             <li><a href="#"><i class="uil uil-dashboard me-2 d-inline-block"></i>Bảng điều khiển (Admin)</a></li>
-            <li><a href="${pageContext.request.contextPath}/management/employee"><i class="uil uil-user me-2 d-inline-block"></i>Quản lý nhân viên (Admin)</a></li>
-            <li><a href="${pageContext.request.contextPath}/management/doctor"><i class="uil uil-user me-2 d-inline-block"></i>Quản lý bác sĩ (Admin + Marketing)</a></li>
-            <li><a href="${pageContext.request.contextPath}/management/patient"><i class="uil uil-user me-2 d-inline-block"></i>Quản lý bệnh nhân (Admin + Marketing)</a></li>
-            <li><a href="${pageContext.request.contextPath}/management/service"><i class="uil uil-user me-2 d-inline-block"></i>Quản lý dịch vụ (Admin + Marketing)</a></li>
-            <li><a href="${pageContext.request.contextPath}/management/appointment"><i class="uil uil-user me-2 d-inline-block"></i>Quản lý lịch hẹn (Admin)</a></li>
-            <li><a href="${pageContext.request.contextPath}/management/blog"><i class="uil uil-user me-2 d-inline-block"></i>Quản lý bài đăng (Admin + Marketing)</a></li>
+            <li><a href="${pageContext.request.contextPath}/management/employee"><i class="uil uil-user me-2 d-inline-block"></i>Quản lý nhân viên </a></li>
+            <li><a href="${pageContext.request.contextPath}/management/doctor"><i class="uil uil-user me-2 d-inline-block"></i>Quản lý bác sĩ </a></li>
+            <li><a href="${pageContext.request.contextPath}/management/patient"><i class="uil uil-user me-2 d-inline-block"></i>Quản lý bệnh nhân </a></li>
+            <li><a href="${pageContext.request.contextPath}/management/service"><i class="uil uil-user me-2 d-inline-block"></i>Quản lý dịch vụ </a></li>
+            <li><a href="${pageContext.request.contextPath}/management/appointment"><i class="uil uil-user me-2 d-inline-block"></i>Quản lý lịch hẹn </a></li>
+            <li><a href="${pageContext.request.contextPath}/management/blog"><i class="uil uil-user me-2 d-inline-block"></i>Quản lý bài đăng </a></li>
         </ul>
     </div>
 </nav>

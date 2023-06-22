@@ -27,7 +27,7 @@
                             </div>
                         </div>
                         <div class="col-md-2 row align-items-center">
-                            <a href="#" class="btn btn-primary">Thêm mới</a>
+                            <a href="#" class="btn btn-primary" onclick="window.location.href='/management/blog/create'">Thêm mới</a>
                         </div>
 
                     </div>
@@ -113,189 +113,9 @@
                                                         <a href="#">
                                                             <button class="btn btn-primary">Hide</button>
                                                         </a>
-                                                        <a href="#">
-                                                            <button class="btn btn-danger">View</button>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-12 mt-4">
-                                <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-                                    <img src="https://trivia-nextdoor.com/wp-content/uploads/2022/02/noiroze-study-man.png"
-                                         class="img-fluid" alt="">
-                                    <div class="card-body p-4">
-                                        <ul class="list-unstyled mb-2">
-                                            <li class="list-inline-item text-muted small me-3"><i
-                                                    class="uil uil-calendar-alt text-dark h6 me-1"></i>21/06/2023
-                                            </li>
-                                            <li class="list-inline-item text-muted small"><i
-                                                    class="uil uil-clock text-dark h6 me-1"></i>5 min read
-                                            </li>
-                                        </ul>
-                                        <a href="#" class="text-dark title h5">Easily connect to doctor and make a
-                                            treatment</a>
-                                        <br>
-                                        <br>
-                                        <div class="post-meta d-flex justify-content-between mt-3">
-                                            <table>
-                                                <tbody>
-                                                <tr>
-                                                    <td class="p-3 text-center">
-                                                        <a href="#">
-                                                            <button class="btn btn-primary">Hide</button>
-                                                        </a>
-                                                        <a href="#">
-                                                            <button class="btn btn-danger">View</button>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-12 mt-4">
-                                <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-                                    <img src="https://trivia-nextdoor.com/wp-content/uploads/2022/02/noiroze-study-man.png"
-                                         class="img-fluid" alt="">
-                                    <div class="card-body p-4">
-                                        <ul class="list-unstyled mb-2">
-                                            <li class="list-inline-item text-muted small me-3"><i
-                                                    class="uil uil-calendar-alt text-dark h6 me-1"></i>21/06/2023
-                                            </li>
-                                            <li class="list-inline-item text-muted small"><i
-                                                    class="uil uil-clock text-dark h6 me-1"></i>5 min read
-                                            </li>
-                                        </ul>
-                                        <a href="#" class="text-dark title h5">Easily connect to doctor and make a
-                                            treatment</a>
-                                        <br>
-                                        <br>
-                                        <div class="post-meta d-flex justify-content-between mt-3">
-                                            <table>
-                                                <tbody>
-                                                <tr>
-                                                    <td class="p-3 text-center">
-                                                        <a href="#">
-                                                            <button class="btn btn-primary">Hide</button>
-                                                        </a>
-                                                        <a href="#">
-                                                            <button class="btn btn-danger">View</button>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-12 mt-4">
-                                <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-                                    <img src="https://trivia-nextdoor.com/wp-content/uploads/2022/02/noiroze-study-man.png"
-                                         class="img-fluid" alt="">
-                                    <div class="card-body p-4">
-                                        <ul class="list-unstyled mb-2">
-                                            <li class="list-inline-item text-muted small me-3"><i
-                                                    class="uil uil-calendar-alt text-dark h6 me-1"></i>21/06/2023
-                                            </li>
-                                            <li class="list-inline-item text-muted small"><i
-                                                    class="uil uil-clock text-dark h6 me-1"></i>5 min read
-                                            </li>
-                                        </ul>
-                                        <a href="#" class="text-dark title h5">Easily connect to doctor and make a
-                                            treatment</a>
-                                        <br>
-                                        <br>
-                                        <div class="post-meta d-flex justify-content-between mt-3">
-                                            <table>
-                                                <tbody>
-                                                <tr>
-                                                    <td class="p-3 text-center">
-                                                        <a href="#">
-                                                            <button class="btn btn-primary">Hide</button>
-                                                        </a>
-                                                        <a href="#">
-                                                            <button class="btn btn-danger">View</button>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-12 mt-4">
-                                <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-                                    <img src="https://trivia-nextdoor.com/wp-content/uploads/2022/02/noiroze-study-man.png"
-                                         class="img-fluid" alt="">
-                                    <div class="card-body p-4">
-                                        <ul class="list-unstyled mb-2">
-                                            <li class="list-inline-item text-muted small me-3"><i
-                                                    class="uil uil-calendar-alt text-dark h6 me-1"></i>21/06/2023
-                                            </li>
-                                            <li class="list-inline-item text-muted small"><i
-                                                    class="uil uil-clock text-dark h6 me-1"></i>5 min read
-                                            </li>
-                                        </ul>
-                                        <a href="#" class="text-dark title h5">Easily connect to doctor and make a
-                                            treatment</a>
-                                        <br>
-                                        <br>
-                                        <div class="post-meta d-flex justify-content-between mt-3">
-                                            <table>
-                                                <tbody>
-                                                <tr>
-                                                    <td class="p-3 text-center">
-                                                        <a href="#">
-                                                            <button class="btn btn-primary">Hide</button>
-                                                        </a>
-                                                        <a href="#">
-                                                            <button class="btn btn-danger">View</button>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-12 mt-4">
-                                <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-                                    <img src="https://trivia-nextdoor.com/wp-content/uploads/2022/02/noiroze-study-man.png"
-                                         class="img-fluid" alt="">
-                                    <div class="card-body p-4">
-                                        <ul class="list-unstyled mb-2">
-                                            <li class="list-inline-item text-muted small me-3"><i
-                                                    class="uil uil-calendar-alt text-dark h6 me-1"></i>21/06/2023
-                                            </li>
-                                            <li class="list-inline-item text-muted small"><i
-                                                    class="uil uil-clock text-dark h6 me-1"></i>5 min read
-                                            </li>
-                                        </ul>
-                                        <a href="#" class="text-dark title h5">Easily connect to doctor and make a
-                                            treatment</a>
-                                        <br>
-                                        <br>
-                                        <div class="post-meta d-flex justify-content-between mt-3">
-                                            <table>
-                                                <tbody>
-                                                <tr>
-                                                    <td class="p-3 text-center">
-                                                        <a href="#">
-                                                            <button class="btn btn-primary">Hide</button>
-                                                        </a>
-                                                        <a href="#">
-                                                            <button class="btn btn-danger">View</button>
-                                                        </a>
+
+                                                            <button class="btn btn-danger" onclick="window.location.href='/management/blog/detail'">View</button>
+
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -331,6 +151,27 @@
     </main>
 </div>
 
+
+
+<script>
+    function Sort(type) {
+        window.location.href = "blogmanage?action=sort&type=" + type;
+    }
+
+
+</script>
+<script src="${pageContext.request.contextPath}/static/libs/tobii/js/tobii.min.js"></script>
+<script src="${pageContext.request.contextPath}/static/libs/feather-icons/feather.min.js"></script>
+<script src="${pageContext.request.contextPath}/static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
+<script src="${pageContext.request.contextPath}/static/js/app.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="${pageContext.request.contextPath}/static/libs/date/flatpickr.min.js"></script>
+<script src="${pageContext.request.contextPath}/static/libs/date/flatpickr.init.js"></script>
+<script src="${pageContext.request.contextPath}/static/libs/date/jquery.timepicker.min.js"></script>
+<script src="${pageContext.request.contextPath}/static/libs/date/timepicker.init.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
 <style>
     .Choicefile {
         display: block;
@@ -399,29 +240,4 @@
     }
 
 </style>
-
-<script>
-    function Sort(type) {
-        window.location.href = "blogmanage?action=sort&type=" + type;
-    }
-
-    var editor = '';
-    $(document).ready(function () {
-        editor = CKEDITOR.replace('describe');
-    });
-
-</script>
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/bootstrap.bundle.min.js"></script>
-<script src="assets/js/simplebar.min.js"></script>
-<script src="assets/js/select2.min.js"></script>
-<script src="assets/js/select2.init.js"></script>
-<script src="assets/js/flatpickr.min.js"></script>
-<script src="assets/js/flatpickr.init.js"></script>
-<script src="assets/js/jquery.timepicker.min.js"></script>
-<script src="assets/js/timepicker.init.js"></script>
-<script src="assets/js/feather.min.js"></script>
-<script src="assets/js/app.js"></script>
-
-</body>
 </html>

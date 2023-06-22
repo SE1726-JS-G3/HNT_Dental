@@ -90,7 +90,7 @@
                   <td class="p-3 text-center">Active</td>
                   <td class="p-3 text-center">
                     <a href="#">
-                      <button class="btn btn-primary">Chi tiết</button>
+                      <button class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/management/doctor/detail'">Chi tiết</button>
                     </a>
                     <a href="#">
                       <button class="btn btn-danger">Xóa</button>

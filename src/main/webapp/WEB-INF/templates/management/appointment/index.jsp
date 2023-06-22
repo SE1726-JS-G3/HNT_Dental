@@ -17,56 +17,55 @@
         <div class="container-fluid">
             <div class="layout-specing">
                 <div class="row">
-                    <div class="col-md-8 col-sm-12 row">
-                        <div class="col-md-4">
-                            <h5 class="mb-0">Lịch hẹn</h5>
-                        </div>
-                        <br>
-                        <br>
-                        <div class="row d-flex align-items-center">
-                            <div class="justify-content-md-end">
-                                <form>
-                                    <div class="row d-flex align-items-center">
-                                        <div class="col-2 ">
-                                            <label class="form-label ">Bác sĩ:</label>
-                                        </div>
-                                        <div class="col-3">
-                                            <div class="mb-1 position-relative">
-                                                <select class="form-select form-control">
-                                                    <option value="EY">Tất cả</option>
-                                                    <option value="GY">Nguyễn Thị Huyền 1</option>
-                                                    <option value="PS">Nguyễn Thị Huyền 2</option>
-                                                    <option value="GY">Nguyễn Thị Huyền 3</option>
-                                                    <option value="PS">Nguyễn Thị Huyền 4</option>
-                                                </select>
-                                            </div>
-                                        </div><!--end col-->
-                                        <div class="col-2">
-                                            <label class="form-label">Trạng thái:</label>
-                                        </div>
-                                        <div class="col-3">
-                                            <div class="mb-1 position-relative">
-                                                <select class="form-select form-control">
-                                                    <option value="EY">Tất cả</option>
-                                                    <option value="GY">Complete</option>
-                                                    <option value="PS">Assigned</option>
-                                                    <option value="GY">Pending</option>
-                                                    <option value="PS">Cancelled</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-2">
-                                                <a href="#" class="btn btn-primary" data-bs-toggle="modal"
-                                                   data-bs-target="#appointmentform">Lọc</a>
-                                        </div>
-                                        <!--end col-->
-                                    </div><!--end row-->
-                                </form><!--end form-->
-                            </div>
-                        </div><!--end col-->
+                <div class="col-md-5 row">
+                    <div class="col-md-4">
+                        <h5 class="mb-0"> Quản lý lịch hẹn</h5>
                     </div>
-
+                    <div class="col-md-7">
+                        <div class="search-bar p-0 d-lg-block ms-2">
+                            <div id="search" class="menu-search mb-0">
+                                <form action="doctormanage?action=search" method="POST" id="searchform" class="searchform">
+                                    <div>
+                                        <input type="text" class="form-control border rounded-pill" name="txt" id="s" placeholder="Tìm kiếm ...">
+                                        <input type="submit" id="searchsubmit" value="Search">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <div class="col-md-7">
+                    <form action="doctormanage?action=filter" method="POST" onSubmit="document.getElementById('submit').disabled = true;">
+                        <div class="justify-content-md-end row">
+                            <div class="col-md-5 row align-items-center">
+                                <div class="col-md-3">
+                                    <label class="form-label">Dịch vu</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <select name="gender" class="form-select">
+                                        <option >Tất cả</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-5 row align-items-center">
+                                <div class="col-md-4">
+                                    <label class="form-label">Trạng thái</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <select name="speciality" class="form-select">
+                                        <option  value="all">Tất cả</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-1 md-0">
+                                <button type="submit" class="btn btn-primary">Lọc</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
 
                 <div class="row">
@@ -77,7 +76,7 @@
                                 <tr>
                                     <th class="border-bottom p-3">ID</th>
                                     <th class="border-bottom p-3">Tên bệnh nhân</th>
-                                    <th class="border-bottom p-3">Bác sĩ</th>
+                                    <th class="border-bottom p-3">Dịch vụ</th>
                                     <th class="border-bottom p-3">Ngày khám bệnh</th>
                                     <th class="border-bottom p-3">Thời gian</th>
                                     <th class="border-bottom p-3">Trạng thái</th>
@@ -88,7 +87,7 @@
                                 <tr>
                                     <td class="p-3">1</td>
                                     <td class="p-3">Nguyễn Thị Huyền</td>
-                                    <td class="p-3">Phạm Cao Đức Minh</td>
+                                    <td class="p-3">Nhổ răng khôn</td>
                                     <td class="p-3">30/05/2023</td>
                                     <td class="p-3">9AM</td>
                                     <td class="p-3">Assigned</td>
@@ -99,14 +98,6 @@
                                             </button>
                                         </a>
                                     </td>
-                                    <%--                  <td class="p-3 text-center">--%>
-                                    <%--                    <a href="#">--%>
-                                    <%--                      <button class="btn btn-primary">Sửa</button>--%>
-                                    <%--                    </a>--%>
-                                    <%--                    <a href="#">--%>
-                                    <%--                      <button class="btn btn-danger">Xóa</button>--%>
-                                    <%--                    </a>--%>
-                                    <%--                  </td>--%>
                                 </tr>
                                 </tbody>
                             </table>

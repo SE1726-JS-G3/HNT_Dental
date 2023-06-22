@@ -13,6 +13,7 @@ import java.io.IOException;
         "/management/doctor/create",
         "/management/doctor/update",
         "/management/doctor/myPatient",
+        "/management/doctor/detail",
         "/management/doctor/delete"
 })
 public class DoctorController extends HttpServlet {
@@ -26,7 +27,7 @@ public class DoctorController extends HttpServlet {
             case "/management/doctor/myPatient":
                 req.getRequestDispatcher("/WEB-INF/templates/management/doctor/myPatient.jsp").forward(req, resp);
                 break;
-            case "/management/doctor/update":
+            case "/management/doctor/detail":
                 req.getRequestDispatcher("/WEB-INF/templates/management/doctor/detail.jsp").forward(req, resp);
                 break;
             case "/management/doctor/delete":

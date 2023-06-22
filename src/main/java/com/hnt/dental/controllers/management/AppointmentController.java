@@ -24,7 +24,7 @@ public class AppointmentController extends HttpServlet {
                 req.getRequestDispatcher("/WEB-INF/templates/management/appointment/index.jsp").forward(req, resp);
                 break;
             case "/management/appointment/detail":
-                req.getRequestDispatcher("/WEB-INF/templates/management/appointment/booking_detail.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/templates/management/appointment/detail.jsp").forward(req, resp);
                 break;
             default:
         }

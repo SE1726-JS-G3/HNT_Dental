@@ -51,7 +51,7 @@
             </form>
           </div>
           <div class="col-md-2">
-            <a href="servicemanage?action=add"><button class="btn btn-primary">Thêm mới</button></a>
+            <button class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/management/service/create'">Thêm mới</button>
           </div>
         </div>
 
@@ -82,7 +82,7 @@
                       <button class="btn btn-primary">Chuyển trạng thái</button>
                     </a>
                     <a href="#">
-                      <button class="btn btn-danger">Chi tiết</button>
+                      <button class="btn btn-danger" onclick="window.location.href=''">Chi tiết</button>
                     </a>
                   </td>
                 </tr>

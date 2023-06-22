@@ -26,7 +26,7 @@ public class PatientController extends HttpServlet {
                 req.getRequestDispatcher("/WEB-INF/templates/management/patient/create.jsp").forward(req, resp);
                 break;
             case "/management/patient/update":
-                req.getRequestDispatcher("/WEB-INF/templates/management/patient/update.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/templates/management/patient/1.jsp").forward(req, resp);
                 break;
             case "/management/patient/delete":
                 req.getRequestDispatcher("/WEB-INF/templates/management/patient/delete.jsp").forward(req, resp);
