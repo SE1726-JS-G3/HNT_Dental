@@ -33,6 +33,9 @@ function getLogin() {
         url: '/auth/login',
         type: 'POST',
         data: $('#login').serialize(),
+        beforeSend: function () {
+            $('.preloader-custom').preloader();
+        },
         success: function (data) {
             switch (data.message) {
                 case 'email_incorrect':
@@ -51,6 +54,9 @@ function getLogin() {
         },
         error: function (data) {
             console.log(data);
+        },
+        complete: function () {
+            $('.preloader-custom').preloader('remove');
         }
     });
 }

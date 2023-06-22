@@ -211,4 +211,9 @@ public class AuthService {
             throw new SystemRuntimeException("Error decrypt");
         }
     }
+
+    public void logout(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        req.getSession().removeAttribute("account");
+        ServletUtils.redirect(req, resp, "/auth/login");
+    }
 }
