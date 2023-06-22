@@ -11,6 +11,7 @@ import com.hnt.dental.dto.AppointmentDto;
 import com.hnt.dental.dto.response.ServiceDetailDto;
 import com.hnt.dental.dto.response.ServiceTypeDto;
 import com.hnt.dental.entities.*;
+import com.hnt.dental.exception.SystemRuntimeException;
 import com.hnt.dental.util.ServletUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 public class AppointmentService {
 
@@ -142,14 +144,13 @@ public class AppointmentService {
                             .build()
             );
 
-            if(PaymentEnum.getPaymentEnum(payment) == PaymentEnum.CASH){
+            if (PaymentEnum.getPaymentEnum(payment) == PaymentEnum.CASH) {
                 ServletUtils.redirect(req, resp, "/appointment/success");
-                return;
             } else {
                 String url = vnPayService.renderPayment(id, Double.parseDouble(serviceResDtos.getFee()), req);
                 ServletUtils.redirect(req, resp, url);
-                return;
             }
+            return;
         } catch (Exception e) {
             error = e.getMessage();
         }
@@ -169,6 +170,29 @@ public class AppointmentService {
             ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/appointment/booking.jsp");
         } else {
             ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/appointment/booking-success.jsp");
+        }
+    }
+
+    public void paymentCallback(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String vnpTxnRef = req.getParameter("vnp_TxnRef");
+        String vnpBankTranNo = req.getParameter("vnp_BankTranNo");
+        String vnpTransactionNo = req.getParameter("vnp_TransactionNo");
+        String vnpResponseCode = req.getParameter("vnp_ResponseCode");
+
+        if (vnpTxnRef != null && Integer.parseInt(vnpTxnRef) > 0
+                && vnpBankTranNo != null && vnpResponseCode != null && vnpResponseCode.equals("00")
+                && vnpTransactionNo != null && Integer.parseInt(vnpTransactionNo) > 0) {
+            Optional<Payment> payment = pdao.getPaymentByAppointmentId(Long.valueOf(vnpTxnRef));
+            if (payment.isPresent() && Boolean.FALSE.equals(payment.get().getStatus())) {
+                payment.get().setStatus(true);
+                payment.get().setUpdated_at(LocalDateTime.now());
+                pdao.update(payment.get());
+            } else {
+                throw new SystemRuntimeException("Payment not found");
+            }
+            ServletUtils.redirect(req, resp, "/appointment/success");
+        } else {
+            ServletUtils.redirect(req, resp, "/appointment/fail");
         }
     }
 }

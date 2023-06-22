@@ -1,5 +1,6 @@
 package com.hnt.dental.controllers.home;
 
+import com.hnt.dental.exception.SystemRuntimeException;
 import com.hnt.dental.service.AppointmentService;
 import com.hnt.dental.service.VNPayService;
 import jakarta.servlet.ServletException;
@@ -12,7 +13,6 @@ import java.io.IOException;
 
 @WebServlet(name = "HomeAppoinmentController", value = {
         "/appointment",
-        "/appointment/payment",
         "/appointment/success",
         "/appointment/payment/verify",
         "/appointment/payment/cancel",
@@ -20,13 +20,12 @@ import java.io.IOException;
 })
 public class HomeAppoinmentController extends HttpServlet {
     private static final AppointmentService service;
-    private static final VNPayService vnPayService;
 
     static {
         service = new AppointmentService();
-        vnPayService = new VNPayService();
     }
 
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getServletPath();
         try {
@@ -36,10 +35,13 @@ public class HomeAppoinmentController extends HttpServlet {
                     break;
                 case "/appointment/success":
                     break;
+                case "/appointment/payment/verify":
+                    service.paymentCallback(req, resp);
+                    break;
                 default:
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new SystemRuntimeException(e.getMessage());
         }
     }
 
@@ -48,7 +50,7 @@ public class HomeAppoinmentController extends HttpServlet {
         try {
             service.create(req, resp);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new SystemRuntimeException(e.getMessage());
         }
     }
 }

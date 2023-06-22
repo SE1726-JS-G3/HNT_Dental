@@ -25,7 +25,7 @@ public class PaymentDaoImpl implements PaymentDao {
             "VALUES(?, ?, ?, ?, ?, ?, ?)";
 
     private static final String UPDATE_PAYMENT = "UPDATE payment " +
-            "SET account_id=?, booking_id=?, fee=?, status=?, `type`=? " +
+            "SET account_id=?, booking_id=?, fee=?, status=?, `type`=?, created_at=?, updated_at=? " +
             "WHERE id=? ";
 
     @Override
@@ -51,19 +51,6 @@ public class PaymentDaoImpl implements PaymentDao {
         return null;
     }
 
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        PaymentDaoImpl dao = new PaymentDaoImpl();
-        dao.save(Payment.builder()
-                .account(Account.builder().id(1L).build())
-                .booking(Booking.builder().id(1L).build())
-                .serviceFee(ServiceFee.builder().fee(1000000.0).build())
-                .status(true)
-                .type(1)
-                .created_at(LocalDateTime.now())
-                .updated_at(LocalDateTime.now())
-                .build());
-    }
-
     @Override
     public void update(Payment payment) throws SQLException {
         ConnectionUtils.executeUpdate(UPDATE_PAYMENT,
@@ -72,6 +59,8 @@ public class PaymentDaoImpl implements PaymentDao {
                 payment.getServiceFee().getFee(),
                 payment.getStatus(),
                 payment.getType(),
+                payment.getCreated_at(),
+                payment.getUpdated_at(),
                 payment.getId());
     }
 
@@ -85,7 +74,11 @@ public class PaymentDaoImpl implements PaymentDao {
         ResultSet rs = ConnectionUtils.executeQuery(GET_PAYMENT_BY_BOOKING_ID, id);
         if (rs.next()) {
             return Optional.of(Payment.builder()
+                    .id(rs.getLong("id"))
                     .account(Account.builder().id(rs.getLong("account_id")).build())
+                    .booking(Booking.builder().id(rs.getLong("booking_id")).build())
+                    .serviceFee(ServiceFee.builder().fee(rs.getDouble("fee")).build())
+                    .type(rs.getInt("type"))
                     .status(rs.getBoolean("status"))
                     .created_at(rs.getTimestamp("created_at").toLocalDateTime())
                     .updated_at(rs.getTimestamp("updated_at").toLocalDateTime())

@@ -25,11 +25,14 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ResourceBundle;
 
 public class AuthService {
     private static final AccountDao accountDao;
     private static final PatientDao patientDao;
     private static final VerificationDao verificationDao;
+
+    private static final ResourceBundle bundle = ResourceBundle.getBundle("application");
 
     static {
         accountDao = new AccountDaoImpl();
@@ -47,7 +50,6 @@ public class AuthService {
         if (account != null) {
             try {
                 String passwordEncrypt = AesUtils.encrypt(password);
-
                 if (StringUtils.equals(passwordEncrypt, account.getPassword())) {
                     if (Boolean.TRUE.equals(account.getIsVerified())) {
                         req.getSession().setAttribute("account", account);
@@ -120,7 +122,7 @@ public class AuthService {
                 );
 
                 String token = AesUtils.encrypt(StringUtils.join(email, ":", captcha));
-                String url = "http://hntdental.azurewebsites.net/auth/verification?token=" + token;
+                String url = bundle.getString("server.url") + "/auth/verification?token=" + token;
                 MailService.sendMailConfirm(fullName, url, email);
 
                 ApiResponse<Account> response = new ApiResponse<>();
@@ -176,7 +178,7 @@ public class AuthService {
                                 .build()
                 );
                 String token = AesUtils.encrypt(StringUtils.join(email, ":", captcha));
-                String url = "http://localhost:8080/auth/forgot/confirm?token=" + token;
+                String url = bundle.getString("server.url") + "/auth/forgot/confirm?token=" + token;
                 MailService.sendMailConfirm(account.getEmail(), url, email);
                 ServletUtils.apiResponse(resp, new Gson().toJson(ApiResponse.builder().status(true).message("success").build()));
             } else {
@@ -186,7 +188,6 @@ public class AuthService {
             throw new SystemRuntimeException("Error encrypt");
         }
     }
-
 
     public void forgotConfirm(HttpServletRequest req, HttpServletResponse resp) {
         String token = req.getParameter("token");
@@ -198,7 +199,6 @@ public class AuthService {
             String code = tokenSplit[1];
 
             Verification verification = verificationDao.findByEmail(email);
-
 
             if (verification != null && StringUtils.equals(verification.getCode(), code) && (StringUtils.equals(code, verification.getCode()))) {
                 Account account = accountDao.findByEmail(email);
