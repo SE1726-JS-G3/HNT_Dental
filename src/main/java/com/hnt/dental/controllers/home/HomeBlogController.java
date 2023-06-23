@@ -21,6 +21,7 @@ public class HomeBlogController extends HttpServlet {
         switch (action) {
             case "/blog":
                 req.getRequestDispatcher("/WEB-INF/templates/home/blog/index.jsp").forward(req, resp);
+               // req.getRequestDispatcher("/WEB-INF/templates/home/payment/payment-error.jsp").forward(req, resp);
                 break;
             case "/blog/detail":
                 req.getRequestDispatcher("/WEB-INF/templates/home/blog/detail.jsp").forward(req, resp);

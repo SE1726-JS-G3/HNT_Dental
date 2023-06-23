@@ -67,7 +67,7 @@
                                     class="uil uil-sign-out-alt align-middle h6"></i></span> Đăng xuất</a>
                         </c:if>
                         <c:if test="${sessionScope.account == null}">
-                            <a class="dropdown-item text-" href="#"><span
+                            <a class="dropdown-item text-" href="${pageContext.request.contextPath}/auth/logout"><span
                                     class="mb-0 d-inline-block me-1"><i
                                     class="uil uil-sign-out-alt align-middle h6"></i></span> Đăng Nhập</a>
                         </c:if>

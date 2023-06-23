@@ -269,7 +269,7 @@
 <script>
     function redirectToBooking() {
         let id = document.getElementById("serviceId").value;
-        window.location.href = "/appointment?serviceId=" + id;
+        window.location.href = "/booking?serviceId=" + id;
     }
 </script>
 </body>

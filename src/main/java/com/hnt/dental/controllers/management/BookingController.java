@@ -26,7 +26,7 @@ public class BookingController extends HttpServlet {
             case "/management/booking/detail":
                 req.getRequestDispatcher("/WEB-INF/templates/management/booking/detail.jsp").forward(req, resp);
                 break;
-            default:
+
         }
 
 

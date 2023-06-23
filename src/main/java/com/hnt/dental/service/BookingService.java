@@ -190,9 +190,9 @@ public class BookingService {
             } else {
                 throw new SystemRuntimeException("Payment not found");
             }
-            ServletUtils.redirect(req, resp, "/booking/success");
+            ServletUtils.redirect(req, resp, "/payment/success");
         } else {
-            ServletUtils.redirect(req, resp, "/booking/fail");
+            ServletUtils.redirect(req, resp, "/payment/error");
         }
     }
 }

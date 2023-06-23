@@ -36,7 +36,7 @@
 <div class="col-8 align-self-center preloader-custom"></div>
 <section class="bg-home d-flex bg-light align-items-center">
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="row d-flex justify-content-center">
             <div class="col-lg-5 col-md-8">
                 <div class="card login-page shadow mt-4 rounded border-0">
                     <div class="card-body">
