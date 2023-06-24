@@ -54,8 +54,7 @@
                   <th class="border-bottom p-3">Tên bệnh nhân</th>
                   <th class="border-bottom p-3">Ngày sinh</th>
                   <th class="border-bottom p-3">Giới tính</th>
-                  <th class="border-bottom p-3">Điện thoại</th>
-                  <th class="border-bottom p-3">Ngày khám bệnh gần nhất</th>
+                  <th class="border-bottom p-3">Trạng thái</th>
                   <th class="border-bottom p-3 text-center">Tác vụ</th>
                 </tr>
                 </thead>
@@ -65,8 +64,7 @@
                   <td class="p-3">Khương Văn Hùng</td>
                   <td class="p-3">24/08/2001</td>
                   <td class="p-3">Nam</td>
-                  <td class="p-3">0888195313</td>
-                  <td class="p-3">27/05/2023</td>
+                  <td class="p-3">Active</td>
                   <td class="p-3 text-center">
                     <a href="#">
                       <button class="btn btn-primary">Sửa</button>

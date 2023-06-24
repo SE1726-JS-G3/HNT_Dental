@@ -28,7 +28,7 @@ public class ServiceController extends HttpServlet {
                 req.getRequestDispatcher("/WEB-INF/templates/management/service/create.jsp").forward(req, resp);
                 break;
             case "/management/service/update":
-                req.getRequestDispatcher("/WEB-INF/templates/management/service/update.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/templates/management/service/1.jsp").forward(req, resp);
                 break;
             case "/management/service/delete":
                 req.getRequestDispatcher("/WEB-INF/templates/management/service/delete.jsp").forward(req, resp);

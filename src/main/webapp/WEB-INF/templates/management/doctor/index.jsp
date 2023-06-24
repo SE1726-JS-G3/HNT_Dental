@@ -11,18 +11,16 @@
     <div class="container-fluid">
       <div class="layout-specing">
         <div class="row">
-          <div class="col-md-8 col-sm-12 row">
+          <div class="col-md-5 row">
             <div class="col-md-4">
               <h5 class="mb-0">Bác sĩ</h5>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-7">
               <div class="search-bar p-0 d-lg-block ms-2">
                 <div id="search" class="menu-search mb-0">
-                  <form action="#" method="POST" id="searchform"
-                        class="searchform">
+                  <form action="doctormanage?action=search" method="POST" id="searchform" class="searchform">
                     <div>
-                      <input type="text" class="form-control border rounded-pill" name="txt"
-                             id="s" placeholder="Tìm kiếm bác sĩ...">
+                      <input type="text" class="form-control border rounded-pill" name="txt" id="s" placeholder="Tìm kiếm bác sĩ...">
                       <input type="submit" id="searchsubmit" value="Search">
                     </div>
                   </form>
@@ -30,10 +28,39 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4 col-sm-12">
-            <a href="#">
-              <button class="btn btn-primary">Thêm mới</button>
-            </a>
+          <div class="col-md-7">
+            <form action="doctormanage?action=filter" method="POST" onSubmit="document.getElementById('submit').disabled = true;">
+              <div class="justify-content-md-end row">
+                <div class="col-md-5 row align-items-center">
+                  <div class="col-md-3">
+                    <label class="form-label">Giới tính</label>
+                  </div>
+                  <div class="col-md-9">
+                    <select name="gender" class="form-select">
+                      <option <c:if test="${gender == 'all'}"> selected </c:if> value="all">Tất cả</option>
+                      <option <c:if test="${gender == 'true'}"> selected </c:if> value="true">Nam</option>
+                      <option <c:if test="${gender == 'false'}"> selected </c:if> value="false">Nữ</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-5 row align-items-center">
+                  <div class="col-md-4">
+                    <label class="form-label">Chuyên môn</label>
+                  </div>
+                  <div class="col-md-8">
+                    <select name="speciality" class="form-select">
+                      <option <c:if test="${speciality == 'all'}"> selected </c:if> value="all">Tất cả</option>
+                      <c:forEach items="${speciality}" var="s">
+                        <option <c:if test="${speciality1 == s.id}"> selected </c:if> value="${s.id}">${s.name}</option>
+                      </c:forEach>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-1 md-0">
+                  <button type="submit" class="btn btn-primary">Lọc</button>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
 
@@ -47,9 +74,9 @@
                   <th class="border-bottom p-3">ID</th>
                   <th class="border-bottom p-3">Tên bác sĩ</th>
                   <th class="border-bottom p-3">Giới tính</th>
-                  <th class="border-bottom p-3">Điện thoại</th>
-                  <th class="border-bottom p-3">Chức vụ</th>
-                  <th class="border-bottom p-3 text-center">Xếp hạng</th>
+                  <th class="border-bottom p-3">Chuyên môn</th>
+                  <th class="border-bottom p-3 text-center">Rank</th>
+                  <th class="border-bottom p-3 text-center">Trạng thái</th>
                   <th class="border-bottom p-3 text-center">Tác vụ</th>
                 </tr>
                 </thead>
@@ -57,13 +84,13 @@
                 <tr>
                   <td class="p-3">1</td>
                   <td class="p-3">Nguyễn Thị Huyền</td>
-                  <td class="p-3">Bê đê</td>
-                  <td class="p-3">0984118075</td>
-                  <td class="p-3">Trưởng phòng</td>
-                  <td class="p-3">3</td>
+                  <td class="p-3">Nữ</td>
+                  <td class="p-3">Niềng răng</td>
+                  <td class="p-3 text-center">Rank 3</td>
+                  <td class="p-3 text-center">Active</td>
                   <td class="p-3 text-center">
                     <a href="#">
-                      <button class="btn btn-primary">Sửa</button>
+                      <button class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/management/doctor/detail'">Chi tiết</button>
                     </a>
                     <a href="#">
                       <button class="btn btn-danger">Xóa</button>

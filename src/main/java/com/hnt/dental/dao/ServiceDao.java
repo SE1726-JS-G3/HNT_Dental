@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface ServiceDao extends GenericDao<Service>{
-    List<ServiceResDto> getAllServiceDao(Integer offset, Integer limit, String search) throws Exception;
+    List<ServiceResDto> getAllServiceDao(Integer offset, Integer limit, String search, String typeId) throws Exception;
     Integer countListService(String search) throws SQLException;
 
     ServiceDetailDto getServiceDetailByServiceId(Long id, Long typeId) throws SQLException;
@@ -16,4 +16,10 @@ public interface ServiceDao extends GenericDao<Service>{
     List<ServiceTypeDto> getTypeByServiceId(Long id) throws SQLException;
 
     List<DoctorByServiceIdDto> getDoctorByServiceIdAndServiceType(Long id, Long idType) throws SQLException;
+
+    List<ServiceSearchHomeDto> getAllServiceHome() throws SQLException;
+
+    List<ServiceDetailDto> getTopService() throws SQLException;
+
+    List<ServiceTypeDto> getALlType() throws SQLException;
 }

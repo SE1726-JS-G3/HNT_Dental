@@ -106,7 +106,7 @@
                     <div class="p-4 border-bottom">
                         <h5 class="mb-0">Thông tin lịch hẹn</h5>
                     </div>
-                    <div class="tab-content p-4" id="pills-tabContent">
+                    <div class="tab-content p-4" >
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="mb-3">
@@ -196,7 +196,7 @@
                                         </option>
                                     </select>
                                 </div>
-                                <div class="tab-content p-0" id="pills-tabContent">
+                                <div class="tab-content p-0" >
                                     <input type="submit" id="submit" name="send" class="btn btn-primary"
                                            value="Cập nhật">
                                 </div>
