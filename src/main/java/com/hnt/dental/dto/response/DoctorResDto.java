@@ -35,8 +35,9 @@ public class DoctorResDto {
                             .gender(doctor.getGender() ? "nam" : "nữ")
                             .phone(doctor.getPhone())
                             .position(doctor.getPosition())
+                            .rankId(doctor.getRankId())
+                            .status(doctor.getStatus() ? "Đang làm việc" : "Đã nghỉ việc")
                             .name(doctor.getDoctorRank().getName())
-                            .status(doctor.isStatus() ? "Đang làm việc" : "Đã nghỉ việc")
                             .build()
             );
         }
