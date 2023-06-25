@@ -130,9 +130,12 @@ public class DoctorService1 {
         String address = req.getParameter("address");
         String position = req.getParameter("position");
         String description = req.getParameter("description");
-     //Long rankId = Long.valueOf(req.getParameter("rankId"));
-        String name = req.getParameter("name");
-        RoleEnum role = RoleEnum.ROLE_DOCTOR;
+        Long rankId = null;
+        if (req.getParameter("rankId") != null) {
+            rankId = Long.valueOf(req.getParameter("rankId"));
+        }
+       String status = req.getParameter("status");
+        RoleEnum role = position.equals("DOCTOR") ? RoleEnum.ROLE_DOCTOR : RoleEnum.ROLE_STAFF;
         String error = null;
         try{
             Account account = accountDao.findByEmail(email);
@@ -153,12 +156,13 @@ public class DoctorService1 {
                             .fullName(fullname)
                             .dob(LocalDate.parse(dob, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                             .gender(Objects.equals(gender, "Nam"))
+                            .gender("Nam".equals(gender))
                             .phone(phone)
                             .position(position)
                             .address(address)
                             .description(description)
-                          //  .rankId(rankId)
-                            .doctorRank(DoctorRank.builder().name(name).build())
+                            .status(Objects.equals(status, "Đang làm việc"))
+                            .rankId(rankId)
                             .build()
             );
         } catch (Exception e){
