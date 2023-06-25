@@ -72,10 +72,7 @@ public class DoctorDaoImpl implements DoctorDao {
             "OR LOWER(d.dob) LIKE ? " +
             "LIMIT ?, ?";
 
-    private static final String GET_DOCTORS_BY_ID = "SELECT d.*, r.name  " +
-            "FROM doctors d " +
-            "JOIN doctor_rank r ON d.rank_id = r.id " +
-            "WHERE d.id = ?";
+    private static final String GET_DOCTORS_BY_ID = "SELECT * FROM hnt_dental.doctors where id=?";
     private static final String SAVE_DOCTOR = "INSERT INTO hnt_dental.doctors " +
             "(id, full_name, phone, dob, rank_id, position, description, gender, address, status , created_at, updated_at) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -150,9 +147,6 @@ public class DoctorDaoImpl implements DoctorDao {
                     .description(rs.getString("description"))
                     .status(rs.getBoolean("status"))
                     .rankId(rs.getInt("rank_id"))
-                    .doctorRank(DoctorRank.builder()
-                            .name(rs.getString("name"))
-                            .build())
                     .build());
         }
         ConnectionUtils.closeConnection();
@@ -194,17 +188,18 @@ public class DoctorDaoImpl implements DoctorDao {
     @Override
     public Long save(Doctors doctors) throws SQLException, ClassNotFoundException {
         ConnectionUtils.executeUpdate(SAVE_DOCTOR, doctors.getAccount().getId(), doctors.getFullName(), doctors.getPhone(),
-                (doctors.getDob()), doctors.getDoctorRank().getName(), doctors.getPosition(), doctors.getDescription(), doctors.getGender(),
-                doctors.getAddress(),doctors.isStatus(), doctors.getCreatedAt(), doctors.getUpdatedAt());
+                (doctors.getDob()), doctors.getRankId(), doctors.getPosition(), doctors.getDescription(), doctors.getGender(),
+                doctors.getAddress(),doctors.getStatus(), doctors.getCreatedAt(), doctors.getUpdatedAt());
 
-        return null;
-
+        return doctors.getAccount().getId();
     }
+
+
 
     @Override
     public void update(Doctors doctors) throws SQLException {
         ConnectionUtils.executeUpdate(UPDATE_DOCTOR, doctors.getFullName(), doctors.getGender(), doctors.getPhone(),doctors.getDob(),
-                doctors.getPosition(), doctors.getAddress(),doctors.getDescription(), doctors.getDoctorRank().getName(),doctors.isStatus(),doctors.getCreatedAt(),
+                doctors.getPosition(), doctors.getAddress(),doctors.getDescription(), doctors.getRankId(),doctors.getStatus(),doctors.getCreatedAt(),
                 doctors.getUpdatedAt(),doctors.getAccount().getId());
 
     }
