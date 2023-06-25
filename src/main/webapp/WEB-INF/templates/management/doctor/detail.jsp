@@ -289,8 +289,8 @@
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Xếp hạng</label>
-                                                <input name="rankId" id="rankId" type="text" class="form-control"
-                                                       value="${doctor.rankId}"
+                                                <input name="doctorRank" id="doctorRank" type="text" class="form-control"
+                                                       value="${doctor.doctorRank.name}"
                                                        placeholder="Xếp hạng">
                                             </div>
                                         </div>
