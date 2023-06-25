@@ -25,6 +25,6 @@ public class Doctors extends BaseEntity{
     private String description;
     private DoctorRank doctorRank;
     private String image;
-    private boolean status;
+    private Boolean status;
     private long rankId;
 }
