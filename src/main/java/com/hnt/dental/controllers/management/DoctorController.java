@@ -1,6 +1,5 @@
 
 package com.hnt.dental.controllers.management;
-
 import com.hnt.dental.service.DoctorService1;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
