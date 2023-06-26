@@ -5,6 +5,7 @@ import com.hnt.dental.dao.DoctorDao;
 import com.hnt.dental.dao.impl.AccountDaoImpl;
 import com.hnt.dental.dto.response.DoctorDetailDto;
 import com.hnt.dental.dto.response.DoctorSummaryRes;
+import com.hnt.dental.dto.response.FeedbackDto;
 import com.hnt.dental.dto.response.ServiceResDto;
 import com.hnt.dental.entities.*;
 import com.hnt.dental.util.ConnectionUtils;
@@ -114,9 +115,6 @@ public class DoctorDaoImpl implements DoctorDao {
                             .position(rs.getString("position"))
                             .rankId(rs.getInt("rank_id"))
                             .status(rs.getBoolean("status"))
-                            .doctorRank(DoctorRank.builder()
-                                    .name(rs.getString("name"))
-                                    .build())
                             .build()
             );
         }
@@ -311,5 +309,7 @@ public class DoctorDaoImpl implements DoctorDao {
         ConnectionUtils.closeConnection();
         return patient;
     }
+
+
 
 }

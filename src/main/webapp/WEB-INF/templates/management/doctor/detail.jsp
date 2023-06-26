@@ -94,7 +94,11 @@
                                     <div class="d-flex align-items-center mt-2">
                                         <i class="uil uil-medical-drip align-text-bottom text-primary h5 mb-0 me-2"></i>
                                         <h6 class="mb-0">Role</h6>
-                                        <p class="text-muted mb-0 ms-2">Doctor</p>
+                                        <p class="text-muted mb-0 ms-2">
+                                            <c:if test="${doctor.account.role == 2}">
+                                                Doctor
+                                            </c:if>
+                                        </p>
                                     </div>
                                     <div class="d-flex align-items-center mt-2">
                                         <i class="uil uil-italic align-text-bottom text-primary h5 mb-0 me-2"></i>
@@ -159,46 +163,45 @@
                                     <h5 class="mb-0">Đánh giá từ bệnh nhân</h5>
                                 </div>
                                 <ul class="media-list list-unstyled p-4 mb-0">
-<%--                                    <c:forEach items="${rate}" var="r">--%>
-<%--                                        <li class="mt-4">--%>
-<%--                                            <div class="d-flex justify-content-between">--%>
-<%--                                                <div class="d-flex align-items-center">--%>
-<%--                                                    <a class="pe-3" href="#">--%>
-<%--                                                        <img src="https://trivia-nextdoor.com/wp-content/uploads/2022/02/noiroze-study-man.png"--%>
-<%--                                                             class="img-fluid avatar avatar-md-sm rounded-circle shadow"--%>
-<%--                                                             alt="img">--%>
-
-<%--                                                    </a>--%>
-<%--                                                    <div class="commentor-detail">--%>
-<%--                                                        <h6 class="mb-0"><a href="javascript:void(0)"--%>
-<%--                                                                            class="text-dark media-heading">${r.user.username}</a>--%>
-<%--                                                        </h6>--%>
-<%--                                                        <small class="text-muted"><fmt:formatDate--%>
-<%--                                                                pattern="dd/MM/yyyy hh:mm"--%>
-<%--                                                                value="${r.date}"/></small>--%>
-<%--                                                    </div>--%>
-<%--                                                </div>--%>
-<%--                                                <ul class="list-unstyled text-warning h5 mb-0">--%>
-<%--                                                    <c:if test="${r.star != 0}">--%>
-<%--                                                        <c:forEach var="i" begin="1" end="${r.star}">--%>
-<%--                                                            <li class="list-inline-item"><i--%>
-<%--                                                                    class="mdi mdi-star"></i></li>--%>
-<%--                                                        </c:forEach>--%>
-<%--                                                    </c:if>--%>
-<%--                                                </ul>--%>
-<%--                                            </div>--%>
-<%--                                            <div class="mt-3">--%>
-<%--                                                <p class="text-muted font-italic p-3 bg-light rounded">${r.feedback}</p>--%>
-<%--                                            </div>--%>
-<%--                                        </li>--%>
-<%--                                    </c:forEach>--%>
+                                    <c:choose>
+                                        <c:when test="${empty feedbacks}">
+                                            <li class="mt-4">
+                                                <div class="d-flex align-items-center">
+                                                    <p> Chưa có đánh giá nào  <i class="uil uil-sad-cry" style="font-size: 35px; color: black;"></i></p>
+                                                </div>
+                                            </li>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:forEach items="${feedbacks}" var="f">
+                                                <li class="mt-4">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="d-flex align-items-center">
+                                                            <a class="pe-3" href="#">
+                                                                <img src="${f.image}" class="img-fluid avatar avatar-md-sm rounded-circle shadow" alt="img">
+                                                            </a>
+                                                            <div class="commentor-detail">
+                                                                <h6 class="mb-0"><a href="javascript:void(0)" class="text-dark media-heading">${f.fullName}</a></h6>
+                                                                <small class="text-muted">${f.createdAt}</small>
+                                                                <ul class="list-unstyled text-warning h5 mb-0">
+                                                                    <c:forEach var="i" begin="1" end="${f.star}">
+                                                                        <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                                                    </c:forEach>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mt-3">
+                                                        <p class="text-muted font-italic p-3 bg-light rounded">${f.description}</p>
+                                                    </div>
+                                                </li>
+                                            </c:forEach>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </ul>
                             </div>
-
                         </div>
-                    </div>
 
-                    <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit">
+                        <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit">
                         <div class="card border-0 shadow overflow-hidden">
                             <div class="tab-content p-4" id="pills-tabContent">
                                 <form action="${pageContext.request.contextPath}/management/doctor/detail" method="POST"
@@ -263,8 +266,8 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label class="form-label">Chức vụ</label>
-                                                <input name="position" id="position" type="text" class="form-control" placeholder="Chức vụ" value="${doctor.position}">
+                                                <label class="form-label">Chuyên môn</label>
+                                                <input name="position" id="position" type="text" class="form-control" placeholder="Chuyên môn " value="${doctor.position}">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -293,7 +296,16 @@
                                                 </select>
                                             </div>
                                         </div>
-
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Chức vụ</label>
+                                                <select name="Role" class="form-select form-control" disabled>
+                                                    <c:if test="${doctor.account.role == 2}">
+                                                        <option selected>Doctor</option>
+                                                    </c:if>
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="col-md-12">
                                             <div class="mb-3">
                                                 <label class="form-label">Mô tả</label>
@@ -319,7 +331,7 @@
 <script src="${pageContext.request.contextPath}/static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
-
+<script src="https://kit.fontawesome.com/yourcode.js"></script>
 </body>
 <style>
     .Choicefile {

@@ -1,10 +1,20 @@
 package com.hnt.dental.dao.impl;
 
 import com.hnt.dental.dao.PatientDao;
+import com.hnt.dental.dto.response.DoctorDetailDto;
+import com.hnt.dental.dto.response.PatientResDto;
+import com.hnt.dental.entities.Account;
+import com.hnt.dental.entities.Booking;
 import com.hnt.dental.entities.Patient;
 import com.hnt.dental.util.ConnectionUtils;
+import com.hnt.dental.util.DateUtils;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,9 +23,10 @@ public class PatientDaoImpl implements PatientDao {
             "(id, full_name, dob, gender, phone, address, description, created_at, updated_at)" +
             "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+
     @Override
     public List<Patient> getAll(Integer offset, Integer limit, String search) throws SQLException {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
@@ -25,11 +36,12 @@ public class PatientDaoImpl implements PatientDao {
 
     @Override
     public Long save(Patient patient) throws SQLException {
-        ConnectionUtils.executeUpdate(SAVE_PATIENT, patient.getAccount().getId(),patient.getFullName(),patient.getDob(),
-                patient.getGender(),patient.getPhone(),patient.getAddress(),patient.getDescription(),patient.getCreatedAt()
-        ,patient.getUpdatedAt());
+        ConnectionUtils.executeUpdate(SAVE_PATIENT, patient.getAccount().getId(), patient.getFullName(), patient.getDob(),
+                patient.getGender(), patient.getPhone(), patient.getAddress(), patient.getDescription(),
+                patient.getCreatedAt(), patient.getUpdatedAt());
         return patient.getAccount().getId();
     }
+
 
     @Override
     public void update(Patient patient) {
@@ -40,4 +52,128 @@ public class PatientDaoImpl implements PatientDao {
     public void delete(Patient patient) {
 
     }
+
+    private static final String MY_PATIENT_DOCTOR_QUERY =
+            "SELECT p.id, p.full_name, b.date, b.time,b.status, p.gender, p.dob, b.created_at, a.email, p.phone " +
+                    "FROM patients p " +
+                    "JOIN booking b ON b.account_id = p.id " +
+                    "JOIN doctors d ON d.id = b.staff_id " +
+                    "JOIN accounts a ON a.id = p.id " +
+                    "ORDER BY p.id ASC " +
+                    "LIMIT ?, ?";
+
+    private static final String MY_PATIENT_DETAIL_QUERY = "SELECT p.id,p.full_name, a.email, p.phone, p.gender, p.dob, b.date, b.time ,b.status " +
+            "FROM patients p " +
+            "INNER JOIN booking b ON b.account_id = p.id " +
+            "INNER JOIN doctors d ON d.id = b.staff_id " +
+            "JOIN accounts a ON a.id = p.id " +
+            "WHERE p.id = ? " +
+            "ORDER BY p.id ASC "+
+            "LIMIT ?, ?";
+    private static final String COUNT_EMPLOYEE = "SELECT COUNT(*) FROM patients";
+
+
+    @Override
+    public List<Patient> getPatientDetail(Long id,Integer offset, Integer limit) throws SQLException {
+        List<Patient> patient = new ArrayList<>();
+        ResultSet rs = ConnectionUtils.executeQuery(MY_PATIENT_DETAIL_QUERY, Long.valueOf(id),offset,limit);
+        while (rs.next()) {
+            patient.add(
+                    Patient.builder()
+                            .id(rs.getLong("id"))
+                            .fullName(rs.getString("full_name"))
+                            .phone(rs.getString("phone"))
+                            .gender(rs.getBoolean("gender"))
+                            .dob(rs.getDate("dob").toLocalDate())
+                            .booking(
+                                    Booking.builder()
+                                            .date(rs.getDate("date").toLocalDate())
+                                            .time(rs.getTime("time").toLocalTime())
+                                            .status(rs.getBoolean("status"))
+                                            .build()
+                            )
+                            .account(
+                                    Account.builder()
+                                            .id(rs.getLong("id"))
+                                            .email(rs.getString("email"))
+                                            .build()
+                            )
+                            .build()
+            );
+        }
+        ConnectionUtils.closeConnection();
+        return patient;
+    }
+
+
+    @Override
+    public List<Patient> MyPatientDoctor(Integer offset, Integer limit) throws SQLException {
+        List<Patient> patients = new ArrayList<>();
+        ResultSet rs = ConnectionUtils.executeQuery(MY_PATIENT_DOCTOR_QUERY, offset, limit);
+        while (rs.next()) {
+            patients.add(
+                    Patient.builder()
+                            .id(rs.getLong("id"))
+                            .fullName(rs.getString("full_name"))
+                            .dob(rs.getDate("dob") != null ? DateUtils.convertDateToLocalDate(rs.getDate("dob")) : null)
+                            .phone(rs.getString("phone"))
+                            .gender(rs.getBoolean("gender"))
+                            .account(
+                                    Account.builder()
+                                            .id(rs.getLong("id"))
+                                            .email(rs.getString("email"))
+                                            .build()
+                            )
+                            .booking(
+                                    Booking.builder()
+                                            .date(rs.getDate("date").toLocalDate())
+                                            .time(rs.getTime("time").toLocalTime())
+                                            .status(rs.getBoolean("status"))
+                                            .build()
+
+                            )
+                            .build()
+            );
+        }
+        ConnectionUtils.closeConnection();
+        return patients;
+    }
+
+
+    @Override
+    public Integer count() throws Exception {
+        ResultSet rs = ConnectionUtils.executeQuery(COUNT_EMPLOYEE);
+        assert rs != null;
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        return 0;
+    }
+
+//    public static void main(String[] args) {
+//        PatientDaoImpl dao = new PatientDaoImpl();
+//
+//        try {
+//            // Specify the patient ID for retrieving patient details
+//            Long id = 1L;
+//
+//            // Call the getPatientDetail method with the specified ID
+//            List<Patient> patients = dao.getPatientDetail(id);
+//
+//            // Print the retrieved patients
+//            for (Patient patient : patients) {
+//                System.out.println("Full Name: " + patient.getFullName());
+//                System.out.println("Date of Birth: " + patient.getDob());
+//                System.out.println("Phone: " + patient.getPhone());
+//                System.out.println("Account ID: " + patient.getAccount().getId());
+//                System.out.println("Email: " + patient.getAccount().getEmail());
+//                System.out.println("Booking Date: " + patient.getBooking().getDate());
+//                System.out.println("-----------------------");
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            // Handle the SQLException appropriately
+//        }
+//    }
+
 }

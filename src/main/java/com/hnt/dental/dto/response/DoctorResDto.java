@@ -29,7 +29,7 @@ public class DoctorResDto {
         for (Doctors doctor : doctors) {
             doctorResDtos.add(
                     DoctorResDto.builder()
-                            .id(doctor.getId())
+                            .id(doctor.getAccount().getId())
                             .fullName(doctor.getFullName())
                             .dob(DateUtils.convertLocalDateToString(doctor.getDob()))
                             .gender(doctor.getGender() ? "nam" : "nữ")

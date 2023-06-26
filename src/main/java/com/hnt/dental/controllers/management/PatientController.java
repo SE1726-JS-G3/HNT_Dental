@@ -1,5 +1,6 @@
 package com.hnt.dental.controllers.management;
 
+import com.hnt.dental.service.PatientService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,9 +13,16 @@ import java.io.IOException;
         "/management/patient",
         "/management/patient/create",
         "/management/patient/update",
-        "/management/patient/delete"
+        "/management/mypatient",
+        "/management/mypatient/detail"
 })
 public class PatientController extends HttpServlet {
+    private static final PatientService service;
+
+    static {
+        service = new PatientService();
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getServletPath();
@@ -26,10 +34,21 @@ public class PatientController extends HttpServlet {
                 req.getRequestDispatcher("/WEB-INF/templates/management/patient/create.jsp").forward(req, resp);
                 break;
             case "/management/patient/update":
-                req.getRequestDispatcher("/WEB-INF/templates/management/patient/1.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/templates/management/patient/update.jsp").forward(req, resp);
                 break;
-            case "/management/patient/delete":
-                req.getRequestDispatcher("/WEB-INF/templates/management/patient/delete.jsp").forward(req, resp);
+            case "/management/mypatient":
+                try {
+                    service.MyPatientDoctor(req, resp);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                break;
+            case "/management/mypatient/detail":
+                try {
+                    service.getDoctorById(req, resp);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
                 break;
             default:
         }
@@ -38,6 +57,16 @@ public class PatientController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getServletPath();
-        // TODO
+        try {
+            switch (action) {
+                case "/management/mypatient/detail":
+                    service.getDoctorById(req, resp);
+                    break;
+
+                default:
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

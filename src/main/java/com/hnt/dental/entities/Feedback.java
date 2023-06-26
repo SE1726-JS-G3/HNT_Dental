@@ -10,6 +10,7 @@ public class Feedback  extends BaseEntity{
     private Booking booking;
     private Service service;
     private Doctors doctors;
+    private Patient patient;
     private int star;
     private String description;
     private Boolean isShow;

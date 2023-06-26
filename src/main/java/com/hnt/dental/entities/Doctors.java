@@ -15,6 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @SuperBuilder
 public class Doctors extends BaseEntity{
+
     private String fullName;
     private Account account;
     private LocalDate dob;

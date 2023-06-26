@@ -3,9 +3,12 @@ package com.hnt.dental.service;
 import com.hnt.dental.constant.RoleEnum;
 import com.hnt.dental.dao.AccountDao;
 import com.hnt.dental.dao.DoctorDao;
+import com.hnt.dental.dao.FeedbackDao;
 import com.hnt.dental.dao.impl.AccountDaoImpl;
 import com.hnt.dental.dao.impl.DoctorDaoImpl;
+import com.hnt.dental.dao.impl.FeedbackDaoImpl;
 import com.hnt.dental.dto.response.DoctorResDto;
+import com.hnt.dental.dto.response.FeedbackDto;
 import com.hnt.dental.dto.response.PatientResDto;
 import com.hnt.dental.entities.Account;
 import com.hnt.dental.entities.DoctorRank;
@@ -32,10 +35,12 @@ import java.util.Objects;
 public class DoctorService1 {
     private static DoctorDao doctorDao;
     private static final AccountDao accountDao;
+    private static final FeedbackDao feedbackDao;
 
     static {
         doctorDao = new DoctorDaoImpl();
         accountDao = new AccountDaoImpl();
+        feedbackDao = new FeedbackDaoImpl();
     }
 
 
@@ -140,7 +145,8 @@ public class DoctorService1 {
             rankId = Long.valueOf(req.getParameter("rankId"));
         }
        String status = req.getParameter("status");
-        RoleEnum role = position.equals("DOCTOR") ? RoleEnum.ROLE_DOCTOR : RoleEnum.ROLE_STAFF;
+      //  RoleEnum role = position.equals("DOCTOR") ? RoleEnum.ROLE_DOCTOR : RoleEnum.ROLE_STAFF;
+        RoleEnum role = RoleEnum.ROLE_DOCTOR;
         String error = null;
         try{
             Account account = accountDao.findByEmail(email);
@@ -148,8 +154,6 @@ public class DoctorService1 {
             if(account != null && !Objects.equals(account.getId(), id)){
                 throw new SystemRuntimeException(StringUtils.join("Email ", email, " already exists"));
             }
-            List<Patient> myPatientDoctor = doctorDao.getPatientDetail(id);
-            req.setAttribute("patients", PatientResDto.convert(myPatientDoctor));
 
             account = accountDao.get(id.intValue()).isPresent() ? accountDao.get(id.intValue()).get() : null;
             account.setEmail(email);
@@ -163,7 +167,6 @@ public class DoctorService1 {
                             .fullName(fullname)
                             .dob(LocalDate.parse(dob, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                             .gender(Objects.equals(gender, "Nam"))
-                            .gender("Nam".equals(gender))
                             .phone(phone)
                             .position(position)
                             .address(address)
@@ -184,22 +187,30 @@ public class DoctorService1 {
     }
 
 
-    public void updateRender(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        int id = Integer.parseInt(req.getParameter("id"));
-        String error = req.getParameter("error");
-        List<Patient> myPatientDoctor = doctorDao.getPatientDetail(Long.valueOf(id));
-        req.setAttribute("patients", PatientResDto.convert(myPatientDoctor));
-        Doctors doctor = doctorDao.get(id).isPresent()
-                ? doctorDao.get(Integer.parseInt(req.getParameter("id"))).get() : null;
+public void updateRender(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    int id = Integer.parseInt(req.getParameter("id"));
+    String error = req.getParameter("error");
+    Doctors doctor = doctorDao.get(id).isPresent()
+            ? doctorDao.get(Integer.parseInt(req.getParameter("id"))).get() : null;
 
-        Account account = accountDao.get(id).isPresent()
-                ? accountDao.get(id).get() : null;
-        assert doctor != null;
-        doctor.setAccount(account);
-        req.setAttribute("doctor", doctor);
-        req.setAttribute("error", error);
-        ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/doctor/detail.jsp");
+    Account account = accountDao.get(id).isPresent()
+            ? accountDao.get(id).get() : null;
+
+    if (account == null) {
+        account = Account.builder().role(RoleEnum.ROLE_DOCTOR.ordinal()).build();
     }
+
+    assert doctor != null;
+    doctor.setAccount(account);
+    List<FeedbackDto> getAllFeedbackByIdDoctor = feedbackDao.getFeedbackDoctor(Long.valueOf(id));
+    List<Patient> myPatientDoctor = doctorDao.getPatientDetail(Long.valueOf(id));
+    req.setAttribute("doctor", doctor);
+    req.setAttribute("error", error);
+    req.setAttribute("patients", PatientResDto.convert(myPatientDoctor));
+    req.setAttribute("feedbacks", getAllFeedbackByIdDoctor);
+    req.setAttribute("id", id);
+    ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/doctor/detail.jsp");
+}
 
 
     public void delete(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
