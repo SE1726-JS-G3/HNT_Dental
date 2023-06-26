@@ -73,9 +73,7 @@
                 <tr>
                   <th class="border-bottom p-3">ID</th>
                   <th class="border-bottom p-3">Tên bác sĩ</th>
-                  <th class="border-bottom p-3">Ngày sinh</th>
                   <th class="border-bottom p-3">Giới tính</th>
-                  <th class="border-bottom p-3">Điện thoại</th>
                   <th class="border-bottom p-3">Chức vụ</th>
                   <th class="border-bottom p-3 ">Xếp hạng</th>
                   <th class="border-bottom p-3">Trạng thái</th>
@@ -87,9 +85,7 @@
                   <tr>
                     <td>${doctor.id}</td>
                     <td>${doctor.fullName}</td>
-                    <td>${doctor.dob}</td>
                     <td>${doctor.gender}</td>
-                    <td>${doctor.phone}</td>
                     <td>${doctor.position}</td>
                     <td>${doctor.name}</td>
                     <td>${doctor.status}</td>

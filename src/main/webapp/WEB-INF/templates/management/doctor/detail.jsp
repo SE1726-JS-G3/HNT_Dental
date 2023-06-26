@@ -122,27 +122,37 @@
                                 <table class="table p-4 mb-0 table-center">
                                     <thead>
                                     <tr>
-                                        <th class="border-bottom p-3">ID</th>
-                                        <th class="border-bottom p-3">Bệnh nhân</th>
-                                        <th class="border-bottom p-3">Ngày</th>
-                                        <th class="border-bottom p-3">Thời gian</th>
-                                        <th class="border-bottom p-3">Trạng thái</th>
+                                        <th class="border-bottom p-3" style="min-width: 100px;">Tên bệnh nhân</th>
+                                        <th class="border-bottom p-3" style="min-width: 110px;">Ngày khám</th>
+                                        <th class="border-bottom p-3" style="min-width: 110px;">Giờ</th>
+                                        <th class="border-bottom p-3" style="min-width: 70px;">Điện thoại</th>
+                                        <th class="border-bottom p-3" style="min-width: 70px;">Trạng thái</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-
-                                    <tr>
-                                        <th class="p-3">1</th>
-                                        <td class="p-3">Huyenxinhgai</td>
-                                        <td class="p-3">21/05/2023</td>
-                                        <td class="p-3">$10AM</td>
-                                        <td class="p-3">done</td>
-                                    </tr>
-
+                                    <c:choose>
+                                        <c:when test="${empty patients}">
+                                            <tr>
+                                                <td colspan="5" class="text-center">Không có lịch sử cuộc hẹn</td>
+                                            </tr>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:forEach items="${patients}" var="p">
+                                                <tr>
+                                                    <td class="p-3">${p.fullName}</td>
+                                                    <td class="p-3">${p.date}</td>
+                                                    <td class="p-3">${p.time}</td>
+                                                    <td class="p-3">${p.phone}</td>
+                                                    <td class="p-3">${p.status}</td>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:otherwise>
+                                    </c:choose>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+
                         <div class="col-lg-12 col-md-12 mt-4">
                             <div class="bg-white rounded shadow overflow-hidden">
                                 <div class="p-4 border-bottom">

@@ -17,11 +17,13 @@ public class Booking extends BaseEntity{
     private int age;
     private Service service;
     private Account account;
+    private Doctors doctors;
     private Employee employee;
     private LocalDate date;
     private LocalTime time;
     private int fee;
     private String description;
+    private Patient patient;
     private boolean status;
     private String payment;
 }

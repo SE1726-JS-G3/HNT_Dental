@@ -6,9 +6,11 @@ import com.hnt.dental.dao.DoctorDao;
 import com.hnt.dental.dao.impl.AccountDaoImpl;
 import com.hnt.dental.dao.impl.DoctorDaoImpl;
 import com.hnt.dental.dto.response.DoctorResDto;
+import com.hnt.dental.dto.response.PatientResDto;
 import com.hnt.dental.entities.Account;
 import com.hnt.dental.entities.DoctorRank;
 import com.hnt.dental.entities.Doctors;
+import com.hnt.dental.entities.Patient;
 import com.hnt.dental.exception.SystemRuntimeException;
 import com.hnt.dental.util.AesUtils;
 import com.hnt.dental.util.CaptchaUtils;
@@ -68,6 +70,9 @@ public class DoctorService1 {
         }
         return search;
     }
+
+
+
     public void create(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String fullname = req.getParameter("full_name");
         String dob = req.getParameter("dob");
@@ -143,6 +148,8 @@ public class DoctorService1 {
             if(account != null && !Objects.equals(account.getId(), id)){
                 throw new SystemRuntimeException(StringUtils.join("Email ", email, " already exists"));
             }
+            List<Patient> myPatientDoctor = doctorDao.getPatientDetail(id);
+            req.setAttribute("patients", PatientResDto.convert(myPatientDoctor));
 
             account = accountDao.get(id.intValue()).isPresent() ? accountDao.get(id.intValue()).get() : null;
             account.setEmail(email);
@@ -176,9 +183,12 @@ public class DoctorService1 {
         }
     }
 
+
     public void updateRender(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         int id = Integer.parseInt(req.getParameter("id"));
         String error = req.getParameter("error");
+        List<Patient> myPatientDoctor = doctorDao.getPatientDetail(Long.valueOf(id));
+        req.setAttribute("patients", PatientResDto.convert(myPatientDoctor));
         Doctors doctor = doctorDao.get(id).isPresent()
                 ? doctorDao.get(Integer.parseInt(req.getParameter("id"))).get() : null;
 

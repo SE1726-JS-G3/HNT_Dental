@@ -6,9 +6,7 @@ import com.hnt.dental.dao.impl.AccountDaoImpl;
 import com.hnt.dental.dto.response.DoctorDetailDto;
 import com.hnt.dental.dto.response.DoctorSummaryRes;
 import com.hnt.dental.dto.response.ServiceResDto;
-import com.hnt.dental.entities.Account;
-import com.hnt.dental.entities.DoctorRank;
-import com.hnt.dental.entities.Doctors;
+import com.hnt.dental.entities.*;
 import com.hnt.dental.util.ConnectionUtils;
 import com.hnt.dental.util.DateUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -273,6 +271,45 @@ public class DoctorDaoImpl implements DoctorDao {
         ConnectionUtils.closeConnection();
         return null;
     }
+    private static final String MY_PATIENT_DETAIL_QUERY = "SELECT p.id,p.full_name, a.email, p.phone, p.gender, p.dob, b.date, b.time ,b.status " +
+            "FROM patients p " +
+            "INNER JOIN booking b ON b.account_id = p.id " +
+            "INNER JOIN doctors d ON d.id = b.staff_id " +
+            "JOIN accounts a ON a.id = p.id " +
+            "WHERE p.id = ? " +
+            "ORDER BY p.id ASC ";
 
+
+    @Override
+    public List<Patient> getPatientDetail(Long id) throws SQLException {
+        List<Patient> patient = new ArrayList<>();
+        ResultSet rs = ConnectionUtils.executeQuery(MY_PATIENT_DETAIL_QUERY,id);
+        while (rs.next()) {
+            patient.add(
+                    Patient.builder()
+                            .id(rs.getLong("id"))
+                            .fullName(rs.getString("full_name"))
+                            .phone(rs.getString("phone"))
+                            .gender(rs.getBoolean("gender"))
+                            .dob(rs.getDate("dob").toLocalDate())
+                            .booking(
+                                    Booking.builder()
+                                            .date(rs.getDate("date").toLocalDate())
+                                            .time(rs.getTime("time").toLocalTime())
+                                            .status(rs.getBoolean("status"))
+                                            .build()
+                            )
+                            .account(
+                                    Account.builder()
+                                            .id(rs.getLong("id"))
+                                            .email(rs.getString("email"))
+                                            .build()
+                            )
+                            .build()
+            );
+        }
+        ConnectionUtils.closeConnection();
+        return patient;
+    }
 
 }
