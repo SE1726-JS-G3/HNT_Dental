@@ -27,15 +27,18 @@
                                             aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body p-3 pt-4">
-                                    <form enctype="multipart/form-data" action="blogmanage?action=addnew" method="POST">
+                                    <form enctype="multipart/form-data" action="${pageContext.request.contextPath}/management/blog/update" method="POST">
+                                        <input value="${blog_id}" name="blog_id" type="hidden">
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="mb-3">
                                                     <label class="form-label">Danh Mục<span class="text-danger">*</span></label>
                                                     <select name="category_id" class="form-select"
                                                             aria-label="Default select example">
-                                                        <c:forEach items="${categories}" var="c">
-                                                            <option value="${c.id}">${c.name}</option>
+                                                        <c:forEach var="c" items="${category}">
+                                                            <option value="${c.name}"
+                                                                    <c:if test="${c.name eq blogs.categoryBlog.name}">selected=""</c:if>
+                                                            >${c.name}</option>
                                                         </c:forEach>
                                                     </select>
                                                 </div>
@@ -43,7 +46,9 @@
                                             <div class="mb-3">
                                                 <label class="form-label">Tiêu đề <span
                                                         class="text-danger">*</span></label>
-                                                <input name="title" id="name" type="text" class="form-control">
+                                                <input name="title" id="title" type="text" class="form-control"
+                                                       value="${blogs.title}"
+                                                       placeholder="Tiêu đề:">
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Ảnh <span class="text-danger">*</span></label>
@@ -60,15 +65,18 @@
                                             <div class="mb-3">
                                                 <label class="form-label">Thông Tin Tóm Tắt<span
                                                         class="text-danger">*</span></label>
-                                                <textarea rows="" cols="" class="brief" name="brief"
-                                                          style="width: 720px; height:50px"></textarea>
+                                                <textarea rows="3" cols="70" class="brief" name="brief" id="brief" placeholder="Thông tin tóm tắt">${blogs.brief}</textarea>
+
+
+
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Mô tả<span
                                                         class="text-danger">*</span></label>
 
-                                                <textarea rows="10" cols="70" class="describe"
-                                                          name="describe"></textarea>
+                                                <textarea rows="10" cols="70" class="describe" name="description" id="describe" placeholder="Mô tả:">${blogs.description}</textarea>
+
+
                                             </div>
 
                                             <div class="mb-3">
@@ -111,9 +119,9 @@
 
 
 <script>
-    function Sort(type) {
-        window.location.href = "blogmanage?action=sort&type=" + type;
-    }
+    // function Sort(type) {
+    //     window.location.href = "blogmanage?action=sort&type=" + type;
+    // }
 
 
     ClassicEditor.create(document.querySelector(".describe"), {

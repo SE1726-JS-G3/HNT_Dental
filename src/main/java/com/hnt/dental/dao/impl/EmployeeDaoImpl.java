@@ -46,6 +46,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     private static final String GET_EMPLOYEE_BY_ID = "SELECT * FROM hnt_dental.employees where id=?";
 
+    private static final String GET_EMPLOYEE_BY_NAME = "SELECT * FROM hnt_dental.employees where full_name like ?";
+
     private static final String DELETE_EMPLOYEE = "DELETE FROM employees WHERE id=?";
 
     @Override
@@ -102,6 +104,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
                 employee.getDob(), employee.getGender(), employee.getPhone(), employee.getAddress(),
                 employee.getSalary(), employee.isStatus(), employee.getCreatedAt(), employee.getUpdatedAt());
         return null;
+
     }
 
     @Override
@@ -110,6 +113,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
                 employee.getDob(), employee.getGender(), employee.getPhone(), employee.getAddress(),
                 employee.getSalary(), employee.isStatus(), employee.getCreatedAt(), employee.getUpdatedAt(), employee.getAccount().getId());
     }
+
+
 
     @Override
     public void delete(Employee employee) throws SQLException {
@@ -127,5 +132,28 @@ public class EmployeeDaoImpl implements EmployeeDao {
         }
         ConnectionUtils.closeConnection();
         return null;
+    }
+
+    @Override
+    public Optional<Employee> findByName(String name) throws Exception {
+        ResultSet rs = ConnectionUtils.executeQuery(GET_EMPLOYEE_BY_NAME, name);
+        assert rs != null;
+        if (rs.next()) {
+            return Optional.ofNullable(Employee.builder().id(rs.getLong("id"))
+                    .fullName(rs.getString("full_name"))
+                    .account(
+                            Account.builder()
+                                    .email("email")
+                                    .build())
+                    .phone(rs.getString("phone"))
+                    .address(rs.getString("address"))
+                    .dob(DateUtils.convertDateToLocalDate(rs.getDate("dob")))
+                    .gender(rs.getBoolean("gender"))
+                    .salary(rs.getDouble("salary"))
+                    .description(rs.getString("description"))
+                    .build());
+        }
+        ConnectionUtils.closeConnection();
+        return Optional.empty();
     }
 }

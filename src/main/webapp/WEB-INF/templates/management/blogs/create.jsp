@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Huyen Nguyen
-  Date: 6/21/2023
-  Time: 7:45 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
@@ -27,23 +20,28 @@
                                             aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body p-3 pt-4">
-                                    <form enctype="multipart/form-data" action="blogmanage?action=addnew" method="POST">
+                                    <form enctype="multipart/form-data" action="${pageContext.request.contextPath}/management/blog" method="POST">
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="mb-3">
                                                     <label class="form-label">Danh Mục<span class="text-danger">*</span></label>
                                                     <select name="category_id" class="form-select"
                                                             aria-label="Default select example">
-                                                        <c:forEach items="${categories}" var="c">
-                                                            <option value="${c.id}">${c.name}</option>
-                                                        </c:forEach>
+<%--                                                        <c:forEach items="${categories}" var="c">--%>
+<%--                                                            <option value="${c.id}">${c.name}</option>--%>
+<%--                                                        </c:forEach>--%>
+    <option value="theloai1">Title 1</option>
+    <option value="theloai2">Title 2</option>
+    <option value="theloai3">Title 3</option>
+
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Tiêu đề <span
                                                         class="text-danger">*</span></label>
-                                                <input name="title" id="name" type="text" class="form-control">
+                                                <input name="title" id="title" type="text" class="form-control"
+                                                       placeholder="Tiêu đề :">
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Ảnh <span class="text-danger">*</span></label>
@@ -61,14 +59,16 @@
                                                 <label class="form-label">Thông Tin Tóm Tắt<span
                                                         class="text-danger">*</span></label>
                                                 <textarea rows="" cols="" class="brief" name="brief"
-                                                          style="width: 720px; height:50px"></textarea>
+                                                          style="width: 720px; height:50px"
+                                                          placeholder="Thông Tin Tóm Tắt:"></textarea>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Mô tả<span
                                                         class="text-danger">*</span></label>
 
                                                 <textarea rows="10" cols="70" class="describe"
-                                                          name="describe"></textarea>
+                                                          name="describe"
+                                                          placeholder="Mô tả:"></textarea>
                                             </div>
 
                                             <div class="mb-3">
