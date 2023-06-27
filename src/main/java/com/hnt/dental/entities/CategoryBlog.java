@@ -8,6 +8,8 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class CategoryBlog extends BaseEntity{
+
+    private Long id;
     private String name;
 
 }

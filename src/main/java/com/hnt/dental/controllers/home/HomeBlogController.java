@@ -1,5 +1,7 @@
 package com.hnt.dental.controllers.home;
 
+import com.hnt.dental.service.BlogService;
+import com.hnt.dental.service.DoctorService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,16 +16,30 @@ import java.io.IOException;
 })
 
 public class HomeBlogController extends HttpServlet {
+
+    private static final BlogService service;
+
+    static {
+        service = new BlogService();
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String action = req.getServletPath();
         switch (action) {
             case "/blog":
-                req.getRequestDispatcher("/WEB-INF/templates/home/blog/index.jsp").forward(req, resp);
+                service.getAll(req, resp);
                 break;
             case "/blog/detail":
-                req.getRequestDispatcher("/WEB-INF/templates/home/blog/detail.jsp").forward(req, resp);
+                String id = req.getParameter("id");
+                req.setAttribute("test",id);
+                try {
+                    service.getBlogById(req, resp);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+
                 break;
             default:
         }

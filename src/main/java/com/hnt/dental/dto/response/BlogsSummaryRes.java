@@ -1,20 +1,16 @@
-package com.hnt.dental.entities;
+package com.hnt.dental.dto.response;
 
-import lombok.*;
+import com.hnt.dental.entities.CategoryBlog;
+import lombok.Builder;
+import lombok.Data;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
+@Data
 @Builder
-public class Blogs extends BaseEntity{
-
+public class BlogsSummaryRes {
     private Long id;
     private CategoryBlog categoryBlog;
-    private Employee employee;
     private String title;
     private String title_img;
     private String brief;
     private String description;
-
 }
