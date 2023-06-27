@@ -92,16 +92,46 @@
 
 
 
+<%--                                    <div class="col-md-6">--%>
+<%--                                        <div class="mb-3">--%>
+<%--                                            <label class="form-label">Giới tính</label>--%>
+<%--                                            <input name="gender" id="gender" type="text" class="form-control"--%>
+<%--                                                   placeholder="Sex" value="${detail.gender}">--%>
+
+
+<%--                                        </div>--%>
+<%--                                    </div>--%>
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Giới tính</label>
-                                            <input name="gender" id="gender" type="text" class="form-control"
-                                                   placeholder="Sex" value="${detail.gender}">
-
-
+                                            <select name="gender" id="gender" class="form-select form-control">
+                                                <option value="nu">Nữ</option>
+                                                <c:if test="${detail.gender == false}">
+                                                    selected
+                                                </c:if>
+                                                <option value="nam">Nam</option>
+                                                <c:if test="${detail.gender == true}">
+                                                    selected
+                                                </c:if>
+                                            </select>
                                         </div>
                                     </div>
 
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Trạng thái</label>
+                                            <select name="status" class="form-select form-control">
+                                                <option value="notActive">nactive</option>
+                                                <c:if test="${detail.status == false}">
+                                                    selected
+                                                </c:if>
+                                                <option value="active">active</option>
+                                                <c:if test="${detail.status == true}">
+                                                    selected
+                                                </c:if>
+                                            </select>
+                                        </div>
+                                    </div>
 
 
                                     <div class="col-md-12">

@@ -55,7 +55,7 @@
                   <th class="border-bottom p-3">Tên bệnh nhân</th>
                   <th class="border-bottom p-3">Ngày sinh</th>
                   <th class="border-bottom p-3">Giới tính</th>
-                  <th class="border-bottom p-3">Số điện thoại</th>
+                  <th class="border-bottom p-3">Trạng thái</th>
 <%--                  <th class="border-bottom p-3">Lịch khám </th>--%>
 
                   <th class="border-bottom p-3 text-center">Tác vụ</th>
@@ -75,8 +75,15 @@
                       Nữ
                     </c:if>
                   </td>
-                  <td class="p-3">${o.phone}</td>
-<%--                  <td class="p-3">${o.created_at}</td>--%>
+                  <td class="p-3">
+                    <c:if test="${o.status == true}">
+                      active
+                    </c:if>
+                    <c:if test="${o.status == false}">
+                      nactive
+                    </c:if>
+                  </td>
+
 
 
                   <td class="p-3 text-center">

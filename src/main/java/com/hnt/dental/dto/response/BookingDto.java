@@ -10,6 +10,10 @@ import java.time.LocalDate;
 @Getter
 @Builder
 public class BookingDto {
+
+
+    private ServiceResDto serviceResDto;
+    private Long id;
     private String name;
     private int phone;
     private String email;
@@ -18,5 +22,7 @@ public class BookingDto {
     private String time;
     private String decription;
     private String payment;
-
+    private String status;
+    private double fee;
+    private int account_id;
 }

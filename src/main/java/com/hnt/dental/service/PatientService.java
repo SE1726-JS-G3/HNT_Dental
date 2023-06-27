@@ -1,4 +1,7 @@
 package com.hnt.dental.service;
+import com.hnt.dental.entities.Employee;
+import com.hnt.dental.util.AesUtils;
+import com.hnt.dental.util.CaptchaUtils;
 import org.apache.commons.lang3.StringUtils;
 import com.hnt.dental.entities.Account;
 import com.hnt.dental.exception.SystemRuntimeException;
@@ -50,7 +53,7 @@ public class PatientService {
             if(pageStr!=null){
                 page = Integer.parseInt(pageStr);
             }
-            final int PAGE_SIZE =2;
+            final int PAGE_SIZE =5;
             req.setAttribute("list",list.subList((page-1)*PAGE_SIZE,page*PAGE_SIZE) );
             ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/patient/index.jsp");
         }catch (SQLException e) {
@@ -93,59 +96,100 @@ public class PatientService {
         ServletUtils.redirect(req, resp, "/management/patient");
     }
 
+//    public void create(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+//        Long id = Long.valueOf(req.getParameter("id"));
+//        String fullName = req.getParameter("full_name");
+//        String dob = req.getParameter("dob");
+//        String gender = req.getParameter("gender");
+//        String email = req.getParameter("email");
+//        String phone = req.getParameter("phone");
+//
+//        String address = req.getParameter("address");
+////        String status = req.getParameter("status");
+//
+//        patientDao.save(
+//                Patient.builder().account(Account.builder()
+//                                .id(id)
+//                                .email(email)
+//                                .build())
+//
+//                        //.id(Long.valueOf(id))
+//                        .fullName(fullName)
+//                        .dob(LocalDate.parse(dob, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+//                        .gender(Objects.equals(gender, "Nam"))
+//                        .phone(phone)
+//
+//                        .address(address)
+//                        .build()
+//        );
+//
+//        ServletUtils.redirect(req, resp, "/management/patient");
+//    }
+
     public void create(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        Long id = Long.valueOf(req.getParameter("id"));
+
         String fullName = req.getParameter("full_name");
         String dob = req.getParameter("dob");
         String gender = req.getParameter("gender");
-        //String email = req.getParameter("email");
+        String email = req.getParameter("email");
         String phone = req.getParameter("phone");
-
         String address = req.getParameter("address");
+        //String image = req.getParameter("image");
+        String description = req.getParameter("description");
 
+        String password = AesUtils.encrypt(CaptchaUtils.getCaptcha(8));
+
+        //RoleEnum role = image.equals("patient") ? RoleEnum.ROLE_PATIENT : RoleEnum.ROLE_ADMIN ;
+        RoleEnum role = RoleEnum.ROLE_PATIENT;
+        Long id = accountDao.save(
+                Account.builder()
+                        .email(email)
+                        .password(password)
+                        .role(role.ordinal())
+                        .isVerified(true)
+                        .build()
+        );
 
         patientDao.save(
-                Patient.builder()
-
-                        .id(Long.valueOf(id))
+              Patient.builder()
+                        .account(Account.builder().id(id).build())
                         .fullName(fullName)
                         .dob(LocalDate.parse(dob, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                         .gender(Objects.equals(gender, "Nam"))
                         .phone(phone)
-
                         .address(address)
+                        .description(description)
                         .build()
         );
 
         ServletUtils.redirect(req, resp, "/management/patient");
     }
 
-
     public void update(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         Long id = Long.valueOf(req.getParameter("id"));
         String fullname = req.getParameter("full_name");
         String dob = req.getParameter("dob");
         String gender = req.getParameter("gender");
-
         String phone = req.getParameter("phone");
         String address = req.getParameter("address");
-
         String description = req.getParameter("description");
+        String status = req.getParameter("status");
 
-
-        patientDao.update(
+          patientDao.update(
                 Patient.builder()
-                        .account(Account.builder().id(id).build())
+                        .id(id)
                         .fullName(fullname)
                         .dob(LocalDate.parse(dob, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-                        .gender(Objects.equals(gender, "Nam"))
+                        .gender(Objects.equals(gender, "nam"))
+                        //.gender(Boolean.valueOf(gender))
                         .phone(phone)
 
                         .address(address)
                         .description(description)
+                        .status(Objects.equals(status, "active"))
+
                         .build()
         );
-
 
         ServletUtils.redirect(req, resp, "/management/patient");
 

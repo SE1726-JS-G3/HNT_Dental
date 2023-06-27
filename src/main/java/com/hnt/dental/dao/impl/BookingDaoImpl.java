@@ -5,6 +5,9 @@ import com.hnt.dental.entities.Booking;
 import com.hnt.dental.entities.Service;
 import com.hnt.dental.util.ConnectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import com.hnt.dental.dto.response.BookingDto;
+import com.hnt.dental.dto.response.ServiceResDto;
+
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,6 +23,12 @@ public class BookingDaoImpl implements BookingDao {
             "            inner join service s on b.service_id = s.id " +
             "            where LOWER(b.name) like ? OR LOWER(s.name) like ? " +
             "LIMIT ?, ?";
+
+
+    private static final String HISTORY_PATIENT = "SELECT  b.fee ,b.account_id, b.status ,b.time,b.date ,s.name , st.name FROM booking b join service s join service_type st " +
+            "           where b.service_id = s.id and s.id= st.id";
+    private static final String HISTORY_DETAIL ="\n" +
+            "SELECT b.account_id, b.name, b.age, b.email,b.decription FROM booking b INNER JOIN accounts a ON b.id = a.id where b.id = ?";
 
     @Override
     public List<Booking> getAll(Integer offset, Integer limit, String search) throws SQLException {
@@ -44,6 +53,56 @@ public class BookingDaoImpl implements BookingDao {
     public Optional<Booking> get(int id) throws SQLException {
         return Optional.empty();
     }
+
+
+    @Override
+    public List<BookingDto> getAllHistory() throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(HISTORY_PATIENT);
+        List<BookingDto> list = new ArrayList<>();
+        while (true){
+            assert rs != null;
+            if (!rs.next()) break;
+            list.add(BookingDto
+                    .builder().serviceResDto(ServiceResDto.builder()
+                            .name(rs.getString("name"))
+                            .build())
+                    .date(rs.getDate("date").toLocalDate())
+                    .status(rs.getString("status"))
+                    .time(String.valueOf(rs.getTime("time")))
+                    .fee(rs.getDouble("fee"))
+                    .account_id(rs.getInt("account_id"))
+
+
+                    .build());
+        }
+        return list;
+
+    }
+
+    @Override
+    public BookingDto DetailHistory(String account_id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(HISTORY_DETAIL,account_id);
+
+        assert rs != null;
+
+        if (rs.next()) {
+            return (BookingDto.builder()
+                    .account_id(rs.getInt("account_id"))
+
+                    .name(rs.getString("name"))
+                    .email(rs.getString("email"))
+                    .age(rs.getInt("age"))
+
+
+
+                    .decription(rs.getString("decription"))
+                    .build());
+        }
+        return null;
+
+    }
+
+
 
     @Override
     public Long save(Booking booking) throws SQLException, ClassNotFoundException {

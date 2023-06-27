@@ -61,13 +61,13 @@
                                         </div>
                                     </div><!--end col-->
 
-                                    <%--                                    <div class="col-md-6">--%>
-                                    <%--                                        <div class="mb-3">--%>
-                                    <%--                                            <label class="form-label">Email</label>--%>
-                                    <%--                                            <input name="email" id="email" type="email" class="form-control"--%>
-                                    <%--                                                   placeholder="Email :">--%>
-                                    <%--                                        </div>--%>
-                                    <%--                                    </div><!--end col-->--%>
+                                                                        <div class="col-md-6">
+                                                                            <div class="mb-3">
+                                                                                <label class="form-label">Email</label>
+                                                                                <input name="email" id="email" type="email" class="form-control"
+                                                                                       placeholder="Email :">
+                                                                            </div>
+                                                                        </div><!--end col-->
 
 
 
@@ -80,13 +80,13 @@
                                         </div>
                                     </div><!--end col-->
 
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">id</label>
-                                            <input name="id" id="id" type="text" class="form-control"
-                                                   placeholder="Địa chỉ">
-                                        </div>
-                                    </div><!--end col-->
+<%--                                    <div class="col-md-6">--%>
+<%--                                        <div class="mb-3">--%>
+<%--                                            <label class="form-label">id</label>--%>
+<%--                                            <input name="id" id="id" type="text" class="form-control"--%>
+<%--                                                   placeholder="id">--%>
+<%--                                        </div>--%>
+<%--                                    </div><!--end col-->--%>
 
 
 
