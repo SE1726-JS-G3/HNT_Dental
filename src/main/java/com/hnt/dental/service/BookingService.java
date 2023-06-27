@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class BookingService {
@@ -65,7 +66,7 @@ public class BookingService {
         String typeId = req.getParameter("typeId");
         String name = req.getParameter("name");
         String phone = req.getParameter("phone");
-        String email = req.getParameter("email");
+        String gender = req.getParameter("gender");
         String age = req.getParameter("age");
         String date = req.getParameter("date");
         String time = req.getParameter("time");
@@ -81,7 +82,7 @@ public class BookingService {
                 throw new Exception("Phone is required");
             }
 
-            if (email == null || email.isEmpty()) {
+            if (gender == null || gender.isEmpty()) {
                 throw new Exception("Email is required");
             }
 
@@ -107,29 +108,33 @@ public class BookingService {
 
             ServiceDetailDto serviceResDtos = dao.getServiceDetailByServiceId(Long.valueOf(sid), Long.valueOf(typeId));
 
+            Account loginInfo = (Account) req.getSession().getAttribute("account");
+
             dto = BookingDto.builder()
                     .name(name)
                     .phone(Integer.parseInt(phone))
-                    .email(email)
+                    .gender(Boolean.parseBoolean(gender))
                     .age(Integer.parseInt(age))
                     .date(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy")))
                     .time(time)
-                    .decription(decription)
+                    .description(decription)
                     .payment(payment)
                     .build();
 
             Long id = adao.save(Booking.builder()
                     .name(name)
-                    .account(Account.builder().id(1L).build())
+                    .account(Account.builder().id(loginInfo.getId()).build())
                     .service(Service.builder().id(serviceResDtos.getId()).build())
                     .phone(Integer.parseInt(phone))
-                    .email(email)
+                    .gender(Boolean.parseBoolean(gender))
                     .age(Integer.parseInt(age))
                     .date(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy")))
                     .time(LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm")))
                     .status(false)
                     .description(decription)
                     .payment(payment)
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
                     .build());
 
             pdao.save(
@@ -138,7 +143,7 @@ public class BookingService {
                             .booking(Booking.builder().id(id).build())
                             .serviceFee(ServiceFee.builder().fee(Double.valueOf(serviceResDtos.getFee())).build())
                             .status(false)
-                            .type(PaymentEnum.getPaymentEnum(payment).ordinal())
+                            .type(Objects.requireNonNull(PaymentEnum.getPaymentEnum(payment)).ordinal())
                             .created_at(LocalDateTime.now())
                             .updated_at(LocalDateTime.now())
                             .build()
@@ -157,7 +162,6 @@ public class BookingService {
 
         if (error != null) {
             req.setAttribute("error", error);
-
             req.setAttribute("appointment", dto);
             List<ServiceTypeDto> getType = dao.getTypeByServiceId(Long.valueOf(sid));
             typeId = (typeId == null ? getType.get(0).getIdType() : Long.valueOf(typeId)).toString();
@@ -213,7 +217,10 @@ public class BookingService {
             Integer totalPage = PagingUtils.getTotalPage(totalItem);
 
             List<BookingManagementDto> getAllBookingSummary = adao.getAllBookingSummary(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE, search.trim());
-
+            List<BookingManagementDto> getServiceByServiceId = adao.getServiceByServiceId();
+            List<BookingManagementDto> getStatusByStatusId = adao.getStatusByStatusId();
+            req.setAttribute("services", getServiceByServiceId);
+            req.setAttribute("status", getStatusByStatusId);
             req.setAttribute("bookings", getAllBookingSummary);
             req.setAttribute("totalPage", totalPage);
             req.setAttribute("currentPage", pageNumber);

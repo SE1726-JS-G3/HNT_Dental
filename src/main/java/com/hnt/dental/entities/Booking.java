@@ -13,11 +13,12 @@ import java.time.LocalTime;
 public class Booking extends BaseEntity{
     private String name;
     private int phone;
-    private String email;
     private int age;
+    private boolean gender;
     private Service service;
     private Account account;
     private Employee employee;
+    private Doctors doctors;
     private LocalDate date;
     private LocalTime time;
     private int fee;

@@ -46,24 +46,32 @@
                                         <label class="form-label">Dịch vu</label>
                                     </div>
                                     <div class="col-md-9">
-                                        <select required="" id="serviceId" name="serviceHome"
-                                                class="form-control border-0">
-                                            <option selected="">Chọn dịch vụ</option>
-                                            <c:forEach items="${sevicesname}" var="sn">
-                                                <option value="${sn.id}">${sn.name}</option>
+                                        <select  name="serviceHome" class="form-select">
+                                            <option value="all">Tất cả</option>
+                                            <c:forEach items="${services}" var="s">
+                                                <option value="${s.id}">${s.service.name}</option>
                                             </c:forEach>
                                         </select>
 
                                     </div>
                                 </div>
+
+
                                 <div class="col-md-5 row align-items-center">
                                     <div class="col-md-4">
                                         <label class="form-label">Trạng thái</label>
                                     </div>
                                     <div class="col-md-8">
-                                        <select name="speciality" class="form-select">
+                                        <select  name="serviceHome" class="form-select">
                                             <option value="all">Tất cả</option>
-
+                                            <c:forEach items="${status}" var="st">
+                                                <c:if test="${st.status == true}">
+                                                    <option >Đã thanh toán</option>
+                                                </c:if>
+                                                <c:if test="${st.status == false}">
+                                                    <option >Chưa thanh toán</option>
+                                                </c:if>
+                                            </c:forEach>
                                         </select>
                                     </div>
                                 </div>

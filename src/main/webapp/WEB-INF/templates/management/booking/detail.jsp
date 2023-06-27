@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!doctype html>
@@ -19,14 +18,8 @@
                             </div>
                             <br><br><br><br><br>
                             <div class="text-center avatar-profile margin-nagative mt-n5 position-relative pb-4 border-bottom">
-                                <c:if test="${appointment.patient.account.img == 'default'}">
-                                    <img src="assets/images/avata.png"
-                                         class="rounded-circle shadow-md avatar avatar-md-md" alt="">
-                                </c:if>
-                                <c:if test="${appointment.patient.account.img != 'default'}">
-                                    <img src="data:image/png;base64,${appointment.patient.account.img}"
-                                         class="rounded-circle shadow-md avatar avatar-md-md" alt="">
-                                </c:if>
+                                <img src="${pageContext.request.contextPath}/static/images/user.png"
+                                     class="rounded-circle shadow-md avatar avatar-md-md" alt="">
                                 <h5 class="mt-3 mb-1">${appointment.patient.account.name}</h5>
                             </div>
 
@@ -50,7 +43,7 @@
 
                                 <div class="d-flex align-items-center mt-2">
                                     <i class="uil uil-medical-drip align-text-bottom text-primary h5 mb-0 me-2"></i>
-                                    <h6 class="mb-0">Ngày sinh</h6>
+                                    <h6 class="mb-0">Tuổi</h6>
                                     <p class="text-muted mb-0 ms-2"><fmt:formatDate pattern="dd/MM/yyyy"
                                                                                     value="${appointment.patient.DOB}"/></p>
                                 </div>
@@ -89,7 +82,7 @@
 
                                 <div class="d-flex align-items-center mt-2">
                                     <i class="uil uil-book-open align-text-bottom text-primary h5 mb-0 me-2"></i>
-                                    <h6 class="mb-0">Số điện thoại</h6>
+                                    <h6 class="mb-0">Rank</h6>
                                     <p class="text-muted mb-0 ms-2">0${appointment.doctor.phone}</p>
                                 </div>
 
@@ -106,7 +99,7 @@
                     <div class="p-4 border-bottom">
                         <h5 class="mb-0">Thông tin lịch hẹn</h5>
                     </div>
-                    <div class="tab-content p-4" >
+                    <div class="tab-content p-4">
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="mb-3">
@@ -196,7 +189,7 @@
                                         </option>
                                     </select>
                                 </div>
-                                <div class="tab-content p-0" >
+                                <div class="tab-content p-0">
                                     <input type="submit" id="submit" name="send" class="btn btn-primary"
                                            value="Cập nhật">
                                 </div>
