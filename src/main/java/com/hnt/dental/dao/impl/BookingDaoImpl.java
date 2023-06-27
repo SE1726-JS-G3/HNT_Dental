@@ -1,6 +1,8 @@
 package com.hnt.dental.dao.impl;
 
 import com.hnt.dental.dao.BookingDao;
+import com.hnt.dental.dto.response.BookingManagementDto;
+import com.hnt.dental.dto.response.DoctorSummaryRes;
 import com.hnt.dental.entities.Booking;
 import com.hnt.dental.entities.Service;
 import com.hnt.dental.util.ConnectionUtils;
@@ -20,24 +22,13 @@ public class BookingDaoImpl implements BookingDao {
             "            inner join service s on b.service_id = s.id " +
             "            where LOWER(b.name) like ? OR LOWER(s.name) like ? " +
             "LIMIT ?, ?";
+    private static final String SQL_COUNT_BOOKING = "SELECT count(*) FROM booking b " +
+            "                       inner join service s on b.service_id = s.id " +
+            "                      where LOWER(b.name) like ? OR LOWER(s.name) like ? order by b.id";
 
     @Override
     public List<Booking> getAll(Integer offset, Integer limit, String search) throws SQLException {
-        search = StringUtils.isNotEmpty(search) ? "%" + search.toLowerCase() + "%" : "%";
-        ResultSet rs = ConnectionUtils.executeQuery(GET_ALL_BOOKING, search, search, offset, limit);
-        List<Booking> list = new ArrayList<>();
-        while (rs.next()) {
-            list.add(Booking.builder()
-                    .id(rs.getLong("id"))
-                    .name(rs.getString("name"))
-                    .service(Service.builder().name(rs.getString("service")).build())
-                    .date(rs.getDate("date").toLocalDate())
-                    .time(rs.getTime("time").toLocalTime())
-                    .status(rs.getBoolean("status"))
-                    .build());
-        }
-        ConnectionUtils.closeConnection();
-        return list;
+        return null;
     }
 
     @Override
@@ -61,4 +52,34 @@ public class BookingDaoImpl implements BookingDao {
     public void delete(Booking booking) throws SQLException {
 
     }
+
+    @Override
+    public List<BookingManagementDto> getAllBookingSummary(int offset, int limit, String search) throws SQLException {
+        search = StringUtils.isNotEmpty(search) ? "%" + search.toLowerCase() + "%" : "%";
+        ResultSet rs = ConnectionUtils.executeQuery(GET_ALL_BOOKING, search, search, offset, limit);
+        List<BookingManagementDto> list = new ArrayList<>();
+        while (rs.next()) {
+            list.add(BookingManagementDto.builder()
+                    .id(rs.getLong("id"))
+                    .name(rs.getString("name"))
+                    .service(Service.builder().name(rs.getString("service")).build())
+                    .date(rs.getDate("date").toLocalDate())
+                    .time(rs.getTime("time").toLocalTime())
+                    .status(rs.getBoolean("status"))
+                    .build());
+        }
+        ConnectionUtils.closeConnection();
+        return list;
+    }
+    @Override
+    public Integer countListBookingSummary(String search) throws SQLException {
+        search = "%" + search + "%";
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_COUNT_BOOKING, search, search);
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        ConnectionUtils.closeConnection();
+        return null;
+    }
+
 }

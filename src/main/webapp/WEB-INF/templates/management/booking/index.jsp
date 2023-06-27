@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Huyen Nguyen
@@ -17,56 +18,62 @@
         <div class="container-fluid">
             <div class="layout-specing">
                 <div class="row">
-                <div class="col-md-5 row">
-                    <div class="col-md-4">
-                        <h5 class="mb-0"> Quản lý lịch hẹn</h5>
+                    <div class="col-md-5 row">
+                        <div class="col-md-4">
+                            <h5 class="mb-0"> Quản lý lịch hẹn</h5>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="search-bar p-0 d-lg-block ms-2">
+                                <div id="search" class="menu-search mb-0">
+                                    <form action="doctormanage?action=search" method="POST" id="searchform"
+                                          class="searchform">
+                                        <div>
+                                            <input type="text" class="form-control border rounded-pill" name="txt"
+                                                   id="s" placeholder="Tìm kiếm ...">
+                                            <input type="submit" id="searchsubmit" value="Search">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-7">
-                        <div class="search-bar p-0 d-lg-block ms-2">
-                            <div id="search" class="menu-search mb-0">
-                                <form action="doctormanage?action=search" method="POST" id="searchform" class="searchform">
-                                    <div>
-                                        <input type="text" class="form-control border rounded-pill" name="txt" id="s" placeholder="Tìm kiếm ...">
-                                        <input type="submit" id="searchsubmit" value="Search">
+                        <form action="doctormanage?action=filter" method="POST"
+                              onSubmit="document.getElementById('submit').disabled = true;">
+                            <div class="justify-content-md-end row">
+                                <div class="col-md-5 row align-items-center">
+                                    <div class="col-md-3">
+                                        <label class="form-label">Dịch vu</label>
                                     </div>
-                                </form>
+                                    <div class="col-md-9">
+                                        <select required="" id="serviceId" name="serviceHome"
+                                                class="form-control border-0">
+                                            <option selected="">Chọn dịch vụ</option>
+                                            <c:forEach items="${sevicesname}" var="sn">
+                                                <option value="${sn.id}">${sn.name}</option>
+                                            </c:forEach>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-5 row align-items-center">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Trạng thái</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <select name="speciality" class="form-select">
+                                            <option value="all">Tất cả</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-1 md-0">
+                                    <button type="submit" class="btn btn-primary">Lọc</button>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
-                <div class="col-md-7">
-                    <form action="doctormanage?action=filter" method="POST" onSubmit="document.getElementById('submit').disabled = true;">
-                        <div class="justify-content-md-end row">
-                            <div class="col-md-5 row align-items-center">
-                                <div class="col-md-3">
-                                    <label class="form-label">Dịch vu</label>
-                                </div>
-                                <div class="col-md-9">
-                                    <select name="gender" class="form-select">
-                                        <option >Tất cả</option>
-
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-5 row align-items-center">
-                                <div class="col-md-4">
-                                    <label class="form-label">Trạng thái</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <select name="speciality" class="form-select">
-                                        <option  value="all">Tất cả</option>
-
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-1 md-0">
-                                <button type="submit" class="btn btn-primary">Lọc</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
 
                 <div class="row">
                     <div class="col-12 mt-4">
@@ -84,36 +91,48 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td class="p-3">1</td>
-                                    <td class="p-3">Nguyễn Thị Huyền</td>
-                                    <td class="p-3">Nhổ răng khôn</td>
-                                    <td class="p-3">30/05/2023</td>
-                                    <td class="p-3">9AM</td>
-                                    <td class="p-3">Assigned</td>
-                                    <td class="text-end p-3 text-center ">
-                                        <a href="#">
+                                <c:forEach items="${bookings}" var="b">
+                                    <tr>
+                                        <td>${b.id}</td>
+                                        <td>${b.name}</td>
+                                        <td>${b.service.name}</td>
+                                        <td>${b.date}</td>
+                                        <td>${b.time}</td>
+
+                                        <td>
+                                            <c:if test="${b.status == true}">
+                                                Đã thanh toán
+                                            </c:if>
+
+                                            <c:if test="${b.status == false}">
+                                                Chưa thanh toán
+                                            </c:if>
+                                        </td>
+                                        <td class="text-center">
                                             <button class="btn btn-primary"
-                                                    onclick="window.location.href='${pageContext.request.contextPath}/management/appointment/detail'">Chi tiết
+                                                    onclick="window.location.href='${pageContext.request.contextPath}/management/booking/detail'"
+                                            >Chi tiết
                                             </button>
-                                        </a>
-                                    </td>
-                                </tr>
+                                        <td>
+                                    </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
+
+
+                <c:set var="page" value="${currentPage}"/>
                 <div class="row text-center">
                     <div class="col-12 mt-4">
                         <div class="d-md-flex align-items-center text-center justify-content-between">
                             <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                <li class="page-item active pl-1"><a class="page-link"
-                                                                     href="#">1</a>
-                                </li>
-                                <li class="page-item pl-1"><a class="page-link"
-                                                              href="#">2</a>
-                                </li>
+                                <c:forEach begin="${1}" end="${totalPage}" var="i">
+                                    <li class="page-item ${i==page?"active":""}"><a class="page-link"
+                                                                                    href="${url}?page=${i}&search=${search}">${i}</a>
+                                    </li>
+                                </c:forEach>
                             </ul>
                         </div>
                     </div>
@@ -177,7 +196,14 @@
         </div>
     </div>
 </div>
-
+<script>
+    $(document).ready(function () {
+        $("#btn-search").click(function () {
+            let search = $("#search").val();
+            window.location.href = "${url}?search=" + search;
+        });
+    });
+</script>
 <script src="${pageContext.request.contextPath}/static/libs/simplebar/simplebar.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/libs/feather-icons/feather.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>

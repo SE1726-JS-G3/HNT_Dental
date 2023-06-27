@@ -7,15 +7,15 @@ import com.hnt.dental.dao.ServiceDao;
 import com.hnt.dental.dao.impl.BookingDaoImpl;
 import com.hnt.dental.dao.impl.PaymentDaoImpl;
 import com.hnt.dental.dao.impl.ServiceDaoImpl;
-import com.hnt.dental.dto.response.BookingDto;
-import com.hnt.dental.dto.response.ServiceDetailDto;
-import com.hnt.dental.dto.response.ServiceTypeDto;
+import com.hnt.dental.dto.response.*;
 import com.hnt.dental.entities.*;
 import com.hnt.dental.exception.SystemRuntimeException;
+import com.hnt.dental.util.PagingUtils;
 import com.hnt.dental.util.ServletUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -193,6 +193,35 @@ public class BookingService {
             ServletUtils.redirect(req, resp, "/payment/success");
         } else {
             ServletUtils.redirect(req, resp, "/payment/error");
+        }
+    }
+
+    public void getAll(HttpServletRequest req, HttpServletResponse resp) {
+        String page = req.getParameter("page");
+        String search = req.getParameter("search");
+        int pageNumber = 1;
+
+        if (StringUtils.isNotEmpty(page)) {
+            pageNumber = Integer.parseInt(page);
+        }
+
+        if (StringUtils.isEmpty(search)) {
+            search = "";
+        }
+        try {
+            Integer totalItem = adao.countListBookingSummary(search.trim());
+            Integer totalPage = PagingUtils.getTotalPage(totalItem);
+
+            List<BookingManagementDto> getAllBookingSummary = adao.getAllBookingSummary(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE, search.trim());
+
+            req.setAttribute("bookings", getAllBookingSummary);
+            req.setAttribute("totalPage", totalPage);
+            req.setAttribute("currentPage", pageNumber);
+            req.setAttribute("search", search);
+            req.setAttribute("url", "/management/booking");
+            req.getRequestDispatcher("/WEB-INF/templates/management/booking/index.jsp").forward(req, resp);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 }
