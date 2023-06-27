@@ -68,12 +68,26 @@
             <div class="col-lg-12 col-lg-12 row align-items-center">
 
                 <c:forEach items="${services}" var="s">
-                    <div class="col-xl-3 col-lg-3 col-md-6 mt-2 pt-2">
-                        <div class="card team border-0 rounded shadow overflow-hidden">
-                            <div class="team-person position-relative overflow-hidden">
-                                <img src="${s.image}"
-                                     style="display: block;margin-left: auto;margin-right: auto; width: 400px; height: 200px" class="img-fluid"
-                                     alt="">
+                <div class="col-xl-3 col-lg-3 col-md-6 mt-2 pt-2">
+                    <div class="card team border-0 rounded shadow overflow-hidden">
+                        <div class="team-person position-relative overflow-hidden">
+                            <img src="${s.image}"
+                                 style="display: block;margin-left: auto;margin-right: auto; width: 400px; height: 200px" class="img-fluid"
+                                 alt="">
+                        </div>
+                        <div class="card-body" style="height: 250px">
+                            <a href="#" class="text-dark d-block mb-0">${s.name}</a>
+                            <small class="text-muted speciality">Loại dịch vụ : ${s.type}</small>
+                            <br>
+                            <small class="text-muted speciality">Gía tiền: ${s.fee}</small>
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <ul class="list-unstyled mb-0">
+                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                    <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                </ul>
                             </div>
                             <div class="card-body" style="height: 250px">
                                 <a href="#" class="text-dark d-block mb-0">${s.name}</a>
