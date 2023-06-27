@@ -208,7 +208,6 @@ public void updateRender(HttpServletRequest req, HttpServletResponse resp) throw
     req.setAttribute("error", error);
     req.setAttribute("patients", PatientResDto.convert(myPatientDoctor));
     req.setAttribute("feedbacks", getAllFeedbackByIdDoctor);
-    req.setAttribute("id", id);
     ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/doctor/detail.jsp");
 }
 
