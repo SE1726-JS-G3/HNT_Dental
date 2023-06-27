@@ -13,7 +13,6 @@
 <jsp:include page="../layout/header.jsp"/>
 
 <body>
-<jsp:include page="../layout/preloader.jsp"/>
 
 <jsp:include page="../layout/menu-header-white.jsp"/>
 
@@ -90,13 +89,27 @@
                                     <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
                                 </ul>
                             </div>
-                            <div class="pt-2">
-                                <button class="btn btn-soft-primary" onclick="window.location.href = '/service/detail?id=${s.id}'">Chi tiết
-                                </button>
+                            <div class="card-body" style="height: 250px">
+                                <a href="#" class="text-dark d-block mb-0">${s.name}</a>
+                                <small class="text-muted speciality">Loại dịch vụ : ${s.type}</small>
+                                <br>
+                                <small class="text-muted speciality">Gía tiền: ${s.fee}</small>
+                                <div class="d-flex justify-content-between align-items-center mt-2">
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                    </ul>
+                                </div>
+                                <div class="pt-2">
+                                    <button class="btn btn-soft-primary" onclick="window.location.href = '/service/detail?id=${s.id}'">Chi tiết
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
                 </c:forEach>
 

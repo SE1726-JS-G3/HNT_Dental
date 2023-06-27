@@ -1,20 +1,28 @@
 package com.hnt.dental.entities;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 public class Booking extends BaseEntity{
+    private String name;
+    private int phone;
+    private int age;
+    private boolean gender;
     private Service service;
     private Account account;
     private Employee employee;
-    private Date date;
-    private LocalDateTime time;
-    private String decription;
-    private String status;
+    private Doctors doctors;
+    private LocalDate date;
+    private LocalTime time;
+    private int fee;
+    private String description;
+    private boolean status;
+    private String payment;
 }
