@@ -120,15 +120,15 @@
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                            <div class="mb-3">
-                                <label class="form-label">Bác sĩ</label>
-                                <p>${appointment.staff.name}</p>
-                            </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Bác sĩ</label>
+                                    <p>${appointment.staff.name}</p>
+                                </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label class="form-label">Tên dịch vụ</label>
-                                    <p><fmt:formatNumber pattern="##########" value="${appointment.fee}"/> </p>
+                                    <p><fmt:formatNumber pattern="##########" value="${appointment.fee}"/></p>
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -140,7 +140,7 @@
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label class="form-label">Loại dịch vụ</label>
-                                    <p><fmt:formatNumber pattern="##########" value="${appointment.fee}"/> </p>
+                                    <p><fmt:formatNumber pattern="##########" value="${appointment.fee}"/></p>
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -152,7 +152,7 @@
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label class="form-label">Trạng thái thanh toán</label>
-                                    <p><fmt:formatNumber pattern="##########" value="${appointment.fee}"/> </p>
+                                    <p><fmt:formatNumber pattern="##########" value="${appointment.fee}"/></p>
                                 </div>
                             </div>
                             <div class="col-lg-12">
@@ -179,34 +179,24 @@
                                            id="number" type="number" class="form-control" value="${appointment.fee}">
                                 </div>
                             </div>
-                        </div>
-
-                            <div class="tab-content p-4" id="pills-tabContent5">
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
-                                        <label class="form-label">Bác sĩ</label>
-                                        <select name="staff" class="form-select">
-                                            <option
-                                                    class="form-control" value=""></option>
-                                        </select>
-                                    </div>
+                            <div class="col-lg-12">
+                                <div class="mb-3">
+                                    <label class="form-label">Bác sĩ</label>
+                                    <select name="staff" class="form-select">
+                                        <option
+                                                class="form-control" value=""></option>
+                                    </select>
                                 </div>
                             </div>
-
-
-                            <div class="tab-content p-4" id="pills-tabContent1">
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
-                                        <label class="form-label">Nhân viên hỗ trợ</label>
-                                        <select name="staff" class="form-select">
-                                            <option
-                                                    class="form-control" value=""></option>
-                                        </select>
-                                    </div>
+                            <div class="col-lg-12">
+                                <div class="mb-3">
+                                    <label class="form-label">Nhân viên hỗ trợ</label>
+                                    <select name="staff" class="form-select">
+                                        <option
+                                                class="form-control" value=""></option>
+                                    </select>
                                 </div>
                             </div>
-
-                        <div class="tab-content p-4" id="pills-tabContent2">
                             <div class="col-lg-12">
                                 <div class="mb-3">
                                     <label class="form-label">Trạng thái</label>

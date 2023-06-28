@@ -50,7 +50,7 @@ public enum BookingStatusEnum {
         List<BookingStatus> bookingStatusList = new ArrayList<>();
         for (BookingStatusEnum bookingStatusEnum : BookingStatusEnum.values()) {
             BookingStatus bookingStatus = new BookingStatus();
-            bookingStatus.setId(bookingStatusEnum.ordinal());
+            bookingStatus.setId((bookingStatusEnum.ordinal()) + "");
             bookingStatus.setName(bookingStatusEnum.name());
             bookingStatusList.add(bookingStatus);
         }

@@ -12,6 +12,6 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @SuperBuilder
 public class BookingStatus {
-    private int id;
+    private String id;
     private String name;
 }
