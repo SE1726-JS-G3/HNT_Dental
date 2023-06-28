@@ -55,12 +55,19 @@
                       </c:forEach>
                     </select>
                   </div>
+
                 </div>
                 <div class="col-md-1 md-0">
                   <button type="submit" class="btn btn-primary">Lọc</button>
                 </div>
               </div>
             </form>
+          </div>
+<%--          <div class="col-md-2 col-sm-12 text-right">--%>
+          <div class="col-md-4 col-sm-1 align-items-center">
+          <a href="${pageContext.request.contextPath}/management/doctor/create">
+              <button class="btn btn-primary">Thêm mới</button>
+            </a>
           </div>
           <div class="row">
             <div class="col-12 mt-4">

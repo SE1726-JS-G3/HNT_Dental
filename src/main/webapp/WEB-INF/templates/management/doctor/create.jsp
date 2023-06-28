@@ -87,7 +87,7 @@
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Chức vụ</label>
+                                            <label class="form-label">Chuyên môn</label>
                                             <input name="position" id="position" type="text" class="form-control"
                                                    placeholder="Chức vụ">
                                         </div>
@@ -98,7 +98,7 @@
                                             <label class="form-label">Giới tính</label>
                                             <select name="gender" class="form-select form-control">
                                                 <option value="nam">Nam</option>
-                                                <option value="nu">Nữ</option>
+                                                <option value="nữ">Nữ</option>
                                             </select>
                                         </div>
                                     </div><!--end col-->
@@ -110,7 +110,24 @@
                                                    placeholder="Xếp hạng">
                                         </div>
                                     </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Trạng thái</label>
+                                            <select name="status" class="form-select form-control">
+                                                <option value="Đang làm việc">Đang làm việc</option>
+                                                <option value="Đã nghỉ việc">Đã nghỉ việc</option>
+                                            </select>
+                                        </div>
+                                    </div><!--end col-->
 
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Chức vụ</label>
+                                            <select name="Role" class="form-select form-control">
+                                                <option value="doctor" selected>Doctor</option>
+                                            </select>
+                                        </div>
+                                    </div><!--end col-->
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label class="form-label">Mô tả</label>
