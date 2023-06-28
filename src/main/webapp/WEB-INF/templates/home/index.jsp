@@ -37,6 +37,7 @@
                                                 <option value="${s.id}">${s.name}</option>
                                             </c:forEach>
                                         </select>
+
                                     </div>
                                 </div><!--end col-->
 
@@ -51,11 +52,10 @@
                         </form><!--end form-->
                     </div>
                 </div>
-            </div><!--end col-->
-        </div><!--end row-->
-    </div><!--end container-->
-</section><!--end section-->
-
+            </div>
+        </div>
+    </div>
+</section>
 
 <section class="section">
     <div class="container">

@@ -84,7 +84,6 @@
                         </div>
                     </div>
                 </div>
-
                 <c:set var="page" value="${currentPage}"/>
                 <div class="row text-center">
                     <div class="col-12 mt-4">

@@ -22,7 +22,7 @@
             <img src="${pageContext.request.contextPath}/static/images/payment/payment-success.gif" class="img-fluid" alt="">
             <br><br><br><br>
             <h3 class="mb-4">Thanh toán thành công.</h3>
-            <a href="${pageContext.request.contextPath}/home" class="btn btn-primary mt-2">Quay lại trang chủ</a>
+            <a href="home" class="btn btn-primary mt-2">Quay lại trang chủ</a>
         </div>
     </div>
 </div>

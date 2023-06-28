@@ -12,11 +12,11 @@ import java.time.LocalDate;
 public class BookingDto {
     private String name;
     private int phone;
-    private boolean gender;
+    private String email;
     private int age;
     private LocalDate date;
     private String time;
-    private String description;
+    private String decription;
     private String payment;
 
 }
