@@ -1,4 +1,4 @@
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!doctype html>
@@ -19,25 +19,19 @@
                             </div>
                             <br><br><br><br><br>
                             <div class="text-center avatar-profile margin-nagative mt-n5 position-relative pb-4 border-bottom">
-                                <c:if test="${appointment.patient.account.img == 'default'}">
-                                    <img src="assets/images/avata.png"
-                                         class="rounded-circle shadow-md avatar avatar-md-md" alt="">
-                                </c:if>
-                                <c:if test="${appointment.patient.account.img != 'default'}">
-                                    <img src="data:image/png;base64,${appointment.patient.account.img}"
-                                         class="rounded-circle shadow-md avatar avatar-md-md" alt="">
-                                </c:if>
-                                <h5 class="mt-3 mb-1">${appointment.patient.account.name}</h5>
+                                <img src="${pageContext.request.contextPath}/static/images/user.png"
+                                     class="rounded-circle shadow-md avatar avatar-md-md" alt="">
+                                <h5 class="mt-3 mb-1">${patientBooking.name}</h5>
                             </div>
 
                             <div class="list-unstyled p-4">
                                 <div class="d-flex align-items-center mt-2">
                                     <i class="uil uil-user align-text-bottom text-primary h5 mb-0 me-2"></i>
                                     <h6 class="mb-0">Giới tính</h6>
-                                    <c:if test="${appointment.patient.account.gender == true}">
+                                    <c:if test="${patientBooking.gender == true}">
                                         <p class="text-muted mb-0 ms-2">Nam</p>
                                     </c:if>
-                                    <c:if test="${appointment.patient.account.gender == false}">
+                                    <c:if test="${patientBooking.gender == false}">
                                         <p class="text-muted mb-0 ms-2">Nữ</p>
                                     </c:if>
                                 </div>
@@ -45,14 +39,13 @@
                                 <div class="d-flex align-items-center mt-2">
                                     <i class="uil uil-book-open align-text-bottom text-primary h5 mb-0 me-2"></i>
                                     <h6 class="mb-0">Số điện thoại</h6>
-                                    <p class="text-muted mb-0 ms-2">0${appointment.patient.account.phone}</p>
+                                    <p class="text-muted mb-0 ms-2">0${patientBooking.phone}</p>
                                 </div>
 
                                 <div class="d-flex align-items-center mt-2">
                                     <i class="uil uil-medical-drip align-text-bottom text-primary h5 mb-0 me-2"></i>
-                                    <h6 class="mb-0">Ngày sinh</h6>
-                                    <p class="text-muted mb-0 ms-2"><fmt:formatDate pattern="dd/MM/yyyy"
-                                                                                    value="${appointment.patient.DOB}"/></p>
+                                    <h6 class="mb-0">Tuổi</h6>
+                                    <p class="text-muted mb-0 ms-2">${patientBooking.age}</p>
                                 </div>
                             </div>
                         </div>
@@ -64,39 +57,39 @@
                             </div>
                             <br><br><br><br><br>
                             <div class="text-center avatar-profile margin-nagative mt-n5 position-relative pb-4 border-bottom">
-                                <c:if test="${appointment.doctor.img == 'default'}">
-                                    <img src="assets/images/avata.png"
+                                <c:if test="${doctorBooking.doctors.image == 'default'}">
+                                    <img src="${pageContext.request.contextPath}/static/images/user.png"
                                          class="rounded-circle shadow-md avatar avatar-md-md" alt="">
                                 </c:if>
-                                <c:if test="${appointment.doctor.img != 'default'}">
-                                    <img src="data:image/png;base64,${appointment.doctor.img}"
+                                <c:if test="${doctorBooking.doctors.image != 'default'}">
+                                    <img src="${doctorBooking.doctors.image}"
                                          class="rounded-circle shadow-md avatar avatar-md-md" alt="">
                                 </c:if>
-                                <h5 class="mt-3 mb-1">${appointment.doctor.doctor_name}</h5>
+                                <h5 class="mt-3 mb-1">${doctorBooking.doctors.fullName}</h5>
                             </div>
 
                             <div class="list-unstyled p-4">
                                 <div class="d-flex align-items-center mt-2">
                                     <i class="uil uil-user align-text-bottom text-primary h5 mb-0 me-2"></i>
                                     <h6 class="mb-0">Giới tính</h6>
-                                    <c:if test="${appointment.doctor.gender == true}">
+                                    <c:if test="${doctorBooking.doctors.gender == true}">
                                         <p class="text-muted mb-0 ms-2">Nam</p>
                                     </c:if>
-                                    <c:if test="${appointment.doctor.gender == false}">
+                                    <c:if test="${doctorBooking.doctors.gender == false}">
                                         <p class="text-muted mb-0 ms-2">Nữ</p>
                                     </c:if>
                                 </div>
 
                                 <div class="d-flex align-items-center mt-2">
                                     <i class="uil uil-book-open align-text-bottom text-primary h5 mb-0 me-2"></i>
-                                    <h6 class="mb-0">Số điện thoại</h6>
-                                    <p class="text-muted mb-0 ms-2">0${appointment.doctor.phone}</p>
+                                    <h6 class="mb-0">Rank</h6>
+                                    <p class="text-muted mb-0 ms-2">${doctorBooking.doctorRank.name}</p>
                                 </div>
 
                                 <div class="d-flex align-items-center mt-2">
                                     <i class="uil uil-book-open align-text-bottom text-primary h5 mb-0 me-2"></i>
                                     <h6 class="mb-0">Chuyên môn</h6>
-                                    <p class="text-muted mb-0 ms-2">${appointment.doctor.description}</p>
+                                    <p class="text-muted mb-0 ms-2">${doctorBooking.doctors.position}</p>
                                 </div>
                             </div>
                         </div>
@@ -106,7 +99,7 @@
                     <div class="p-4 border-bottom">
                         <h5 class="mb-0">Thông tin lịch hẹn</h5>
                     </div>
-                    <div class="tab-content p-4" >
+                    <div class="tab-content p-4">
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="mb-3">
@@ -128,17 +121,41 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="mb-3">
+                                    <label class="form-label">Bác sĩ</label>
+                                    <p>${appointment.staff.name}</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Tên dịch vụ</label>
+                                    <p><fmt:formatNumber pattern="##########" value="${appointment.fee}"/></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-3">
                                     <label class="form-label">Nhân viên hỗ trợ</label>
                                     <p>${appointment.staff.name}</p>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="mb-3">
-                                    <label class="form-label">Phí tư vấn</label>
+                                    <label class="form-label">Loại dịch vụ</label>
+                                    <p><fmt:formatNumber pattern="##########" value="${appointment.fee}"/></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Gía tiền</label>
                                     <p><fmt:formatNumber pattern="##########" value="${appointment.fee}"/> đ</p>
                                 </div>
                             </div>
                             <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Trạng thái thanh toán</label>
+                                    <p><fmt:formatNumber pattern="##########" value="${appointment.fee}"/></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
                                 <div class="mb-3">
                                     <label class="form-label">Thông tin</label>
                                     <p>${appointment.description}</p>
@@ -154,7 +171,7 @@
                     </div>
                     <form action=""
                           method="POST">
-                        <div class="tab-content p-4" id="pills-tabContent">
+                        <div class="tab-content p-4" id="pills-tabContent3">
                             <div class="col-lg-12">
                                 <div class="mb-3">
                                     <label class="form-label">Phí tư vấn</label>
@@ -162,27 +179,29 @@
                                            id="number" type="number" class="form-control" value="${appointment.fee}">
                                 </div>
                             </div>
-                        </div>
-                        <c:if test="${sessionScope.user.role.role_id == 1}">
-                            <div class="tab-content p-4" id="pills-tabContent">
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
-                                        <label class="form-label">Nhân viên hỗ trợ</label>
-                                        <select name="staff" class="form-select">
-                                            <option
-                                                    class="form-control" value=""></option>
-                                        </select>
-                                    </div>
+                            <div class="col-lg-12">
+                                <div class="mb-3">
+                                    <label class="form-label">Bác sĩ</label>
+                                    <select name="staff" class="form-select">
+                                        <option
+                                                class="form-control" value=""></option>
+                                    </select>
                                 </div>
                             </div>
-                        </c:if>
-                        <div class="tab-content p-4" id="pills-tabContent">
+                            <div class="col-lg-12">
+                                <div class="mb-3">
+                                    <label class="form-label">Nhân viên hỗ trợ</label>
+                                    <select name="staff" class="form-select">
+                                        <option
+                                                class="form-control" value=""></option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-lg-12">
                                 <div class="mb-3">
                                     <label class="form-label">Trạng thái</label>
                                     <select name="status" class="form-select" aria-label="Default select example">
                                         <option
-
                                                 value="Complete">Complete
                                         </option>
                                         <option
@@ -196,7 +215,7 @@
                                         </option>
                                     </select>
                                 </div>
-                                <div class="tab-content p-0" >
+                                <div class="tab-content p-0">
                                     <input type="submit" id="submit" name="send" class="btn btn-primary"
                                            value="Cập nhật">
                                 </div>
