@@ -77,23 +77,9 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="mb-3">
-                                        <label class="form-label">Giới tính</label>
-                                        <div>
-                                            <select name="gender" class="form-control">
-                                                <option
-                                                        <c:if test="${appointment.gender == true}">
-                                                            selected
-                                                        </c:if>
-                                                        value="true">Nam
-                                                </option>
-                                                <option
-                                                        <c:if test="${appointment.gender == false}">
-                                                            selected
-                                                        </c:if>
-                                                        value="false">Nữ
-                                                </option>
-                                            </select>
-                                        </div>
+                                        <label class="form-label">Email</label>
+                                        <input type="text" class="form-control" name="email"
+                                               value="${appointment.email}">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
@@ -211,8 +197,7 @@
 
                                     </div>
                                 </div><!--end col-->
-                                <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal"
-                                        onclick="onClickSubmit()"
+                                <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" onclick="onClickSubmit()"
                                         data-bs-target="#exampleModal">
                                     Đặt lịch khám
                                 </button>
@@ -351,7 +336,7 @@
         locale: "vn"
     });
 
-    function onClickSubmit() {
+    function onClickSubmit(){
         Swal.fire({
             title: 'Bạn có chắc chắn muốn đặt lịch không?',
             text: "Bạn sẽ không thể hoàn tác lại điều này!",

@@ -4,7 +4,7 @@
     <div class="container">
 
         <div>
-            <a class="logo" href="${pageContext.request.contextPath}/home">
+            <a class="logo" href="home">
                 <img src="${pageContext.request.contextPath}/static/images/logo.png" class="logo-light" alt=""
                      height="80" width="80">
             </a>
