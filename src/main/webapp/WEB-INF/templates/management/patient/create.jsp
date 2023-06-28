@@ -61,16 +61,13 @@
                                         </div>
                                     </div><!--end col-->
 
-                                                                        <div class="col-md-6">
-                                                                            <div class="mb-3">
-                                                                                <label class="form-label">Email</label>
-                                                                                <input name="email" id="email" type="email" class="form-control"
-                                                                                       placeholder="Email :">
-                                                                            </div>
-                                                                        </div><!--end col-->
-
-
-
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Email</label>
+                                            <input name="email" id="email" type="email" class="form-control"
+                                                   placeholder="Email :">
+                                        </div>
+                                    </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
@@ -80,16 +77,6 @@
                                         </div>
                                     </div><!--end col-->
 
-<%--                                    <div class="col-md-6">--%>
-<%--                                        <div class="mb-3">--%>
-<%--                                            <label class="form-label">id</label>--%>
-<%--                                            <input name="id" id="id" type="text" class="form-control"--%>
-<%--                                                   placeholder="id">--%>
-<%--                                        </div>--%>
-<%--                                    </div><!--end col-->--%>
-
-
-
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Điện thoại</label>
@@ -98,23 +85,24 @@
                                         </div>
                                     </div><!--end col-->
 
-
-
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Giới tính</label>
                                             <select name="gender" class="form-select form-control">
-                                                <option value="nam">Nam</option>
-                                                <option value="nu">Nữ</option>
+                                                <option value="Nu">Nữ</option>
+                                                <c:if test="${detail.gender == false}">
+                                                    selected
+                                                </c:if>
+                                                <option value="Nam">Nam</option>
+                                                <c:if test="${detail.gender == true}">
+                                                    selected
+                                                </c:if>
                                             </select>
                                         </div>
                                     </div><!--end col-->
 
-
-
-
-
                                     <button type="submit" class="btn btn-primary">Thêm bệnh nhân</button>
+                                </div>
                             </form>
                         </div>
                     </div><!--end col-->

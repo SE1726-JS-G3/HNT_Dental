@@ -27,8 +27,7 @@ public class BookingDaoImpl implements BookingDao {
 
     private static final String HISTORY_PATIENT = "SELECT  b.fee ,b.account_id, b.status ,b.time,b.date ,s.name , st.name FROM booking b join service s join service_type st " +
             "           where b.service_id = s.id and s.id= st.id";
-    private static final String HISTORY_DETAIL ="\n" +
-            "SELECT b.account_id, b.name, b.age, b.email,b.decription FROM booking b INNER JOIN accounts a ON b.id = a.id where b.id = ?";
+    private static final String HISTORY_DETAIL ="SELECT  b.name, b.age, b.email,b.decription,b.status,b.phone FROM booking b INNER JOIN accounts a ON b.id = a.id where b.id = ?" ;
 
     @Override
     public List<Booking> getAll(Integer offset, Integer limit, String search) throws SQLException {
@@ -87,8 +86,8 @@ public class BookingDaoImpl implements BookingDao {
 
         if (rs.next()) {
             return (BookingDto.builder()
-                    .account_id(rs.getInt("account_id"))
-
+                    .phone(rs.getInt("phone"))
+                    .status(String.valueOf(rs.getBoolean("status")))
                     .name(rs.getString("name"))
                     .email(rs.getString("email"))
                     .age(rs.getInt("age"))

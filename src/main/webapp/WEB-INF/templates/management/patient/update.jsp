@@ -47,9 +47,6 @@
                                   method="post">
                                 <input value="${detail.id}" name="id" type="hidden">
 
-
-
-
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
@@ -60,9 +57,6 @@
                                         </div>
                                     </div>
 
-
-
-
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Ngày sinh</label>
@@ -71,8 +65,6 @@
                                                    placeholder="YYYY-MM-DD">
                                         </div>
                                     </div>
-
-
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
@@ -90,17 +82,6 @@
                                         </div>
                                     </div>
 
-
-
-<%--                                    <div class="col-md-6">--%>
-<%--                                        <div class="mb-3">--%>
-<%--                                            <label class="form-label">Giới tính</label>--%>
-<%--                                            <input name="gender" id="gender" type="text" class="form-control"--%>
-<%--                                                   placeholder="Sex" value="${detail.gender}">--%>
-
-
-<%--                                        </div>--%>
-<%--                                    </div>--%>
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Giới tính</label>
@@ -132,7 +113,6 @@
                                             </select>
                                         </div>
                                     </div>
-
 
                                     <div class="col-md-12">
                                         <div class="mb-3">

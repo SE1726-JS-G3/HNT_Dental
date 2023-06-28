@@ -16,7 +16,7 @@
                 <h3 class="mb-0"></h3>
                 <div class="rounded shadow mt-4">
                     <div class="p-4 border-bottom">
-                        <h5 class="mb-0">Lịch hẹn chi tiết</h5>
+                        <h5 class="mb-0">Lịch sử đặt lịch</h5>
                     </div>
                     <div class="p-4">
                         <form action="doctor?action=updateappointmentstatus&id=${a.id}" method="POST"
@@ -24,61 +24,75 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">Ngày đặt lịch</label>
-                                        <input name="appointment_id" readonly value="" type="text"
-                                               class="form-control">
+                                        <label class="form-label">Tên bệnh nhân:</label><br>
+<%--                                        <input name="appointment_id" readonly value="" type="text"--%>
+<%--                                               class="form-control">--%>
+
+                                        ${d.name}
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">Tên Bệnh Nhân</label>
-                                        <input readonly value="" type="email"
-                                               class="form-control">
+                                        <label class="form-label">Tuổi:</label><br>
+<%--                                        <input readonly value="" type="email"--%>
+<%--                                               class="form-control">--%>
+                                        ${d.age}
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">Tên dịch vụ</label>
-                                        <input readonly value="" type="email"
-                                               class="form-control">
+                                        <label class="form-label">Địa chỉ email:</label><br>
+<%--                                        <input readonly value="" type="email"--%>
+<%--                                               class="form-control">--%>
+                                        ${d.email}
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">Loại dịch vụ</label>
-                                        <input readonly value="" type="text" class="form-control">
+                                        <label class="form-label">Hồ sơ bệnh án:</label><br>
+<%--                                        <input readonly value="" type="text" class="form-control">--%>
+                                        ${d.decription}
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">Giá</label>
-                                        <input readonly value="" type="text" class="form-control">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Nhân viên hỗ trợ</label>
-                                        <input readonly value="" type="text" class="form-control">
+                                        <label class="form-label">Số điện thoại:</label><br>
+<%--                                        <input readonly value="" type="text" class="form-control">--%>
+                                        ${d.phone}
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">Bác sĩ phụ trách</label>
-                                        <input readonly value="" type="text" class="form-control">
+                                        <label class="form-label">Trạng thái:</label><br>
+<%--                                        <input readonly value="" type="text" class="form-control">--%>
+
+                                        <c:if test="${d.status == true}">
+                                            active
+                                        </c:if>
+
+                                        <c:if test="${d.status == false}">
+                                           nactive
+                                        </c:if>
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Trạng thái</label>
-                                        <input readonly value="" type="text" class="form-control">
+<%--                                <div class="col-md-6">--%>
+<%--                                    <div class="mb-3">--%>
+<%--                                        <label class="form-label">Bác sĩ phụ trách</label>--%>
+<%--                                        <input readonly value="" type="text" class="form-control">--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
 
-                                    </div>
+<%--                                <div class="col-md-6">--%>
+<%--                                    <div class="mb-3">--%>
+<%--                                        <label class="form-label">Trạng thái</label>--%>
+<%--                                        <input readonly value="" type="text" class="form-control">--%>
+
+<%--                                    </div>--%>
                                 </div>
                             </div>
                         </form>

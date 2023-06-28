@@ -25,13 +25,12 @@ public class PatientDaoImpl implements PatientDao {
     }
 
     private static final String SAVE_PATIENT = "INSERT INTO patients" +
-            "(id,dob, full_name, gender, phone, address, description, created_at, updated_at, status) \n" +
-            "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "(id,dob, full_name, gender, phone, address) \n" +
+            "VALUES(?, ?, ?, ?, ?, ?)";
     private static final String GET_ALL_PATIENT = "SELECT p.id, p.full_name, p.dob,p.gender,p.status \n" +
             "            FROM patients p " ;
 //            "            INNER JOIN accounts a ON p.id = a.id ";
     private static final String SEARCH_PATIENT = "select * from patients where full_name like ?";
-
 
     private static final String DETAIL_PATIENT = "SELECT p.id, p.full_name, p.dob, p.gender,p.address,p.description ,p.phone,p.status \n" +
             "            FROM patients p \n" +
@@ -39,12 +38,9 @@ public class PatientDaoImpl implements PatientDao {
     private static final String DELETE_PATIENT = "DELETE FROM patients " +
             "WHERE id=?";
 
-
-
     private static final String CREATE_PATIENT ="INSERT INTO patients " +
-            "            ( id,full_name, dob, gender, phone, address) " +
-            "            VALUES(?,?,?,?,?,?)  ";
-
+            "            ( id,full_name, dob, gender, phone, address,created_at) " +
+            "            VALUES(?,?,?,?,?,?,?)  ";
 
     private static final String UPDATE_PATIENT = "UPDATE patients \n" +
             "           SET full_name=?, dob=?, gender=?, phone=?, address=?, description=?,status=?,created_at=?, updated_at=? \n" +
@@ -56,11 +52,9 @@ public class PatientDaoImpl implements PatientDao {
     public List<Patient> getAll() throws SQLException {
         ResultSet rs = ConnectionUtils.executeQuery(GET_ALL_PATIENT);
         List<Patient> list = new ArrayList<>();
-        //Patient patient = new Patient();
         while (true) {
             assert rs != null;
             if (!rs.next()) break;
-
             list.add(Patient
                     .builder()
                     .id(rs.getLong("id"))
@@ -68,7 +62,6 @@ public class PatientDaoImpl implements PatientDao {
                     .dob(rs.getDate("dob").toLocalDate())
                     .gender(rs.getBoolean("gender"))
                     .status(rs.getBoolean("status"))
-
                     .build());
         }
         return list;
@@ -78,11 +71,9 @@ public class PatientDaoImpl implements PatientDao {
     @Override
     public List<Patient> SearchPatients(String txtSearch) throws SQLException {
         txtSearch = StringUtils.isNotEmpty(txtSearch) ? "%" + txtSearch.toLowerCase() + "%" : "%";
-
         ResultSet rs = ConnectionUtils.executeQuery(SEARCH_PATIENT, txtSearch);
         List<Patient> list = new ArrayList<>();
         assert rs != null;
-
         if (rs.next()) {
             list.add(Patient
                     .builder()
@@ -91,7 +82,6 @@ public class PatientDaoImpl implements PatientDao {
                     .dob(rs.getDate("dob").toLocalDate())
                     .gender(rs.getBoolean("gender"))
                     .phone(String.valueOf(rs.getInt("phone")))
-                    //.created_at(rs.getDate("created_at").toLocalDate())
                     .status(rs.getBoolean("status"))
                     .build());
         }
@@ -103,13 +93,9 @@ public class PatientDaoImpl implements PatientDao {
     @Override
     public Patient DetailPatients(String id) throws SQLException {
         ResultSet rs = ConnectionUtils.executeQuery(DETAIL_PATIENT, id);
-
         assert rs != null;
-
         if (rs.next()) {
             return (Patient.builder()
-
-
                     .id(rs.getLong("id"))
                     .fullName(rs.getString("full_name"))
                     .dob(rs.getDate("dob").toLocalDate())
@@ -145,7 +131,6 @@ public class PatientDaoImpl implements PatientDao {
         assert rs != null;
         if (rs.next()) {
             return Optional.ofNullable(Patient.builder()
-
                     .fullName(rs.getString("full_name"))
                     .account(
                             Account.builder()
@@ -155,7 +140,6 @@ public class PatientDaoImpl implements PatientDao {
                     .address(rs.getString("address"))
                     .dob(DateUtils.convertDateToLocalDate(rs.getDate("dob")))
                     .gender(rs.getBoolean("gender"))
-
                     .description(rs.getString("description"))
                     .build());
         }
@@ -166,8 +150,8 @@ public class PatientDaoImpl implements PatientDao {
 
     @Override
     public Long save(Patient patient) throws SQLException,ClassNotFoundException {
-        ConnectionUtils.executeUpdate(SAVE_PATIENT,patient.getAccount().getId(), patient.getFullName(), patient.getDob(),
-                patient.getGender(), patient.getPhone(),patient.getStatus(), patient.getAddress(),patient.getCreatedAt(),patient.getUpdatedAt());
+        ConnectionUtils.executeUpdate(CREATE_PATIENT,patient.getAccount().getId(), patient.getFullName(), patient.getDob(),
+                patient.getGender(), patient.getPhone(), patient.getAddress(),patient.getCreatedAt());
       return null;
     }
 

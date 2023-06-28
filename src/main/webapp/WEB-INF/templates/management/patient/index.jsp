@@ -43,8 +43,6 @@
             </a>
           </div>
         </div>
-
-
         <div class="row">
           <div class="col-12 mt-4">
             <div class="table-responsive bg-white shadow rounded">
@@ -56,8 +54,6 @@
                   <th class="border-bottom p-3">Ngày sinh</th>
                   <th class="border-bottom p-3">Giới tính</th>
                   <th class="border-bottom p-3">Trạng thái</th>
-<%--                  <th class="border-bottom p-3">Lịch khám </th>--%>
-
                   <th class="border-bottom p-3 text-center">Tác vụ</th>
                 </tr>
                 </thead>
@@ -83,9 +79,6 @@
                       nactive
                     </c:if>
                   </td>
-
-
-
                   <td class="p-3 text-center">
                     <a href="patient/update?id=${o.id}">
                       <button class="btn btn-primary">Chi tiết</button>

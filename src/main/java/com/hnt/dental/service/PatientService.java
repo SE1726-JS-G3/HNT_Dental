@@ -96,50 +96,16 @@ public class PatientService {
         ServletUtils.redirect(req, resp, "/management/patient");
     }
 
-//    public void create(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-//        Long id = Long.valueOf(req.getParameter("id"));
-//        String fullName = req.getParameter("full_name");
-//        String dob = req.getParameter("dob");
-//        String gender = req.getParameter("gender");
-//        String email = req.getParameter("email");
-//        String phone = req.getParameter("phone");
-//
-//        String address = req.getParameter("address");
-////        String status = req.getParameter("status");
-//
-//        patientDao.save(
-//                Patient.builder().account(Account.builder()
-//                                .id(id)
-//                                .email(email)
-//                                .build())
-//
-//                        //.id(Long.valueOf(id))
-//                        .fullName(fullName)
-//                        .dob(LocalDate.parse(dob, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-//                        .gender(Objects.equals(gender, "Nam"))
-//                        .phone(phone)
-//
-//                        .address(address)
-//                        .build()
-//        );
-//
-//        ServletUtils.redirect(req, resp, "/management/patient");
-//    }
 
     public void create(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-
         String fullName = req.getParameter("full_name");
         String dob = req.getParameter("dob");
         String gender = req.getParameter("gender");
         String email = req.getParameter("email");
         String phone = req.getParameter("phone");
         String address = req.getParameter("address");
-        //String image = req.getParameter("image");
         String description = req.getParameter("description");
-
         String password = AesUtils.encrypt(CaptchaUtils.getCaptcha(8));
-
-        //RoleEnum role = image.equals("patient") ? RoleEnum.ROLE_PATIENT : RoleEnum.ROLE_ADMIN ;
         RoleEnum role = RoleEnum.ROLE_PATIENT;
         Long id = accountDao.save(
                 Account.builder()
@@ -149,7 +115,6 @@ public class PatientService {
                         .isVerified(true)
                         .build()
         );
-
         patientDao.save(
               Patient.builder()
                         .account(Account.builder().id(id).build())
@@ -174,26 +139,20 @@ public class PatientService {
         String address = req.getParameter("address");
         String description = req.getParameter("description");
         String status = req.getParameter("status");
-
-          patientDao.update(
+        patientDao.update(
                 Patient.builder()
                         .id(id)
                         .fullName(fullname)
                         .dob(LocalDate.parse(dob, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                         .gender(Objects.equals(gender, "nam"))
-                        //.gender(Boolean.valueOf(gender))
                         .phone(phone)
-
                         .address(address)
                         .description(description)
                         .status(Objects.equals(status, "active"))
-
                         .build()
         );
 
         ServletUtils.redirect(req, resp, "/management/patient");
-
-
     }
 
 }
