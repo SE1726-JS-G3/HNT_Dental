@@ -14,9 +14,9 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookingDetailPatientDto {
-    private Long id;
+    private Long id;//day la id cua booking
     private String name;
     private Boolean gender;
     private String phone;
-    private Date dob;
+    private int age;
 }

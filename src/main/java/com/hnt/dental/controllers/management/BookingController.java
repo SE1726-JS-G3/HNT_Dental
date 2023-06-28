@@ -32,11 +32,10 @@ public class BookingController extends HttpServlet {
         switch (action) {
             case "/management/booking":
                 bookingService.getAll(req, resp);
-               //req.getRequestDispatcher("/WEB-INF/templates/management/booking/index.jsp").forward(req, resp);
                 break;
             case "/management/booking/detail":
-
-                req.getRequestDispatcher("/WEB-INF/templates/management/booking/detail.jsp").forward(req, resp);
+                bookingService.getDetailBooking(req, resp);
+                //req.getRequestDispatcher("/WEB-INF/templates/management/booking/detail.jsp").forward(req, resp);
                 break;
 
         }

@@ -1,5 +1,6 @@
 package com.hnt.dental.service;
 
+import com.hnt.dental.constant.BookingStatusEnum;
 import com.hnt.dental.constant.PaymentEnum;
 import com.hnt.dental.dao.BookingDao;
 import com.hnt.dental.dao.PaymentDao;
@@ -30,6 +31,7 @@ import java.util.Optional;
 public class BookingService {
 
     private static final ServiceDao dao;
+
     private static final BookingDao adao;
     private static final PaymentDao pdao;
     private static final VNPayService vnPayService;
@@ -121,6 +123,8 @@ public class BookingService {
                     .payment(payment)
                     .build();
 
+
+            // hamf nayf chuwa co id doc tor vowi id staff
             Long id = adao.save(Booking.builder()
                     .name(name)
                     .account(Account.builder().id(loginInfo.getId()).build())
@@ -130,13 +134,12 @@ public class BookingService {
                     .age(Integer.parseInt(age))
                     .date(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy")))
                     .time(LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm")))
-                    .status(false)
                     .description(decription)
                     .payment(payment)
+                    .status(BookingStatusEnum.PENDING.ordinal())
                     .createdAt(LocalDateTime.now())
                     .updatedAt(LocalDateTime.now())
                     .build());
-
             pdao.save(
                     Payment.builder()
                             .account(Account.builder().id(1L).build())
@@ -203,6 +206,8 @@ public class BookingService {
     public void getAll(HttpServletRequest req, HttpServletResponse resp) {
         String page = req.getParameter("page");
         String search = req.getParameter("search");
+        String status = req.getParameter("status");
+        String service = req.getParameter("service");
         int pageNumber = 1;
 
         if (StringUtils.isNotEmpty(page)) {
@@ -212,23 +217,48 @@ public class BookingService {
         if (StringUtils.isEmpty(search)) {
             search = "";
         }
+
+        if (StringUtils.isEmpty(status)) {
+            status = "";
+        }
+
+        if (StringUtils.isEmpty(service)) {
+            service = "";
+        }
+
         try {
             Integer totalItem = adao.countListBookingSummary(search.trim());
             Integer totalPage = PagingUtils.getTotalPage(totalItem);
-
-            List<BookingManagementDto> getAllBookingSummary = adao.getAllBookingSummary(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE, search.trim());
+            List<BookingManagementDto> getAllBookingSummary = adao.getAllBookingSummary(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE, search.trim(), service.trim(), status.trim());
             List<BookingManagementDto> getServiceByServiceId = adao.getServiceByServiceId();
-            List<BookingManagementDto> getStatusByStatusId = adao.getStatusByStatusId();
+            List<BookingStatus> statuses = BookingStatusEnum.getAllBookingStatus();
             req.setAttribute("services", getServiceByServiceId);
-            req.setAttribute("status", getStatusByStatusId);
             req.setAttribute("bookings", getAllBookingSummary);
+            req.setAttribute("statuses", statuses);
             req.setAttribute("totalPage", totalPage);
             req.setAttribute("currentPage", pageNumber);
             req.setAttribute("search", search);
+            req.setAttribute("status", status);
+            req.setAttribute("service", service);
             req.setAttribute("url", "/management/booking");
             req.getRequestDispatcher("/WEB-INF/templates/management/booking/index.jsp").forward(req, resp);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
+
+    public void getDetailBooking(HttpServletRequest req, HttpServletResponse resp) {
+        String id = req.getParameter("id");
+        try {
+            Optional<BookingDetailPatientDto> getDetailPatientBooking = adao.getPatientByBookingId(Long.valueOf(id));
+            Optional<BookingDetailDoctorDto> getDetailDoctorBooking = adao.getDoctorByBookingId(Long.valueOf(id));
+            req.setAttribute("id", id);
+            req.setAttribute("patientBooking", getDetailPatientBooking.get());
+            req.setAttribute("doctorBooking", getDetailDoctorBooking.get());
+            req.getRequestDispatcher("/WEB-INF/templates/management/booking/detail.jsp").forward(req, resp);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 }
