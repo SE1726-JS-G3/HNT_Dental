@@ -49,5 +49,5 @@ jobs:
         with:
           app-name: 'hntdental'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_75F061F4FCD34C4CB14EF2B87305127B }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_64DBA7782A4647E69C5F986A2A47D211 }}
           package: '*.war'
