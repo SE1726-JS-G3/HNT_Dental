@@ -25,9 +25,6 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Tên bệnh nhân:</label><br>
-<%--                                        <input name="appointment_id" readonly value="" type="text"--%>
-<%--                                               class="form-control">--%>
-
                                         ${d.name}
                                     </div>
                                 </div>
@@ -35,8 +32,6 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Tuổi:</label><br>
-<%--                                        <input readonly value="" type="email"--%>
-<%--                                               class="form-control">--%>
                                         ${d.age}
                                     </div>
                                 </div>
@@ -44,8 +39,6 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Địa chỉ email:</label><br>
-<%--                                        <input readonly value="" type="email"--%>
-<%--                                               class="form-control">--%>
                                         ${d.email}
                                     </div>
                                 </div>
@@ -53,14 +46,12 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Hồ sơ bệnh án:</label><br>
-<%--                                        <input readonly value="" type="text" class="form-control">--%>
                                         ${d.decription}
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Số điện thoại:</label><br>
-<%--                                        <input readonly value="" type="text" class="form-control">--%>
                                         ${d.phone}
                                     </div>
                                 </div>
@@ -68,42 +59,18 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Trạng thái:</label><br>
-<%--                                        <input readonly value="" type="text" class="form-control">--%>
-
                                         <c:if test="${d.status == true}">
                                             active
                                         </c:if>
-
                                         <c:if test="${d.status == false}">
                                            nactive
                                         </c:if>
                                     </div>
                                 </div>
-
-<%--                                <div class="col-md-6">--%>
-<%--                                    <div class="mb-3">--%>
-<%--                                        <label class="form-label">Bác sĩ phụ trách</label>--%>
-<%--                                        <input readonly value="" type="text" class="form-control">--%>
-<%--                                    </div>--%>
-<%--                                </div>--%>
-
-<%--                                <div class="col-md-6">--%>
-<%--                                    <div class="mb-3">--%>
-<%--                                        <label class="form-label">Trạng thái</label>--%>
-<%--                                        <input readonly value="" type="text" class="form-control">--%>
-
-<%--                                    </div>--%>
-                                </div>
                             </div>
+
                         </form>
-                        <div class="col-md-6">
-                            <button class="btn btn-secondary active" type="button" data-bs-toggle="modal" data-bs-target="#newblogadd">
-                                Kết quả khám
-                            </button>
-                            <button class="btn btn-info active" type="button">
-                                Hủy đặt lịch
-                            </button>
-                        </div>
+
                     </div>
                 </div>
             </div>

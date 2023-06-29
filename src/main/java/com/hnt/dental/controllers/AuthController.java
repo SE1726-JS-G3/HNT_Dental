@@ -2,6 +2,7 @@ package com.hnt.dental.controllers;
 
 import com.hnt.dental.exception.SystemRuntimeException;
 import com.hnt.dental.service.AuthService;
+import com.hnt.dental.service.BookingService;
 import com.hnt.dental.util.ServletUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -23,7 +24,11 @@ import java.sql.SQLException;
         "/auth/profile",
         "/auth/booking-history",
         "/auth/my-appointment",
-        "/auth/my-patient"
+        "/auth/my-patient",
+        "/auth/patient-booking-history",
+        "/auth/detail-history-booking"
+
+
 })
 public class AuthController extends HttpServlet {
 
@@ -32,6 +37,7 @@ public class AuthController extends HttpServlet {
     static {
         service = new AuthService();
     }
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -71,6 +77,18 @@ public class AuthController extends HttpServlet {
             case "/auth/my-appointment":
                 ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/my-appointment.jsp");
                 break;
+            case "/auth/patient-booking-history":
+                try {
+                    service.historyBooking(req, resp);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            case "/auth/detail-history-booking":
+                try {
+                    service.history(req, resp);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             default:
         }
     }

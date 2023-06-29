@@ -198,36 +198,6 @@ public class BookingService {
         }
     }
 
-    public void historyBooking(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException, ServletException {
-        resp.setContentType("text/html;charset=UTF-8");
-        BookingDao dao = new BookingDaoImpl();
-        List<BookingDto> list = null;
-        try {
-            list = dao.getAllHistory();
-            int page =1;
-            String pageStr = req.getParameter("page");
-            if(pageStr!=null){
-                page = Integer.parseInt(pageStr);
-            }
-            final int PAGE_SIZE =2;
-            req.setAttribute("list", list.subList((page-1)*PAGE_SIZE,page*PAGE_SIZE));
-            ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/booking-history.jsp");
-        } catch (SQLException e) {
-            throw new EOFException();
-
-        }
-    }
-
-
-    public void history(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException, ServletException {
-        resp.setContentType("text/html;charset=UTF-8");
-        String account_id = req.getParameter("id");
-        BookingDao dao = new BookingDaoImpl();
-        BookingDto detail = dao.DetailHistory(account_id);
-        req.setAttribute("d", detail);
-        ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/my-appointment-detail.jsp");
-
-    }
 
 
 }

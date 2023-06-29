@@ -11,13 +11,13 @@
         <div class="container-fluid">
             <div class="layout-specing">
                 <div class="d-md-flex justify-content-between">
-                    <h5 class="mb-0">Đây là màn update doctors của admin sửa</h5>
+                    <h5 class="mb-0">Đây là màn update bệnh nhân </h5>
                     <nav aria-label="breadcrumb" class="d-inline-block mt-4 mt-sm-0">
                         <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
                             <li class="breadcrumb-item"><a href="#">Quản lí</a></li>
                             <li class="breadcrumb-item"><a
-                                    href="${pageContext.request.contextPath}/management/patient">Bác sĩ</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Thêm bác sĩ</li>
+                                    href="${pageContext.request.contextPath}/management/patient">Bệnh nhân</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Thêm bệnh nhân</li>
                         </ul>
                     </nav>
                 </div>
@@ -79,6 +79,15 @@
                                             <label class="form-label">Điện thoại</label>
                                             <input name="phone" id="phone" type="text" class="form-control"
                                                    placeholder="Điện thoại" value="${detail.phone}">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Email</label>
+                                            <input name="email" id="email" type="email" class="form-control"
+                                                   value="${detail.account.email}"
+                                                   placeholder="Email :">
                                         </div>
                                     </div>
 

@@ -12,11 +12,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
-
-
 import com.hnt.dental.constant.RoleEnum;
 import com.hnt.dental.dao.AccountDao;
-
 import com.hnt.dental.dao.PatientDao;
 import com.hnt.dental.dao.impl.AccountDaoImpl;
 import com.hnt.dental.dao.impl.PatientDaoImpl;
@@ -26,10 +23,7 @@ import com.hnt.dental.util.ServletUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import java.io.EOFException;
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 public class PatientService {
@@ -126,7 +120,6 @@ public class PatientService {
                         .description(description)
                         .build()
         );
-
         ServletUtils.redirect(req, resp, "/management/patient");
     }
 
@@ -139,21 +132,42 @@ public class PatientService {
         String address = req.getParameter("address");
         String description = req.getParameter("description");
         String status = req.getParameter("status");
-        patientDao.update(
-                Patient.builder()
-                        .id(id)
-                        .fullName(fullname)
-                        .dob(LocalDate.parse(dob, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-                        .gender(Objects.equals(gender, "nam"))
-                        .phone(phone)
-                        .address(address)
-                        .description(description)
-                        .status(Objects.equals(status, "active"))
-                        .build()
-        );
+        String email = req.getParameter("email");
+        RoleEnum role = RoleEnum.ROLE_PATIENT;
+        String error = null;
+        try {
+            Account account = accountDao.findByEmail(email);
 
-        ServletUtils.redirect(req, resp, "/management/patient");
+            if (account != null && !Objects.equals(account.getId(), id)) {
+                throw new SystemRuntimeException(StringUtils.join("Email ", email, " already exists"));
+            }
+
+            account = accountDao.get(id.intValue()).isPresent() ? accountDao.get(id.intValue()).get() : null;
+            account.setEmail(email);
+            account.setRole(role.ordinal());
+            account.setUpdatedAt(LocalDateTime.now());
+            accountDao.update(account);
+            patientDao.update(
+                    Patient.builder()
+                            .account(Account.builder().id(id).build())
+                            .fullName(fullname)
+                            .dob(LocalDate.parse(dob, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                            .gender(Objects.equals(gender, "nam"))
+                            .phone(phone)
+                            .status(Objects.equals(status, "active"))
+                            .address(address)
+                            .description(description)
+                            .build()
+            );
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+
+        if (StringUtils.isNotEmpty(error)) {
+            ServletUtils.redirect(req, resp, "/management/patient/update?id=" + id + "&error=" + error);
+        } else {
+            ServletUtils.redirect(req, resp, "/management/patient");
+        }
     }
-
-}
+    }
 

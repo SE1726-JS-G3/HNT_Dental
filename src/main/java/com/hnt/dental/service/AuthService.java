@@ -3,12 +3,15 @@ package com.hnt.dental.service;
 import com.google.gson.Gson;
 import com.hnt.dental.constant.RoleEnum;
 import com.hnt.dental.dao.AccountDao;
+import com.hnt.dental.dao.BookingDao;
 import com.hnt.dental.dao.PatientDao;
 import com.hnt.dental.dao.VerificationDao;
 import com.hnt.dental.dao.impl.AccountDaoImpl;
+import com.hnt.dental.dao.impl.BookingDaoImpl;
 import com.hnt.dental.dao.impl.PatientDaoImpl;
 import com.hnt.dental.dao.impl.VerificationDaoImpl;
 import com.hnt.dental.dto.response.ApiResponse;
+import com.hnt.dental.dto.response.BookingDto;
 import com.hnt.dental.entities.Account;
 import com.hnt.dental.entities.Patient;
 import com.hnt.dental.entities.Verification;
@@ -16,15 +19,18 @@ import com.hnt.dental.exception.SystemRuntimeException;
 import com.hnt.dental.util.AesUtils;
 import com.hnt.dental.util.CaptchaUtils;
 import com.hnt.dental.util.ServletUtils;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class AuthService {
@@ -215,5 +221,35 @@ public class AuthService {
     public void logout(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.getSession().removeAttribute("account");
         ServletUtils.redirect(req, resp, "/auth/login");
+    }
+
+    public void historyBooking(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException, ServletException {
+        resp.setContentType("text/html;charset=UTF-8");
+        BookingDao dao = new BookingDaoImpl();
+        List<BookingDto> list = null;
+        try {
+            list = dao.getAllHistory();
+            int page =1;
+            String pageStr = req.getParameter("page");
+            if(pageStr!=null){
+                page = Integer.parseInt(pageStr);
+            }
+            final int PAGE_SIZE =5;
+            req.setAttribute("list", list.subList((page-1)*PAGE_SIZE,page*PAGE_SIZE));
+            ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/booking-history.jsp");
+        } catch (SQLException e) {
+            throw new EOFException();
+
+        }
+    }
+
+    public void history(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException, ServletException {
+        resp.setContentType("text/html;charset=UTF-8");
+        String id = req.getParameter("id");
+        BookingDao dao = new BookingDaoImpl();
+        BookingDto detail = dao.DetailHistory(id);
+        req.setAttribute("d", detail);
+        ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/my-appointment-detail.jsp");
+
     }
 }

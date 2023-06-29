@@ -17,10 +17,7 @@ import java.sql.SQLException;
         "/management/booking/create",
         "/management/booking/update",
         "/management/booking/detail",
-        "/management/booking/delete",
-        "/management/booking-history",
-        "/management/detail-booking"
-
+        "/management/booking/delete"
 })
 public class BookingController extends HttpServlet {
     private static final BookingService service;
@@ -39,23 +36,7 @@ public class BookingController extends HttpServlet {
             case "/management/booking/detail":
                 req.getRequestDispatcher("/WEB-INF/templates/management/booking/detail.jsp").forward(req, resp);
                 break;
-            case "/management/booking-history":
 
-                try {
-                    service.historyBooking(req, resp);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-                break;
-            case "/management/detail-booking":
-                try {
-                    service.history(req, resp);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                } catch (ServletException e) {
-                    throw new RuntimeException(e);
-                }
-                break;
             default:
 
         }

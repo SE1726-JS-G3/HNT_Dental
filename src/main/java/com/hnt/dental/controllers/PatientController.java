@@ -22,16 +22,10 @@ import java.util.List;
 
 @WebServlet(name = "PatientController", value = {
         "/management/patient",
-        "/management/detail",
-        "/management/delete",
-        "/management/create",
-        "/management/update",
+        "/management/patient/detail",
+        "/management/patient/delete",
+        "/management/patient/create",
         "/management/patient/update"
-
-
-
-//        "/management/search"
-
 })
 public class PatientController extends HttpServlet {
 
@@ -54,7 +48,7 @@ public class PatientController extends HttpServlet {
                 }
                 break;
 
-            case "/management/detail":
+            case "/management/patient/detail":
                 try {
                     service.patientDetail(req, resp);
                 } catch (SQLException e) {
@@ -63,7 +57,7 @@ public class PatientController extends HttpServlet {
                     throw new RuntimeException(e);
                 }
                 break;
-            case "/management/delete":
+            case "/management/patient/delete":
                 try {
                     service.delete(req,resp);
                 } catch (SQLException e) {
@@ -71,7 +65,7 @@ public class PatientController extends HttpServlet {
                 }
                 break;
 
-            case "/management/create":
+            case "/management/patient/create":
                 req.getRequestDispatcher("/WEB-INF/templates/management/patient/create.jsp").forward(req, resp);
                 break;
 
@@ -103,7 +97,7 @@ public class PatientController extends HttpServlet {
                 }
                 break;
 
-            case "/management/create":
+            case "/management/patient/create":
                 try {
                     service.create(req, resp);
                 } catch (Exception e) {

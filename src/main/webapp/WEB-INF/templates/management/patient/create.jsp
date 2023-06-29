@@ -43,7 +43,7 @@
                                 </div><!--end col-->
                             </div><!--end row-->
 
-                            <form class="mt-4" action="${pageContext.request.contextPath}/management/create" method="post">
+                            <form class="mt-4" action="${pageContext.request.contextPath}/management/patient/create" method="post">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">

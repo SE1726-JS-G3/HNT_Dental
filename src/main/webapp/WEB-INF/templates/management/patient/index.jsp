@@ -38,7 +38,7 @@
             </div>
           </div>
           <div class="col-md-4 col-sm-12">
-            <a href="/management/create">
+            <a href="/management/patient/create">
               <button class="btn btn-primary">Thêm mới</button>
             </a>
           </div>
@@ -84,7 +84,7 @@
                       <button class="btn btn-primary">Chi tiết</button>
                     </a>
 
-                    <a href="delete?id=${o.id}">
+                    <a href="patient/delete?id=${o.id}">
                       <button class="btn btn-danger">Xóa</button>
                     </a>
                   </td>

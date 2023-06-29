@@ -149,6 +149,7 @@
                                     <th class="border-bottom p-3" style="min-width: 120px;">Thời gian</th>
                                     <th class="border-bottom p-3" style="min-width: 30px;">Phí dịch vụ</th>
                                     <th class="border-bottom p-3">Trạng thái</th>
+                                    <th class="border-bottom p-3">Tác vụ</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -170,7 +171,7 @@
                                         </td>
 
                                         <td class="p-3 text-center">
-                                            <a href="detail-booking?id=${o.account_id}">
+                                            <a href="detail-history-booking?id=${o.account_id}">
                                                 <button class="btn btn-primary">Chi tiết</button>
                                             </a>
                                         </td>
@@ -183,14 +184,10 @@
                             <div class="col-12 mt-4">
                                 <div class="d-md-flex align-items-center text-center justify-content-between">
                                     <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                        <li class="page-item active"><a class="page-link">1</a>
+                                        <li class="page-item active"><a class="page-link" href="booking-history?page=1">1</a>
                                         </li>
-                                        <li class="page-item active"><a class="page-link">2</a>
+                                        <li class="page-item active"><a class="page-link" href="booking-history?page=2">2</a>
                                         </li>
-                                        <%--                                        <li class="page-item active"><a class="page-link">1</a>--%>
-                                        <%--                                        </li>--%>
-                                        <%--                                        <li class="page-item active"><a class="page-link">1</a>--%>
-                                        <%--                                        </li>--%>
                                     </ul>
                                 </div>
                             </div>

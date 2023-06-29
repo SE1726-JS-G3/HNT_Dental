@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Builder
 public class BookingDto {
 
-
+    private ServiceTypeDto serviceTypeDto;
     private ServiceResDto serviceResDto;
     private Long id;
     private String name;
