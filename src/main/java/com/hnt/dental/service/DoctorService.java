@@ -68,6 +68,7 @@ public class DoctorService {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
     }
 
 
