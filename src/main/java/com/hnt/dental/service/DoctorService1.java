@@ -57,7 +57,7 @@ public class DoctorService1 {
             search = "";
         }
 
-        Integer totalItem = doctorDao.count(renderSearch(search.trim()));
+        Integer totalItem = doctorDao.countListDoctorSummary(renderSearch(search.trim()));
         Integer totalPage = PagingUtils.getTotalPage(totalItem);
         List<Doctors> doctors =doctorDao.getAll(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE, renderSearch(search.trim()));
 

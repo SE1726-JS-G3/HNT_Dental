@@ -1,6 +1,6 @@
 
 package com.hnt.dental.controllers.management;
-import com.hnt.dental.service.DoctorService1;
+import com.hnt.dental.service.DoctorService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,9 +17,9 @@ import java.io.IOException;
         "/management/doctor/delete"
 })
 public class DoctorController extends HttpServlet {
-    private static final DoctorService1 doctorService;
+    private static final DoctorService doctorService;
     static {
-        doctorService = new DoctorService1();
+        doctorService = new DoctorService();
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -27,7 +27,7 @@ public class DoctorController extends HttpServlet {
         try {
             switch (action) {
                 case "/management/doctor":
-                    doctorService.getAll(req, resp);
+                    doctorService.getAllManagement(req, resp);
                     break;
                 case "/management/doctor/create":
                     req.getRequestDispatcher("/WEB-INF/templates/management/doctor/create.jsp").forward(req, resp);

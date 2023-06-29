@@ -27,6 +27,7 @@
                                     <div class="text-center pt-1 pb-1">
                                         <h4 class="title font-weight-normal mb-0">Thông tin</h4>
                                     </div>
+
                                 </a>
                             </li>
 
@@ -143,7 +144,7 @@
                                         <c:otherwise>
                                             <c:forEach items="${patients}" var="p">
                                                 <tr>
-                                                    <td class="p-3">${p.fullName}</td>
+                                                    <td class="p-3">${p.name}</td>
                                                     <td class="p-3">${p.date}</td>
                                                     <td class="p-3">${p.time}</td>
                                                     <td class="p-3">${p.phone}</td>

@@ -29,43 +29,39 @@
             </div>
           </div>
           <div class="col-md-7">
-            <form id="filterForm" class="searchform" onSubmit="document.getElementById('submit').disabled = true;">
+            <form action="doctormanage?action=filter" method="POST"
+                  onSubmit="document.getElementById('submit').disabled = true;">
               <div class="justify-content-md-end row">
                 <div class="col-md-5 row align-items-center">
                   <div class="col-md-3">
                     <label class="form-label">Giới tính</label>
                   </div>
                   <div class="col-md-9">
-                    <select name="gender" class="form-select">
-                      <option <c:if test="${gender == 'all'}" >selected</c:if> value="all">Tất cả</option>
-                      <option <c:if test="${gender == 'true'}" >selected</c:if> value="true">Nam</option>
-                      <option <c:if test="${gender == 'false'}" >selected</c:if> value="false">Nữ</option>
+                    <select name="gender" class="form-select" onchange="changeGender(this.value)">
+                      <option value="all" ${gender == 'all' ? 'selected' : ''}>Tất cả</option>
+                      <option value="true" ${gender == 'true' ? 'selected' : ''}>Nam</option>
+                      <option value="false" ${gender == 'false' ? 'selected' : ''}>Nữ</option>
                     </select>
                   </div>
                 </div>
-                <div class="col-md-5 row align-items-center">
-                  <div class="col-md-4">
-                    <label class="form-label">Chuyên môn</label>
-                  </div>
-                  <div class="col-md-8">
-                    <select name="specialization" class="form-select"> <!-- Updated name attribute -->
-                      <option <c:if test="${specialization == 'all'}" >selected</c:if> value="all">Tất cả</option>
-                      <c:forEach items="${specialization}" var="s">
-                        <option <c:if test="${specialization1 == s.id}" >selected</c:if> value="${s.id}">${s.name}</option>
-                      </c:forEach>
-                    </select>
-                  </div>
 
-                </div>
-                <div class="col-md-1 md-0">
-                  <button type="submit" class="btn btn-primary">Lọc</button>
+                <div class="col-md-5 row align-items-center">
+                  <div class="col-md-3">
+                    <label class="form-label">Trạng thái</label>
+                  </div>
+                  <div class="col-md-9">
+                    <select name="status" class="form-select" onchange="changeStatus(this.value)">
+                      <option value="all" ${status == 'all' ? 'selected' : ''}>Tất cả</option>
+                      <option value="true" ${status == 'true' ? 'selected' : ''}>Đang làm việc</option>
+                      <option value="false" ${status == 'false' ? 'selected' : ''}>Đã nghỉ việc</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </form>
           </div>
-<%--          <div class="col-md-2 col-sm-12 text-right">--%>
           <div class="col-md-4 col-sm-1 align-items-center">
-          <a href="${pageContext.request.contextPath}/management/doctor/create">
+            <a href="${pageContext.request.contextPath}/management/doctor/create">
               <button class="btn btn-primary">Thêm mới</button>
             </a>
           </div>
@@ -79,41 +75,49 @@
                     <th class="border-bottom p-3">Tên bác sĩ</th>
                     <th class="border-bottom p-3">Giới tính</th>
                     <th class="border-bottom p-3">Chuyên môn</th>
-                    <th class="border-bottom p-3 ">Xếp hạng</th>
+                    <th class="border-bottom p-3">Xếp hạng</th>
                     <th class="border-bottom p-3">Trạng thái</th>
                     <th class="border-bottom p-3 text-center">Tác vụ</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <c:forEach var="doctor" items="${doctors}">
-                    <tr>
-                      <td>${doctor.id}</td>
-                      <td>${doctor.fullName}</td>
-                      <td>${doctor.gender}</td>
-                      <td>${doctor.position}</td>
-                      <td>${doctor.name}</td>
-                      <td>${doctor.status}</td>
-                      <td class="p-3 text-center">
-                        <a href="#">
-                          <button class="btn btn-primary"
-                                  onclick="window.location.href='${pageContext.request.contextPath}/management/doctor/detail?id=${doctor.id}'"
-                          >Chi tiết
-                          </button>
-                        </a>
-                        <a href="#">
-                          <button class="btn btn-danger"
-                                  onclick="window.location.href='${pageContext.request.contextPath}/management/doctor/delete?id=${doctor.id}'"
-                          >Xóa
-                          </button>
-                        </a>
-                      </td>
-                    </tr>
-                  </c:forEach>
+                  <c:choose>
+                    <c:when test="${not empty doctors}">
+                      <c:forEach var="doctor" items="${doctors}">
+                        <tr>
+                          <td>${doctor.id}</td>
+                          <td>${doctor.fullName}</td>
+                          <td>${doctor.gender}</td>
+                          <td>${doctor.position}</td>
+                          <td>${doctor.name}</td>
+                          <td>${doctor.status}</td>
+                          <td class="p-3 text-center">
+                            <a href="#">
+                              <button class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/management/doctor/detail?id=${doctor.id}'">
+                                Chi tiết
+                              </button>
+                            </a>
+                            <a href="#">
+                              <button class="btn btn-danger" onclick="window.location.href='${pageContext.request.contextPath}/management/doctor/delete?id=${doctor.id}'">
+                                Xóa
+                              </button>
+                            </a>
+                          </td>
+                        </tr>
+                      </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                      <tr>
+                        <td colspan="7">Không có bác sĩ nào.</td>
+                      </tr>
+                    </c:otherwise>
+                  </c:choose>
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
+
           <c:set var="page" value="${currentPage}"/>
           <div class="row text-center">
             <div class="col-12 mt-4">
@@ -146,6 +150,26 @@
       window.location.href = "${url}?search=" + search;
     });
   });
+
+  function changeGender(gender) {
+    let url = "${url}";
+    let search = "${search}";
+    if (gender === 'all') {
+      window.location.href = `${url}?search=${search}&gender=${gender}`;
+    } else {
+      window.location.href = `${url}?search=${search}&gender=${gender}`;
+    }
+  }
+
+  function changeStatus(status) {
+    let url = "${url}";
+    let search = "${search}";
+    if (status === 'all') {
+      window.location.href = `${url}?search=${search}&status=${status}`;
+    } else {
+      window.location.href = `${url}?search=${search}&status=${status}`;
+    }
+  }
 </script>
 </body>
 </html>

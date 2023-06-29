@@ -20,7 +20,9 @@ public interface DoctorDao extends GenericDao<Doctors> {
     Integer countListDoctorSummary(String search) throws SQLException;
 
     List<DoctorDetailDto> getTopDoctor() throws SQLException;
-    Integer count(String search) throws Exception;
+//    Integer count(String search) throws Exception;
     List<Patient> getPatientDetail(Long id)throws SQLException;
+
+    List<Doctors> getAllDoctor(int offset, int limit,  String search, String status, String gender) throws SQLException;
 
 }

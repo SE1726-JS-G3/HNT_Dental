@@ -18,6 +18,7 @@ public class PatientResDto {
     private Booking booking;
     private Account account;
     private String fullName;
+    private String Name;
     private String gender;
     private String phone;
     private String address;
@@ -41,6 +42,7 @@ public class PatientResDto {
                             .date(DateUtils.convertLocalDateToString(patient.getBooking().getDate()))
                             .time(String.valueOf(patient.getBooking().getTime()))
                             .phone(patient.getPhone())
+                            .Name(patient.getBooking().getName())
                             .build()
             );
         }
