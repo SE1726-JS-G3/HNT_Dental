@@ -9,6 +9,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @SuperBuilder
 public class CategoryBlog extends BaseEntity{
+
     private String name;
 
 }

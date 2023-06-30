@@ -30,9 +30,14 @@
 <%--                                                        <c:forEach items="${categories}" var="c">--%>
 <%--                                                            <option value="${c.id}">${c.name}</option>--%>
 <%--                                                        </c:forEach>--%>
-    <option value="theloai1">Title 1</option>
-    <option value="theloai2">Title 2</option>
-    <option value="theloai3">Title 3</option>
+
+    <c:forEach var="c" items="${category}">
+        <option value="${c.name}"
+                <c:if test="${c.name eq blogs.categoryBlog.name}">selected=""</c:if>
+        >${c.name}</option>
+    </c:forEach>
+<%--    <option value="theloai1">Title 1</option>--%>
+
 
                                                     </select>
                                                 </div>
@@ -43,6 +48,7 @@
                                                 <input name="title" id="title" type="text" class="form-control"
                                                        placeholder="Tiêu đề :">
                                             </div>
+
                                             <div class="mb-3">
                                                 <label class="form-label">Ảnh <span class="text-danger">*</span></label>
                                                 <div class="form-group">
@@ -59,9 +65,9 @@
                                                 <label class="form-label">Thông Tin Tóm Tắt<span
                                                         class="text-danger">*</span></label>
                                                 <textarea rows="" cols="" class="brief" name="brief"
-                                                          style="width: 720px; height:50px"
                                                           placeholder="Thông Tin Tóm Tắt:"></textarea>
                                             </div>
+
                                             <div class="mb-3">
                                                 <label class="form-label">Mô tả<span
                                                         class="text-danger">*</span></label>
@@ -80,7 +86,7 @@
                                                         <td><input id="credit" name="status" value="true" type="radio"
                                                                    class="form-check-input"
                                                                    checked required></td>
-                                                        <td><label class="form-check-label">Active</label></td>
+                                                        <td><label class="form-check-label">status</label></td>
                                                         <td></td>
                                                         <td><input id="debit" name="status" value="false" type="radio"
                                                                    class="form-check-input"

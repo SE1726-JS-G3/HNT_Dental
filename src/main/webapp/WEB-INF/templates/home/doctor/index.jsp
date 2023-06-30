@@ -96,7 +96,7 @@
                 <div class="d-md-flex align-items-center text-center justify-content-between">
                     <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
                         <c:forEach begin="${1}" end="${totalPage}" var="i">
-                            <li class="page-item ${i==page?"active":""}"><a class="page-link"
+                            <li class="page-item ${i==page?"status":""}"><a class="page-link"
                                                                             href="${url}?page=${i}&search=${search}">${i}</a>
                             </li>
                         </c:forEach>

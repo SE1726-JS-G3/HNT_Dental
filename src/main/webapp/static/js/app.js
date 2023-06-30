@@ -60,27 +60,27 @@ function activateMenu() {
         }
 
         if (matchingMenuItem) {
-            matchingMenuItem.classList.add('active');
+            matchingMenuItem.classList.add('status');
             let immediateParent = getClosest(matchingMenuItem, 'li');
             if (immediateParent) {
-                immediateParent.classList.add('active');
+                immediateParent.classList.add('status');
             }
 
             let parent = getClosest(matchingMenuItem, '.parent-menu-item');
             if (parent) {
-                parent.classList.add('active');
+                parent.classList.add('status');
                 let parentMenuitem = parent.querySelector('.menu-item');
                 if (parentMenuitem) {
-                    parentMenuitem.classList.add('active');
+                    parentMenuitem.classList.add('status');
                 }
                 let parentOfParent = getClosest(parent, '.parent-parent-menu-item');
                 if (parentOfParent) {
-                    parentOfParent.classList.add('active');
+                    parentOfParent.classList.add('status');
                 }
             } else {
                 let parentOfParent = getClosest(matchingMenuItem, '.parent-parent-menu-item');
                 if (parentOfParent) {
-                    parentOfParent.classList.add('active');
+                    parentOfParent.classList.add('status');
                 }
             }
         }
@@ -94,12 +94,12 @@ function activateSidebarMenu() {
         let menuItems = document.querySelectorAll('#sidebar a');
         for (let i = 0, len = menuItems.length; i < len; i++) {
             if (menuItems[i].getAttribute("href").indexOf(current) !== -1) {
-                menuItems[i].parentElement.className += " active";
+                menuItems[i].parentElement.className += " status";
                 if(menuItems[i].closest(".sidebar-submenu")) {
                     menuItems[i].closest(".sidebar-submenu").classList.add("d-block");
                 }
                 if(menuItems[i].closest(".sidebar-dropdown")) {
-                    menuItems[i].closest(".sidebar-dropdown").classList.add("active");
+                    menuItems[i].closest(".sidebar-dropdown").classList.add("status");
                 }
             }
         }
@@ -129,12 +129,12 @@ if(document.getElementById("sidebar")){
     let elements = document.getElementById("sidebar").getElementsByTagName("a");
     for(let i = 0, len = elements.length; i < len; i++) {
         elements[i].onclick = function (elem) {
-            if(elem.target !== document.querySelectorAll("li.sidebar-dropdown.active > a")[0]){
-                document.querySelectorAll("li.sidebar-dropdown.active")[0]?.classList?.toggle("active");
+            if(elem.target !== document.querySelectorAll("li.sidebar-dropdown.status > a")[0]){
+                document.querySelectorAll("li.sidebar-dropdown.status")[0]?.classList?.toggle("status");
                 document.querySelectorAll("div.sidebar-submenu.d-block")[0]?.classList?.toggle("d-block");
             }
             if(elem.target.getAttribute("href") === "javascript:void(0)") {
-                elem.target.parentElement.classList.toggle("active");
+                elem.target.parentElement.classList.toggle("status");
                 elem.target.nextElementSibling.classList.toggle("d-block");
             }
         }
@@ -182,14 +182,14 @@ function topFunction() {
     document.documentElement.scrollTop = 0;
 }
 
-//ACtive Sidebar
+//status Sidebar
 (function () {
     let current = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);;
     if (current === "") return;
     let menuItems = document.querySelectorAll('.sidebar-nav a');
     for (let i = 0, len = menuItems.length; i < len; i++) {
         if (menuItems[i].getAttribute("href").indexOf(current) !== -1) {
-            menuItems[i].parentElement.className += " active";
+            menuItems[i].parentElement.className += " status";
         }
     }
 })();

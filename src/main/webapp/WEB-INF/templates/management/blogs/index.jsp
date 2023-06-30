@@ -8,7 +8,7 @@
     <div class="modal__content" id="model_content">
         <h2>Confirm</h2>
         <p>
-            Do you want to change blog active ?
+            Do you want to change blog status ?
         </p>
         <div class="modal__footer">
             <button type="button" onclick="modal_close()" class="button-10">Cancel</button>
@@ -79,9 +79,9 @@
                                 <div class="col-md-7">
                                     <select name="status" class="form-select" aria-label="Default select example">
                                         <option value="-1">Tất cả</option>
-                                        <option <c:if test="${active eq 1}">selected=""</c:if>
+                                        <option <c:if test="${status eq 1}">selected=""</c:if>
                                                 value="1">Hiện</option>
-                                        <option <c:if test="${active eq 0}">selected=""</c:if>
+                                        <option <c:if test="${status eq 0}">selected=""</c:if>
                                                 value="0">Ẩn</option>
                                     </select>
                                 </div>
@@ -119,15 +119,15 @@
                                                 <tr>
                                                     <td class="p-3 text-center">
                                                         <form id="status_form_${b.id}"  action="${pageContext.request.contextPath}/management/blog"method="get">
-                                                            <input type="hidden" name="change_status" value="${b.id}_${b.active}"/>
-                                                            <c:if test="${b.active eq 1}">
+                                                            <input type="hidden" name="change_status" value="${b.id}_${b.status}"/>
+                                                            <c:if test="${b.status eq 1}">
                                                                 <label class="switch-wrap" style="float: left">
                                                                     <input class="btn btn-primary" type="button" id="status_check_${b.id}" checked onclick="modal_open(${b.id})"
                                                                            value="Hiện" >
                                                                     <div class="switch"></div>
                                                                 </label>
                                                             </c:if>
-                                                            <c:if test="${b.active eq 0}">
+                                                            <c:if test="${b.status eq 0}">
                                                                 <label class="switch-wrap" style="float: left">
                                                                     <input type="button" class="btn btn-primary" id="status_check_${b.id}" onclick="modal_open(${b.id})"
                                                                            value="Ẩn" />
@@ -154,7 +154,7 @@
                             <div class="col-12 mt-4">
                                 <ul class="pagination justify-content-end mb-0 list-unstyled">
                                     <c:forEach begin="${1}" end="${totalPage}" var="i">
-                                        <li class="page-item ${i==page?"active":""}"><a class="page-link"
+                                        <li class="page-item ${i==page?"status":""}"><a class="page-link"
                                                                                         href="${url}?page=${i}&search=${search}">${i}</a>
                                         </li>
                                     </c:forEach>

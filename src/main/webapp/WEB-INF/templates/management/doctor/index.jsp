@@ -87,7 +87,7 @@
                   <td class="p-3">Nữ</td>
                   <td class="p-3">Niềng răng</td>
                   <td class="p-3 text-center">Rank 3</td>
-                  <td class="p-3 text-center">Active</td>
+                  <td class="p-3 text-center">status</td>
                   <td class="p-3 text-center">
                     <a href="#">
                       <button class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/management/doctor/detail'">Chi tiết</button>
@@ -106,7 +106,7 @@
           <div class="col-12 mt-4">
             <div class="d-md-flex align-items-center text-center justify-content-between">
               <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                <li class="page-item active pl-1"><a class="page-link"
+                <li class="page-item status pl-1"><a class="page-link"
                                                      href="#">1</a>
                 </li>
                 <li class="page-item pl-1"><a class="page-link"

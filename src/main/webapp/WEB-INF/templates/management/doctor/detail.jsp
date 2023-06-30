@@ -22,7 +22,7 @@
                         <ul class="nav nav-pills nav-justified flex-column flex-sm-row rounded" id="pills-tab"
                             role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link rounded active" id="pills-cloud-tab" data-bs-toggle="pill"
+                                <a class="nav-link rounded status" id="pills-cloud-tab" data-bs-toggle="pill"
                                    href="#info" role="tab" aria-controls="infor" aria-selected="false">
                                     <div class="text-center pt-1 pb-1">
                                         <h4 class="title font-weight-normal mb-0">Thông tin</h4>
@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <div class="tab-content" id="1">
-                    <div class="tab-pane show active row" id="info" role="tabpanel" aria-labelledby="info">
+                    <div class="tab-pane show status row" id="info" role="tabpanel" aria-labelledby="info">
                         <div class="col-lg-12 col-md-12 mt-4">
                             <div class="bg-white rounded shadow overflow-hidden">
                                 <div class="p-4 border-bottom">

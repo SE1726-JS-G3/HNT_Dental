@@ -1,23 +1,16 @@
 package com.hnt.dental.service;
 
 
-import com.hnt.dental.constant.RoleEnum;
-import com.hnt.dental.dao.AccountDao;
 import com.hnt.dental.dao.BlogDao;
 import com.hnt.dental.dao.CategoryBlogDao;
 import com.hnt.dental.dao.EmployeeDao;
-import com.hnt.dental.dao.impl.AccountDaoImpl;
 import com.hnt.dental.dao.impl.BlogDaoImpl;
 import com.hnt.dental.dao.impl.CategoryBlogDaoImpl;
 import com.hnt.dental.dao.impl.EmployeeDaoImpl;
 import com.hnt.dental.dto.response.BlogResDto;
-import com.hnt.dental.entities.Account;
 import com.hnt.dental.entities.Blogs;
 import com.hnt.dental.entities.CategoryBlog;
 import com.hnt.dental.entities.Employee;
-import com.hnt.dental.exception.SystemRuntimeException;
-import com.hnt.dental.util.AesUtils;
-import com.hnt.dental.util.CaptchaUtils;
 import com.hnt.dental.util.PagingUtils;
 import com.hnt.dental.util.ServletUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,9 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class BlogService {
@@ -52,9 +43,9 @@ public class BlogService {
         String raw_status = req.getParameter("status");
         String raw_created_by = req.getParameter("created_by");
 
-        int created_by = (raw_created_by != null && !raw_created_by.equals("-1")) ? Integer.parseInt(raw_created_by) : -1 ;
-        int category = (raw_category != null && !raw_category.equals("-1")) ? Integer.parseInt(raw_category) : -1 ;
-        int active = (raw_status != null && !raw_status.equals("-1")) ? Integer.parseInt(raw_status) : -1 ;
+        int created_by = (raw_created_by != null && !raw_created_by.equals("-1")) ? Integer.parseInt(raw_created_by) : -1;
+        int category = (raw_category != null && !raw_category.equals("-1")) ? Integer.parseInt(raw_category) : -1;
+        int status = (raw_status != null && !raw_status.equals("-1")) ? Integer.parseInt(raw_status) : -1;
         ArrayList<CategoryBlog> categoryBlog = (ArrayList<CategoryBlog>) categoryBlogDao.getAll();
         ArrayList<Blogs> createdByList = blogDao.getAllCreatedBy();
 //        Optional<Blogs> filterCategoryBlog(int category_id)
@@ -77,8 +68,8 @@ public class BlogService {
         if (status_id != null) {
             String[] arr = status_id.split("_");
             String id = arr[0];
-            String raw_active = arr[1];
-            blogDao.changeStatus(Integer.parseInt(id), raw_active);
+            String raw_status1 = arr[1];
+            blogDao.changeStatus(Integer.parseInt(id), raw_status1);
         }
 
         List<Blogs> blogs = blogDao.getAll(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE, renderSearch(search.trim()));
@@ -86,7 +77,7 @@ public class BlogService {
         req.setAttribute("blogs", BlogResDto.convert(blogs));
         req.setAttribute("category", categoryBlog);
         req.setAttribute("createdByList", createdByList);
-        req.setAttribute("active", active);
+        req.setAttribute("status", status);
         req.setAttribute("created_by_elm", created_by);
         req.setAttribute("cate_elm", category);
         req.setAttribute("totalPage", totalPage);
@@ -100,7 +91,7 @@ public class BlogService {
     }
 
     public void create(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        Long id = Long.valueOf(req.getParameter("blog_id"));
+        Long id = Long.valueOf(req.getParameter("id"));
         String name = req.getParameter("name");
         String title = req.getParameter("title");
         String brief = req.getParameter("brief");
@@ -108,8 +99,11 @@ public class BlogService {
         String create_at = req.getParameter("create_at");
         String update_at = req.getParameter("update_at");
         String created_by = req.getParameter("created_by");
-        String active = "1";
+        String status = "1";
         String error = null;
+
+        ArrayList<CategoryBlog> categoryBlog1 = (ArrayList<CategoryBlog>) categoryBlogDao.getAll();
+        req.setAttribute("category", categoryBlog1);
 
         try {
             Optional<Employee> employee = employeeDao.findByName(created_by);
@@ -123,7 +117,7 @@ public class BlogService {
                     Blogs.builder()
                             .categoryBlog(CategoryBlog.builder().id(categoryBlog.getId()).build())
                             .id(id)
-                            .active(active)
+                            .status(status)
                             .title(title)
                             .brief(brief)
                             .description(description)
@@ -134,14 +128,31 @@ public class BlogService {
                             .build()
 
             );
-        } catch (Exception e) {
+        } catch (SQLException e) {
             error = e.getMessage();
         }
-
+        if (StringUtils.isNotEmpty(error)) {
+            // Redirect to the create page with the error message
+            ServletUtils.redirect(req, resp, "/management/blog/create?error=" + error);
+        } else {
+            // Redirect to the doctor management page
+            ServletUtils.redirect(req, resp, "/management/doctor");
+        }
         ServletUtils.redirect(req, resp, "/management/blog");
     }
 
     public void update(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+
+//        Long id = null;
+//        if (req.getParameter("id") != null) {
+//            id = Long.valueOf(req.getParameter("id"));
+//        }
+//        if (req.getParameter("id")==null)
+//        {
+//            System.out.println(req.getParameter("id"));
+////            System.out.println(req.getParameter("id"));
+//            return;
+//        }
         Long id = Long.valueOf(req.getParameter("id"));
         String title = req.getParameter("title");
         String brief = req.getParameter("brief");
@@ -150,7 +161,7 @@ public class BlogService {
         String create_at = req.getParameter("create_at");
         String update_at = req.getParameter("update_at");
         String created_by = req.getParameter("created_by");
-        String active = "1";
+        String status = "1";
         String error = null;
         try {
             Optional<Employee> employee = employeeDao.findByName(created_by);
@@ -160,42 +171,115 @@ public class BlogService {
                 throw new SystemRuntimeException(StringUtils.join("Name ", name, " already exists"));
             }*/
 
-            // categoryBlog = categoryBlogDao.get(id.intValue()).isPresent() ? categoryBlogDao.get(id.intValue()).get() : null;
+             categoryBlog = categoryBlogDao.get(id.intValue()).isPresent() ? categoryBlogDao.get(id.intValue()).get() : null;
             categoryBlog.setName(name);
             categoryBlog.setUpdatedAt(LocalDateTime.now());
             categoryBlog.setCreatedAt(LocalDateTime.parse(create_at));
             categoryBlogDao.update(categoryBlog);
 
+//            blogDao.update(
+//                    Blogs.builder()
+////                            .categoryBlog(CategoryBlog.builder().id(id).build())
+//                            .categoryBlog(CategoryBlog.builder().id(categoryBlog.getId()).build())
+//                            .id(id)
+//                            .status(status)
+//                            .title(title)
+//                            .brief(brief)
+//                            .description(description)
+//                            .createdAt(LocalDateTime.parse(create_at))
+//                            .updatedAt(LocalDateTime.now())
+//                            .createdBy(employee.get().getId())
+//                            .build()
+//
+//            );
+
             blogDao.update(
                     Blogs.builder()
                             .categoryBlog(CategoryBlog.builder().id(id).build())
-                            .active(active)
+                            .id(id)
+                            .status(status)
                             .title(title)
                             .brief(brief)
                             .description(description)
                             .createdAt(LocalDateTime.parse(create_at))
                             .updatedAt(LocalDateTime.now())
-                            .createdBy(employee.get().getId())
+                            .createdBy(employee.isPresent() ? employee.get().getId() : null)
                             .build()
             );
+            System.out.println("runnable");
         } catch (Exception e) {
             error = e.getMessage();
         }
 
-            if (StringUtils.isNotEmpty(error)) {
-                ServletUtils.redirect(req, resp, "/management/blog/update?id=" + id + "&error=" + error);
-            } else {
-                ServletUtils.redirect(req, resp, "/management/blog/update?id=" + id);
-            }
+        if (StringUtils.isNotEmpty(error)) {
+            ServletUtils.redirect(req, resp, "/management/blog/update?id=" + id + "&error=" + error);
+        } else {
+            ServletUtils.redirect(req, resp, "/management/blog/update?id=" + id);
+        }
     }
+
+//    public void update(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+//        Long id = Long.valueOf(req.getParameter("id"));
+//        String title = req.getParameter("title");
+//        String brief = req.getParameter("brief");
+//        String description = req.getParameter("description");
+//        String name = req.getParameter("name");
+//        String create_at = req.getParameter("create_at");
+//        String update_at = req.getParameter("update_at");
+//        String created_by = req.getParameter("created_by");
+//        String status = "1";
+//        String error = null;
+//
+//        try {
+//            Optional<Employee> employee = employeeDao.findByName(created_by);
+//            CategoryBlog categoryBlog = categoryBlogDao.findByName(name);
+//
+//            // Cập nhật thông tin cho categoryBlog
+//            categoryBlog.setName(name);
+//            categoryBlog.setUpdatedAt(LocalDateTime.now());
+//            categoryBlog.setCreatedAt(LocalDateTime.parse(create_at));
+//            categoryBlogDao.update(categoryBlog);
+//
+//            // Cập nhật thông tin cho blog
+//            Blogs blog = blogDao.get(Math.toIntExact(id)).orElse(null);
+//            if (blog != null) {
+//                blog.setCategoryBlog(categoryBlog);
+//                blog.setStatus(status);
+//                blog.setTitle(title);
+//                blog.setBrief(brief);
+//                blog.setDescription(description);
+//                blog.setCreatedAt(LocalDateTime.parse(create_at));
+//                blog.setUpdatedAt(LocalDateTime.now());
+//                if (employee.isPresent()) {
+//                    blog.setCreatedBy(employee.get().getId());
+//                }
+//                blogDao.update(blog);
+//            }
+//        } catch (Exception e) {
+//            error = e.getMessage();
+//        }
+//
+//        if (StringUtils.isNotEmpty(error)) {
+//            ServletUtils.redirect(req, resp, "/management/blog/update?id=" + id + "&error=" + error);
+//        } else {
+//            ServletUtils.redirect(req, resp, "/management/blog/update?id=" + id);
+//        }
+//    }
 
 
     public void updateRender(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         int id = Integer.parseInt(req.getParameter("id"));
+        if(req.getParameter("id")==null)
+        {
+            System.out.println("id null roi");
+            return;
+        }
         String error = req.getParameter("error");
-        Blogs blogs = blogDao.get(id).isPresent() ? blogDao.get(Integer.parseInt(req.getParameter("id"))).get() : null;
+        Blogs blogs = blogDao.get(id).isPresent()
+                ? blogDao.get(Integer.parseInt(req.getParameter("id"))).get() : null;
 
-        CategoryBlog categoryBlog = categoryBlogDao.get(id).isPresent() ? categoryBlogDao.get(id).get() : null;
+        CategoryBlog categoryBlog = categoryBlogDao.get(id).isPresent()
+                ? categoryBlogDao.get(Integer.parseInt(req.getParameter("id"))).get() : null;
 
         ArrayList<CategoryBlog> categoryBlog1 = (ArrayList<CategoryBlog>) categoryBlogDao.getAll();
         assert blogs != null;
@@ -206,7 +290,52 @@ public class BlogService {
         req.setAttribute("error", error);
         ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/blogs/detail.jsp");
     }
+    public void updateRender1() throws Exception {
+        int id = Integer.parseInt(String.valueOf("1"));
+//        String error = req.getParameter("error");
+        Blogs blogs = blogDao.get(id).isPresent()
+                ? blogDao.get(Integer.parseInt("1")).get() : null;
 
+        CategoryBlog categoryBlog = categoryBlogDao.get(id).isPresent()
+                ? categoryBlogDao.get(id).get() : null;
+
+        ArrayList<CategoryBlog> categoryBlog1 = (ArrayList<CategoryBlog>) categoryBlogDao.getAll();
+        assert blogs != null;
+        blogs.setCategoryBlog(categoryBlog);
+//        req.setAttribute("blogs", blogs);
+//        req.setAttribute("category", categoryBlog1);
+//        req.setAttribute("blog_id", id);
+//        req.setAttribute("error", error);
+//        ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/blogs/detail.jsp");
+    }
+    public static void main(String[] args) throws Exception {
+        BlogService obj = new BlogService();
+//        HttpServletRequest req = new HttpServletRequestWrapper();
+        obj.updateRender1();
+    }
+    //    public void updateRender(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+//        String idParam = req.getParameter("id");
+//        String error = req.getParameter("error");
+//        int id = 0;
+//
+//        if (idParam != null && !idParam.isEmpty() && !idParam.equals("null")) {
+//            id = Integer.parseInt(idParam);
+//        }
+//
+//        Blogs blogs = blogDao.get(id).orElse(null);
+//        CategoryBlog categoryBlog = categoryBlogDao.get(id).orElse(null);
+//        ArrayList<CategoryBlog> categoryBlogList = (ArrayList<CategoryBlog>) categoryBlogDao.getAll();
+//
+//        if (blogs != null) {
+//            blogs.setCategoryBlog(categoryBlog);
+//        }
+//
+//        req.setAttribute("blogs", blogs);
+//        req.setAttribute("category", categoryBlogList);
+//        req.setAttribute("blog_id", id);
+//        req.setAttribute("error", error);
+//        ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/blogs/detail.jsp");
+//    }
     private String renderSearch(String search) {
         if (search.matches("\\d{2}/\\d{2}/\\d{4}")) {
             String[] date = search.split("/");
@@ -215,17 +344,16 @@ public class BlogService {
         return search;
     }
 
-    public void Active(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+    public void status(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
-//        blogDao.Active(Blogs.builder().id());
+//        blogDao.status(Blogs.builder().id());
     }
+
     public void delete(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
         blogDao.delete(Blogs.builder().id((long) id).build());
         ServletUtils.redirect(req, resp, "/management/blog");
     }
-
-
 
 
 }

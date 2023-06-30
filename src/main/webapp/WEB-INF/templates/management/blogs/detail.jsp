@@ -27,8 +27,10 @@
                                             aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body p-3 pt-4">
-                                    <form enctype="multipart/form-data" action="${pageContext.request.contextPath}/management/blog/update" method="POST">
-                                        <input value="${blog_id}" name="blog_id" type="hidden">
+                                    <form  action="${pageContext.request.contextPath}/management/blog/update" method="POST">
+<%--                                        <input value="${blog_id}" name="id" type="hidden">--%>
+                                        <input value="${blog_id}" name="id">
+<%--                                        <input value="${blog_id}" name="id">--%>
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="mb-3">
@@ -77,7 +79,45 @@
                                                 <textarea rows="10" cols="70" class="describe" name="description" id="describe" placeholder="Mô tả:">${blogs.description}</textarea>
 
 
+
+
+
                                             </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label"> Ngày đăng: </label>
+                                                    <input name="create_at" type="text" class="form-control start" id="createdAt"
+                                                           value="${blogs.createdAt}"
+                                                           placeholder="Ngày đăng :">
+
+                                                </div>
+                                            </div><!--end col-->
+
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label"> Người đăng: </label>
+                                                    <input name="create_by" type="text" class="form-control start" id="created_by"
+                                                           value="${blogs.employee.fullName}"
+                                                           placeholder="Ngày đăng :">
+
+                                                </div>
+                                            </div><!--end col-->
+
+
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label"> Ngày cập nhật : </label>
+                                                    <input name="update_at" type="text" class="form-control start" id="updatedAt"
+                                                           value="${blogs.updatedAt}"
+                                                           placeholder="Ngày đăng :">
+
+                                                </div>
+                                            </div><!--end col-->
+
+
+
+
+
 
                                             <div class="mb-3">
                                                 <label class="form-label">Trạng thái <span
@@ -88,7 +128,7 @@
                                                         <td><input id="credit" name="status" value="true" type="radio"
                                                                    class="form-check-input"
                                                                    checked required></td>
-                                                        <td><label class="form-check-label">Active</label></td>
+                                                        <td><label class="form-check-label">status</label></td>
                                                         <td></td>
                                                         <td><input id="debit" name="status" value="false" type="radio"
                                                                    class="form-check-input"

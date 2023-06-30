@@ -31,7 +31,7 @@ public class BlogResDto {
     private String description;
     private String create_at;
     private String update_at;
-    private String active;
+    private String status;
     private long created_by;
 
 
@@ -56,8 +56,7 @@ public class BlogResDto {
                             .brief(blog.getBrief())
                             .description(blog.getDescription())
                             .create_at(String.valueOf(blog.getCreatedAt()))
-                            .active(blog.getActive())
-
+                            .status(blog.getStatus())
                             .build()
             );
         }

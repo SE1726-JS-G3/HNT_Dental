@@ -14,5 +14,5 @@ public class Blogs extends BaseEntity{
     private String title;
     private String brief;
     private String description;
-    private String active;
+    private String status;
 }

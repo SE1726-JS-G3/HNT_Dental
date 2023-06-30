@@ -24,35 +24,35 @@ public class BlogDaoImpl implements BlogDao {
     }
 
     private static final String GET_ALL_BLOG = "SELECT b.id, b.category_id, b.title, b.brief, b.description, b.create_at,\n" +
-            " b.update_at, b.created_by, b.active\n" +
+            " b.update_at, b.created_by, b.status\n" +
             ",e.full_name,cb.name FROM blogs b inner join employees e \n" +
             "on e.id = b.created_by inner join category_blog cb on b.category_id = cb.id\n" +
             "where (1=1) and b.title like ?" +
             "LIMIT ?,?";
 
     private static final String GET_BLOG_BY_ID ="SELECT b.id, b.category_id, b.title, b.brief, b.description, b.create_at,\n" +
-            " b.update_at, b.created_by, b.active\n" +
+            " b.update_at, b.created_by, b.status\n" +
             ",e.full_name,cb.name FROM blogs b inner join employees e \n" +
             "on e.id = b.created_by inner join category_blog cb on b.category_id = cb.id\n" +
             "where (1=1) and b.id = ?\n" ;
 
     private static final String GET_BLOG_BY_CATEGORY ="SELECT b.id, b.category_id, b.title, b.brief, b.description, b.create_at,\n" +
-            "             b.update_at, b.created_by, b.active\n" +
+            "             b.update_at, b.created_by, b.status\n" +
             "            ,e.full_name,cb.name FROM blogs b inner join employees e \n" +
             "            on e.id = b.created_by inner join category_blog cb on b.category_id = cb.id\n" +
             "            where (1=1) and b.category_id = ?";
     private static final String SAVE_BLOG = "INSERT INTO blogs " +
-            "(id, category_id, title, brief, description, create_at, update_at, created_by, active) " +
+            "(id,category_id , title, brief, description, create_at, update_at, create_by, status) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     private static final String COUNT_BLOG = "SELECT COUNT(*) AS count FROM blogs";
 
     private static final String UPDATE_BLOG = "UPDATE blogs " +
-            "SET category_id=?, title=?,brief=?, description=?, create_at=?, update_at=?, created_by=?, active = ? " +
+            "SET category_id=?, title=?,brief=?, description=?, create_at=?, update_at=?, created_by=?, status = ? " +
             "WHERE id=?";
-    private static final String CHANGE_ACTIVE = "UPDATE blogs\n" +
+    private static final String CHANGE_status = "UPDATE blogs\n" +
             "SET\n" +
-            "`active` = ?\n" +
+            "`status` = ?\n" +
             "WHERE `id` = ?";
     private static final String DELETE_BLOG = "DELETE FROM blogs WHERE id=?";
     private static final String RECENT_POST = "SELECT * FROM blogs \n" +
@@ -80,9 +80,9 @@ public class BlogDaoImpl implements BlogDao {
     @Override
     public void changeStatus(int id, String status) throws SQLException {
         if (status.equals("0")) {
-            ConnectionUtils.executeUpdate(CHANGE_ACTIVE, 1,id);
+            ConnectionUtils.executeUpdate(CHANGE_status, 1,id);
         } else {
-            ConnectionUtils.executeUpdate(CHANGE_ACTIVE, 0,id);
+            ConnectionUtils.executeUpdate(CHANGE_status, 0,id);
         }
     }
 
@@ -149,8 +149,7 @@ public class BlogDaoImpl implements BlogDao {
                                 .brief(rs.getString("brief"))
                                 .description(rs.getString("description"))
                                 .createdAt(rs.getTimestamp("create_at").toLocalDateTime())
-                                .active(rs.getString("active"))
-
+                                .status(rs.getString("status"))
                                 .build()
                 );
             }
@@ -184,7 +183,7 @@ public class BlogDaoImpl implements BlogDao {
                         .title(rs.getString("title"))
                         .brief(rs.getString("brief"))
                         .description(rs.getString("description"))
-                        .active(rs.getString("active"))
+                        .status(rs.getString("status"))
                         .build());
             }
             ConnectionUtils.closeConnection();
@@ -199,16 +198,37 @@ public class BlogDaoImpl implements BlogDao {
     @Override
     public Long save(Blogs blog) throws SQLException, ClassNotFoundException {
         ConnectionUtils.executeUpdate(SAVE_BLOG,blog.getId(),blog.getCategoryBlog().getId(),blog.getTitle(),blog.getBrief(),
-                blog.getDescription(),blog.getCreatedAt(),blog.getUpdatedAt(),blog.getEmployee().getId(),blog.getActive());
+                blog.getDescription(),blog.getCreatedAt(),blog.getUpdatedAt(),blog.getCreatedBy(), blog.getStatus());
         return null;
     }
 
     @Override
     public void update(Blogs blog) throws SQLException {
-        ConnectionUtils.executeUpdate(UPDATE_BLOG, blog.getCategoryBlog().getId(), blog.getTitle(),blog.getBrief(), blog.getDescription(),
-                blog.getCreatedAt(), blog.getUpdatedAt(), blog.getCreatedBy(), blog.getActive(),blog.getId()
-        );
+//        ConnectionUtils.executeUpdate(UPDATE_BLOG, blog.getCategoryBlog().getId(), blog.getTitle(),blog.getBrief(),
+//                blog.getDescription(), blog.getCreatedAt(), blog.getUpdatedAt(),
+//                blog.getCreatedBy(), blog.getStatus(),blog.getId()
+//        );
+        ConnectionUtils.executeUpdate(UPDATE_BLOG, blog.getCategoryBlog().getId(), blog.getTitle(),
+                blog.getBrief(),blog.getDescription(),
+                blog.getCreatedAt(), blog.getUpdatedAt(), blog.getCreatedBy(), blog.getStatus(), blog.getId());
     }
+
+    public static void main(String[] args) throws SQLException {
+        // Tạo đối tượng Blog để thực hiện việc cập nhật
+        Blogs blog = new Blogs();
+        CategoryBlog categoryBlog = new CategoryBlog();
+        BlogDaoImpl blogDao = new BlogDaoImpl();
+        blog.setId(1L); // Thiết lập ID của bài viết cần cập nhật
+        blog.setTitle("New Title"); // Thiết lập tiêu đề mới
+        blog.setBrief("New Brief"); // Thiết lập phần giới thiệu mới
+        blog.setDescription("New Description"); // Thiết lập nội dung mới
+        blog.setCategoryBlog(CategoryBlog.builder() .id(1L) .build());
+        blogDao.update(blog);
+    }
+
+
+
+
 
 
 
@@ -255,7 +275,7 @@ public class BlogDaoImpl implements BlogDao {
                         .title(rs.getString("title"))
                         .brief(rs.getString("brief"))
                         .description(rs.getString("description"))
-                        .active(rs.getString("active"))
+                        .status(rs.getString("status"))
                         .build());
             }
             ConnectionUtils.closeConnection();
@@ -265,7 +285,7 @@ public class BlogDaoImpl implements BlogDao {
         return Optional.empty();
     }
 
-//    public ArrayList<Blogs> paggingV2( String position, int active) {
+//    public ArrayList<Blogs> paggingV2( String position, int status) {
 //        String sql = "SELECT * FROM blogs where(1=1) \n";
 //        Integer count = 0;
 //        HashMap<Integer, Object> params = new HashMap<>();
@@ -275,10 +295,10 @@ public class BlogDaoImpl implements BlogDao {
 //            sql += "and category_id = ? \n ";
 //            params.put(count,  position );
 //        }
-//        if (active != -1) {
+//        if (status != -1) {
 //            count++;
-//            sql += "and active = ? \n ";
-//            params.put(count, active);
+//            sql += "and status = ? \n ";
+//            params.put(count, status);
 //        }
 //        ArrayList<Blogs> list = new ArrayList<>();
 //
