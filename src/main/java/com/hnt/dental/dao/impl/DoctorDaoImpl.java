@@ -3,10 +3,7 @@ package com.hnt.dental.dao.impl;
 import com.hnt.dental.dao.AccountDao;
 import com.hnt.dental.dao.DoctorDao;
 import com.hnt.dental.dao.impl.AccountDaoImpl;
-import com.hnt.dental.dto.response.DoctorDetailDto;
-import com.hnt.dental.dto.response.DoctorSummaryRes;
-import com.hnt.dental.dto.response.FeedbackDto;
-import com.hnt.dental.dto.response.ServiceResDto;
+import com.hnt.dental.dto.response.*;
 import com.hnt.dental.entities.*;
 import com.hnt.dental.util.ConnectionUtils;
 import com.hnt.dental.util.DateUtils;
@@ -116,8 +113,8 @@ public class DoctorDaoImpl implements DoctorDao {
 //            "OR LOWER(d.position) LIKE ? " +
 //            "OR LOWER(d.dob) LIKE ? ";
 
-
-
+    private static final String GET_DOCTORS_BY_GENDER = "SELECT DISTINCT id, full_name, dob, gender, phone, description, position, rank_id, status FROM doctors WHERE gender LIKE ?";
+    private static final String GET_DOCTORS_BY_STATUS = "SELECT  DISTINCT id, full_name, dob, gender, phone, description, position, rank_id, status FROM doctors WHERE status LIKE ?";
     @Override
     public List<Doctors> getAllDoctor(int offset, int limit, String search, String status, String gender) throws SQLException {
         List<Doctors> doctors = new ArrayList<>();
@@ -152,6 +149,52 @@ public class DoctorDaoImpl implements DoctorDao {
         ConnectionUtils.closeConnection();
         return doctors;
     }
+
+//    @Override
+//    public List<DoctorResDto> getDoctorsByGender(String gender) throws SQLException {
+//        List<DoctorResDto> doctors = new ArrayList<>();
+//        gender = StringUtils.isNotEmpty(gender) ? gender : "%";
+//        ResultSet rs = ConnectionUtils.executeQuery(GET_DOCTORS_BY_GENDER, gender);
+//        while (rs.next()) {
+//            doctors.add(
+//                    DoctorResDto.builder()
+//                            .id(rs.getLong("id"))
+//                            .fullName(rs.getString("full_name"))
+//                            .dob(rs.getString("dob"))
+//                            .gender(rs.getString("gender"))
+//                            .status(rs.getString("status"))
+//                            .phone(rs.getString("phone"))
+//                            .position(rs.getString("position"))
+//                            .rankId(rs.getInt("rank_id"))
+//                            .build()
+//            );
+//        }
+//        ConnectionUtils.closeConnection();
+//        return doctors;
+//    }
+//
+//    @Override
+//    public List<DoctorResDto> getDoctorsByStatus(String status) throws SQLException {
+//        List<DoctorResDto> doctors = new ArrayList<>();
+//        status = StringUtils.isNotEmpty(status) ? status : "%";
+//        ResultSet rs = ConnectionUtils.executeQuery(GET_DOCTORS_BY_STATUS, status);
+//        while (rs.next()) {
+//            doctors.add(
+//                    DoctorResDto.builder()
+//                            .id(rs.getLong("id"))
+//                            .fullName(rs.getString("full_name"))
+//                            .dob(rs.getString("dob"))
+//                            .gender(rs.getString("gender"))
+//                            .status(rs.getString("status"))
+//                            .phone(rs.getString("phone"))
+//                            .position(rs.getString("position"))
+//                            .rankId(rs.getInt("rank_id"))
+//                            .build()
+//            );
+//        }
+//        ConnectionUtils.closeConnection();
+//        return doctors;
+//    }
 
 
     @Override

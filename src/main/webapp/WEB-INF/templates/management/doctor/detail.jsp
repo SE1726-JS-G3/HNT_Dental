@@ -207,7 +207,7 @@
                             <div class="tab-content p-4" id="pills-tabContent">
                                 <form action="${pageContext.request.contextPath}/management/doctor/detail" method="POST"
                                       enctype="multipart/form-data"
-                                      onSubmit="document.getElementById('submit').disabled = true;">
+                                      onSubmit="return validateForm()">
                                     <h5 class="mb-0">Chỉnh sửa thông tin :</h5>
                                     <div>
                                         <p class="text-muted">Cập nhật ảnh đại diện.</p>
@@ -232,7 +232,7 @@
                                     </div>
                                 </form>
 
-                                <form action="${pageContext.request.contextPath}/management/doctor/detail" method="POST" class="mt-4" onSubmit="document.getElementById('submit').disabled = true;">
+                                <form action="${pageContext.request.contextPath}/management/doctor/detail" method="POST" class="mt-4"  onSubmit="return validateForm()">
                                     <div class="row">
                                         <input name="id" type="hidden" value="${doctor.account.id}">
                                         <div class="col-md-6">
@@ -316,7 +316,8 @@
                                     </div>
                                     <button type="submit" class="btn btn-primary">Lưu</button>
                                 </form>
-
+                                <div id="message-container"></div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -400,5 +401,55 @@
         margin-top: -2px;
     }
 </style>
+<script>
+    function validateForm() {
+        var fullName = document.getElementById('name').value;
+        var dob = document.getElementById('name2').value;
+        var email = document.getElementById('email').value;
+        var address = document.getElementById('address').value;
+        var phone = document.getElementById('phone').value;
+        var position = document.getElementById('position').value;
+
+        // Perform field validation
+        if (fullName.trim() === '') {
+            displayErrorMessage('Họ và tên không được bỏ trống');
+            return false;
+        }
+        if (dob.trim() === '') {
+            displayErrorMessage('Ngày sinh không được bỏ trống');
+            return false;
+        }
+        if (email.trim() === '') {
+            displayErrorMessage('Email không được bỏ trống');
+            return false;
+        }
+        if (address.trim() === '') {
+            displayErrorMessage('Địa chỉ không được bỏ trống');
+            return false;
+        }
+        if (phone.trim() === '') {
+            displayErrorMessage('Điện thoại không được bỏ trống');
+            return false;
+        }
+        if (position.trim() === '') {
+            displayErrorMessage('Chuyên môn không được bỏ trống');
+            return false;
+        }
+
+        // If all fields are valid, display success message
+        displaySuccessMessage('Thông tin đã được cập nhật thành công');
+        return true;
+    }
+
+    function displayErrorMessage(message) {
+        var messageContainer = document.getElementById('message-container');
+        messageContainer.innerHTML = '<div class="alert alert-danger">' + message + '</div>';
+    }
+
+    function displaySuccessMessage(message) {
+        var messageContainer = document.getElementById('message-container');
+        messageContainer.innerHTML = '<div class="alert alert-success">' + message + '</div>';
+    }
+</script>
 </html>
 

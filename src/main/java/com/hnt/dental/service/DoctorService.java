@@ -103,7 +103,10 @@ public class DoctorService {
                     status.trim(),
                     gender.trim()
             );
-
+//            List<DoctorResDto> doctorsByGender = dao.getDoctorsByGender(gender.trim());
+//            List<DoctorResDto> doctorsByStatus = dao.getDoctorsByStatus(status.trim());
+//            req.setAttribute("doctorsByGender", doctorsByGender);
+//            req.setAttribute("doctorsByStatus",doctorsByStatus);;
             req.setAttribute("doctors", DoctorResDto.convert(doctors));
             req.setAttribute("totalPage", totalPage);
             req.setAttribute("currentPage", pageNumber);

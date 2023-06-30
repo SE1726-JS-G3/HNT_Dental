@@ -29,18 +29,17 @@
             </div>
           </div>
           <div class="col-md-7">
-            <form action="doctormanage?action=filter" method="POST"
-                  onSubmit="document.getElementById('submit').disabled = true;">
+            <form action="doctormanage?action=filter" method="POST" onSubmit="document.getElementById('submit').disabled = true;">
               <div class="justify-content-md-end row">
                 <div class="col-md-5 row align-items-center">
                   <div class="col-md-3">
                     <label class="form-label">Giới tính</label>
                   </div>
                   <div class="col-md-9">
-                    <select name="gender" class="form-select" onchange="changeGender(this.value)">
+                    <select class="form-select" onchange="changeGender(this.value)">
                       <option value="all" ${gender == 'all' ? 'selected' : ''}>Tất cả</option>
-                      <option value="true" ${gender == 'true' ? 'selected' : ''}>Nam</option>
-                      <option value="false" ${gender == 'false' ? 'selected' : ''}>Nữ</option>
+                      <option value="0" ${gender == '0' ? 'selected' : ''}>Nữ</option>
+                      <option value="1" ${gender == '1' ? 'selected' : ''}>Nam</option>
                     </select>
                   </div>
                 </div>
@@ -50,10 +49,10 @@
                     <label class="form-label">Trạng thái</label>
                   </div>
                   <div class="col-md-9">
-                    <select name="status" class="form-select" onchange="changeStatus(this.value)">
+                    <select class="form-select" onchange="changeStatus(this.value)">
                       <option value="all" ${status == 'all' ? 'selected' : ''}>Tất cả</option>
-                      <option value="true" ${status == 'true' ? 'selected' : ''}>Đang làm việc</option>
-                      <option value="false" ${status == 'false' ? 'selected' : ''}>Đã nghỉ việc</option>
+                      <option value="0" ${status == '0' ? 'selected' : ''}>Đã nghỉ việc</option>
+                      <option value="1" ${status == '1' ? 'selected' : ''}>Đang làm việc</option>
                     </select>
                   </div>
                 </div>
@@ -124,18 +123,16 @@
               <div class="d-md-flex align-items-center text-center justify-content-between">
                 <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
                   <c:forEach begin="${1}" end="${totalPage}" var="i">
-                    <li class="page-item ${i==page?"active":""}"><a class="page-link"
-                                                                    href="${url}?page=${i}&search=${search}">${i}</a>
-                    </li>
+                    <li class="page-item ${i==page?"active":""}"><a class="page-link" href="${url}?page=${i}&search=${search}">${i}</a></li>
                   </c:forEach>
                 </ul>
               </div>
             </div>
-
           </div>
         </div>
       </div>
       <jsp:include page="../layout/footer.jsp"/>
+    </div>
   </main>
 </div>
 <script src="${pageContext.request.contextPath}/static/libs/simplebar/simplebar.min.js"></script>
@@ -152,22 +149,26 @@
   });
 
   function changeGender(gender) {
-    let url = "${url}";
-    let search = "${search}";
-    if (gender === 'all') {
-      window.location.href = `${url}?search=${search}&gender=${gender}`;
+    var url = "${url}";
+    var search = "${search}";
+    var status = "${status}";
+
+    if (gender == 'all') {
+      window.location.href = url + "?search=" + search + "&status=" + status;
     } else {
-      window.location.href = `${url}?search=${search}&gender=${gender}`;
+      window.location.href = url + "?search=" + search + "&status=" + status + "&gender=" + gender;
     }
   }
 
   function changeStatus(status) {
-    let url = "${url}";
-    let search = "${search}";
-    if (status === 'all') {
-      window.location.href = `${url}?search=${search}&status=${status}`;
+    var url = "${url}";
+    var search = "${search}";
+    var gender = "${gender}";
+
+    if (status == 'all') {
+      window.location.href = url + "?search=" + search + "&gender=" + gender;
     } else {
-      window.location.href = `${url}?search=${search}&status=${status}`;
+      window.location.href = url + "?search=" + search + "&gender=" + gender + "&status=" + status;
     }
   }
 </script>
