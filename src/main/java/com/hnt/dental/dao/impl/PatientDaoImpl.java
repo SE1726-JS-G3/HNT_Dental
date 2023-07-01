@@ -54,7 +54,7 @@ public class PatientDaoImpl implements PatientDao {
     }
 
     private static final String MY_PATIENT_DOCTOR_QUERY =
-            "SELECT p.id, p.full_name, b.date, b.time,b.status, p.gender, p.dob, b.created_at, a.email, p.phone " +
+            "SELECT p.id, p.full_name, b.date, b.time,b.status, p.gender, p.dob, b.created_at,b.name, a.email, p.phone " +
                     "FROM patients p " +
                     "JOIN booking b ON b.account_id = p.id " +
                     "JOIN doctors d ON d.id = b.staff_id " +
@@ -62,7 +62,7 @@ public class PatientDaoImpl implements PatientDao {
                     "ORDER BY p.id ASC " +
                     "LIMIT ?, ?";
 
-    private static final String MY_PATIENT_DETAIL_QUERY = "SELECT p.id,p.full_name, a.email, p.phone, p.gender, p.dob, b.date, b.time ,b.status " +
+    private static final String MY_PATIENT_DETAIL_QUERY = "SELECT p.id,p.full_name,b.name, a.email, p.phone, p.gender, p.dob, b.date, b.time ,b.status " +
             "FROM patients p " +
             "INNER JOIN booking b ON b.account_id = p.id " +
             "INNER JOIN doctors d ON d.id = b.staff_id " +
@@ -90,6 +90,7 @@ public class PatientDaoImpl implements PatientDao {
                                             .date(rs.getDate("date").toLocalDate())
                                             .time(rs.getTime("time").toLocalTime())
                                             .status(rs.getBoolean("status"))
+                                            .name(rs.getString("name"))
                                             .build()
                             )
                             .account(
@@ -126,6 +127,7 @@ public class PatientDaoImpl implements PatientDao {
                             )
                             .booking(
                                     Booking.builder()
+                                            .name((rs.getString("name")))
                                             .date(rs.getDate("date").toLocalDate())
                                             .time(rs.getTime("time").toLocalTime())
                                             .status(rs.getBoolean("status"))

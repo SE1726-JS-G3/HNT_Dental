@@ -11,6 +11,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -47,15 +49,6 @@ public class DoctorDaoImpl implements DoctorDao {
             "ORDER BY d.id " +
             "LIMIT ? OFFSET ? ";
 
-//    private static final String SQL_COUNT_SUMMARY = "SELECT " +
-//            "  COUNT(*)" +
-//            "  FROM" +
-//            "    doctors d" +
-//            "    INNER JOIN doctor_rank dr ON d.rank_id = dr.id" +
-//            "  WHERE" +
-//            "    d.full_name LIKE ?" +
-//            "  ORDER BY" +
-//            "    d.id";
 
     private static final String SQL_COUNT = "SELECT " +
             "  COUNT(*)" +
@@ -72,16 +65,6 @@ public class DoctorDaoImpl implements DoctorDao {
     private static final String SQL_GET_TOP_DOCTOR = "select * from doctors\n" +
             "ORDER BY RAND() LIMIT 4";
 
-//    private static final String GET_ALL_DOCTORS = "SELECT d.id, d.full_name, d.dob, d.gender, d.phone, d.status, d.rank_id, d.description, d.position, a.email, dr.name " +
-//            "FROM doctors d " +
-//            "INNER JOIN accounts a ON d.id = a.id " +
-//            "LEFT JOIN doctor_rank dr ON d.rank_id = dr.id " +
-//            "WHERE (LOWER(d.full_name) LIKE ? " +
-//            "OR LOWER(d.position) LIKE ? " +
-//            "OR LOWER(d.dob) LIKE ?) " +
-//            "AND d.status = ? " +
-//            "AND d.gender = ? " +
-//            "LIMIT ?, ?";
     private static final String GET_ALL_DOCTORS = "SELECT d.id, d.full_name, d.dob, d.gender, d.phone, d.status, d.rank_id, d.description, d.position, a.email, dr.name " +
             "FROM doctors d " +
             "INNER JOIN accounts a ON d.id = a.id " +
@@ -107,14 +90,27 @@ public class DoctorDaoImpl implements DoctorDao {
 
     private static final String DELETE_DOCTOR = "DELETE FROM doctors WHERE id=?;";
 
-//    private static final String Total_Count = "SELECT COUNT(*) FROM doctors d " +
-//            "INNER JOIN accounts a ON d.id = a.id " +
-//            "WHERE LOWER(d.full_name) LIKE ? " +
-//            "OR LOWER(d.position) LIKE ? " +
-//            "OR LOWER(d.dob) LIKE ? ";
+    private static final String MY_PATIENT_DETAIL_QUERY = "SELECT p.id,p.full_name ,b.name, a.email, p.phone, p.gender, p.dob, b.date, b.time ,b.status " +
+            "FROM patients p " +
+            "INNER JOIN booking b ON b.account_id = p.id " +
+            "INNER JOIN doctors d ON d.id = b.staff_id " +
+            "JOIN accounts a ON a.id = p.id " +
+            "WHERE p.id = ? " +
+            "ORDER BY p.id ASC ";
+    private static final String SQL_GET_ALL_APPOINTMENT_DOCTOR =
+            "SELECT b.id, p.full_name AS patient_full_name,d.full_name ,p.id, s.name , b.date, b.time, b.status , p.gender " +
+                    "FROM booking b " +
+                    "INNER JOIN patients p ON b.account_id = p.id " +
+                    "INNER JOIN service s ON b.service_id = s.id " +
+                    "JOIN accounts a ON a.id = p.id " +
+                    "LEFT JOIN doctors d ON b.id = d.id " +
+                    "LIMIT ?, ?";
+    private static final String COUNT_APPOINTMENT = "SELECT COUNT(*) FROM booking b " +
+            "INNER JOIN patients p ON b.account_id = p.id " +
+            "INNER JOIN service s ON b.service_id = s.id " +
+            "JOIN accounts a ON a.id = p.id " +
+            "LEFT JOIN doctors d ON b.staff_id = d.id ";
 
-    private static final String GET_DOCTORS_BY_GENDER = "SELECT DISTINCT id, full_name, dob, gender, phone, description, position, rank_id, status FROM doctors WHERE gender LIKE ?";
-    private static final String GET_DOCTORS_BY_STATUS = "SELECT  DISTINCT id, full_name, dob, gender, phone, description, position, rank_id, status FROM doctors WHERE status LIKE ?";
     @Override
     public List<Doctors> getAllDoctor(int offset, int limit, String search, String status, String gender) throws SQLException {
         List<Doctors> doctors = new ArrayList<>();
@@ -150,83 +146,40 @@ public class DoctorDaoImpl implements DoctorDao {
         return doctors;
     }
 
-//    @Override
-//    public List<DoctorResDto> getDoctorsByGender(String gender) throws SQLException {
-//        List<DoctorResDto> doctors = new ArrayList<>();
-//        gender = StringUtils.isNotEmpty(gender) ? gender : "%";
-//        ResultSet rs = ConnectionUtils.executeQuery(GET_DOCTORS_BY_GENDER, gender);
-//        while (rs.next()) {
-//            doctors.add(
-//                    DoctorResDto.builder()
-//                            .id(rs.getLong("id"))
-//                            .fullName(rs.getString("full_name"))
-//                            .dob(rs.getString("dob"))
-//                            .gender(rs.getString("gender"))
-//                            .status(rs.getString("status"))
-//                            .phone(rs.getString("phone"))
-//                            .position(rs.getString("position"))
-//                            .rankId(rs.getInt("rank_id"))
-//                            .build()
-//            );
-//        }
-//        ConnectionUtils.closeConnection();
-//        return doctors;
-//    }
-//
-//    @Override
-//    public List<DoctorResDto> getDoctorsByStatus(String status) throws SQLException {
-//        List<DoctorResDto> doctors = new ArrayList<>();
-//        status = StringUtils.isNotEmpty(status) ? status : "%";
-//        ResultSet rs = ConnectionUtils.executeQuery(GET_DOCTORS_BY_STATUS, status);
-//        while (rs.next()) {
-//            doctors.add(
-//                    DoctorResDto.builder()
-//                            .id(rs.getLong("id"))
-//                            .fullName(rs.getString("full_name"))
-//                            .dob(rs.getString("dob"))
-//                            .gender(rs.getString("gender"))
-//                            .status(rs.getString("status"))
-//                            .phone(rs.getString("phone"))
-//                            .position(rs.getString("position"))
-//                            .rankId(rs.getInt("rank_id"))
-//                            .build()
-//            );
-//        }
-//        ConnectionUtils.closeConnection();
-//        return doctors;
-//    }
+    @Override
+    public List<Booking> getMyAppointments(int offset, int limit) throws SQLException {
+        List<Booking> MyAppointments = new ArrayList<>();
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_ALL_APPOINTMENT_DOCTOR, offset, limit);
+        while (rs.next()) {
+            MyAppointments.add(
+                    Booking.builder()
+                            .account(
+                                    Account.builder()
+                                            .id(rs.getLong("id"))
+                                            .build()
+                            )
+                            .service(Service.builder()
+                                    .name(rs.getString("name"))
+                                    .build())
+                            .patient(Patient.builder()
+                                    .id(rs.getLong("id"))
+                                    .fullName(rs.getString("patient_full_name"))
+                                    .gender(rs.getBoolean("gender"))
+                                    .build())
+                            .id(rs.getLong("id"))
+                            .date(rs.getDate("date").toLocalDate())
+                            .time(rs.getTime("time").toLocalTime())
+                            .status(rs.getBoolean("status"))
+                            .build()
+            );
+        }
+        return MyAppointments;
+    }
+
 
 
     @Override
     public List<Doctors> getAll(Integer offset, Integer limit, String search) throws SQLException {
-//        List<Doctors> doctors = new ArrayList<>();
-//        search = StringUtils.isNotEmpty(search) ? "%" + search.toLowerCase() + "%" : "%";
-//        ResultSet rs = ConnectionUtils.executeQuery(GET_ALL_DOCTORS, search, search, search, offset, limit);
-//        while (rs.next()) {
-//            doctors.add(
-//                    Doctors.builder()
-//                            .account(
-//                                    Account.builder()
-//                                            .id(rs.getLong("id"))
-//                                            .email(rs.getString("email"))
-//                                            .build()
-//                            )
-//                            .doctorRank(DoctorRank.builder()
-//                                    .name(rs.getString("name"))
-//                                    .build())
-//                            .id(rs.getLong("id"))
-//                            .fullName(rs.getString("full_name"))
-//                            .dob(DateUtils.convertDateToLocalDate(rs.getDate("dob")))
-//                            .gender(rs.getBoolean("gender"))
-//                            .phone(rs.getString("phone"))
-//                            .description(rs.getString("description"))
-//                            .position(rs.getString("position"))
-//                            .rankId(rs.getInt("rank_id"))
-//                            .status(rs.getBoolean("status"))
-//                            .build()
-//            );
-//        }
-//        return doctors;
         return null;
     }
 
@@ -335,21 +288,25 @@ public class DoctorDaoImpl implements DoctorDao {
 
     @Override
     public List<DoctorDetailDto> getDoctorDetailDto() throws SQLException {
-        //
+
         return null;
     }
 
     @Override
     public Integer countListDoctorSummary(String search) throws SQLException {
-//        search = "%" + search + "%";
-//        ResultSet rs = ConnectionUtils.executeQuery(SQL_COUNT_SUMMARY, search);
-//        if (rs.next()) {
-//            return rs.getInt(1);
-//        }
-//        ConnectionUtils.closeConnection();
-//        return null;
         search = StringUtils.isNotEmpty(search) ? "%" + search.toLowerCase() + "%" : "%";
         ResultSet rs = ConnectionUtils.executeQuery(SQL_COUNT, search, search, search);
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        ConnectionUtils.closeConnection();
+        return null;
+    }
+
+    @Override
+    public Integer countMyAppointments() throws Exception {
+        ResultSet rs = ConnectionUtils.executeQuery(COUNT_APPOINTMENT);
+        assert rs != null;
         if (rs.next()) {
             return rs.getInt(1);
         }
@@ -375,24 +332,6 @@ public class DoctorDaoImpl implements DoctorDao {
         }
         return result;
     }
-//    @Override
-//    public Integer count(String search) throws Exception {
-//        search = StringUtils.isNotEmpty(search) ? "%" + search.toLowerCase() + "%" : "%";
-//        ResultSet rs = ConnectionUtils.executeQuery(Total_Count, search, search, search);
-//        assert rs != null;
-//        if (rs.next()) {
-//            return rs.getInt(1);
-//        }
-//        ConnectionUtils.closeConnection();
-//        return null;
-//    }
-    private static final String MY_PATIENT_DETAIL_QUERY = "SELECT p.id,p.full_name,b.name, a.email, p.phone, p.gender, p.dob, b.date, b.time ,b.status " +
-            "FROM patients p " +
-            "INNER JOIN booking b ON b.account_id = p.id " +
-            "INNER JOIN doctors d ON d.id = b.staff_id " +
-            "JOIN accounts a ON a.id = p.id " +
-            "WHERE p.id = ? " +
-            "ORDER BY p.id ASC ";
 
 
     @Override

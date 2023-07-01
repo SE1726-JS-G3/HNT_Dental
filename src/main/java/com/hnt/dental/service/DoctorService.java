@@ -8,10 +8,7 @@ import com.hnt.dental.dao.impl.AccountDaoImpl;
 import com.hnt.dental.dao.impl.DoctorDaoImpl;
 import com.hnt.dental.dao.impl.FeedbackDaoImpl;
 import com.hnt.dental.dto.response.*;
-import com.hnt.dental.entities.Account;
-import com.hnt.dental.entities.DoctorRank;
-import com.hnt.dental.entities.Doctors;
-import com.hnt.dental.entities.Patient;
+import com.hnt.dental.entities.*;
 import com.hnt.dental.exception.SystemRuntimeException;
 import com.hnt.dental.util.AesUtils;
 import com.hnt.dental.util.CaptchaUtils;
@@ -103,10 +100,6 @@ public class DoctorService {
                     status.trim(),
                     gender.trim()
             );
-//            List<DoctorResDto> doctorsByGender = dao.getDoctorsByGender(gender.trim());
-//            List<DoctorResDto> doctorsByStatus = dao.getDoctorsByStatus(status.trim());
-//            req.setAttribute("doctorsByGender", doctorsByGender);
-//            req.setAttribute("doctorsByStatus",doctorsByStatus);;
             req.setAttribute("doctors", DoctorResDto.convert(doctors));
             req.setAttribute("totalPage", totalPage);
             req.setAttribute("currentPage", pageNumber);
@@ -128,7 +121,29 @@ public class DoctorService {
         }
         return search;
     }
+    public void getMyAppointments(HttpServletRequest req, HttpServletResponse resp) {
+        String page = req.getParameter("page");
+        String search = req.getParameter("search");
+        int pageNumber = 1;
 
+        if (StringUtils.isNotEmpty(page)) {
+            pageNumber = Integer.parseInt(page);
+        }
+
+        try {
+            Integer totalItem = dao.countMyAppointments();
+            Integer totalPage = PagingUtils.getTotalPage(totalItem);
+            List<Booking> getMyAppointments = dao.getMyAppointments(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE);
+            req.setAttribute("bookings", AppointmentResDto.convert(getMyAppointments));
+            req.setAttribute("totalPage", totalPage);
+            req.setAttribute("currentPage", pageNumber);
+            req.getRequestDispatcher("/WEB-INF/templates/home/MyAppointments.jsp").forward(req, resp);
+
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
     public void getDoctorById(HttpServletRequest req, HttpServletResponse resp) {
         String id = req.getParameter("id");
         try {

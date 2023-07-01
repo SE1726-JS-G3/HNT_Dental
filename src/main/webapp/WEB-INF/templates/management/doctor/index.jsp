@@ -64,6 +64,7 @@
               <button class="btn btn-primary">Thêm mới</button>
             </a>
           </div>
+
           <div class="row">
             <div class="col-12 mt-4">
               <div class="table-responsive bg-white shadow rounded">
@@ -96,8 +97,8 @@
                                 Chi tiết
                               </button>
                             </a>
-                            <a href="#">
-                              <button class="btn btn-danger" onclick="window.location.href='${pageContext.request.contextPath}/management/doctor/delete?id=${doctor.id}'">
+                            <a href="#" onclick="confirmDelete(${doctor.id})">
+                              <button class="btn btn-danger">
                                 Xóa
                               </button>
                             </a>
@@ -133,6 +134,7 @@
       </div>
       <jsp:include page="../layout/footer.jsp"/>
     </div>
+
   </main>
 </div>
 <script src="${pageContext.request.contextPath}/static/libs/simplebar/simplebar.min.js"></script>
@@ -169,6 +171,13 @@
       window.location.href = url + "?search=" + search + "&gender=" + gender;
     } else {
       window.location.href = url + "?search=" + search + "&gender=" + gender + "&status=" + status;
+    }
+  }
+
+  function confirmDelete(id) {
+    var confirmed = confirm('Bạn có muốn xóa bác sĩ này?');
+    if (confirmed) {
+      window.location.href = '${pageContext.request.contextPath}/management/doctor/delete?id=' + id;
     }
   }
 </script>

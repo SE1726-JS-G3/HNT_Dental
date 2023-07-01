@@ -39,7 +39,7 @@
                       <a href="#" class="text-dark">
                         <div class="d-flex align-items-center">
                           <img src="data:image/png;base64,${a.account.img}" class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                          <span class="ms-2">${p.fullName}</span>
+                          <span class="ms-2">${p.name}</span>
                         </div>
                       </a>
                     </td>

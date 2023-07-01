@@ -1,6 +1,7 @@
 package com.hnt.dental.dao;
 
 import com.hnt.dental.dto.response.*;
+import com.hnt.dental.entities.Booking;
 import com.hnt.dental.entities.Doctors;
 import com.hnt.dental.entities.Patient;
 
@@ -15,14 +16,13 @@ public interface DoctorDao extends GenericDao<Doctors> {
     Optional<DoctorDetailDto> getDoctorDetail(Long id) throws SQLException;
     List<ServiceResDto> getAllServiceByIdDoctor(Long id) throws SQLException;
     Integer countListDoctorSummary(String search) throws SQLException;
-
+    Integer countMyAppointments() throws Exception;
     List<DoctorDetailDto> getTopDoctor() throws SQLException;
-//    Integer count(String search) throws Exception;
+
     List<Patient> getPatientDetail(Long id)throws SQLException;
 
     List<Doctors> getAllDoctor(int offset, int limit,  String search, String status, String gender) throws SQLException;
 
-//    List<DoctorResDto> getDoctorsByGender(String gender) throws SQLException;
-//    List<DoctorResDto> getDoctorsByStatus(String status) throws SQLException;
+    List<Booking> getMyAppointments(int offset, int limit) throws SQLException;
 
 }

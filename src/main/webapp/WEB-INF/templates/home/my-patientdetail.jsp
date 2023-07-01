@@ -20,7 +20,7 @@
                                 <div class="d-flex align-items-center mt-2">
                                     <i class="uil uil-italic align-text-bottom text-primary h5 mb-0 me-2"></i>
                                     <h6 class="mb-0">Tên</h6>
-                                    <p class="text-muted mb-0 ms-2">${p.fullName}</p>
+                                    <p class="text-muted mb-0 ms-2">${p.name}</p>
                                 </div>
                                 <div class="d-flex align-items-center mt-2">
                                     <i class="uil uil-italic align-text-bottom text-primary h5 mb-0 me-2"></i>

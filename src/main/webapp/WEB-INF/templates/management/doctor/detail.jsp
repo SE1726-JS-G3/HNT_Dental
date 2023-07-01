@@ -234,10 +234,11 @@
 
                                 <form action="${pageContext.request.contextPath}/management/doctor/detail" method="POST" class="mt-4"  onSubmit="return validateForm()">
                                     <div class="row">
+                                        <div id="message-container"></div>
                                         <input name="id" type="hidden" value="${doctor.account.id}">
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label class="form-label">Họ và tên</label>
+                                                <label class="form-label" >Họ và tên</label>
                                                 <input name="full_name" id="name" type="text" class="form-control" value="${doctor.fullName}" placeholder="Họ và tên">
                                             </div>
                                         </div>
@@ -316,8 +317,7 @@
                                     </div>
                                     <button type="submit" class="btn btn-primary">Lưu</button>
                                 </form>
-                                <div id="message-container"></div>
-                                </form>
+
                             </div>
                         </div>
                     </div>
