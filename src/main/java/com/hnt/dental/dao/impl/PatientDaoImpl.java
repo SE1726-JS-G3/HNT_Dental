@@ -3,7 +3,6 @@ import com.hnt.dental.dao.AccountDao;
 
 import com.hnt.dental.dao.PatientDao;
 import com.hnt.dental.entities.Account;
-import com.hnt.dental.entities.Employee;
 import com.hnt.dental.entities.Patient;
 import com.hnt.dental.util.ConnectionUtils;
 import com.hnt.dental.util.DateUtils;
@@ -23,10 +22,6 @@ public class PatientDaoImpl implements PatientDao {
     private static final String SAVE_PATIENT = "INSERT INTO patients" +
             "(id,dob, full_name, gender, phone, address) \n" +
             "VALUES(?, ?, ?, ?, ?, ?)";
-    private static final String GET_ALL_PATIENT = "SELECT p.id, p.full_name, p.dob,p.gender,p.status \n" +
-            "            FROM patients p " ;
-    private static final String SEARCH_PATIENT = "select * from patients where full_name like ?";
-
     private static final String DETAIL_PATIENT = "SELECT p.id, p.full_name, p.dob, p.gender,p.address,p.description ,p.phone,p.status,a.email \n" +
         "                       FROM patients p inner join  accounts a on p.id = a.id\n" +
         "                      where p.id = ?";
@@ -39,49 +34,19 @@ public class PatientDaoImpl implements PatientDao {
     private static final String UPDATE_PATIENT = "UPDATE patients \n" +
             "           SET full_name=?, dob=?, gender=?, phone=?, address=?, description=?,status=?,created_at=?, updated_at=? \n" +
             "                      WHERE id=?";
-
     private static final String GET_PATIENT_BY_ID = "SELECT * FROM patients where id =?";
-
-    @Override
-    public List<Patient> getAll() throws SQLException {
-        ResultSet rs = ConnectionUtils.executeQuery(GET_ALL_PATIENT);
-        List<Patient> list = new ArrayList<>();
-        while (true) {
-            assert rs != null;
-            if (!rs.next()) break;
-            list.add(Patient
-                    .builder()
-                    .id(rs.getLong("id"))
-                    .fullName(rs.getString("full_name"))
-                    .dob(rs.getDate("dob").toLocalDate())
-                    .gender(rs.getBoolean("gender"))
-                    .status(rs.getBoolean("status"))
-                    .build());
-        }
-        return list;
-
-    }
-
-    @Override
-    public List<Patient> SearchPatients(String Search) throws SQLException {
-        Search = StringUtils.isNotEmpty(Search) ? "%" + Search.toLowerCase() + "%" : "%";
-        ResultSet rs = ConnectionUtils.executeQuery(SEARCH_PATIENT, Search);
-        List<Patient> list = new ArrayList<>();
-        assert rs != null;
-        if (rs.next()) {
-            list.add(Patient
-                    .builder()
-                    .id(rs.getLong("id"))
-                    .fullName(rs.getString("full_name"))
-                    .dob(rs.getDate("dob").toLocalDate())
-                    .gender(rs.getBoolean("gender"))
-                    .phone(String.valueOf(rs.getInt("phone")))
-                    .status(rs.getBoolean("status"))
-                    .build());
-        }
-        return list;
-    }
-
+    private static final String GET_ALL_PATIENTS = "SELECT a.id, p.full_name, p.dob,p.gender,p.status\n" +
+            "FROM patients p " +
+            "INNER JOIN accounts a ON p.id = a.id " +
+            "WHERE LOWER(p.full_name) LIKE ? " +
+            "OR LOWER(a.email) LIKE ? " +
+            "OR LOWER(p.dob) LIKE ? " +
+            "LIMIT ?, ?";
+    private static final String COUNT_PATIENT = "SELECT COUNT(*) FROM patients p " +
+            "INNER JOIN accounts a ON p.id = a.id " +
+            "WHERE LOWER(p.full_name) LIKE ? " +
+            "OR LOWER(a.email) LIKE ? " +
+            "OR LOWER(p.dob) LIKE ? ";
 
     @Override
     public Patient DetailPatients(String id) throws SQLException {
@@ -111,7 +76,27 @@ public class PatientDaoImpl implements PatientDao {
 
     @Override
     public List<Patient> getAll(Integer offset, Integer limit, String search) throws SQLException {
-        return null;
+        List<Patient> patients = new ArrayList<>();
+        search = StringUtils.isNotEmpty(search) ? "%" + search.toLowerCase() + "%" : "%";
+        ResultSet rs = ConnectionUtils.executeQuery(GET_ALL_PATIENTS, search, search, search, offset, limit);
+        while (rs.next()) {
+            patients.add(
+                    Patient.builder()
+                            .account(
+                                    Account.builder()
+                                            .id(rs.getLong("id"))
+                                            //.email(rs.getString("email"))
+                                            .build()
+                            )
+                            .fullName(rs.getString("full_name"))
+                            .dob(DateUtils.convertDateToLocalDate(rs.getDate("dob")))
+                            .gender(rs.getBoolean("gender"))
+                            .status(rs.getBoolean("status"))
+                            .build()
+            );
+        }
+        ConnectionUtils.closeConnection();
+        return patients;
     }
 
     @Override
@@ -155,4 +140,17 @@ public class PatientDaoImpl implements PatientDao {
         accountDao.delete(Account.builder().id(patient.getId()).build());
         ConnectionUtils.executeUpdate(DELETE_PATIENT, patient.getId());
     }
+    @Override
+    public Integer count(String search) throws Exception {
+        search = StringUtils.isNotEmpty(search) ? "%" + search.toLowerCase() + "%" : "%";
+        ResultSet rs = ConnectionUtils.executeQuery(COUNT_PATIENT, search, search, search);
+        assert rs != null;
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        ConnectionUtils.closeConnection();
+        return null;
+    }
+
+
 }

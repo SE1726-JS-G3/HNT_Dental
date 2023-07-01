@@ -1,11 +1,12 @@
 package com.hnt.dental.service;
+import com.hnt.dental.dto.response.PatientResDto;
 import com.hnt.dental.entities.Employee;
 import com.hnt.dental.util.AesUtils;
 import com.hnt.dental.util.CaptchaUtils;
 import org.apache.commons.lang3.StringUtils;
 import com.hnt.dental.entities.Account;
 import com.hnt.dental.exception.SystemRuntimeException;
-
+import com.hnt.dental.util.PagingUtils;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -36,42 +37,32 @@ public class PatientService {
         accountDao = new AccountDaoImpl();
 
     }
-    public void patient(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException, ServletException {
-        resp.setContentType("text/html;charset=UTF-8");
-        PatientDao dao = new PatientDaoImpl();
-        List<Patient> list = null;
-        try {
-            list = dao.getAll();
-            int page =1;
-            String pageStr = req.getParameter("page");
-            if(pageStr!=null){
-                page = Integer.parseInt(pageStr);
-            }
-            final int PAGE_SIZE =5;
-            req.setAttribute("list",list.subList((page-1)*PAGE_SIZE,page*PAGE_SIZE) );
-            ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/patient/index.jsp");
-        }catch (SQLException e) {
-            throw new EOFException();
 
-        }
+    public void getAll(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    String page = req.getParameter("page");
+    String search = req.getParameter("search");
+    int pageNumber = 1;
+
+    if (StringUtils.isNotEmpty(page)) {
+        pageNumber = Integer.parseInt(page);
     }
-    public void patientSearch(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException, ServletException {
-        resp.setContentType("text/html;charset=UTF-8");
-        req.setCharacterEncoding("UTF-8");
-        String txtSearch = req.getParameter("txt");
-        PatientDao dao = new PatientDaoImpl();
-        List<Patient> list = null;
-        try {
-            list = dao.SearchPatients(txtSearch);
 
-            req.setAttribute("list",list);
-            req.setAttribute("txtS", txtSearch);
-            ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/patient/index.jsp");
-        }catch (SQLException e) {
-            throw new EOFException();
-
-        }
+    if(StringUtils.isEmpty(search)) {
+        search = "";
     }
+    Integer totalItem = patientDao.count(renderSearch(search.trim()));
+    Integer totalPage = PagingUtils.getTotalPage(totalItem);
+
+    List<Patient> patients = patientDao.getAll(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE, renderSearch(search.trim()));
+
+    req.setAttribute("patients", PatientResDto.convert(patients));
+    req.setAttribute("totalPage", totalPage);
+    req.setAttribute("currentPage", pageNumber);
+    req.setAttribute("search", search);
+    req.setAttribute("url", "/management/patient");
+    ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/patient/index.jsp");
+}
+
 
     public void patientDetail(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException, ServletException {
         resp.setContentType("text/html;charset=UTF-8");
@@ -169,5 +160,13 @@ public class PatientService {
             ServletUtils.redirect(req, resp, "/management/patient");
         }
     }
+    private String renderSearch(String search){
+        if(search.matches("\\d{2}/\\d{2}/\\d{4}")){
+            String[] date = search.split("/");
+            return StringUtils.join(date[2], "-", date[1], "-", date[0]);
+        }
+        return search;
     }
+
+}
 

@@ -234,7 +234,7 @@ public class AuthService {
             if(pageStr!=null){
                 page = Integer.parseInt(pageStr);
             }
-            final int PAGE_SIZE =5;
+            final int PAGE_SIZE =8;
             req.setAttribute("list", list.subList((page-1)*PAGE_SIZE,page*PAGE_SIZE));
             ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/booking-history.jsp");
         } catch (SQLException e) {

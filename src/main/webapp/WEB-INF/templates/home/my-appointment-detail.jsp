@@ -55,6 +55,18 @@
                                         ${d.phone}
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Ngày đặt lịch:</label><br>
+                                        ${d.date}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Loại dịch vụ:</label><br>
+                                        ${d.serviceTypeDto.nameType}
+                                    </div>
+                                </div>
 
                                 <div class="col-md-6">
                                     <div class="mb-3">
@@ -70,7 +82,14 @@
                             </div>
 
                         </form>
-
+                        <div class="col-md-6">
+                            <button class="btn btn-secondary active" type="button" data-bs-toggle="modal" data-bs-target="#newblogadd">
+                                Kết quả khám
+                            </button>
+                            <button class="btn btn-info active" type="button">
+                                Hủy đặt lịch
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

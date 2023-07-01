@@ -1,10 +1,3 @@
-<%--&lt;%&ndash;--%>
-<%--  Created by IntelliJ IDEA.--%>
-<%--  User: hungkv--%>
-<%--  Date: 5/27/2023--%>
-<%--  Time: 3:55 PM--%>
-<%--  To change this template use File | Settings | File Templates.--%>
-<%--&ndash;%&gt;--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
@@ -24,21 +17,22 @@
             </div>
             <div class="col-md-8">
               <div class="search-bar p-0 d-lg-block ms-2">
-                <div id="search" class="menu-search mb-0">
-                  <form action="patient" method="POST" id="searchform"
-                        class="searchform">
-                    <div>
-                      <input  type="text"  class="form-control border rounded-pill" name="txt"
-                             id="s" value="${txtS}"  placeholder="Tìm kiếm tên ...">
-                      <input type="submit" id="searchsubmit" value="Search">
-                    </div>
-                  </form>
+                <div class="row mb-0">
+                  <div class="col-lg-8">
+                    <input type="text" class="form-control border rounded-pill" name="txt"
+                           value="${search}"
+                           id="search" placeholder="Tìm kiếm bệnh nhân...">
+                  </div>
+
+                  <div class="col-lg-4">
+                    <button class="btn btn-primary rounded-pill"  id="btn-search">Tìm kiếm</button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="col-md-4 col-sm-12">
-            <a href="/management/patient/create">
+            <a href="${pageContext.request.contextPath}/management/patient/create">
               <button class="btn btn-primary">Thêm mới</button>
             </a>
           </div>
@@ -50,61 +44,47 @@
                 <thead>
                 <tr>
                   <th class="border-bottom p-3">ID</th>
-                  <th class="border-bottom p-3">Tên bệnh nhân</th>
+                  <th class="border-bottom p-3">Tên</th>
                   <th class="border-bottom p-3">Ngày sinh</th>
                   <th class="border-bottom p-3">Giới tính</th>
                   <th class="border-bottom p-3">Trạng thái</th>
-                  <th class="border-bottom p-3 text-center">Tác vụ</th>
+                  <th class="border-bottom p-3 text-center">Action</th>
                 </tr>
                 </thead>
                 <tbody>
-<c:forEach items="${list}" var="o">
-                <tr>
-                  <td class="p-3">${o.id}</td>
-                  <td class="p-3">${o.fullName}</td>
-                  <td class="p-3">${o.dob}</td>
-                  <td class="p-3">
-                    <c:if test="${o.gender == true}">
-                      Nam
-                    </c:if>
-                    <c:if test="${o.gender == false}">
-                      Nữ
-                    </c:if>
-                  </td>
-                  <td class="p-3">
-                    <c:if test="${o.status == true}">
-                      active
-                    </c:if>
-                    <c:if test="${o.status == false}">
-                      nactive
-                    </c:if>
-                  </td>
-                  <td class="p-3 text-center">
-                    <a href="patient/update?id=${o.id}">
-                      <button class="btn btn-primary">Chi tiết</button>
-                    </a>
+                <c:forEach items="${patients}" var="p">
+                  <tr>
+                    <td>${p.id}</td>
+                    <td>${p.name}</td>
+                    <td>${p.dob}</td>
+                    <td>${p.gender}</td>
+                    <td>${p.status}</td>
+                    <td class="p-3 text-center">
+                                            <a href="patient/update?id=${p.id}">
+                                              <button class="btn btn-primary">Chi tiết</button>
+                                            </a>
 
-                    <a href="patient/delete?id=${o.id}">
-                      <button class="btn btn-danger">Xóa</button>
-                    </a>
-                  </td>
-                </tr>
-</c:forEach>
+                                            <a href="patient/delete?id=${p.id}">
+                                              <button class="btn btn-danger">Xóa</button>
+                                            </a>
+                                          </td>
+                  </tr>
+                </c:forEach>
                 </tbody>
               </table>
             </div>
           </div>
         </div>
+        <c:set var="page" value="${currentPage}"/>
         <div class="row text-center">
           <div class="col-12 mt-4">
             <div class="d-md-flex align-items-center text-center justify-content-between">
               <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                <li class="page-item active pl-1"><a class="page-link"
-                                                     href="patient?page=1">1</a>
-                </li>
-                <li class="page-item pl-1"><a class="page-link"
-                                              href="patient?page=2">2</a>
-                </li>
+                <c:forEach begin="${1}" end="${totalPage}" var="i">
+                  <li class="page-item ${i==page?"active":""}"><a class="page-link"
+                                                                  href="${url}?page=${i}&search=${search}">${i}</a>
+                  </li>
+                </c:forEach>
               </ul>
             </div>
           </div>
@@ -120,11 +100,16 @@
 <script src="${pageContext.request.contextPath}/static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $("#btn-search").click(function () {
+      let search = $("#search").val();
+      window.location.href = "${url}?search=" + search;
+    });
+  });
+</script>
 </body>
 </html>
-
-
-
-
-
 

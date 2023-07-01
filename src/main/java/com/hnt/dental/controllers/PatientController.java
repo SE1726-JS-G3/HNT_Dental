@@ -40,10 +40,9 @@ public class PatientController extends HttpServlet {
         String action = req.getServletPath();
         switch (action) {
             case "/management/patient":
-
                 try {
-                    service.patient(req, resp);
-                } catch (SQLException e) {
+                    service.getAll(req, resp);
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
                 break;
@@ -84,19 +83,8 @@ public class PatientController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
         String action = req.getServletPath();
         switch (action) {
-            case "/management/patient":
-                try {
-                    service.patientSearch(req, resp);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                } catch (ServletException e) {
-                    throw new RuntimeException(e);
-                }
-                break;
-
             case "/management/patient/create":
                 try {
                     service.create(req, resp);
@@ -112,9 +100,7 @@ public class PatientController extends HttpServlet {
                     throw new RuntimeException(e);
                 }
                 break;
-
-
-            default:
+                default:
         }
     }
 
