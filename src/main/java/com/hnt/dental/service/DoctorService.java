@@ -123,7 +123,6 @@ public class DoctorService {
     }
     public void getMyAppointments(HttpServletRequest req, HttpServletResponse resp) {
         String page = req.getParameter("page");
-        String search = req.getParameter("search");
         int pageNumber = 1;
 
         if (StringUtils.isNotEmpty(page)) {

@@ -1,5 +1,6 @@
 package com.hnt.dental.service;
 
+import com.hnt.dental.constant.BookingStatusEnum;
 import com.hnt.dental.constant.PaymentEnum;
 import com.hnt.dental.dao.BookingDao;
 import com.hnt.dental.dao.PaymentDao;
@@ -7,15 +8,15 @@ import com.hnt.dental.dao.ServiceDao;
 import com.hnt.dental.dao.impl.BookingDaoImpl;
 import com.hnt.dental.dao.impl.PaymentDaoImpl;
 import com.hnt.dental.dao.impl.ServiceDaoImpl;
-import com.hnt.dental.dto.response.BookingDto;
-import com.hnt.dental.dto.response.ServiceDetailDto;
-import com.hnt.dental.dto.response.ServiceTypeDto;
+import com.hnt.dental.dto.response.*;
 import com.hnt.dental.entities.*;
 import com.hnt.dental.exception.SystemRuntimeException;
+import com.hnt.dental.util.PagingUtils;
 import com.hnt.dental.util.ServletUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -24,11 +25,13 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class BookingService {
 
     private static final ServiceDao dao;
+
     private static final BookingDao adao;
     private static final PaymentDao pdao;
     private static final VNPayService vnPayService;
@@ -65,7 +68,7 @@ public class BookingService {
         String typeId = req.getParameter("typeId");
         String name = req.getParameter("name");
         String phone = req.getParameter("phone");
-        String email = req.getParameter("email");
+        String gender = req.getParameter("gender");
         String age = req.getParameter("age");
         String date = req.getParameter("date");
         String time = req.getParameter("time");
@@ -81,7 +84,7 @@ public class BookingService {
                 throw new Exception("Phone is required");
             }
 
-            if (email == null || email.isEmpty()) {
+            if (gender == null || gender.isEmpty()) {
                 throw new Exception("Email is required");
             }
 
@@ -107,38 +110,43 @@ public class BookingService {
 
             ServiceDetailDto serviceResDtos = dao.getServiceDetailByServiceId(Long.valueOf(sid), Long.valueOf(typeId));
 
+            Account loginInfo = (Account) req.getSession().getAttribute("account");
+
             dto = BookingDto.builder()
                     .name(name)
                     .phone(Integer.parseInt(phone))
-                    .email(email)
+                    .gender(Boolean.parseBoolean(gender))
                     .age(Integer.parseInt(age))
                     .date(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy")))
                     .time(time)
-                    .decription(decription)
+                    .description(decription)
                     .payment(payment)
                     .build();
 
+
+            // hamf nayf chuwa co id doc tor vowi id staff
             Long id = adao.save(Booking.builder()
                     .name(name)
-                    .account(Account.builder().id(1L).build())
+                    .account(Account.builder().id(loginInfo.getId()).build())
                     .service(Service.builder().id(serviceResDtos.getId()).build())
                     .phone(Integer.parseInt(phone))
-                    .email(email)
+                    .gender(Boolean.parseBoolean(gender))
                     .age(Integer.parseInt(age))
                     .date(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy")))
                     .time(LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm")))
-                    .status(false)
                     .description(decription)
                     .payment(payment)
+                    .status(BookingStatusEnum.PENDING.ordinal())
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
                     .build());
-
             pdao.save(
                     Payment.builder()
                             .account(Account.builder().id(1L).build())
                             .booking(Booking.builder().id(id).build())
                             .serviceFee(ServiceFee.builder().fee(Double.valueOf(serviceResDtos.getFee())).build())
                             .status(false)
-                            .type(PaymentEnum.getPaymentEnum(payment).ordinal())
+                            .type(Objects.requireNonNull(PaymentEnum.getPaymentEnum(payment)).ordinal())
                             .created_at(LocalDateTime.now())
                             .updated_at(LocalDateTime.now())
                             .build()
@@ -157,7 +165,6 @@ public class BookingService {
 
         if (error != null) {
             req.setAttribute("error", error);
-
             req.setAttribute("appointment", dto);
             List<ServiceTypeDto> getType = dao.getTypeByServiceId(Long.valueOf(sid));
             typeId = (typeId == null ? getType.get(0).getIdType() : Long.valueOf(typeId)).toString();
@@ -195,4 +202,63 @@ public class BookingService {
             ServletUtils.redirect(req, resp, "/payment/error");
         }
     }
+
+    public void getAll(HttpServletRequest req, HttpServletResponse resp) {
+        String page = req.getParameter("page");
+        String search = req.getParameter("search");
+        String status = req.getParameter("status");
+        String service = req.getParameter("service");
+        int pageNumber = 1;
+
+        if (StringUtils.isNotEmpty(page)) {
+            pageNumber = Integer.parseInt(page);
+        }
+
+        if (StringUtils.isEmpty(search)) {
+            search = "";
+        }
+
+        if (StringUtils.isEmpty(status)) {
+            status = "";
+        }
+
+        if (StringUtils.isEmpty(service)) {
+            service = "";
+        }
+
+        try {
+            Integer totalItem = adao.countListBookingSummary(search.trim());
+            Integer totalPage = PagingUtils.getTotalPage(totalItem);
+            List<BookingManagementDto> getAllBookingSummary = adao.getAllBookingSummary(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE, search.trim(), service.trim(), status.trim());
+            List<BookingManagementDto> getServiceByServiceId = adao.getServiceByServiceId();
+            List<BookingStatus> statuses = BookingStatusEnum.getAllBookingStatus();
+            req.setAttribute("services", getServiceByServiceId);
+            req.setAttribute("bookings", getAllBookingSummary);
+            req.setAttribute("statuses", statuses);
+            req.setAttribute("totalPage", totalPage);
+            req.setAttribute("currentPage", pageNumber);
+            req.setAttribute("search", search);
+            req.setAttribute("status", status);
+            req.setAttribute("service", service);
+            req.setAttribute("url", "/management/booking");
+            req.getRequestDispatcher("/WEB-INF/templates/management/booking/index.jsp").forward(req, resp);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void getDetailBooking(HttpServletRequest req, HttpServletResponse resp) {
+        String id = req.getParameter("id");
+        try {
+            Optional<BookingDetailPatientDto> getDetailPatientBooking = adao.getPatientByBookingId(Long.valueOf(id));
+            Optional<BookingDetailDoctorDto> getDetailDoctorBooking = adao.getDoctorByBookingId(Long.valueOf(id));
+            req.setAttribute("id", id);
+            req.setAttribute("patientBooking", getDetailPatientBooking.get());
+            req.setAttribute("doctorBooking", getDetailDoctorBooking.get());
+            req.getRequestDispatcher("/WEB-INF/templates/management/booking/detail.jsp").forward(req, resp);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 }
