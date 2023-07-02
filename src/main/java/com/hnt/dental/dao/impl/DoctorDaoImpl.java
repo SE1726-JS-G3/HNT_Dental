@@ -88,7 +88,7 @@ public class DoctorDaoImpl implements DoctorDao {
             "WHERE id = ?";
 
 
-    private static final String DELETE_DOCTOR = "DELETE FROM doctors WHERE id=?;";
+    private static final String DELETE_DOCTOR = "DELETE FROM doctors WHERE id=?";
 
     private static final String MY_PATIENT_DETAIL_QUERY = "SELECT p.id,p.full_name ,b.name, a.email, p.phone, p.gender, p.dob, b.date, b.time ,b.status " +
             "FROM patients p " +
