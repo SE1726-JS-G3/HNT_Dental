@@ -1,5 +1,5 @@
 package com.hnt.dental.dao.impl;
-
+import java.text.SimpleDateFormat;
 import com.hnt.dental.dao.AccountDao;
 import com.hnt.dental.dao.DoctorDao;
 import com.hnt.dental.dao.impl.AccountDaoImpl;
@@ -335,36 +335,26 @@ public class DoctorDaoImpl implements DoctorDao {
 
 
     @Override
-    public List<Patient> getPatientDetail(Long id) throws SQLException {
-        List<Patient> patient = new ArrayList<>();
-        ResultSet rs = ConnectionUtils.executeQuery(MY_PATIENT_DETAIL_QUERY,id);
+    public List<PatientResDto> getPatientDetail(Long id) throws SQLException {
+        List<PatientResDto> patients = new ArrayList<>();
+        ResultSet rs = ConnectionUtils.executeQuery(MY_PATIENT_DETAIL_QUERY, id);
         while (rs.next()) {
-            patient.add(
-                    Patient.builder()
+            String status = rs.getString("status").equals("1") ? "rejected" : "approved";
+            patients.add(
+                    PatientResDto.builder()
                             .id(rs.getLong("id"))
-                            .fullName(rs.getString("full_name"))
+                            .Name(rs.getString("name"))
                             .phone(rs.getString("phone"))
-                            .gender(rs.getBoolean("gender"))
-                            .dob(rs.getDate("dob").toLocalDate())
-                            .booking(
-                                    Booking.builder()
-                                            .date(rs.getDate("date").toLocalDate())
-                                            .time(rs.getTime("time").toLocalTime())
-                                            .status(rs.getBoolean("status") ? 1 : 0)
-                                            .name(rs.getString("name"))
-                                            .build()
-                            )
-                            .account(
-                                    Account.builder()
-                                            .id(rs.getLong("id"))
-                                            .email(rs.getString("email"))
-                                            .build()
-                            )
+                            .gender(rs.getString("gender"))
+                            .dob(rs.getString("dob"))
+                            .time(rs.getString("time"))
+                            .date(DateUtils.convertLocalDateToString(rs.getDate("date").toLocalDate()))
+                            .status(status)
                             .build()
             );
         }
         ConnectionUtils.closeConnection();
-        return patient;
+        return patients;
     }
 
 

@@ -292,10 +292,10 @@ public class DoctorService {
         assert doctor != null;
         doctor.setAccount(account);
         List<FeedbackDto> getAllFeedbackByIdDoctor = feedbackDao.getFeedbackDoctor(Long.valueOf(id));
-        List<Patient> myPatientDoctor = dao.getPatientDetail(Long.valueOf(id));
+        List<PatientResDto> myPatientDoctor = dao.getPatientDetail(Long.valueOf(id));
         req.setAttribute("doctor", doctor);
         req.setAttribute("error", error);
-        req.setAttribute("patients", PatientResDto.convert(myPatientDoctor));
+        req.setAttribute("patients", myPatientDoctor);
         req.setAttribute("feedbacks", getAllFeedbackByIdDoctor);
         ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/doctor/detail.jsp");
     }

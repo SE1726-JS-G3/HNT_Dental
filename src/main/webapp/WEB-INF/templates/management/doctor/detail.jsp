@@ -202,7 +202,7 @@
                             </div>
                         </div>
                     </div>
-                        <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit">
+                    <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit">
                         <div class="card border-0 shadow overflow-hidden">
                             <div class="tab-content p-4" id="pills-tabContent">
                                 <form action="${pageContext.request.contextPath}/management/doctor/update" method="POST"
