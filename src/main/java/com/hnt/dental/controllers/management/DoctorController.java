@@ -11,9 +11,9 @@ import java.io.IOException;
 
 @WebServlet(name = "DoctorController", value = {
         "/management/doctor",
-        "/management/doctor/search",
         "/management/doctor/create",
         "/management/doctor/detail",
+        "/management/doctor/update",
         "/management/doctor/MyAppointment",
         "/management/doctor/delete"
 })
@@ -57,7 +57,7 @@ public class DoctorController extends HttpServlet {
                 case "/management/doctor/create":
                     doctorService.create(req, resp);
                     break;
-                case "/management/doctor/detail":
+                case "/management/doctor/update":
                     doctorService.update(req, resp);
                     break;
                 default:
