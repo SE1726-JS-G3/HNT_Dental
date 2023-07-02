@@ -205,7 +205,7 @@
                         <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit">
                         <div class="card border-0 shadow overflow-hidden">
                             <div class="tab-content p-4" id="pills-tabContent">
-                                <form action="${pageContext.request.contextPath}/management/doctor/detail" method="POST"
+                                <form action="${pageContext.request.contextPath}/management/doctor/update" method="POST"
                                       enctype="multipart/form-data"
                                       onSubmit="return validateForm()">
                                     <h5 class="mb-0">Chỉnh sửa thông tin :</h5>
@@ -232,7 +232,7 @@
                                     </div>
                                 </form>
 
-                                <form action="${pageContext.request.contextPath}/management/doctor/detail" method="POST" class="mt-4"  onSubmit="return validateForm()">
+                                <form action="${pageContext.request.contextPath}/management/doctor/update" method="POST" class="mt-4"  onSubmit="return validateForm()">
                                     <div class="row">
                                         <div id="message-container"></div>
                                         <input name="id" type="hidden" value="${doctor.account.id}">
