@@ -97,9 +97,10 @@
                                 Chi tiết
                               </button>
                             </a>
-                            <a href="#" onclick="confirmDelete(${doctor.id})">
-                              <button class="btn btn-danger">
-                                Xóa
+                            <a href="#">
+                              <button class="btn btn-danger"
+                                      onclick="onClickDelete(${doctor.id})"
+                              >Xóa
                               </button>
                             </a>
                           </td>
@@ -142,6 +143,9 @@
 <script src="${pageContext.request.contextPath}/static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
   $(document).ready(function () {
     $("#btn-search").click(function () {
@@ -174,11 +178,22 @@
     }
   }
 
-  function confirmDelete(id) {
-    var confirmed = confirm('Bạn có muốn xóa bác sĩ này?');
-    if (confirmed) {
-      window.location.href = '${pageContext.request.contextPath}/management/doctor/delete?id=' + id;
-    }
+  function onClickDelete(id) {
+    Swal.fire({
+      title: 'Bạn có chắc chắn muốn xóa?',
+      text: "Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+
+      confirmButtonText: 'Xóa',
+      cancelButtonText: 'Hủy'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "${pageContext.request.contextPath}/management/employee/delete?id=" + id;
+      }
+    })
   }
 </script>
 </body>
