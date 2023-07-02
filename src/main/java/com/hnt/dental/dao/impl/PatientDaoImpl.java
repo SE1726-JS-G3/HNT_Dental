@@ -154,30 +154,5 @@ public class PatientDaoImpl implements PatientDao {
         return 0;
     }
 
-//    public static void main(String[] args) {
-//        PatientDaoImpl dao = new PatientDaoImpl();
-//
-//        try {
-//            // Specify the patient ID for retrieving patient details
-//            Long id = 1L;
-//
-//            // Call the getPatientDetail method with the specified ID
-//            List<Patient> patients = dao.getPatientDetail(id);
-//
-//            // Print the retrieved patients
-//            for (Patient patient : patients) {
-//                System.out.println("Full Name: " + patient.getFullName());
-//                System.out.println("Date of Birth: " + patient.getDob());
-//                System.out.println("Phone: " + patient.getPhone());
-//                System.out.println("Account ID: " + patient.getAccount().getId());
-//                System.out.println("Email: " + patient.getAccount().getEmail());
-//                System.out.println("Booking Date: " + patient.getBooking().getDate());
-//                System.out.println("-----------------------");
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            // Handle the SQLException appropriately
-//        }
-//    }
 
 }
