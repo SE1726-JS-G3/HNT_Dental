@@ -45,7 +45,7 @@ public class PatientController extends HttpServlet {
                 break;
             case "/management/mypatient/detail":
                 try {
-                    service.getDoctorById(req, resp);
+                    service.getMyPatientDetail(req, resp);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -60,7 +60,7 @@ public class PatientController extends HttpServlet {
         try {
             switch (action) {
                 case "/management/mypatient/detail":
-                    service.getDoctorById(req, resp);
+                    service.getMyPatientDetail(req, resp);
                     break;
 
                 default:

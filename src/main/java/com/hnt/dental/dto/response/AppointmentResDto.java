@@ -40,7 +40,7 @@ public class AppointmentResDto {
                             .gender(booking.getPatient().getGender() ? "Nam" : "Nữ")
                             .date(String.valueOf(booking.getDate()))
                             .time(String.valueOf(booking.getTime()))
-                            .status(booking.isStatus() ? "Chấp nhận" : "Từ chối")
+                            .status(booking.getStatus() == 1 ? "Chấp nhận" : "Từ chối")
                             .build()
             );
         }

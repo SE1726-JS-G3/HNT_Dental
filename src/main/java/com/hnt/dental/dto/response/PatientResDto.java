@@ -38,7 +38,7 @@ public class PatientResDto {
                             .dob(DateUtils.convertLocalDateToString(patient.getDob()))
                             .gender(patient.getGender() ? "Nam" : "Nữ")
                             .email(patient.getAccount().getEmail())
-                            .status(patient.getBooking().isStatus() ? "rejected" : "approved")
+                            .status(patient.getBooking().getStatus() == 1 ? "rejected" : "approved")
                             .date(DateUtils.convertLocalDateToString(patient.getBooking().getDate()))
                             .time(String.valueOf(patient.getBooking().getTime()))
                             .phone(patient.getPhone())

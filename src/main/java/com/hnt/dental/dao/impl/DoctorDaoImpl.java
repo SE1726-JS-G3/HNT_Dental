@@ -169,7 +169,7 @@ public class DoctorDaoImpl implements DoctorDao {
                             .id(rs.getLong("id"))
                             .date(rs.getDate("date").toLocalDate())
                             .time(rs.getTime("time").toLocalTime())
-                            .status(rs.getBoolean("status"))
+                            .status(rs.getBoolean("status") ? 1 : 0)
                             .build()
             );
         }
@@ -350,7 +350,7 @@ public class DoctorDaoImpl implements DoctorDao {
                                     Booking.builder()
                                             .date(rs.getDate("date").toLocalDate())
                                             .time(rs.getTime("time").toLocalTime())
-                                            .status(rs.getBoolean("status"))
+                                            .status(rs.getBoolean("status") ? 1 : 0)
                                             .name(rs.getString("name"))
                                             .build()
                             )

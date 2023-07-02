@@ -15,39 +15,41 @@
                         <div class="p-4 border-bottom">
                             <h5 class="mb-0"><a href="${pageContext.request.contextPath}/management/mypatient/detail">Thông tin chi tiết từ bệnh nhân</a></h5>
                         </div>
-                        <c:forEach items="${patient}" var="p">
-                            <div class="p-4">
-                                <div class="d-flex align-items-center mt-2">
-                                    <i class="uil uil-italic align-text-bottom text-primary h5 mb-0 me-2"></i>
-                                    <h6 class="mb-0">Tên</h6>
-                                    <p class="text-muted mb-0 ms-2">${p.name}</p>
+                        <c:forEach items="${patient}" var="p" varStatus="status">
+                            <c:if test="${status.index == 0}">
+                                <div class="p-4">
+                                    <div class="d-flex align-items-center mt-2">
+                                        <i class="uil uil-italic align-text-bottom text-primary h5 mb-0 me-2"></i>
+                                        <h6 class="mb-0">Tên</h6>
+                                        <p class="text-muted mb-0 ms-2">${p.name}</p>
+                                    </div>
+                                    <div class="d-flex align-items-center mt-2">
+                                        <i class="uil uil-italic align-text-bottom text-primary h5 mb-0 me-2"></i>
+                                        <h6 class="mb-0">Email</h6>
+                                        <p class="text-muted mb-0 ms-2">${p.email}</p>
+                                    </div>
+                                    <div class="d-flex align-items-center mt-2">
+                                        <i class="uil uil-book-open align-text-bottom text-primary h5 mb-0 me-2"></i>
+                                        <h6 class="mb-0">Số điện thoại</h6>
+                                        <p class="text-muted mb-0 ms-2">0${p.phone}</p>
+                                    </div>
+                                    <div class="d-flex align-items-center mt-2">
+                                        <i class="uil uil-user align-text-bottom text-primary h5 mb-0 me-2"></i>
+                                        <h6 class="mb-0">Giới tính</h6>
+                                        <c:if test="${p.gender == true}">
+                                            <p class="text-muted mb-0 ms-2">Nam</p>
+                                        </c:if>
+                                        <c:if test="${p.gender == false}">
+                                            <p class="text-muted mb-0 ms-2">Nữ</p>
+                                        </c:if>
+                                    </div>
+                                    <div class="d-flex align-items-center mt-2">
+                                        <i class="uil uil-envelope align-text-bottom text-primary h5 mb-0 me-2"></i>
+                                        <h6 class="mb-0">Ngày sinh</h6>
+                                        <p class="text-muted mb-0 ms-2">${p.dob}</p>
+                                    </div>
                                 </div>
-                                <div class="d-flex align-items-center mt-2">
-                                    <i class="uil uil-italic align-text-bottom text-primary h5 mb-0 me-2"></i>
-                                    <h6 class="mb-0">Email</h6>
-                                    <p class="text-muted mb-0 ms-2">${p.email}</p>
-                                </div>
-                                <div class="d-flex align-items-center mt-2">
-                                    <i class="uil uil-book-open align-text-bottom text-primary h5 mb-0 me-2"></i>
-                                    <h6 class="mb-0">Số điện thoại</h6>
-                                    <p class="text-muted mb-0 ms-2">0${p.phone}</p>
-                                </div>
-                                <div class="d-flex align-items-center mt-2">
-                                    <i class="uil uil-user align-text-bottom text-primary h5 mb-0 me-2"></i>
-                                    <h6 class="mb-0">Giới tính</h6>
-                                    <c:if test="${p.gender == true}">
-                                        <p class="text-muted mb-0 ms-2">Nam</p>
-                                    </c:if>
-                                    <c:if test="${p.gender == false}">
-                                        <p class="text-muted mb-0 ms-2">Nữ</p>
-                                    </c:if>
-                                </div>
-                                <div class="d-flex align-items-center mt-2">
-                                    <i class="uil uil-envelope align-text-bottom text-primary h5 mb-0 me-2"></i>
-                                    <h6 class="mb-0">Ngày sinh</h6>
-                                    <p class="text-muted mb-0 ms-2">${p.dob}</p>
-                                </div>
-                            </div>
+                            </c:if>
                         </c:forEach>
                     </div>
                 </div>

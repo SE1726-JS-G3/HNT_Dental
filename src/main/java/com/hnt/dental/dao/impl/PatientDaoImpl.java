@@ -62,13 +62,13 @@ public class PatientDaoImpl implements PatientDao {
                     "ORDER BY p.id ASC " +
                     "LIMIT ?, ?";
 
-    private static final String MY_PATIENT_DETAIL_QUERY = "SELECT p.id,p.full_name,b.name, a.email, p.phone, p.gender, p.dob, b.date, b.time ,b.status " +
+    private static final String MY_PATIENT_DETAIL_QUERY = "SELECT DISTINCT p.id, p.full_name, b.name, a.email, p.phone, p.gender, p.dob, b.date, b.time, b.status " +
             "FROM patients p " +
             "INNER JOIN booking b ON b.account_id = p.id " +
             "INNER JOIN doctors d ON d.id = b.staff_id " +
             "JOIN accounts a ON a.id = p.id " +
             "WHERE p.id = ? " +
-            "ORDER BY p.id ASC "+
+            "ORDER BY p.id ASC " +
             "LIMIT ?, ?";
     private static final String COUNT_EMPLOYEE = "SELECT COUNT(*) FROM patients";
 
@@ -89,7 +89,8 @@ public class PatientDaoImpl implements PatientDao {
                                     Booking.builder()
                                             .date(rs.getDate("date").toLocalDate())
                                             .time(rs.getTime("time").toLocalTime())
-                                            .status(rs.getBoolean("status"))
+                                            .status(rs.getBoolean("status") ? 1 : 0)
+
                                             .name(rs.getString("name"))
                                             .build()
                             )
@@ -130,7 +131,8 @@ public class PatientDaoImpl implements PatientDao {
                                             .name((rs.getString("name")))
                                             .date(rs.getDate("date").toLocalDate())
                                             .time(rs.getTime("time").toLocalTime())
-                                            .status(rs.getBoolean("status"))
+                                            .status(rs.getBoolean("status") ? 1 : 0)
+
                                             .build()
 
                             )

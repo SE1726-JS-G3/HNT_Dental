@@ -50,7 +50,7 @@ public class PatientService {
 
 
 
-    public void getDoctorById(HttpServletRequest req, HttpServletResponse resp) {
+    public void getMyPatientDetail(HttpServletRequest req, HttpServletResponse resp) {
         String id = req.getParameter("id");
         String page1 = req.getParameter("page1");
         String search = req.getParameter("search");
