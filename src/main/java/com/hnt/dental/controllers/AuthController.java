@@ -83,12 +83,14 @@ public class AuthController extends HttpServlet {
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
+                break;
             case "/auth/detail-history-booking":
                 try {
                     service.history(req, resp);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
+                break;
             default:
         }
     }

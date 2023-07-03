@@ -197,7 +197,4 @@ public class BookingService {
             ServletUtils.redirect(req, resp, "/payment/error");
         }
     }
-
-
-
 }

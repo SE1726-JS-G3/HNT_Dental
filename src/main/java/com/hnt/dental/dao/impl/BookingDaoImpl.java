@@ -67,7 +67,7 @@ public class BookingDaoImpl implements BookingDao {
                             .name(rs.getString("name"))
                             .build())
                     .date(rs.getDate("date").toLocalDate())
-                    .status(rs.getString("status"))
+                    .status(String.valueOf(rs.getBoolean("status")))
                     .time(String.valueOf(rs.getTime("time")))
                     .fee(rs.getDouble("fee"))
                     .account_id(rs.getInt("account_id"))

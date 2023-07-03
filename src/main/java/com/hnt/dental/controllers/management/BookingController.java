@@ -20,10 +20,10 @@ import java.sql.SQLException;
         "/management/booking/delete"
 })
 public class BookingController extends HttpServlet {
-    private static final BookingService service;
+    private static final BookingService bookingService;
 
     static {
-        service = new BookingService();
+        bookingService = new BookingService();
     }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

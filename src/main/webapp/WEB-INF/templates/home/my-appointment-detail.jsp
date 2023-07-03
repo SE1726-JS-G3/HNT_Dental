@@ -16,7 +16,7 @@
                 <h3 class="mb-0"></h3>
                 <div class="rounded shadow mt-4">
                     <div class="p-4 border-bottom">
-                        <h5 class="mb-0">Lịch sử đặt lịch</h5>
+                        <h5 class="mb-0">Lịch sử đặt lịch của bệnh </h5>
                     </div>
                     <div class="p-4">
                         <form action="doctor?action=updateappointmentstatus&id=${a.id}" method="POST"
