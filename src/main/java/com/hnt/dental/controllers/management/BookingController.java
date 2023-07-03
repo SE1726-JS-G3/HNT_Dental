@@ -39,7 +39,5 @@ public class BookingController extends HttpServlet {
                 break;
 
         }
-
-
     }
 }

@@ -11,47 +11,67 @@
     <div class="container-fluid">
       <div class="layout-specing">
         <div class="row">
-          <div class="col-md-6 row">
-            <div class="col-md-4">
-              <h5 class="mb-0">Dịch vụ</h5>
-            </div>
-            <div class="col-md-7">
-              <div class="search-bar p-0 d-lg-block ms-2">
-                <div id="search" class="menu-search mb-0">
-                  <form action="servicemanage?action=search" method="POST" id="searchform" class="searchform">
-                    <div>
-                      <input type="text" class="form-control border rounded-pill" name="txt" id="s" placeholder="Tìm kiếm tên dịch vụ...">
-                      <input type="submit" id="searchsubmit" value="Search">
+            <div class="row">
+                <div class="col-md-8 col-sm-12 row">
+                    <div class="col-md-4">
+                        <h5 class="mb-0">Quản lí dịch vụ</h5>
                     </div>
-                  </form>
+                    <div class="col-md-8">
+                        <div class="search-bar p-0 d-lg-block ms-2">
+                            <div class="row mb-0">
+                                <div class="col-lg-8">
+                                    <input type="text" class="form-control border rounded-pill" name="txt"
+                                           value="${search}"
+                                           id="search" placeholder="Tìm kiếm dịch vụ...">
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <button class="btn btn-primary">Tìm kiếm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
+                <div class="col-md-4 col-sm-12">
+                    <a href="${pageContext.request.contextPath}/management/employee/create">
+                        <button class="btn btn-primary">Thêm mới</button>
+                    </a>
+                </div>
             </div>
-          </div>
-          <div class="col-md-4">
-            <form action="servicemanage?action=filter" method="POST" onSubmit="document.getElementById('submit').disabled = true;">
+          <div class="col-md-7">
+            <br><br>
+            <form action="doctormanage?action=filter" method="POST" onSubmit="document.getElementById('submit').disabled = true;">
               <div class="justify-content-md-end row">
-                <div class="col-md-10 row align-items-center">
+                <div class="col-md-5 row align-items-center">
+                  <div class="col-md-3">
+                    <label class="form-label">Gói dịch vụ</label>
+                  </div>
+                  <div class="col-md-9">
+                    <select name="gender" class="form-select">
+                      <option <c:if test="${gender == 'all'}"> selected </c:if> value="all">Tất cả</option>
+                      <option <c:if test="${gender == 'true'}"> selected </c:if> value="true">VIP</option>
+                      <option <c:if test="${gender == 'false'}"> selected </c:if> value="false">THƯỜNG</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-5 row align-items-center">
                   <div class="col-md-4">
                     <label class="form-label">Trạng thái</label>
                   </div>
-                  <div class="col-md-7">
-                    <select name="category" class="form-select">
-                      <option <c:if test="${category1 == 'all'}"> selected </c:if> value="all">Tất cả</option>
-                      <c:forEach items="${category}" var="s">
-                        <option <c:if test="${category1 == s.id}"> selected </c:if> value="${s.id}">${s.name}</option>
+                  <div class="col-md-8">
+                    <select name="speciality" class="form-select">
+                      <option <c:if test="${speciality == 'all'}"> selected </c:if> value="all">Tất cả</option>
+                      <c:forEach items="${speciality}" var="s">
+                        <option <c:if test="${speciality1 == s.id}"> selected </c:if> value="${s.id}">${s.name}</option>
                       </c:forEach>
                     </select>
                   </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-1 md-0">
                   <button type="submit" class="btn btn-primary">Lọc</button>
                 </div>
               </div>
             </form>
-          </div>
-          <div class="col-md-2">
-            <button class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/management/service/create'">Thêm mới</button>
           </div>
         </div>
 
@@ -74,15 +94,12 @@
                 <tr>
                   <td class="p-3">1</td>
                   <td class="p-3">Lấy cao răng</td>
-                  <td class="p-3">VIP1</td>
-                  <td class="p-3">50</td>
+                  <td class="p-3">VIP, THƯỜNG</td>
+                  <td class="p-3">50 ~ 1000</td>
                   <td class="p-3">Active</td>
                   <td class="p-3 text-center">
                     <a href="#">
-                      <button class="btn btn-primary">Chuyển trạng thái</button>
-                    </a>
-                    <a href="#">
-                      <button class="btn btn-danger" onclick="window.location.href=''">Chi tiết</button>
+                      <button class="btn btn-primary">Chi tiết</button>
                     </a>
                   </td>
                 </tr>
@@ -90,14 +107,11 @@
                   <td class="p-3">2</td>
                   <td class="p-3">Niêng răng trong suốt</td>
                   <td class="p-3">THƯỜNG</td>
-                  <td class="p-3">1000000</td>
+                  <td class="p-3">1000000~3000000</td>
                   <td class="p-3">Active</td>
                   <td class="p-3 text-center">
                     <a href="#">
-                      <button class="btn btn-primary">Chuyển trạng thái</button>
-                    </a>
-                    <a href="#">
-                      <button class="btn btn-danger">Chi tiết</button>
+                      <button class="btn btn-primary">Chi tiết</button>
                     </a>
                   </td>
                 </tr>

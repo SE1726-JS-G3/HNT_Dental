@@ -19,5 +19,8 @@ public interface BookingDao extends GenericDao<Booking> {
 
     Optional<BookingDetailDoctorDto> getDoctorByBookingId(Long id) throws SQLException;
 
-    Optional<BookingDetailDto> getBookingDetailByBookingId(Long id) throws SQLException;
+
+    Optional<BookingDetailServiceDto> getServiceByBookingId(Long id) throws SQLException;
+
+    Optional<BookingDetailDto> getBookingDetailById(Long id) throws SQLException;
 }

@@ -11,4 +11,5 @@ public class Service extends BaseEntity{
     private String name;
     private String description;
     private String image;
+    private Boolean status;
 }

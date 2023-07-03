@@ -252,9 +252,13 @@ public class BookingService {
         try {
             Optional<BookingDetailPatientDto> getDetailPatientBooking = adao.getPatientByBookingId(Long.valueOf(id));
             Optional<BookingDetailDoctorDto> getDetailDoctorBooking = adao.getDoctorByBookingId(Long.valueOf(id));
+            Optional<BookingDetailServiceDto> getDetailServiceBooking = adao.getServiceByBookingId(Long.valueOf(id ));
+            Optional<BookingDetailDto> getBookingDetailById = adao.getBookingDetailById(Long.valueOf(id));
             req.setAttribute("id", id);
             req.setAttribute("patientBooking", getDetailPatientBooking.get());
             req.setAttribute("doctorBooking", getDetailDoctorBooking.get());
+            req.setAttribute("serviceBooking", getDetailServiceBooking.get());
+            req.setAttribute("booking", getBookingDetailById.get());
             req.getRequestDispatcher("/WEB-INF/templates/management/booking/detail.jsp").forward(req, resp);
         } catch (Exception e) {
             System.out.println(e.getMessage());

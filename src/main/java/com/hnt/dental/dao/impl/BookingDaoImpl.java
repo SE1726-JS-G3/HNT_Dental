@@ -1,15 +1,10 @@
 package com.hnt.dental.dao.impl;
 
 import com.hnt.dental.constant.BookingStatusEnum;
+import com.hnt.dental.constant.PaymentEnum;
 import com.hnt.dental.dao.BookingDao;
-import com.hnt.dental.dto.response.BookingDetailDoctorDto;
-import com.hnt.dental.dto.response.BookingDetailDto;
-import com.hnt.dental.dto.response.BookingDetailPatientDto;
-import com.hnt.dental.dto.response.BookingManagementDto;
-import com.hnt.dental.entities.Booking;
-import com.hnt.dental.entities.DoctorRank;
-import com.hnt.dental.entities.Doctors;
-import com.hnt.dental.entities.Service;
+import com.hnt.dental.dto.response.*;
+import com.hnt.dental.entities.*;
 import com.hnt.dental.util.ConnectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -41,6 +36,18 @@ public class BookingDaoImpl implements BookingDao {
             "inner join doctors d on b.doctor_id = d.id " +
             "inner join doctor_rank dr on dr.id = d.rank_id " +
             "where b.id = ?";
+    private static final String SQL_GET_SERVICE_BY_BOOKING_ID = "select s.name,s.image, st.name  as serviceType, p.fee from booking b " +
+            "inner join service s on b.service_id = s.id " +
+            "inner join service_type st on st.id = b.service_type_id " +
+            "inner join payment p on p.booking_id = b.id " +
+            "where b.id = ? ";
+
+    private static final String SQL_GET_BOOKING_DETAIL_BY_BOOKING_ID = "select b.date, b.time,b.status as statusBooking, d.full_name as doctorName ," +
+            " e.full_name as employeeName, p.status as statusPayment, p.type, b.decription  from booking b " +
+            "inner join doctors d on b.doctor_id = d.id " +
+            "inner join employees e on e.id = b.staff_id " +
+            "inner join payment p on p.booking_id = b.id " +
+            "where b.id = ? ";
 
     @Override
     public List<Booking> getAll(Integer offset, Integer limit, String search) throws SQLException {
@@ -159,8 +166,38 @@ public class BookingDaoImpl implements BookingDao {
     }
 
     @Override
-    public Optional<BookingDetailDto> getBookingDetailByBookingId(Long id) throws SQLException {
+    public Optional<BookingDetailServiceDto> getServiceByBookingId(Long id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_SERVICE_BY_BOOKING_ID, id);
+        if (rs.next()) {
+            return Optional.ofNullable(
+                    BookingDetailServiceDto
+                            .builder()
+                            .name(rs.getString("name"))
+                            .image(rs.getString("image"))
+                            .type(rs.getString("serviceType"))
+                            .fee(rs.getDouble("fee"))
+                            .build());
+        }
         return Optional.empty();
     }
 
+    @Override
+    public Optional<BookingDetailDto> getBookingDetailById(Long id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_BOOKING_DETAIL_BY_BOOKING_ID, id);
+        if (rs.next()) {
+            return Optional.ofNullable(
+                    BookingDetailDto
+                            .builder()
+                            .date(rs.getDate("date").toLocalDate())
+                            .time(rs.getTime("time").toLocalTime())
+                            .status(BookingStatusEnum.getBookingStatusString(rs.getInt("statusBooking")))
+                            .doctors(Doctors.builder().fullName(rs.getString("doctorName")).build())
+                            .employee(Employee.builder().fullName(rs.getString("employeeName")).build())
+                            .payment(Payment.builder().status(rs.getBoolean("statusPayment")).type(rs.getInt("type")).build())
+                            .decription(rs.getString("decription"))
+                            .paymentType(PaymentEnum.getPaymentString(rs.getInt("type")))
+                            .build());
+        }
+        return Optional.empty();
+    }
 }
