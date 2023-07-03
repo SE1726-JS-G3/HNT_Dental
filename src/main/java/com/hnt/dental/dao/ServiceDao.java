@@ -22,4 +22,5 @@ public interface ServiceDao extends GenericDao<Service>{
     List<ServiceDetailDto> getTopService() throws SQLException;
 
     List<ServiceTypeDto> getALlType() throws SQLException;
+    List<ServiceManagementDto> getAllServiceManagement(Integer offset, Integer limit, String search) throws SQLException;
 }

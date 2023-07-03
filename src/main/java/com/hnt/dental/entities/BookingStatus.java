@@ -1,5 +1,9 @@
 package com.hnt.dental.entities;
-import lombok.*;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 @Setter
@@ -7,9 +11,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-public class Service extends BaseEntity{
+public class BookingStatus {
+    private String id;
     private String name;
-    private String description;
-    private String image;
-    private Boolean status;
 }

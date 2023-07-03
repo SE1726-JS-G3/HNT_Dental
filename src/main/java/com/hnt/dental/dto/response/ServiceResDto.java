@@ -19,4 +19,5 @@ public class ServiceResDto {
     private String fee;
     private String type;
     private String image;
+
 }

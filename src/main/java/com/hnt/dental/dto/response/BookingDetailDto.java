@@ -1,5 +1,9 @@
 package com.hnt.dental.dto.response;
 
+import com.hnt.dental.constant.PaymentEnum;
+import com.hnt.dental.entities.Doctors;
+import com.hnt.dental.entities.Employee;
+import com.hnt.dental.entities.Payment;
 import com.hnt.dental.entities.Service;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,12 +19,14 @@ import java.time.LocalTime;
 @Setter
 @Getter
 @SuperBuilder
-public class BookingManagementDto {
+public class BookingDetailDto {
     private Long id;
-    private String name;
-    private Service service;
     private LocalDate date;
     private LocalTime time;
     private String status;
-
+    private Doctors doctors;
+    private Employee employee;
+    private Payment payment;
+    private String paymentType;
+    private String decription;
 }

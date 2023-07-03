@@ -22,17 +22,18 @@
                         <div class="col-md-4">
                             <h5 class="mb-0"> Quản lý lịch hẹn</h5>
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-8">
                             <div class="search-bar p-0 d-lg-block ms-2">
-                                <div id="search" class="menu-search mb-0">
-                                    <form action="doctormanage?action=search" method="POST" id="searchform"
-                                          class="searchform">
-                                        <div>
-                                            <input type="text" class="form-control border rounded-pill" name="txt"
-                                                   id="s" placeholder="Tìm kiếm ...">
-                                            <input type="submit" id="searchsubmit" value="Search">
-                                        </div>
-                                    </form>
+                                <div class="row mb-0">
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control border rounded-pill" name="txt"
+                                               value="${search}"
+                                               id="search" placeholder="Tìm kiếm nhân viên...">
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <button class="btn btn-primary rounded-pill" id="btn-search">Tìm kiếm</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -46,10 +47,14 @@
                                         <label class="form-label">Dịch vu</label>
                                     </div>
                                     <div class="col-md-9">
-                                        <select  name="serviceHome" class="form-select">
+                                        <select class="form-select" onchange="changeService(this.value)">
                                             <option value="all">Tất cả</option>
                                             <c:forEach items="${services}" var="s">
-                                                <option value="${s.id}">${s.service.name}</option>
+                                                <option
+                                                        <c:if test="${s.service.id == service}">
+                                                            selected
+                                                        </c:if>
+                                                        value="${s.service.id}">${s.service.name}</option>
                                             </c:forEach>
                                         </select>
 
@@ -62,21 +67,17 @@
                                         <label class="form-label">Trạng thái</label>
                                     </div>
                                     <div class="col-md-8">
-                                        <select  name="serviceHome" class="form-select">
+                                        <select class="form-select" onchange="changeStatus(this.value)">
                                             <option value="all">Tất cả</option>
-                                            <c:forEach items="${status}" var="st">
-                                                <c:if test="${st.status == true}">
-                                                    <option >Đã thanh toán</option>
-                                                </c:if>
-                                                <c:if test="${st.status == false}">
-                                                    <option >Chưa thanh toán</option>
-                                                </c:if>
+                                            <c:forEach items="${statuses}" var="st">
+                                                <option
+                                                        <c:if test="${st.id == status}">
+                                                            selected
+                                                        </c:if>
+                                                        value="${st.id}">${st.name}</option>
                                             </c:forEach>
                                         </select>
                                     </div>
-                                </div>
-                                <div class="col-md-1 md-0">
-                                    <button type="submit" class="btn btn-primary">Lọc</button>
                                 </div>
                             </div>
                         </form>
@@ -108,17 +109,11 @@
                                         <td>${b.time}</td>
 
                                         <td>
-                                            <c:if test="${b.status == true}">
-                                                Đã thanh toán
-                                            </c:if>
-
-                                            <c:if test="${b.status == false}">
-                                                Chưa thanh toán
-                                            </c:if>
+                                                ${b.status}
                                         </td>
                                         <td class="text-center">
                                             <button class="btn btn-primary"
-                                                    onclick="window.location.href='${pageContext.request.contextPath}/management/booking/detail'"
+                                                    onclick="window.location.href='${pageContext.request.contextPath}/management/booking/detail?id=${b.id}'"
                                             >Chi tiết
                                             </button>
                                         <td>
@@ -204,6 +199,12 @@
         </div>
     </div>
 </div>
+<script src="${pageContext.request.contextPath}/static/libs/simplebar/simplebar.min.js"></script>
+<script src="${pageContext.request.contextPath}/static/libs/feather-icons/feather.min.js"></script>
+<script src="${pageContext.request.contextPath}/static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
+<script src="${pageContext.request.contextPath}/static/js/app.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
         $("#btn-search").click(function () {
@@ -211,11 +212,22 @@
             window.location.href = "${url}?search=" + search;
         });
     });
+
+    function changeStatus(id) {
+        if(id == 'all'){
+            window.location.href = "${url}?search=${search}&service=${service}";
+        }else{
+            window.location.href = "${url}?search=${search}&service=${service}&status=" + id;
+        }
+    }
+
+    function changeService(id) {
+        if(id == 'all'){
+            window.location.href = "${url}?search=${search}&status=${status}";
+        }else{
+            window.location.href = "${url}?search=${search}&status=${status}&service=" + id;
+        }
+    }
 </script>
-<script src="${pageContext.request.contextPath}/static/libs/simplebar/simplebar.min.js"></script>
-<script src="${pageContext.request.contextPath}/static/libs/feather-icons/feather.min.js"></script>
-<script src="${pageContext.request.contextPath}/static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
-<script src="${pageContext.request.contextPath}/static/js/app.js"></script>
 </body>
 </html>
