@@ -58,7 +58,36 @@ public class ServiceService {
                 "service");
         ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/service/index.jsp");
     }
+    public void getAllServiceManagement(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String page = req.getParameter("page");
+        String search = req.getParameter("search");
+        String typeID = req.getParameter("typeId");
+        int pageNumber = 1;
 
+        if (StringUtils.isNotEmpty(page)) {
+            pageNumber = Integer.parseInt(page);
+        }
+        if (StringUtils.isEmpty(search)) {
+            search = "";
+        }
+
+        if (StringUtils.isEmpty(typeID)) {
+            typeID = "";
+        }
+
+        Integer totalItem = dao.countListService(search.trim());
+        Integer totalPage = PagingUtils.getTotalPage(totalItem);
+        List<ServiceManagementDto> serviceManagementDtos = dao.getAllServiceManagement(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE, search.trim());
+        req.setAttribute("serviceManagementDtos", serviceManagementDtos);
+        req.setAttribute("totalPage", totalPage);
+        req.setAttribute("currentPage", pageNumber);
+        req.setAttribute("search", search);
+        req.setAttribute("typeId", typeID);
+
+        req.setAttribute("url", "/" +
+                "service");
+        ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/service/index.jsp");
+    }
     public void getServiceById(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String id = req.getParameter("id");
         String typeId = req.getParameter("typeId");
