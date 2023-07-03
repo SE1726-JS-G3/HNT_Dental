@@ -105,6 +105,14 @@ public class DoctorDaoImpl implements DoctorDao {
                     "JOIN accounts a ON a.id = p.id " +
                     "LEFT JOIN doctors d ON b.id = d.id " +
                     "LIMIT ?, ?";
+    private static final String SQL_GET_APPOINTMENT_DETAILS =
+            "SELECT b.id, p.full_name AS patient_full_name, d.full_name, p.id, s.name, b.date, b.time, b.status, p.gender " +
+                    "FROM booking b " +
+                    "INNER JOIN patients p ON b.account_id = p.id " +
+                    "INNER JOIN service s ON b.service_id = s.id " +
+                    "LEFT JOIN doctors d ON b.id = d.id " +
+                    "WHERE b.id = ?";
+
     private static final String COUNT_APPOINTMENT = "SELECT COUNT(*) FROM booking b " +
             "INNER JOIN patients p ON b.account_id = p.id " +
             "INNER JOIN service s ON b.service_id = s.id " +
@@ -174,6 +182,34 @@ public class DoctorDaoImpl implements DoctorDao {
             );
         }
         return MyAppointments;
+    }
+
+    @Override
+    public Optional<Booking> getAppointmentDetails(Long id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_APPOINTMENT_DETAILS, id);
+        assert rs != null;
+        if (rs.next()) {
+            return Optional.ofNullable(Booking.builder()
+                    .id(rs.getLong("id"))
+                    .date(rs.getDate("date").toLocalDate())
+                    .time(rs.getTime("time").toLocalTime())
+                    .status(rs.getBoolean("status") ? 1 : 0)
+                    .account(
+                            Account.builder()
+                                    .id(rs.getLong("id"))
+                                    .build())
+                    .service(Service.builder()
+                            .name(rs.getString("name"))
+                            .build())
+                    .patient(Patient.builder()
+                            .id(rs.getLong("id"))
+                            .fullName(rs.getString("patient_full_name"))
+                            .gender(rs.getBoolean("gender"))
+                            .build())
+                    .build());
+        }
+        ConnectionUtils.closeConnection();
+        return Optional.empty();
     }
 
 

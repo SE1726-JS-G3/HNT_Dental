@@ -45,8 +45,8 @@
                                         <td class="text-center">
                                             <a href="#">
                                                 <button class="btn btn-primary"
-                                                        onclick="window.location.href='${pageContext.request.contextPath}/management/doctor/MyAppointment?id=${p.id}'"
-                                                >Sửa
+                                                        onclick="window.location.href='${pageContext.request.contextPath}/management/doctor/my-appointment-detail?id=${p.id}'"
+                                                >chi tiết
                                                 </button>
                                             </a>
                                         <td>

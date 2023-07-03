@@ -138,11 +138,36 @@ public class DoctorService {
             req.setAttribute("currentPage", pageNumber);
             req.getRequestDispatcher("/WEB-INF/templates/home/MyAppointments.jsp").forward(req, resp);
 
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
+    public void getAppointmentDetail(HttpServletRequest req, HttpServletResponse resp) {
+        String id = req.getParameter("id");
+        try {
+            Optional<Booking> getAppointmentDetails = dao.getAppointmentDetails(Long.valueOf(id));
+            Optional<AppointmentDetailDto> appointmentDetailDto = AppointmentDetailDto.convert(getAppointmentDetails);
+            req.setAttribute("details", appointmentDetailDto.orElse(null));
+
+            // Handle the button click
+            String send = req.getParameter("send");
+            if ("Hoàn thành lịch hẹn".equals(send)) {
+                getAppointmentDetails.ifPresent(booking -> {
+                    if (booking.getStatus() == 0) {
+                        booking.setStatus(1); // Change the status to "Chấp nhận"
+                        // Update the booking status in the database using your DAO or service class
+                        // dao.updateBookingStatus(booking);
+                    }
+                });
+            }
+
+            req.getRequestDispatcher("/WEB-INF/templates/home/my-appointment-detail.jsp").forward(req, resp);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
     public void getDoctorById(HttpServletRequest req, HttpServletResponse resp) {
         String id = req.getParameter("id");
         try {

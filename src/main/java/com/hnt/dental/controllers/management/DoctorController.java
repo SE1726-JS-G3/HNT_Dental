@@ -15,6 +15,7 @@ import java.io.IOException;
         "/management/doctor/detail",
         "/management/doctor/update",
         "/management/doctor/MyAppointment",
+        "/management/doctor/my-appointment-detail",
         "/management/doctor/delete"
 })
 public class DoctorController extends HttpServlet {
@@ -42,6 +43,9 @@ public class DoctorController extends HttpServlet {
                 case "/management/doctor/MyAppointment":
                     doctorService.getMyAppointments(req, resp);
                     break;
+                case "/management/doctor/my-appointment-detail":
+                    doctorService.getAppointmentDetail(req, resp);
+                    break;
                 default:
             }
         } catch (Exception e) {
@@ -59,6 +63,9 @@ public class DoctorController extends HttpServlet {
                     break;
                 case "/management/doctor/update":
                     doctorService.update(req, resp);
+                    break;
+                case "/management/doctor/my-appointment-detail":
+                    doctorService.getAppointmentDetail(req, resp);
                     break;
                 default:
             }
