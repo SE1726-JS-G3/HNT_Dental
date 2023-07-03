@@ -3,10 +3,16 @@ package com.hnt.dental.dao.impl;
 import com.hnt.dental.constant.BookingStatusEnum;
 import com.hnt.dental.constant.PaymentEnum;
 import com.hnt.dental.dao.BookingDao;
+import com.hnt.dental.dto.response.ServiceTypeDto;
+import com.hnt.dental.entities.Booking;
+import com.hnt.dental.entities.Service;
 import com.hnt.dental.dto.response.*;
 import com.hnt.dental.entities.*;
 import com.hnt.dental.util.ConnectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import com.hnt.dental.dto.response.BookingDto;
+import com.hnt.dental.dto.response.ServiceResDto;
+
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -48,6 +54,12 @@ public class BookingDaoImpl implements BookingDao {
             "inner join employees e on e.id = b.staff_id " +
             "inner join payment p on p.booking_id = b.id " +
             "where b.id = ? ";
+
+
+    private static final String HISTORY_PATIENT = "SELECT  b.fee ,b.account_id, b.status ,b.time,b.date ,s.name  FROM booking b join service s \n" +
+            " where b.service_id = s.id ";
+    private static final String HISTORY_DETAIL = "SELECT b.date,b.name, b.age, b.email,b.decription,b.status,b.phone,s.name as service FROM booking b join service_type s \n" +
+            "                       on b.service_id = s.id where b.id =?";
 
     @Override
     public List<Booking> getAll(Integer offset, Integer limit, String search) throws SQLException {
@@ -108,6 +120,7 @@ public class BookingDaoImpl implements BookingDao {
         return null;
     }
 
+
     @Override
     public List<BookingManagementDto> getServiceByServiceId() throws SQLException {
         ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_SERVICE_BY_SERVICE_ID);
@@ -119,6 +132,49 @@ public class BookingDaoImpl implements BookingDao {
         }
         ConnectionUtils.closeConnection();
         return list;
+    }
+
+    public List<BookingDto> getAllHistory() throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(HISTORY_PATIENT);
+        List<BookingDto> list = new ArrayList<>();
+        while (true) {
+            assert rs != null;
+            if (!rs.next()) break;
+            list.add(BookingDto
+                    .builder().serviceResDto(ServiceResDto.builder()
+                            .name(rs.getString("name"))
+                            .build())
+                    .date(rs.getDate("date").toLocalDate())
+                    .status(String.valueOf(rs.getBoolean("status")))
+                    .time(String.valueOf(rs.getTime("time")))
+                    .fee(rs.getDouble("fee"))
+                    .account_id(rs.getInt("account_id"))
+                    .build());
+        }
+        return list;
+
+    }
+
+
+    @Override
+    public BookingDto DetailHistory(String id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(HISTORY_DETAIL, id);
+
+        assert rs != null;
+
+//        if (rs.next()) {
+//            return (BookingDto.builder()
+//                    .phone(rs.getInt("phone"))
+//                    .status(String.valueOf(rs.getBoolean("status")))
+//                    .name(rs.getString("name"))
+//                    .email(rs.getString("email"))
+//                    .age(rs.getInt("age"))
+//                    .decription(rs.getString("decription"))
+//                    .date(rs.getDate("date").toLocalDate())
+//                    .build());
+//        }
+        return null;
+
     }
 
     @Override

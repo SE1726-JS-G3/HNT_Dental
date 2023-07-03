@@ -2,6 +2,9 @@ package com.hnt.dental.dao;
 
 import com.hnt.dental.dto.response.*;
 import com.hnt.dental.entities.Booking;
+import com.hnt.dental.dto.response.*;
+import java.sql.SQLException;
+import java.util.List;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -23,4 +26,7 @@ public interface BookingDao extends GenericDao<Booking> {
     Optional<BookingDetailServiceDto> getServiceByBookingId(Long id) throws SQLException;
 
     Optional<BookingDetailDto> getBookingDetailById(Long id) throws SQLException;
+    
+    List<BookingDto> getAllHistory() throws SQLException;
+    BookingDto DetailHistory(String id) throws SQLException;
 }
