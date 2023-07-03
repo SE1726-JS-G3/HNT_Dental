@@ -146,24 +146,45 @@ public class DoctorService {
         String id = req.getParameter("id");
         try {
             Optional<Booking> getAppointmentDetails = dao.getAppointmentDetails(Long.valueOf(id));
-            Optional<AppointmentDetailDto> appointmentDetailDto = AppointmentDetailDto.convert(getAppointmentDetails);
-            req.setAttribute("details", appointmentDetailDto.orElse(null));
-
-            // Handle the button click
-            String send = req.getParameter("send");
-            if ("Hoàn thành lịch hẹn".equals(send)) {
-                getAppointmentDetails.ifPresent(booking -> {
-                    if (booking.getStatus() == 0) {
-                        booking.setStatus(1); // Change the status to "Chấp nhận"
-                        // Update the booking status in the database using your DAO or service class
-                        // dao.updateBookingStatus(booking);
-                    }
-                });
+            if (getAppointmentDetails.isPresent()) {
+                Optional<AppointmentDetailDto> appointmentDetailDto = AppointmentDetailDto.convert(getAppointmentDetails);
+                req.setAttribute("details", appointmentDetailDto.orElse(null));
             }
-
+            req.setAttribute("id", id);
             req.getRequestDispatcher("/WEB-INF/templates/home/my-appointment-detail.jsp").forward(req, resp);
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+    }
+    public void updateBookingStatus(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        Long id = Long.valueOf(req.getParameter("id"));
+        String status = req.getParameter("status");
+        String send = req.getParameter("send");
+        String error = null;
+        if ("Hoàn thành lịch hẹn".equals(send)) {
+            try {
+                Optional<Booking> bookingOptional = dao.getAppointmentDetails(Long.valueOf(id));
+                if (bookingOptional.isPresent()) {
+                    Booking booking = bookingOptional.get();
+                    if (booking.getStatus() == 0) {
+                        booking.setStatus(1); // Change the status to "Chấp nhận"
+                        dao.updateBookingStatus(Booking.builder()
+                                .id(id)
+                                .status(Integer.parseInt(status))
+                                .build()
+                        ); // Update the booking status in the database using your DAO or service class
+                    }
+                }
+            } catch (Exception e) {
+                error = e.getMessage();
+            }
+
+            if (StringUtils.isNotEmpty(error)) {
+                ServletUtils.redirect(req, resp, "/management/doctor/my-appointment-detail?id=" + id + "&error=" + error);
+            } else {
+                ServletUtils.redirect(req, resp, "/management/doctor/my-appointment-detail?id=" + id);
+//                ServletUtils.redirect(req, resp, "/management/doctor/MyAppointment"); // Redirect to the appointment list page
+            }
         }
     }
 

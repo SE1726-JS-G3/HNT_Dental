@@ -17,12 +17,12 @@
                 <div class="rounded shadow mt-4">
                     <div class="p-4 border-bottom">
                         <h5 class="mb-0">Lịch hẹn của tôi</h5>
-                        <p style="color: blue; align-content: center;">
+                        <p style="color: blue; text-align: center;">
                             ${requestScope.updatesuccess}
                         </p>
                     </div>
                     <div class="p-4">
-                        <form>
+                        <form action="/management/doctor/my-appointment-detail" method="post"> <!-- Fix: Added form action -->
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
@@ -34,40 +34,41 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Tên bệnh nhân</label>
-                                        <input readonly value="${details.patient.fullName}" type="text" class="form-control">
+                                        <input readonly value="${details != null ? details.patient.fullName : ''}" type="text" class="form-control">
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">ID bệnh nhân</label>
-                                        <input readonly value="${details.patient.id}" type="text" class="form-control">
+                                        <input readonly value="${details != null ? details.patient.id : ''}" type="text" class="form-control">
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Ngày đặt lịch</label>
-                                        <input readonly value="${details.date}" type="text" class="form-control">
+                                        <input readonly value="${details != null ? details.date : ''}" type="text" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">Giờ đặt lịch </label>
-                                        <input readonly value="${details.time}" type="text" class="form-control">
+                                        <label class="form-label">Giờ đặt lịch</label>
+                                        <input readonly value="${details != null ? details.time : ''}" type="text" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Trạng thái</label>
-                                        <input readonly value="${details.status}" type="text" class="form-control">
+                                        <input readonly value="${details != null ? details.status : ''}" type="text" class="form-control">
                                     </div>
                                 </div>
-
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <input type="submit" id="submit" name="send" class="btn btn-primary" value="Hoàn thành lịch hẹn">
+                                    <input type="hidden" name="id" value="${details.id}"> <!-- Fix: Added hidden input field for id -->
+                                    <input type="hidden" name="status" value="1"> <!-- Fix: Hard-coded status value as 1 for "Chấp nhận" -->
+                                    <input type="submit" id="submit" name="send" class="btn btn-primary" value="Hoàn thành lịch hẹn"> <!-- Fix: Removed unnecessary value attribute -->
                                 </div>
                             </div>
                         </form>

@@ -27,14 +27,14 @@ public class AppointmentResDto {
     private String date;
     private String time;
     private String name;
-    private Long patientid;
+    private Long idpatient;
     public static List<AppointmentResDto> convert(List<Booking>bookings) {
         List<AppointmentResDto> appointmentResDto = new ArrayList<>();
             for (Booking booking : bookings) {
             appointmentResDto.add(
                     AppointmentResDto.builder()
-                            .id(booking.getAccount().getId())
-                            .patientid(booking.getPatient().getId())
+                            .id(booking.getId())
+                            .idpatient(booking.getPatient().getId())
                             .patientFullName(booking.getPatient().getFullName())
                             .name(booking.getService().getName())
                             .gender(booking.getPatient().getGender() ? "Nam" : "Nữ")

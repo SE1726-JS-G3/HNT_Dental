@@ -38,7 +38,7 @@
                                     <tr>
                                         <td class="p-3">${p.id}</td>
                                         <td class="p-3">${p.patientFullName}</td>
-                                        <td class="p-4">${p.patientid}</td>
+                                        <td class="p-4">${p.idpatient}</td>
                                         <td class="p-3">${p.date}</td>
                                         <td class="p-3">${p.time}</td>
                                         <td class="p-3">${p.status}</td>

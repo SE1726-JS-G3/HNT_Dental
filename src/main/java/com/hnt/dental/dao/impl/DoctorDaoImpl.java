@@ -87,7 +87,7 @@ public class DoctorDaoImpl implements DoctorDao {
             "SET full_name = ?, gender = ?, phone = ?, dob = ?, position = ?, address = ?, description = ?, rank_id = ?,status=?, created_at = ?, updated_at = ? " +
             "WHERE id = ?";
 
-
+    private static final String SQL_UPDATE_BOOKING_STATUS = "UPDATE hnt_dental.booking SET status = ? WHERE id = ?";
     private static final String DELETE_DOCTOR = "DELETE FROM doctors WHERE id=?";
 
     private static final String MY_PATIENT_DETAIL_QUERY = "SELECT p.id,p.full_name ,b.name, a.email, p.phone, p.gender, p.dob, b.date, b.time ,b.status " +
@@ -214,6 +214,7 @@ public class DoctorDaoImpl implements DoctorDao {
 
 
 
+
     @Override
     public List<Doctors> getAll(Integer offset, Integer limit, String search) throws SQLException {
         return null;
@@ -288,7 +289,10 @@ public class DoctorDaoImpl implements DoctorDao {
         return doctors.getAccount().getId();
     }
 
-
+    @Override
+    public void updateBookingStatus(Booking booking) throws SQLException {
+        ConnectionUtils.executeUpdate(SQL_UPDATE_BOOKING_STATUS, booking.getStatus(), booking.getId());
+    }
 
     @Override
     public void update(Doctors doctors) throws SQLException {

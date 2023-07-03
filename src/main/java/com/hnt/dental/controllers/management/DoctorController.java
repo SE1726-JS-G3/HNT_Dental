@@ -65,7 +65,7 @@ public class DoctorController extends HttpServlet {
                     doctorService.update(req, resp);
                     break;
                 case "/management/doctor/my-appointment-detail":
-                    doctorService.getAppointmentDetail(req, resp);
+                    doctorService.updateBookingStatus(req, resp);
                     break;
                 default:
             }
