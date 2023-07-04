@@ -40,7 +40,7 @@ public class AppointmentResDto {
                             .gender(booking.getPatient().getGender() ? "Nam" : "Nữ")
                             .date(String.valueOf(booking.getDate()))
                             .time(String.valueOf(booking.getTime()))
-                            .status(booking.getStatus() == 1 ? "Complete" : "Assigned")
+                            .status(Integer.parseInt(booking.getStatus()) == 1 ? "Complete" : "Assigned")
                             .build()
             );
         }

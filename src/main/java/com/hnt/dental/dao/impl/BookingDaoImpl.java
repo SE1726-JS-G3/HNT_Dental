@@ -16,6 +16,7 @@ import com.hnt.dental.dto.response.ServiceResDto;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -146,7 +147,7 @@ public class BookingDaoImpl implements BookingDao {
                             .build())
                     .date(rs.getDate("date").toLocalDate())
                     .status(String.valueOf(rs.getBoolean("status")))
-                    .time(String.valueOf(rs.getTime("time")))
+                    .time(LocalTime.parse(String.valueOf(rs.getTime("time"))))
                     .fee(rs.getDouble("fee"))
                     .account_id(rs.getInt("account_id"))
                     .build());

@@ -39,7 +39,7 @@ public class AppointmentDetailDto {
             appointmentDetailDto.setDoctors(booking.getDoctors());
             appointmentDetailDto.setPatientFullName(booking.getPatient().getFullName());
             appointmentDetailDto.setGender(booking.getPatient().getGender() ? "Nam" : "Nữ");
-            appointmentDetailDto.setStatus(booking.getStatus() == 1 ? "Complete" : "Assigned");
+            appointmentDetailDto.setStatus(Integer.parseInt(booking.getStatus()) == 1 ? "Complete" : "Assigned");
             appointmentDetailDto.setDate(String.valueOf(booking.getDate()));
             appointmentDetailDto.setTime(String.valueOf(booking.getTime()));
             appointmentDetailDto.setName(booking.getService().getName());
