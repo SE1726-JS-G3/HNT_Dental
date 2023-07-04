@@ -28,6 +28,7 @@ public interface DoctorDao extends GenericDao<Doctors> {
       void  updateBookingStatus(BookingDto booking) throws SQLException;
     List<PatitentDto> MyPatientDoctor(Integer offset, Integer limit) throws SQLException;
     List<PatitentDto> getPatientDetails(Long id,Integer offset, Integer limit) throws SQLException;
-    Integer count() throws Exception;
+    Integer countPatitent() throws Exception;
 
+    Integer countPatitentDetails(Long id) throws Exception;
 }

@@ -10,10 +10,5 @@ import java.util.Optional;
 
 public interface PatientDao extends GenericDao<Patient>{
 
-    List<Patient> MyPatientDoctor(Integer offset, Integer limit) throws SQLException;
-
-
-    List<Patient> getPatientDetail(Long id,Integer offset, Integer limit) throws SQLException;
-    Integer count() throws Exception;
 }
 

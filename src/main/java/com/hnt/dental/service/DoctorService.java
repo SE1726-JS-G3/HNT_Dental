@@ -348,21 +348,20 @@ public class DoctorService {
     }
     public void MyPatientDoctor(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String page = req.getParameter("page");
-        String search = req.getParameter("search");
         int pageNumber = 1;
 
         if(StringUtils.isNotEmpty(page)){
             pageNumber = Integer.parseInt(page);
         }
 
-        Integer totalItem = dao.count();
+        Integer totalItem = dao.countPatitent();
         Integer totalPage = PagingUtils.getTotalPage(totalItem);
         try {
             List<PatitentDto> myPatientDoctor = dao.MyPatientDoctor(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE);
             req.setAttribute("patients", PatientResDto.convert(myPatientDoctor));
             req.setAttribute("totalPage", totalPage);
             req.setAttribute("currentPage", pageNumber);
-            req.setAttribute("search", search);
+            req.setAttribute("url", "/management/mypatient");
             req.getRequestDispatcher("/WEB-INF/templates/home/my-patient.jsp").forward(req, resp);
         } catch (Exception e) {
             e.printStackTrace();
@@ -370,37 +369,30 @@ public class DoctorService {
         }
     }
     public void getMyPatientDetails(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        String id = req.getParameter("id");
-        String page1 = req.getParameter("page1");
-        String search = req.getParameter("search");
+        Long id = Long.valueOf(req.getParameter("id"));
+        String page = req.getParameter("page");
         int pageNumber = 1;
 
-        if (StringUtils.isNotEmpty(page1)) {
-            pageNumber = Integer.parseInt(page1);
+        if(StringUtils.isNotEmpty(page)){
+            pageNumber = Integer.parseInt(page);
         }
 
-        Integer totalItem = null;
-        try {
-            totalItem = dao.count();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        Integer totalItem = dao.countPatitentDetails(Long.valueOf(id));
         Integer totalPage = PagingUtils.getTotalPage(totalItem);
         try {
             List<PatitentDto> patient = dao.getPatientDetails(Long.valueOf(id), PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE);
 
             req.setAttribute("patient", PatientResDto.convert(patient));
             req.setAttribute("id", id);
-            req.setAttribute("totalPage1", totalPage);
-            req.setAttribute("currentPage1", pageNumber);
-            req.setAttribute("search", search);
+            req.setAttribute("totalPage", totalPage);
+            req.setAttribute("currentPage", pageNumber);
             req.setAttribute("url", "/management/mypatient/detail");
             req.getRequestDispatcher("/WEB-INF/templates/home/my-patientdetail.jsp").forward(req, resp);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
     }
+
     public void delete(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
         dao.delete(Doctors.builder().id((long) id).build());

@@ -440,9 +440,13 @@ public class DoctorDaoImpl implements DoctorDao {
         return null;
     }
 
-    private static final String COUNT_PATIENT = "SELECT COUNT(*) FROM patients";
+    private static final String COUNT_PATIENT = "SELECT COUNT(*) FROM patients p " +
+            "JOIN booking b ON b.account_id = p.id " +
+            "JOIN doctors d ON d.id = b.staff_id " +
+            "JOIN accounts a ON a.id = p.id";
+
     @Override
-    public Integer count() throws Exception {
+    public Integer countPatitent() throws Exception {
         ResultSet rs = ConnectionUtils.executeQuery(COUNT_PATIENT);
         assert rs != null;
         if (rs.next()) {
@@ -451,6 +455,26 @@ public class DoctorDaoImpl implements DoctorDao {
         ConnectionUtils.closeConnection();
         return null;
     }
+    private static final String COUNT_PATIENT_DETAILS = "SELECT COUNT(*) FROM (" +
+            "SELECT DISTINCT p.id " +
+            "FROM patients p " +
+            "JOIN booking b ON b.account_id = p.id " +
+            "JOIN doctors d ON d.id = b.staff_id " +
+            "JOIN accounts a ON a.id = p.id " +
+            "WHERE p.id = ?" +
+            ") AS count_table";
+
+    @Override
+    public Integer countPatitentDetails(Long id) throws Exception {
+        ResultSet rs = ConnectionUtils.executeQuery(COUNT_PATIENT_DETAILS, id);
+        assert rs != null;
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        ConnectionUtils.closeConnection();
+        return null;
+    }
+
 
 
     @Override
