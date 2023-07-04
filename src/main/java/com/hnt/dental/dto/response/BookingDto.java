@@ -29,9 +29,8 @@ public class BookingDto {
     private LocalTime time;
     private String description;
     private Patient patient;
-    private int status;
 
-private Long id;
+
     private String payment;
     private String status;
     private double fee;

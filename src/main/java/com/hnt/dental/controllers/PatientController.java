@@ -100,7 +100,7 @@ public class PatientController extends HttpServlet {
                     throw new RuntimeException(e);
                 }
                 break;
-                default:
+            default:
         }
     }
 

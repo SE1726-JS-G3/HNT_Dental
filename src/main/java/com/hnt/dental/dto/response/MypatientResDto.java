@@ -1,23 +1,19 @@
 package com.hnt.dental.dto.response;
-<<<<<<< HEAD
 import com.hnt.dental.entities.Account;
 import com.hnt.dental.entities.Booking;
-=======
 import com.hnt.dental.entities.Patient;
->>>>>>> develop
 import com.hnt.dental.util.DateUtils;
 import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-<<<<<<< HEAD
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PatientResDto {
+public class MypatientResDto {
     private Long id;
     private Booking booking;
     private Account account;
@@ -32,11 +28,11 @@ public class PatientResDto {
     private String email;
     private String date;
     private String time;
-    public static List<PatientResDto> convert(List<PatitentsDto> patients) {
-        List<PatientResDto> patientResDto = new ArrayList<>();
+    public static List<MypatientResDto> convert(List<PatitentsDto> patients) {
+        List<MypatientResDto> mypatientResDto = new ArrayList<>();
         for (PatitentsDto patient : patients) {
-            patientResDto.add(
-                    PatientResDto.builder()
+            mypatientResDto.add(
+                    MypatientResDto.builder()
                             .id(patient.getAccount().getId())
                             .fullName(patient.getFullName())
                             .dob(DateUtils.convertLocalDateToString(patient.getDob()))
@@ -50,40 +46,7 @@ public class PatientResDto {
                             .build()
             );
         }
-        return patientResDto;
+        return mypatientResDto;
     }
 }
-=======
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-@Builder
-
-public class PatientResDto {
-    private Long id;
-    private String name;
-    private String dob;
-    private String gender;
-    private String email;
-    private String status;
-
-    public static List<PatientResDto> convert(List<Patient> patients) {
-        List<PatientResDto> patientResDtos = new ArrayList<>();
-        for (Patient patient: patients){
-            patientResDtos.add(
-                    PatientResDto.builder()
-                            .id(patient.getAccount().getId())
-                            .name(patient.getFullName())
-                            .dob(DateUtils.convertLocalDateToString(patient.getDob()))
-                            .gender(patient.getGender() ? "Nam" : "Nữ")
-                            .status(patient.getStatus()? "active" : "nactive")
-                            .build()
-            );
-        }
-        return patientResDtos;
-    }
-
-}
->>>>>>> develop
