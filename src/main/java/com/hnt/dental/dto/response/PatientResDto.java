@@ -28,9 +28,9 @@ public class PatientResDto {
     private String email;
     private String date;
     private String time;
-    public static List<PatientResDto> convert(List<Patient> patients) {
+    public static List<PatientResDto> convert(List<PatitentDto> patients) {
         List<PatientResDto> patientResDto = new ArrayList<>();
-        for (Patient patient : patients) {
+        for (PatitentDto patient : patients) {
             patientResDto.add(
                     PatientResDto.builder()
                             .id(patient.getAccount().getId())
