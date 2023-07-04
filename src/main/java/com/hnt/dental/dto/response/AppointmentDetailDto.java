@@ -17,7 +17,7 @@ import java.util.Optional;
 @Builder
 public class AppointmentDetailDto {
     private Long id;
-    private Booking booking;
+    private BookingDto booking;
     private Account account;
     private Patient patient;
     private Doctors doctors;
@@ -28,9 +28,9 @@ public class AppointmentDetailDto {
     private String time;
     private String name;
     private Long patientid;
-    public static Optional<AppointmentDetailDto> convert(Optional<Booking> bookingOptional) {
+    public static Optional<AppointmentDetailDto> convert(Optional<BookingDto> bookingOptional) {
         if (bookingOptional.isPresent()) {
-            Booking booking = bookingOptional.get();
+            BookingDto booking = bookingOptional.get();
             AppointmentDetailDto appointmentDetailDto = new AppointmentDetailDto();
             appointmentDetailDto.setId(booking.getId());
             appointmentDetailDto.setBooking(booking);
@@ -39,7 +39,7 @@ public class AppointmentDetailDto {
             appointmentDetailDto.setDoctors(booking.getDoctors());
             appointmentDetailDto.setPatientFullName(booking.getPatient().getFullName());
             appointmentDetailDto.setGender(booking.getPatient().getGender() ? "Nam" : "Nữ");
-            appointmentDetailDto.setStatus(booking.getStatus() == 1 ? "Chấp nhận" : "Từ chối");
+            appointmentDetailDto.setStatus(booking.getStatus() == 1 ? "Complete" : "Assigned");
             appointmentDetailDto.setDate(String.valueOf(booking.getDate()));
             appointmentDetailDto.setTime(String.valueOf(booking.getTime()));
             appointmentDetailDto.setName(booking.getService().getName());
