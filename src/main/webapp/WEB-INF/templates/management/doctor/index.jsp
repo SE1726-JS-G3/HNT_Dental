@@ -81,8 +81,6 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <c:choose>
-                    <c:when test="${not empty doctors}">
                       <c:forEach var="doctor" items="${doctors}">
                         <tr>
                           <td>${doctor.id}</td>
@@ -104,15 +102,7 @@
                               </button>
                             </a>
                           </td>
-                        </tr>
                       </c:forEach>
-                    </c:when>
-                    <c:otherwise>
-                      <tr>
-                        <td colspan="7">Không có bác sĩ nào.</td>
-                      </tr>
-                    </c:otherwise>
-                  </c:choose>
                   </tbody>
                 </table>
               </div>
@@ -191,7 +181,7 @@
       cancelButtonText: 'Hủy'
     }).then((result) => {
       if (result.isConfirmed) {
-        window.location.href = "${pageContext.request.contextPath}/management/employee/delete?id=" + id;
+        window.location.href = "${pageContext.request.contextPath}/management/doctor/delete?id=" + id;
       }
     })
   }
