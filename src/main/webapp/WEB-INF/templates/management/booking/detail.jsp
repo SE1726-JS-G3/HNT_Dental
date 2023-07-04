@@ -176,6 +176,10 @@
                                     <select name="staff" class="form-select">
                                         <option
                                                 class="form-control" value=""></option>
+                                        <c:forEach items="${doctors}" var="doctor">
+                                            <option
+                                                    class="form-control" value="${doctor.id}">${doctor.fullName}</option>
+                                        </c:forEach>
                                     </select>
                                 </div>
                             </div>

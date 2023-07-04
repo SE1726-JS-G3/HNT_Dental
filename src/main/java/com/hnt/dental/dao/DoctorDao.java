@@ -20,5 +20,6 @@ public interface DoctorDao extends GenericDao<Doctors> {
     Integer countListDoctorSummary(String search) throws SQLException;
 
     List<DoctorDetailDto> getTopDoctor() throws SQLException;
-    List<DoctorSummaryRes> getListDoctorAvailable(LocalDate date, LocalTime time) throws SQLException;
+    List<DoctorSummaryRes> getListDoctorAvailable(LocalDate date, LocalTime time, Long typeId, Long serviceId) throws SQLException;
+
 }

@@ -16,5 +16,6 @@ public class BookingDetailServiceDto {
     private  String name;
     private String image;
     private String type;
+    private Long typeId;
     private Double fee;
 }

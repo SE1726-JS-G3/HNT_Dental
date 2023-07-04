@@ -42,7 +42,7 @@ public class BookingDaoImpl implements BookingDao {
             "inner join doctors d on b.doctor_id = d.id " +
             "inner join doctor_rank dr on dr.id = d.rank_id " +
             "where b.id = ?";
-    private static final String SQL_GET_SERVICE_BY_BOOKING_ID = "select s.name,s.image, st.name  as serviceType, p.fee from booking b " +
+    private static final String SQL_GET_SERVICE_BY_BOOKING_ID = "select s.id, s.name,s.image, st.name  as serviceType, st.id as typeID , p.fee from booking b " +
             "inner join service s on b.service_id = s.id " +
             "inner join service_type st on st.id = b.service_type_id " +
             "inner join payment p on p.booking_id = b.id " +
@@ -228,10 +228,12 @@ public class BookingDaoImpl implements BookingDao {
             return Optional.ofNullable(
                     BookingDetailServiceDto
                             .builder()
+                            .id(rs.getLong("id"))
                             .name(rs.getString("name"))
                             .image(rs.getString("image"))
                             .type(rs.getString("serviceType"))
                             .fee(rs.getDouble("fee"))
+                            .typeId(rs.getLong("typeID"))
                             .build());
         }
         return Optional.empty();
