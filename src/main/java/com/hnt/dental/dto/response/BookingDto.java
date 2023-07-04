@@ -1,8 +1,10 @@
 package com.hnt.dental.dto.response;
 
+import com.hnt.dental.entities.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,11 +14,20 @@ import java.time.LocalDate;
 public class BookingDto {
     private String name;
     private int phone;
-    private boolean gender;
     private int age;
+    private boolean gender;
+    private Service service;
+    private Account account;
+    private Doctors doctors;
+    private Employee employee;
+ private Booking booking;
     private LocalDate date;
-    private String time;
+    private LocalTime time;
     private String description;
+    private Patient patient;
+    private int status;
+
+private Long id;
     private String payment;
 
 }
