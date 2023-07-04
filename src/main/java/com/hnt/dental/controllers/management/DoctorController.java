@@ -14,8 +14,10 @@ import java.io.IOException;
         "/management/doctor/create",
         "/management/doctor/detail",
         "/management/doctor/update",
-        "/management/doctor/MyAppointment",
+        "/management/doctor/my-appointment",
         "/management/doctor/my-appointment-detail",
+        "/management/mypatient",
+        "/management/mypatient/detail",
         "/management/doctor/delete"
 })
 public class DoctorController extends HttpServlet {
@@ -40,11 +42,17 @@ public class DoctorController extends HttpServlet {
                 case "/management/doctor/delete":
                     doctorService.delete(req, resp);
                     break;
-                case "/management/doctor/MyAppointment":
+                case "/management/doctor/my-appointment":
                     doctorService.getMyAppointments(req, resp);
                     break;
                 case "/management/doctor/my-appointment-detail":
                     doctorService.getAppointmentDetail(req, resp);
+                    break;
+                case "/management/mypatient":
+                    doctorService.MyPatientDoctor(req, resp);
+                    break;
+                case "/management/mypatient/detail":
+                    doctorService.getMyPatientDetails(req, resp);
                     break;
                 default:
             }
@@ -66,6 +74,9 @@ public class DoctorController extends HttpServlet {
                     break;
                 case "/management/doctor/my-appointment-detail":
                     doctorService.updateBookingStatus(req, resp);
+                    break;
+                case "/management/mypatient/detail":
+                    doctorService.getMyPatientDetails(req, resp);
                     break;
                 default:
             }
