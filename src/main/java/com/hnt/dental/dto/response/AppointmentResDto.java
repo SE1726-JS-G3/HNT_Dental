@@ -27,20 +27,20 @@ public class AppointmentResDto {
     private String date;
     private String time;
     private String name;
-    private Long idpatient;
-    public static List<AppointmentResDto> convert(List<Booking>bookings) {
+    private Long patientid;
+    public static List<AppointmentResDto> convert(List<BookingDto>bookings) {
         List<AppointmentResDto> appointmentResDto = new ArrayList<>();
-            for (Booking booking : bookings) {
+            for (BookingDto booking : bookings) {
             appointmentResDto.add(
                     AppointmentResDto.builder()
                             .id(booking.getId())
-                            .idpatient(booking.getPatient().getId())
+                            .patientid(booking.getPatient().getId())
                             .patientFullName(booking.getPatient().getFullName())
                             .name(booking.getService().getName())
                             .gender(booking.getPatient().getGender() ? "Nam" : "Nữ")
                             .date(String.valueOf(booking.getDate()))
                             .time(String.valueOf(booking.getTime()))
-                            .status(booking.getStatus() == 1 ? "Chấp nhận" : "Từ chối")
+                            .status(booking.getStatus() == 1 ? "Complete" : "Assigned")
                             .build()
             );
         }
