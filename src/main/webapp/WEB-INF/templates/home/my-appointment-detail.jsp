@@ -22,7 +22,7 @@
                         </p>
                     </div>
                     <div class="p-4">
-                        <form action="/management/doctor/my-appointment-detail" method="post"> <!-- Fix: Added form action -->
+                        <form action="/management/doctor/my-appointment-detail" method="post" onsubmit="return confirmSubmit(${details.id});"><!-- Fix: Added form action -->
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
@@ -68,7 +68,7 @@
                                 <div class="col-sm-12">
                                     <input type="hidden" name="id" value="${details.id}"> <!-- Fix: Added hidden input field for id -->
                                     <input type="hidden" name="status" value="1"> <!-- Fix: Hard-coded status value as 1 for "Chấp nhận" -->
-                                    <input type="submit" id="submit" name="send" class="btn btn-primary" value="Hoàn thành lịch hẹn"> <!-- Fix: Removed unnecessary value attribute -->
+                                    <input type="submit" id="submit" name="send" class="btn btn-primary active" value="Hoàn thành lịch hẹn"> <!-- Added "active" class to the button -->
                                 </div>
                             </div>
                         </form>
@@ -92,12 +92,52 @@
         </div>
     </div>
 </div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="${pageContext.request.contextPath}/static/libs/tobii/js/tobii.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/libs/feather-icons/feather.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
 
+<script>
+    function confirmSubmit(id) {
+        var id = $("input[name='id']").val(); // Lấy giá trị của trường id
+        swal({
+            title: "Cảnh báo",
+            text: "Bạn có chắc chắn muốn hoàn thành lịch hẹn?",
+            buttons: ["Hủy bỏ", "Đồng ý"],
+            dangerMode: true
+        }).then((willDelete) => {
+            if (willDelete) {
+                // Sử dụng Ajax để gửi yêu cầu hoàn thành lịch hẹn
+                $.ajax({
+                    url: "/management/doctor/my-appointment-detail",
+                    type: "POST",
+                    data: { id: id, status: 1 },
+                    success: function (data) {
+                        // Xử lý kết quả trả về từ server
+                        if (data.success) {
+                            swal("Thành công!", "Lịch hẹn đã được hoàn thành.", "success").then(() => {
+                                window.location = "${pageContext.request.contextPath}/management/doctor/my-appointment-detail?id=" + id;
+                            });
+                        } else {
+                            swal("Lỗi!", "Có lỗi xảy ra khi hoàn thành lịch hẹn.", "error");
+                        }
+                    },
+                    error: function () {
+                        swal("Lỗi!", "Có lỗi xảy ra khi hoàn thành lịch hẹn.", "error");
+                    }
+                });
+            }
+        });
+
+        return false; // Ngăn chặn việc gửi yêu cầu submit của form
+    }
+</script>
 </body>
 
 </html>
