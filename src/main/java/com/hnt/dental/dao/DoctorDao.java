@@ -23,8 +23,11 @@ public interface DoctorDao extends GenericDao<Doctors> {
 
     List<Doctors> getAllDoctor(int offset, int limit,  String search, String status, String gender) throws SQLException;
 
-    List<Booking> getMyAppointments(int offset, int limit) throws SQLException;
-    Optional<Booking> getAppointmentDetails(Long id) throws SQLException;
-      void  updateBookingStatus(Booking booking) throws SQLException;
+    List<BookingDto> getMyAppointments(int offset, int limit) throws SQLException;
+    Optional<BookingDto> getAppointmentDetails(Long id) throws SQLException;
+      void  updateBookingStatus(BookingDto booking) throws SQLException;
+    List<PatitentDto> MyPatientDoctor(Integer offset, Integer limit) throws SQLException;
+    List<PatitentDto> getPatientDetails(Long id,Integer offset, Integer limit) throws SQLException;
+    Integer count() throws Exception;
 
 }
