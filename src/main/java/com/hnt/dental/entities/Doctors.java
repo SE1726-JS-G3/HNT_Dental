@@ -20,6 +20,8 @@ public class Doctors extends BaseEntity{
     private Account account;
     private LocalDate dob;
     private Boolean gender;
+    private Booking booking;
+    private Patient patient;
     private String phone;
     private String address;
     private String position;
