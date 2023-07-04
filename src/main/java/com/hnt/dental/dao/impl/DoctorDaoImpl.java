@@ -59,7 +59,7 @@ public class DoctorDaoImpl implements DoctorDao {
             "  WHERE" +
             "    LOWER(d.full_name) LIKE ?" +
             "    OR LOWER(d.position) LIKE ?" +
-            "    OR LOWER(d.dob) LIKE ?" +
+            "    OR LOWER(dr.name) LIKE ?" +
             "  ORDER BY" +
             "    d.id";
     private static final String SQL_GET_TOP_DOCTOR = "select * from doctors\n" +
@@ -71,7 +71,7 @@ public class DoctorDaoImpl implements DoctorDao {
             "LEFT JOIN doctor_rank dr ON d.rank_id = dr.id " +
             "WHERE (LOWER(d.full_name) LIKE ? " +
             "OR LOWER(d.position) LIKE ? " +
-            "OR LOWER(d.dob) LIKE ?) " +
+            "OR LOWER(dr.name) LIKE ?) " +
             "AND d.status LIKE ? " +
             "AND d.gender LIKE ? " +
             "LIMIT ?, ?";
@@ -84,7 +84,7 @@ public class DoctorDaoImpl implements DoctorDao {
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     private static final String UPDATE_DOCTOR = "UPDATE hnt_dental.doctors " +
-            "SET full_name = ?, gender = ?, phone = ?, dob = ?, position = ?, address = ?, description = ?, rank_id = ?,status=?, created_at = ?, updated_at = ? " +
+            "SET full_name = ?, gender = ?, phone = ?, dob = ?, position = ?, address = ?, description = ?, rank_id = ?,status=?, updated_at = ? " +
             "WHERE id = ?";
 
     private static final String SQL_UPDATE_BOOKING_STATUS = "UPDATE hnt_dental.booking SET status = ? WHERE id = ?";
@@ -97,22 +97,22 @@ public class DoctorDaoImpl implements DoctorDao {
             "JOIN accounts a ON a.id = p.id " +
             "WHERE p.id = ? " +
             "ORDER BY p.id ASC ";
-    private static final String SQL_GET_ALL_APPOINTMENT_DOCTOR =
-            "SELECT b.id, p.full_name AS patient_full_name,d.full_name ,p.id, s.name , b.date, b.time, b.status , p.gender " +
-                    "FROM booking b " +
-                    "INNER JOIN patients p ON b.account_id = p.id " +
-                    "INNER JOIN service s ON b.service_id = s.id " +
-                    "JOIN accounts a ON a.id = p.id " +
-                    "LEFT JOIN doctors d ON b.id = d.id " +
-                    "LIMIT ?, ?";
-    private static final String SQL_GET_APPOINTMENT_DETAILS =
-            "SELECT b.id, p.full_name AS patient_full_name, d.full_name, p.id, s.name, b.date, b.time, b.status, p.gender " +
-                    "FROM booking b " +
-                    "INNER JOIN patients p ON b.account_id = p.id " +
-                    "INNER JOIN service s ON b.service_id = s.id " +
-                    "LEFT JOIN doctors d ON b.id = d.id " +
-                    "WHERE b.id = ?";
 
+    private static final String SQL_GET_ALL_APPOINTMENT_DOCTOR =
+            "SELECT b.id, p.full_name AS patient_full_name, d.full_name, p.id AS patient_id, s.name, b.date, b.time, b.status, p.gender " +
+                    "FROM booking b " +
+                    "INNER JOIN patients p ON b.account_id = p.id " +
+                    "INNER JOIN service s ON b.service_id = s.id " +
+                    "LEFT JOIN doctors d ON b.staff_id = d.id " +
+                    "LIMIT ?, ?";
+
+    private static final String SQL_GET_APPOINTMENT_DETAILS =
+            "SELECT b.id, p.full_name AS patient_full_name, d.full_name, p.id AS patient_id, s.name, b.date, b.time, b.status, p.gender " +
+                    "FROM booking b " +
+                    "INNER JOIN patients p ON b.account_id = p.id " +
+                    "INNER JOIN service s ON b.service_id = s.id " +
+                    "LEFT JOIN doctors d ON b.staff_id = d.id " +
+                    "WHERE b.id = ?";
     private static final String COUNT_APPOINTMENT = "SELECT COUNT(*) FROM booking b " +
             "INNER JOIN patients p ON b.account_id = p.id " +
             "INNER JOIN service s ON b.service_id = s.id " +
@@ -155,12 +155,12 @@ public class DoctorDaoImpl implements DoctorDao {
     }
 
     @Override
-    public List<Booking> getMyAppointments(int offset, int limit) throws SQLException {
-        List<Booking> MyAppointments = new ArrayList<>();
+    public List<BookingDto> getMyAppointments(int offset, int limit) throws SQLException {
+        List<BookingDto> MyAppointments = new ArrayList<>();
         ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_ALL_APPOINTMENT_DOCTOR, offset, limit);
         while (rs.next()) {
             MyAppointments.add(
-                    Booking.builder()
+                    BookingDto.builder()
                             .account(
                                     Account.builder()
                                             .id(rs.getLong("id"))
@@ -170,7 +170,7 @@ public class DoctorDaoImpl implements DoctorDao {
                                     .name(rs.getString("name"))
                                     .build())
                             .patient(Patient.builder()
-                                    .id(rs.getLong("id"))
+                                    .id(rs.getLong("patient_id"))
                                     .fullName(rs.getString("patient_full_name"))
                                     .gender(rs.getBoolean("gender"))
                                     .build())
@@ -185,11 +185,11 @@ public class DoctorDaoImpl implements DoctorDao {
     }
 
     @Override
-    public Optional<Booking> getAppointmentDetails(Long id) throws SQLException {
+    public Optional<BookingDto> getAppointmentDetails(Long id) throws SQLException {
         ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_APPOINTMENT_DETAILS, id);
         assert rs != null;
         if (rs.next()) {
-            return Optional.ofNullable(Booking.builder()
+            return Optional.ofNullable(BookingDto.builder()
                     .id(rs.getLong("id"))
                     .date(rs.getDate("date").toLocalDate())
                     .time(rs.getTime("time").toLocalTime())
@@ -202,7 +202,7 @@ public class DoctorDaoImpl implements DoctorDao {
                             .name(rs.getString("name"))
                             .build())
                     .patient(Patient.builder()
-                            .id(rs.getLong("id"))
+                            .id(rs.getLong("patient_id"))
                             .fullName(rs.getString("patient_full_name"))
                             .gender(rs.getBoolean("gender"))
                             .build())
@@ -290,14 +290,101 @@ public class DoctorDaoImpl implements DoctorDao {
     }
 
     @Override
-    public void updateBookingStatus(Booking booking) throws SQLException {
+    public void updateBookingStatus(BookingDto booking) throws SQLException {
         ConnectionUtils.executeUpdate(SQL_UPDATE_BOOKING_STATUS, booking.getStatus(), booking.getId());
+    }
+    private static final String MY_PATIENT_DOCTOR_QUERY =
+            "SELECT p.id, p.full_name, b.date, b.time,b.status, p.gender, p.dob, b.created_at,b.name, a.email, p.phone " +
+                    "FROM patients p " +
+                    "JOIN booking b ON b.account_id = p.id " +
+                    "JOIN doctors d ON d.id = b.staff_id " +
+                    "JOIN accounts a ON a.id = p.id " +
+                    "ORDER BY p.id ASC " +
+                    "LIMIT ?, ?";
+    @Override
+    public List<PatitentDto> MyPatientDoctor(Integer offset, Integer limit) throws SQLException {
+        List<PatitentDto> patients = new ArrayList<>();
+        ResultSet rs = ConnectionUtils.executeQuery(MY_PATIENT_DOCTOR_QUERY, offset, limit);
+        while (rs.next()) {
+            patients.add(
+                    PatitentDto.builder()
+
+                            .id(rs.getLong("id"))
+                            .fullName(rs.getString("full_name"))
+                            .dob(rs.getDate("dob") != null ? DateUtils.convertDateToLocalDate(rs.getDate("dob")) : null)
+                            .phone(rs.getString("phone"))
+                            .gender(rs.getBoolean("gender"))
+
+                            .account(
+                                    Account.builder()
+                                            .id(rs.getLong("id"))
+                                            .email(rs.getString("email"))
+                                            .build()
+                            )
+                            .booking(
+                                    Booking.builder()
+                                            .name((rs.getString("name")))
+                                            .date(rs.getDate("date").toLocalDate())
+                                            .time(rs.getTime("time").toLocalTime())
+                                            .status(rs.getBoolean("status") ? 1 : 0)
+
+                                            .build()
+
+                            )
+                            .build()
+            );
+        }
+        ConnectionUtils.closeConnection();
+        return patients;
+    }
+    private static final String MY_PATIENTS_DETAIL_QUERY = "SELECT DISTINCT p.id, p.full_name, b.name, a.email, p.phone, p.gender, p.dob, b.date, b.time, b.status " +
+            "FROM patients p " +
+            "INNER JOIN booking b ON b.account_id = p.id " +
+            "INNER JOIN doctors d ON d.id = b.staff_id " +
+            "JOIN accounts a ON a.id = p.id " +
+            "WHERE p.id = ? " +
+            "ORDER BY p.id ASC " +
+            "LIMIT ?, ?";
+    @Override
+    public List<PatitentDto> getPatientDetails(Long id, Integer offset, Integer limit) throws SQLException {
+        List<PatitentDto> patient = new ArrayList<>();
+        ResultSet rs = ConnectionUtils.executeQuery(MY_PATIENTS_DETAIL_QUERY, Long.valueOf(id),offset,limit);
+        while (rs.next()) {
+            patient.add(
+                    PatitentDto.builder()
+
+                            .id(rs.getLong("id"))
+                            .fullName(rs.getString("full_name"))
+                            .phone(rs.getString("phone"))
+                            .gender(rs.getBoolean("gender"))
+                            .dob(rs.getDate("dob").toLocalDate())
+
+                            .booking(
+                                    Booking.builder()
+                                            .date(rs.getDate("date").toLocalDate())
+                                            .time(rs.getTime("time").toLocalTime())
+                                            .status(rs.getBoolean("status") ? 1 : 0)
+
+                                            .name(rs.getString("name"))
+                                            .build()
+                            )
+                            .account(
+                                    Account.builder()
+                                            .id(rs.getLong("id"))
+                                            .email(rs.getString("email"))
+                                            .build()
+                            )
+                            .build()
+            );
+        }
+        ConnectionUtils.closeConnection();
+        return patient;
     }
 
     @Override
     public void update(Doctors doctors) throws SQLException {
         ConnectionUtils.executeUpdate(UPDATE_DOCTOR, doctors.getFullName(), doctors.getGender(), doctors.getPhone(),doctors.getDob(),
-                doctors.getPosition(), doctors.getAddress(),doctors.getDescription(), doctors.getRankId(),doctors.getStatus(),doctors.getCreatedAt(),
+                doctors.getPosition(), doctors.getAddress(),doctors.getDescription(), doctors.getRankId(),doctors.getStatus(),
                 doctors.getUpdatedAt(),doctors.getAccount().getId());
 
     }
@@ -346,6 +433,17 @@ public class DoctorDaoImpl implements DoctorDao {
     @Override
     public Integer countMyAppointments() throws Exception {
         ResultSet rs = ConnectionUtils.executeQuery(COUNT_APPOINTMENT);
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        ConnectionUtils.closeConnection();
+        return null;
+    }
+
+    private static final String COUNT_PATIENT = "SELECT COUNT(*) FROM patients";
+    @Override
+    public Integer count() throws Exception {
+        ResultSet rs = ConnectionUtils.executeQuery(COUNT_PATIENT);
         assert rs != null;
         if (rs.next()) {
             return rs.getInt(1);
