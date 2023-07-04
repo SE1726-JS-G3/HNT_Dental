@@ -70,7 +70,7 @@ public class PatientDaoImpl implements PatientDao {
             "WHERE p.id = ? " +
             "ORDER BY p.id ASC " +
             "LIMIT ?, ?";
-    private static final String COUNT_EMPLOYEE = "SELECT COUNT(*) FROM patients";
+    private static final String COUNT_PATIENT = "SELECT COUNT(*) FROM patients";
 
 
     @Override
@@ -145,8 +145,9 @@ public class PatientDaoImpl implements PatientDao {
 
 
     @Override
+
     public Integer count() throws Exception {
-        ResultSet rs = ConnectionUtils.executeQuery(COUNT_EMPLOYEE);
+        ResultSet rs = ConnectionUtils.executeQuery(COUNT_PATIENT);
         assert rs != null;
         if (rs.next()) {
             return rs.getInt(1);
