@@ -1,8 +1,6 @@
 package com.hnt.dental.dao.impl;
-import java.text.SimpleDateFormat;
 import com.hnt.dental.dao.AccountDao;
 import com.hnt.dental.dao.DoctorDao;
-import com.hnt.dental.dao.impl.AccountDaoImpl;
 import com.hnt.dental.dto.response.*;
 import com.hnt.dental.entities.*;
 import com.hnt.dental.util.ConnectionUtils;
@@ -11,8 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -302,12 +298,12 @@ public class DoctorDaoImpl implements DoctorDao {
                     "ORDER BY p.id ASC " +
                     "LIMIT ?, ?";
     @Override
-    public List<PatitentDto> MyPatientDoctor(Integer offset, Integer limit) throws SQLException {
-        List<PatitentDto> patients = new ArrayList<>();
+    public List<PatitentsDto> MyPatientDoctor(Integer offset, Integer limit) throws SQLException {
+        List<PatitentsDto> patients = new ArrayList<>();
         ResultSet rs = ConnectionUtils.executeQuery(MY_PATIENT_DOCTOR_QUERY, offset, limit);
         while (rs.next()) {
             patients.add(
-                    PatitentDto.builder()
+                    PatitentsDto.builder()
 
                             .id(rs.getLong("id"))
                             .fullName(rs.getString("full_name"))
@@ -346,12 +342,12 @@ public class DoctorDaoImpl implements DoctorDao {
             "ORDER BY p.id ASC " +
             "LIMIT ?, ?";
     @Override
-    public List<PatitentDto> getPatientDetails(Long id, Integer offset, Integer limit) throws SQLException {
-        List<PatitentDto> patient = new ArrayList<>();
+    public List<PatitentsDto> getPatientDetails(Long id, Integer offset, Integer limit) throws SQLException {
+        List<PatitentsDto> patient = new ArrayList<>();
         ResultSet rs = ConnectionUtils.executeQuery(MY_PATIENTS_DETAIL_QUERY, Long.valueOf(id),offset,limit);
         while (rs.next()) {
             patient.add(
-                    PatitentDto.builder()
+                    PatitentsDto.builder()
 
                             .id(rs.getLong("id"))
                             .fullName(rs.getString("full_name"))

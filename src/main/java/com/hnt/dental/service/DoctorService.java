@@ -357,7 +357,7 @@ public class DoctorService {
         Integer totalItem = dao.countPatitent();
         Integer totalPage = PagingUtils.getTotalPage(totalItem);
         try {
-            List<PatitentDto> myPatientDoctor = dao.MyPatientDoctor(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE);
+            List<PatitentsDto> myPatientDoctor = dao.MyPatientDoctor(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE);
             req.setAttribute("patients", PatientResDto.convert(myPatientDoctor));
             req.setAttribute("totalPage", totalPage);
             req.setAttribute("currentPage", pageNumber);
@@ -380,7 +380,7 @@ public class DoctorService {
         Integer totalItem = dao.countPatitentDetails(Long.valueOf(id));
         Integer totalPage = PagingUtils.getTotalPage(totalItem);
         try {
-            List<PatitentDto> patient = dao.getPatientDetails(Long.valueOf(id), PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE);
+            List<PatitentsDto> patient = dao.getPatientDetails(Long.valueOf(id), PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE);
 
             req.setAttribute("patient", PatientResDto.convert(patient));
             req.setAttribute("id", id);

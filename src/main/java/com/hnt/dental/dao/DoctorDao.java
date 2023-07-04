@@ -1,9 +1,7 @@
 package com.hnt.dental.dao;
 
 import com.hnt.dental.dto.response.*;
-import com.hnt.dental.entities.Booking;
 import com.hnt.dental.entities.Doctors;
-import com.hnt.dental.entities.Patient;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -26,8 +24,8 @@ public interface DoctorDao extends GenericDao<Doctors> {
     List<BookingDto> getMyAppointments(int offset, int limit) throws SQLException;
     Optional<BookingDto> getAppointmentDetails(Long id) throws SQLException;
       void  updateBookingStatus(BookingDto booking) throws SQLException;
-    List<PatitentDto> MyPatientDoctor(Integer offset, Integer limit) throws SQLException;
-    List<PatitentDto> getPatientDetails(Long id,Integer offset, Integer limit) throws SQLException;
+    List<PatitentsDto> MyPatientDoctor(Integer offset, Integer limit) throws SQLException;
+    List<PatitentsDto> getPatientDetails(Long id, Integer offset, Integer limit) throws SQLException;
     Integer countPatitent() throws Exception;
 
     Integer countPatitentDetails(Long id) throws Exception;

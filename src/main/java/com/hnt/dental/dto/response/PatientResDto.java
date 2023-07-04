@@ -1,7 +1,6 @@
 package com.hnt.dental.dto.response;
 import com.hnt.dental.entities.Account;
 import com.hnt.dental.entities.Booking;
-import com.hnt.dental.entities.Patient;
 import com.hnt.dental.util.DateUtils;
 import lombok.*;
 
@@ -28,9 +27,9 @@ public class PatientResDto {
     private String email;
     private String date;
     private String time;
-    public static List<PatientResDto> convert(List<PatitentDto> patients) {
+    public static List<PatientResDto> convert(List<PatitentsDto> patients) {
         List<PatientResDto> patientResDto = new ArrayList<>();
-        for (PatitentDto patient : patients) {
+        for (PatitentsDto patient : patients) {
             patientResDto.add(
                     PatientResDto.builder()
                             .id(patient.getAccount().getId())

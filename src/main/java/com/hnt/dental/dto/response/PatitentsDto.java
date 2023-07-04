@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Builder
-public class PatitentDto {
+public class PatitentsDto {
     private Booking booking;
     private Account account;
     private String fullName;
