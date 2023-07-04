@@ -12,9 +12,8 @@ import java.io.IOException;
 @WebServlet(name = "PatientController", value = {
         "/management/patient",
         "/management/patient/create",
-        "/management/patient/update",
-        "/management/mypatient",
-        "/management/mypatient/detail"
+        "/management/patient/update"
+
 })
 public class PatientController extends HttpServlet {
     private static final PatientService service;
@@ -36,20 +35,6 @@ public class PatientController extends HttpServlet {
             case "/management/patient/update":
                 req.getRequestDispatcher("/WEB-INF/templates/management/patient/update.jsp").forward(req, resp);
                 break;
-            case "/management/mypatient":
-                try {
-                    service.MyPatientDoctor(req, resp);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-                break;
-            case "/management/mypatient/detail":
-                try {
-                    service.getMyPatientDetail(req, resp);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-                break;
             default:
         }
     }
@@ -57,16 +42,6 @@ public class PatientController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getServletPath();
-        try {
-            switch (action) {
-                case "/management/mypatient/detail":
-                    service.getMyPatientDetail(req, resp);
-                    break;
 
-                default:
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }
