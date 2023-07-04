@@ -1,17 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Huyen Nguyen
-  Date: 6/7/2023
-  Time: 11:07 AM
-  To change this template use File | Settings | File Templates.
---%>
-<%--
-  Created by IntelliJ IDEA.
-  User: Huyen Nguyen
-  Date: 6/3/2023
-  Time: 12:53 PM
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
@@ -55,7 +42,7 @@
                 <div class="col-md-6">
                   <div class="mb-3">
                     <label class="form-label">ID bệnh nhân</label>
-                    <input name="name" oninvalid="CheckFullName(this);" oninput="CheckFullName(this);"  value="${sessionScope.user.name}" id="name2" type="text" class="form-control" >
+                    <input name="name" value="${sessionScope.user.name}" id="name2" type="text" class="form-control" >
                   </div>
                 </div>
 

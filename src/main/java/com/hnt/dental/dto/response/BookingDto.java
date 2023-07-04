@@ -12,6 +12,10 @@ import java.time.LocalTime;
 @Getter
 @Builder
 public class BookingDto {
+
+    private ServiceTypeDto serviceTypeDto;
+    private ServiceResDto serviceResDto;
+    private Long id;
     private String name;
     private int phone;
     private int age;
@@ -29,5 +33,7 @@ public class BookingDto {
 
 private Long id;
     private String payment;
-
+    private String status;
+    private double fee;
+    private int account_id;
 }

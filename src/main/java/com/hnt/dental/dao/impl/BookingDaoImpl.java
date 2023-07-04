@@ -1,17 +1,18 @@
 package com.hnt.dental.dao.impl;
 
 import com.hnt.dental.constant.BookingStatusEnum;
+import com.hnt.dental.constant.PaymentEnum;
 import com.hnt.dental.dao.BookingDao;
-import com.hnt.dental.dto.response.BookingDetailDoctorDto;
-import com.hnt.dental.dto.response.BookingDetailDto;
-import com.hnt.dental.dto.response.BookingDetailPatientDto;
-import com.hnt.dental.dto.response.BookingManagementDto;
+import com.hnt.dental.dto.response.ServiceTypeDto;
 import com.hnt.dental.entities.Booking;
-import com.hnt.dental.entities.DoctorRank;
-import com.hnt.dental.entities.Doctors;
 import com.hnt.dental.entities.Service;
+import com.hnt.dental.dto.response.*;
+import com.hnt.dental.entities.*;
 import com.hnt.dental.util.ConnectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import com.hnt.dental.dto.response.BookingDto;
+import com.hnt.dental.dto.response.ServiceResDto;
+
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,6 +42,24 @@ public class BookingDaoImpl implements BookingDao {
             "inner join doctors d on b.doctor_id = d.id " +
             "inner join doctor_rank dr on dr.id = d.rank_id " +
             "where b.id = ?";
+    private static final String SQL_GET_SERVICE_BY_BOOKING_ID = "select s.id, s.name,s.image, st.name  as serviceType, st.id as typeID , p.fee from booking b " +
+            "inner join service s on b.service_id = s.id " +
+            "inner join service_type st on st.id = b.service_type_id " +
+            "inner join payment p on p.booking_id = b.id " +
+            "where b.id = ? ";
+
+    private static final String SQL_GET_BOOKING_DETAIL_BY_BOOKING_ID = "select b.date, b.time,b.status as statusBooking, d.full_name as doctorName ," +
+            " e.full_name as employeeName, p.status as statusPayment, p.type, b.decription  from booking b " +
+            "inner join doctors d on b.doctor_id = d.id " +
+            "inner join employees e on e.id = b.staff_id " +
+            "inner join payment p on p.booking_id = b.id " +
+            "where b.id = ? ";
+
+
+    private static final String HISTORY_PATIENT = "SELECT  b.fee ,b.account_id, b.status ,b.time,b.date ,s.name  FROM booking b join service s \n" +
+            " where b.service_id = s.id ";
+    private static final String HISTORY_DETAIL = "SELECT b.date,b.name, b.age, b.email,b.decription,b.status,b.phone,s.name as service FROM booking b join service_type s \n" +
+            "                       on b.service_id = s.id where b.id =?";
 
     @Override
     public List<Booking> getAll(Integer offset, Integer limit, String search) throws SQLException {
@@ -101,6 +120,7 @@ public class BookingDaoImpl implements BookingDao {
         return null;
     }
 
+
     @Override
     public List<BookingManagementDto> getServiceByServiceId() throws SQLException {
         ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_SERVICE_BY_SERVICE_ID);
@@ -112,6 +132,49 @@ public class BookingDaoImpl implements BookingDao {
         }
         ConnectionUtils.closeConnection();
         return list;
+    }
+
+    public List<BookingDto> getAllHistory() throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(HISTORY_PATIENT);
+        List<BookingDto> list = new ArrayList<>();
+        while (true) {
+            assert rs != null;
+            if (!rs.next()) break;
+            list.add(BookingDto
+                    .builder().serviceResDto(ServiceResDto.builder()
+                            .name(rs.getString("name"))
+                            .build())
+                    .date(rs.getDate("date").toLocalDate())
+                    .status(String.valueOf(rs.getBoolean("status")))
+                    .time(String.valueOf(rs.getTime("time")))
+                    .fee(rs.getDouble("fee"))
+                    .account_id(rs.getInt("account_id"))
+                    .build());
+        }
+        return list;
+
+    }
+
+
+    @Override
+    public BookingDto DetailHistory(String id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(HISTORY_DETAIL, id);
+
+        assert rs != null;
+
+//        if (rs.next()) {
+//            return (BookingDto.builder()
+//                    .phone(rs.getInt("phone"))
+//                    .status(String.valueOf(rs.getBoolean("status")))
+//                    .name(rs.getString("name"))
+//                    .email(rs.getString("email"))
+//                    .age(rs.getInt("age"))
+//                    .decription(rs.getString("decription"))
+//                    .date(rs.getDate("date").toLocalDate())
+//                    .build());
+//        }
+        return null;
+
     }
 
     @Override
@@ -159,8 +222,40 @@ public class BookingDaoImpl implements BookingDao {
     }
 
     @Override
-    public Optional<BookingDetailDto> getBookingDetailByBookingId(Long id) throws SQLException {
+    public Optional<BookingDetailServiceDto> getServiceByBookingId(Long id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_SERVICE_BY_BOOKING_ID, id);
+        if (rs.next()) {
+            return Optional.ofNullable(
+                    BookingDetailServiceDto
+                            .builder()
+                            .id(rs.getLong("id"))
+                            .name(rs.getString("name"))
+                            .image(rs.getString("image"))
+                            .type(rs.getString("serviceType"))
+                            .fee(rs.getDouble("fee"))
+                            .typeId(rs.getLong("typeID"))
+                            .build());
+        }
         return Optional.empty();
     }
 
+    @Override
+    public Optional<BookingDetailDto> getBookingDetailById(Long id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_BOOKING_DETAIL_BY_BOOKING_ID, id);
+        if (rs.next()) {
+            return Optional.ofNullable(
+                    BookingDetailDto
+                            .builder()
+                            .date(rs.getDate("date").toLocalDate())
+                            .time(rs.getTime("time").toLocalTime())
+                            .status(BookingStatusEnum.getBookingStatusString(rs.getInt("statusBooking")))
+                            .doctors(Doctors.builder().fullName(rs.getString("doctorName")).build())
+                            .employee(Employee.builder().fullName(rs.getString("employeeName")).build())
+                            .payment(Payment.builder().status(rs.getBoolean("statusPayment")).type(rs.getInt("type")).build())
+                            .decription(rs.getString("decription"))
+                            .paymentType(PaymentEnum.getPaymentString(rs.getInt("type")))
+                            .build());
+        }
+        return Optional.empty();
+    }
 }

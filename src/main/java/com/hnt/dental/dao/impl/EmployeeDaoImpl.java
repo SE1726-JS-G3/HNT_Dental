@@ -104,6 +104,24 @@ public class EmployeeDaoImpl implements EmployeeDao {
         return null;
     }
 
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+        EmployeeDaoImpl employeeDao = new EmployeeDaoImpl();
+        Employee employee = new Employee();
+        employee.setAccount(Account.builder().id(1L).build());
+        employee.setFullName("Nguyen Van A");
+        employee.setDob(LocalDate.now());
+        employee.setGender(true);
+        employee.setPhone("0123456789");
+        employee.setAddress("Ha Noi");
+        employee.setSalary(10000000.0);
+        employee.setStatus(true);
+        employee.setCreatedAt(LocalDateTime.now());
+        employee.setUpdatedAt(LocalDateTime.now());
+
+        employeeDao.update(employee);
+
+    }
+
     @Override
     public void update(Employee employee) throws SQLException {
         ConnectionUtils.executeUpdate(UPDATE_EMPLOYEE, employee.getFullName(),

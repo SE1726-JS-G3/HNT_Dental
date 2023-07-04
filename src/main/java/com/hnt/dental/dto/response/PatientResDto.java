@@ -1,50 +1,40 @@
 package com.hnt.dental.dto.response;
-import com.hnt.dental.entities.Account;
-import com.hnt.dental.entities.Booking;
+import com.hnt.dental.entities.Patient;
 import com.hnt.dental.util.DateUtils;
 import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
+
 public class PatientResDto {
     private Long id;
-    private Booking booking;
-    private Account account;
-    private String fullName;
-    private String Name;
-    private String gender;
-    private String phone;
-    private String address;
-    private String description;
-    private String status;
+    private String name;
     private String dob;
+    private String gender;
     private String email;
-    private String date;
-    private String time;
-    public static List<PatientResDto> convert(List<PatitentsDto> patients) {
-        List<PatientResDto> patientResDto = new ArrayList<>();
-        for (PatitentsDto patient : patients) {
-            patientResDto.add(
+    private String status;
+
+    public static List<PatientResDto> convert(List<Patient> patients) {
+        List<PatientResDto> patientResDtos = new ArrayList<>();
+        for (Patient patient: patients){
+            patientResDtos.add(
                     PatientResDto.builder()
                             .id(patient.getAccount().getId())
-                            .fullName(patient.getFullName())
+                            .name(patient.getFullName())
                             .dob(DateUtils.convertLocalDateToString(patient.getDob()))
                             .gender(patient.getGender() ? "Nam" : "Nữ")
-                            .email(patient.getAccount().getEmail())
-                            .status(patient.getBooking().getStatus() == 1 ? "rejected" : "approved")
-                            .date(DateUtils.convertLocalDateToString(patient.getBooking().getDate()))
-                            .time(String.valueOf(patient.getBooking().getTime()))
-                            .phone(patient.getPhone())
-                            .Name(patient.getBooking().getName())
+                            .status(patient.getStatus()? "active" : "nactive")
                             .build()
             );
         }
-        return patientResDto;
+        return patientResDtos;
     }
+
 }

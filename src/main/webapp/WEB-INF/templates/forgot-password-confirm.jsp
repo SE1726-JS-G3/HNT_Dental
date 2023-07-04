@@ -16,13 +16,18 @@
     <link href="${pageContext.request.contextPath}/static/css/style.min.css" class="theme-opt" rel="stylesheet"
           type="text/css"/>
     <link href="${pageContext.request.contextPath}/static/css/styles.css" rel="stylesheet" type="text/css"/>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/preloader.css">
+    <script src="${pageContext.request.contextPath}/static/js/jquery.preloader.min.js"></script>
 </head>
 <body>
 
 <div class="back-to-home rounded d-none d-sm-block">
     <a href="/home" class="btn btn-icon btn-primary"><i data-feather="home" class="icons"></i></a>
 </div>
+
+<div class="col-8 align-self-center preloader-custom"></div>
 
 <section class="bg-home d-flex bg-light align-items-center"
          style="background: url('${pageContext.request.contextPath}/static/images/bg/bg-lines-one.png') center;">
@@ -33,8 +38,11 @@
                     <div class="card-body">
                         <h4 class="text-center">Đổi mật khẩu</h4>
                         <p id="content" style="color: red; align-content: center;"></p>
-                        <form class="login-form mt-4" id="login">
+                        <form class="login-form mt-4" id="confirmForgot">
                             <div class="row">
+                                <label>
+                                    <input name="token" hidden="hidden" value="${param.token}">
+                                </label>
                                 <div class="col-lg-12">
                                     <div class="mb-3">
                                         <label class="form-label">Mật khẩu mới <span class="text-danger">*</span></label>
@@ -56,7 +64,6 @@
                                         <button class="btn btn-primary" type="submit">Đổi mật khẩu</button>
                                     </div>
                                 </div>
-
                             </div>
                         </form>
                     </div>
@@ -70,10 +77,7 @@
 <script src="${pageContext.request.contextPath}/static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
-<script src="${pageContext.request.contextPath}/static/js/auth/auth_login.js"></script>
-
+<script src="${pageContext.request.contextPath}/static/js/auth/auth_confirm_forgot.js"></script>
 </body>
 
 </html>

@@ -19,4 +19,11 @@ public class Patient extends BaseEntity{
     private String phone;
     private String address;
     private String description;
+
+    private Boolean status;
+    private Long image;
+
+
+
+
 }

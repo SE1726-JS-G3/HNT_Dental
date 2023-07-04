@@ -66,6 +66,18 @@ public class ServiceDaoImpl implements ServiceDao {
     private static final String SQL_GET_ALL_TYPE = "SELECT id, name FROM service_type";
     private static final String SQL_GET_ALL_SERVICE_SEARCH_HOME = "SELECT id, name FROM service;";
 
+    private static final String SQL_GET_All_SERVICE_MANAGEMENT = "select s.id,  s.name, " +
+            "            GROUP_CONCAT(st.name SEPARATOR ',') as type, " +
+            "            CONCAT(MIN(sf.fee), ' ~ ', MAX(sf.fee)) as fee , " +
+            "            s.image ,s.status " +
+            "            FROM  service s " +
+            "            INNER JOIN service_fee sf on s.id = sf.service_id  " +
+            "            INNER JOIN service_type st on sf.service_type = st.id " +
+            "            where ( s.name like ? ) " +
+            "            OR s.status like ?" +
+            "            GROUP BY s.id " +
+            "            LIMIT ? OFFSET ? " ;
+
     @Override
     public List<Service> getAll(Integer offset, Integer limit, String search) throws SQLException {
         return null;
@@ -105,6 +117,25 @@ public class ServiceDaoImpl implements ServiceDao {
                             .image(rs.getString("image"))
                             .fee(rs.getString("fee"))
                             .type(rs.getString("type"))
+                            .build());
+        }
+        ConnectionUtils.closeConnection();
+        return result;
+    }
+    @Override
+    public List<ServiceManagementDto> getAllServiceManagement(Integer offset, Integer limit, String search) throws SQLException {
+        search = StringUtils.isNotEmpty(search) ? "%" + search.toLowerCase() + "%" : "%";
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_All_SERVICE_MANAGEMENT , search, search, limit, offset);
+        List<ServiceManagementDto> result = new ArrayList<>();
+        while (rs.next()) {
+            result.add(
+                    ServiceManagementDto.builder()
+                            .id(rs.getLong("id"))
+                            .name(rs.getString("name"))
+                            .image(rs.getString("image"))
+                            .fee(rs.getString("fee"))
+                            .type(rs.getString("type"))
+                            .status(rs.getString("status"))
                             .build());
         }
         ConnectionUtils.closeConnection();
@@ -215,6 +246,8 @@ public class ServiceDaoImpl implements ServiceDao {
         ConnectionUtils.closeConnection();
         return result;
     }
+
+
 
 
 }

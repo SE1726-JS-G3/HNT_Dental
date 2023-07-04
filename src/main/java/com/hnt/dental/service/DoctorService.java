@@ -167,11 +167,11 @@ public class DoctorService {
                 Optional<BookingDto> bookingOptional = dao.getAppointmentDetails(Long.valueOf(id));
                 if (bookingOptional.isPresent()) {
                     BookingDto booking = bookingOptional.get();
-                    if (booking.getStatus() == 0) {
-                        booking.setStatus(1); // Change the status to "Chấp nhận"
+                    if (booking.getStatus().equals("0")) {
+                        booking.setStatus("1"); // Change the status to "Chấp nhận"
                         dao.updateBookingStatus(BookingDto.builder()
                                 .id(id)
-                                .status(Integer.parseInt(status))
+                                .status(String.valueOf(Integer.parseInt(status)))
                                 .build()
                         ); // Update the booking status in the database using your DAO or service class
                     }
@@ -211,6 +211,7 @@ public class DoctorService {
     public List<DoctorDetailDto> getTopDoctor() throws Exception {
         return dao.getTopDoctor();
     }
+
 
     public void create(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String fullname = req.getParameter("full_name");
@@ -339,7 +340,7 @@ public class DoctorService {
         assert doctor != null;
         doctor.setAccount(account);
         List<FeedbackDto> getAllFeedbackByIdDoctor = feedbackDao.getFeedbackDoctor(Long.valueOf(id));
-        List<PatientResDto> myPatientDoctor = dao.getPatientDetail(Long.valueOf(id));
+        List<MypatientResDto> myPatientDoctor = dao.getPatientDetail(Long.valueOf(id));
         req.setAttribute("doctor", doctor);
         req.setAttribute("error", error);
         req.setAttribute("patients", myPatientDoctor);
@@ -358,7 +359,7 @@ public class DoctorService {
         Integer totalPage = PagingUtils.getTotalPage(totalItem);
         try {
             List<PatitentsDto> myPatientDoctor = dao.MyPatientDoctor(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE);
-            req.setAttribute("patients", PatientResDto.convert(myPatientDoctor));
+            req.setAttribute("patients", MypatientResDto.convert(myPatientDoctor));
             req.setAttribute("totalPage", totalPage);
             req.setAttribute("currentPage", pageNumber);
             req.setAttribute("url", "/management/mypatient");
@@ -382,7 +383,7 @@ public class DoctorService {
         try {
             List<PatitentsDto> patient = dao.getPatientDetails(Long.valueOf(id), PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE);
 
-            req.setAttribute("patient", PatientResDto.convert(patient));
+            req.setAttribute("patient", MypatientResDto.convert(patient));
             req.setAttribute("id", id);
             req.setAttribute("totalPage", totalPage);
             req.setAttribute("currentPage", pageNumber);
@@ -398,4 +399,5 @@ public class DoctorService {
         dao.delete(Doctors.builder().id((long) id).build());
         ServletUtils.redirect(req, resp, "/management/doctor");
     }
+
 }

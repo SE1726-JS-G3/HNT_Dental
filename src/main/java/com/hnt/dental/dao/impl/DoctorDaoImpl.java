@@ -9,6 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +32,7 @@ public class DoctorDaoImpl implements DoctorDao {
             "group by s.id";
     private static final String SQL_GET_DOCTOR_BY_ID = "select * from doctors " +
             "where id = ?";
+
 
     private static final String SQL_GET_SUMMARY = "SELECT" +
             "  d.id," +
@@ -58,8 +61,9 @@ public class DoctorDaoImpl implements DoctorDao {
             "    OR LOWER(dr.name) LIKE ?" +
             "  ORDER BY" +
             "    d.id";
-    private static final String SQL_GET_TOP_DOCTOR = "select * from doctors\n" +
+    private static final String SQL_GET_TOP_DOCTOR = "select * from doctors " +
             "ORDER BY RAND() LIMIT 4";
+
 
     private static final String GET_ALL_DOCTORS = "SELECT d.id, d.full_name, d.dob, d.gender, d.phone, d.status, d.rank_id, d.description, d.position, a.email, dr.name " +
             "FROM doctors d " +
@@ -173,7 +177,7 @@ public class DoctorDaoImpl implements DoctorDao {
                             .id(rs.getLong("id"))
                             .date(rs.getDate("date").toLocalDate())
                             .time(rs.getTime("time").toLocalTime())
-                            .status(rs.getBoolean("status") ? 1 : 0)
+                            .status(String.valueOf(rs.getBoolean("status") ? 1 : 0))
                             .build()
             );
         }
@@ -189,7 +193,7 @@ public class DoctorDaoImpl implements DoctorDao {
                     .id(rs.getLong("id"))
                     .date(rs.getDate("date").toLocalDate())
                     .time(rs.getTime("time").toLocalTime())
-                    .status(rs.getBoolean("status") ? 1 : 0)
+                    .status(String.valueOf(rs.getBoolean("status") ? 1 : 0))
                     .account(
                             Account.builder()
                                     .id(rs.getLong("id"))
@@ -209,6 +213,40 @@ public class DoctorDaoImpl implements DoctorDao {
     }
 
 
+
+
+    private static final String SQL_GET_LIST_DOCTOR_AVAILABLE = "SELECT DISTINCT d.full_name, d.id " +
+            "FROM doctors d " +
+            "INNER JOIN service_doctor sd ON d.id = sd.id_doctor " +
+            "INNER JOIN doctor_rank dr ON dr.id = d.rank_id " +
+            "INNER JOIN doctor_of_rank dor ON dor.rank_id = dr.id " +
+            "INNER JOIN service_type st ON st.id = dor.type_id " +
+            "WHERE sd.id_service = ? " +
+            "  AND st.id = ? " +
+            "  AND d.id <> (" +
+            "    SELECT DISTINCT d .id " +
+            "    FROM doctors d " +
+            "    INNER JOIN booking b ON d.id = b.doctor_id " +
+            "    INNER JOIN service_doctor sd ON d.id = sd.id_doctor " +
+            "    INNER JOIN doctor_rank dr ON dr.id = d.rank_id " +
+            "    INNER JOIN doctor_of_rank dor ON dor.rank_id = dr.id " +
+            "    INNER JOIN service_type st ON st.id = dor.type_id " +
+            "    WHERE b.date = ? " +
+            "      AND b.time = ? " +
+            "  )";
+
+    @Override
+    public List<DoctorSummaryRes> getListDoctorAvailable(LocalDate date, LocalTime time, Long typeId, Long serviceId) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_LIST_DOCTOR_AVAILABLE, serviceId, typeId, date, time);
+        List<DoctorSummaryRes> result = new ArrayList<>();
+        while (rs.next()) {
+            result.add(DoctorSummaryRes.builder()
+                    .id(rs.getLong("id"))
+                    .fullName(rs.getString("full_name"))
+                    .build());
+        }
+        return result;
+    }
 
 
     @Override
@@ -276,6 +314,7 @@ public class DoctorDaoImpl implements DoctorDao {
         }
         return result;
     }
+
     @Override
     public Long save(Doctors doctors) throws SQLException, ClassNotFoundException {
         ConnectionUtils.executeUpdate(SAVE_DOCTOR, doctors.getAccount().getId(), doctors.getFullName(), doctors.getPhone(),
@@ -493,13 +532,13 @@ public class DoctorDaoImpl implements DoctorDao {
 
 
     @Override
-    public List<PatientResDto> getPatientDetail(Long id) throws SQLException {
-        List<PatientResDto> patients = new ArrayList<>();
+    public List<MypatientResDto> getPatientDetail(Long id) throws SQLException {
+        List<MypatientResDto> patients = new ArrayList<>();
         ResultSet rs = ConnectionUtils.executeQuery(MY_PATIENT_DETAIL_QUERY, id);
         while (rs.next()) {
             String status = rs.getString("status").equals("1") ? "rejected" : "approved";
             patients.add(
-                    PatientResDto.builder()
+                    MypatientResDto.builder()
                             .id(rs.getLong("id"))
                             .Name(rs.getString("name"))
                             .phone(rs.getString("phone"))
@@ -514,6 +553,7 @@ public class DoctorDaoImpl implements DoctorDao {
         ConnectionUtils.closeConnection();
         return patients;
     }
+
 
 
 
