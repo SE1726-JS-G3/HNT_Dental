@@ -12,6 +12,7 @@ import com.hnt.dental.util.ConnectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import com.hnt.dental.dto.response.BookingDto;
 import com.hnt.dental.dto.response.ServiceResDto;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -56,25 +57,48 @@ public class BookingDaoImpl implements BookingDao {
     private static final String HISTORY_DETAIL = "SELECT b.date,b.name, b.age, b.email,b.decription,b.status,b.phone,s.name as service FROM booking b join service_type s \n" +
             "                       on b.service_id = s.id where b.id =?";
 
+    private static final String UPDATE_BOOKING_FOR_MARKETING = "UPDATE hnt_dental.booking " +
+            "SET   doctor_id=?, staff_id=?, status=? " +
+            "WHERE id=? ";
+    @Override
+    public void updateBookingDetail(Booking bookingDetailDto) throws SQLException {
+        ConnectionUtils.executeUpdate(UPDATE_BOOKING_FOR_MARKETING, bookingDetailDto.getDoctors().getId(),
+                bookingDetailDto.getEmployee().getId(), bookingDetailDto.getStatus(), bookingDetailDto.getId());
+    }
+
+    public static void main(String[] args) throws SQLException {
+        BookingDaoImpl bookingDao = new BookingDaoImpl();
+        bookingDao.updateBookingDetail(
+                Booking.builder()
+                        .id(1L)
+                        .doctors(Doctors.builder().id(1L).build())
+                        .employee(Employee.builder().id(1L).build())
+                        .status(BookingStatusEnum.CONFIRM.ordinal())
+                        .build());
+    }
 
     @Override
     public List<Booking> getAll(Integer offset, Integer limit, String search) throws SQLException {
         return null;
     }
+
     @Override
     public Optional<Booking> get(int id) throws SQLException {
         return Optional.empty();
     }
+
     @Override
     public Long save(Booking booking) throws SQLException, ClassNotFoundException {
         return ConnectionUtils.executeUpdateForIdentity(SAVE_BOOKING, booking.getName(), booking.getPhone(), booking.isGender(), booking.getAge(),
                 booking.getAccount().getId(), booking.getService().getId(), booking.getDate(), booking.getTime(),
                 booking.getDescription(), booking.getStatus(), booking.getCreatedAt(), booking.getUpdatedAt());
     }
+
     @Override
     public void update(Booking booking) throws SQLException {
 
     }
+
     @Override
     public void delete(Booking booking) throws SQLException {
 
@@ -166,11 +190,6 @@ public class BookingDaoImpl implements BookingDao {
 //                    .build());
 //        }
         return null;
-
-    }
-
-    @Override
-    public void updateBookingDetail(BookingDetailDto bookingDetailDto) throws SQLException {
 
     }
 

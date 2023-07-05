@@ -1,5 +1,6 @@
 package com.hnt.dental.entities;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
 
@@ -7,7 +8,7 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 public class Doctors extends BaseEntity{
     private String fullName;
     private Date dob;

@@ -160,8 +160,9 @@
                     <div class="p-4 border-bottom">
                         <h5 class="mb-0">Cập nhật thông tin</h5>
                     </div>
-                    <form action=""
+                    <form action="${pageContext.request.contextPath}/management/booking/update"
                           method="POST">
+                        <input name="id" value="${param.id}" hidden>
                         <div class="tab-content p-4">
                             <div class="col-lg-12">
                                 <div class="mb-3">
@@ -173,10 +174,11 @@
                             <div class="col-lg-12">
                                 <div class="mb-3">
                                     <label class="form-label">Bác sĩ</label>
-                                    <select name="staff" class="form-select">
+                                    <select name="doctor" class="form-select">
                                         <option class="form-control" value=""></option>
                                         <c:forEach items="${doctors}" var="doctor">
-                                            <option class="form-control" value="${doctor.id}">${doctor.fullName}</option>
+                                            <option class="form-control"
+                                                    value="${doctor.id}">${doctor.fullName}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -196,59 +198,53 @@
                                 <div class="mb-3">
                                     <label class="form-label">Trạng thái lịch hẹn</label>
                                     <select name="status" class="form-select" aria-label="Default select example">
+                                        PENDING, CANCEL, CONFIRM, ASSIGNED, DONE, REJECT;
                                         <option
-                                                value="Complete">Complete
+                                                value="PENDING">Pending
                                         </option>
                                         <option
-                                                value="Assigned">Assigned
+                                                value="CANCEL">Cancel
                                         </option>
                                         <option
-                                                value="Pending">Pending
+                                                value="CONFIRM">Confirm
                                         </option>
                                         <option
-                                                value="Cancelled">Cancelled
+                                                value="ASSIGNED">Assigned
+                                        </option>
+                                        <option
+                                                value="REJECT">Reject
                                         </option>
                                     </select>
                                 </div>
                                 <div class="row">
                                     <div class="mb-3 col-lg-6">
                                         <label class="form-label">Loại thanh toán</label>
-                                        <select name="status" class="form-select" aria-label="Default select example">
+                                        <select name="payment_type" class="form-select"
+                                                aria-label="Default select example">
                                             <option
-                                                    value="Complete">Complete
+                                                    value="VNPAY">VNPay
                                             </option>
                                             <option
-                                                    value="Assigned">Assigned
-                                            </option>
-                                            <option
-                                                    value="Pending">Pending
-                                            </option>
-                                            <option
-                                                    value="Cancelled">Cancelled
+                                                    value="CASH">Thanh toán tại phòng khám
                                             </option>
                                         </select>
                                     </div>
 
                                     <div class="mb-3 col-lg-6">
                                         <label class="form-label">Trạng thái thanh toán</label>
-                                        <select name="status" class="form-select" aria-label="Default select example">
+                                        <select name="payment_status" class="form-select"
+                                                aria-label="Default select example">
                                             <option
-                                                    value="Complete">Complete
+                                                    value="1">Đã thanh toán
                                             </option>
                                             <option
-                                                    value="Assigned">Assigned
-                                            </option>
-                                            <option
-                                                    value="Pending">Pending
-                                            </option>
-                                            <option
-                                                    value="Cancelled">Cancelled
+                                                    value="0">Chưa thanh toán
                                             </option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="tab-content p-0">
-                                    <input type="submit" id="submit" name="send" class="btn btn-primary"
+                                    <input type="submit" name="send" class="btn btn-primary"
                                            value="Cập nhật">
                                 </div>
                             </div>
