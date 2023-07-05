@@ -38,10 +38,6 @@ public class BlogDaoImpl implements BlogDao {
             "                                  where LOWER(b.title) like ?  AND b.status LIKE ? \n" +
             "                     AND b.category_id LIKE ?" +
             " order by b.id";
-//    private static final String GET_ALL_BLOG = "SELECT b.id, b.title, b.create_at, b.status, cb.name FROM blogs b\n" +
-//            "inner join category_blog cb on b.category_id = cb.id\n" +
-//            "where LOWER(b.title) like ? AND cb.id LIKE ? AND b.status LIKE ? order by b.create_at desc\n" +
-//            "LIMIT ?, ?";
 
     private static final String SQL_GET_CATEGORY_BY_CATEGORY_ID = "select DISTINCT cb.name, cb.id from blogs b \n" +
             "            inner join category_blog cb on b.category_id = cb.id;";
@@ -52,11 +48,6 @@ public class BlogDaoImpl implements BlogDao {
             "on e.id = b.created_by inner join category_blog cb on b.category_id = cb.id\n" +
             "where (1=1) and b.id = ?\n";
 
-    private static final String GET_BLOG_BY_CATEGORY = "SELECT b.id, b.category_id, b.title, b.brief, b.description, b.create_at,\n" +
-            "             b.update_at, b.created_by, b.status\n" +
-            "            ,e.full_name,cb.name FROM blogs b inner join employees e \n" +
-            "            on e.id = b.created_by inner join category_blog cb on b.category_id = cb.id\n" +
-            "            where (1=1) and b.category_id = ?";
     private static final String SAVE_BLOG = "INSERT INTO blogs " +
             "(id, category_id, title, brief, description, create_at, status) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -71,8 +62,6 @@ public class BlogDaoImpl implements BlogDao {
             "`status` = ?\n" +
             "WHERE `id` = ?";
     private static final String DELETE_BLOG = "DELETE FROM blogs WHERE id=?";
-    private static final String RECENT_POST = "SELECT * FROM blogs \n" +
-            "order by update_at asc ";
     private static final String GET_ALL_CREATED_BY = "SELECT distinct e.full_name,b.created_by FROM hnt_dental.blogs b inner join employees e\n" +
             "on e.id = b.created_by";
 
@@ -118,7 +107,6 @@ public class BlogDaoImpl implements BlogDao {
 
         try {
             ResultSet rs = ConnectionUtils.executeQuery(GET_ALL_CREATED_BY);
-//            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
             while (rs.next()) {
                 blogs.add(
                         Blogs.builder()
@@ -185,35 +173,6 @@ public class BlogDaoImpl implements BlogDao {
 
     }
 
-    @Override
-    public List<BlogResDto> getCategoryByCategoryId() throws SQLException {
-        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_CATEGORY_BY_CATEGORY_ID);
-        List<BlogResDto> list = new ArrayList<>();
-        while (rs.next()) {
-            list.add(BlogResDto.builder()
-                    .categoryBlog(CategoryBlog.builder()
-                            .name(rs.getString("name"))
-                            .id(rs.getLong("id"))
-                            .build())
-                    .build());
-        }
-        ConnectionUtils.closeConnection();
-        return list;
-    }
-
-
-//    public static void main(String[] args) throws Exception {
-//        BlogDaoImpl blogDaoImpl = new BlogDaoImpl();
-//
-//
-////        List<Blogs> getall = blogDaoImpl.getAll(0, 3, "");
-////        System.out.println("" + getall.get(0).getCreatedAt());
-//
-////        Optional<Blogs> gett = blogDaoImpl.get(10);
-////        System.out.println(""+gett.get().getTitle());
-//
-//    }
-
 
     @Override
     public List<Blogs> getAll(Integer offset, Integer limit, String search) throws SQLException {
@@ -221,7 +180,6 @@ public class BlogDaoImpl implements BlogDao {
         search = StringUtils.isNotEmpty(search) ? "%" + search + "%" : "%";
         try {
             ResultSet rs = ConnectionUtils.executeQuery(GET_ALL_BLOG, search, offset, limit);
-//            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
             while (rs.next()) {
 
                 blogs.add(
@@ -250,7 +208,6 @@ public class BlogDaoImpl implements BlogDao {
 
 
         return blogs;
-//        return null;
     }
 
 
@@ -297,28 +254,10 @@ public class BlogDaoImpl implements BlogDao {
 
     @Override
     public void update(Blogs blog) throws SQLException {
-//        ConnectionUtils.executeUpdate(UPDATE_BLOG, blog.getCategoryBlog().getId(), blog.getTitle(),blog.getBrief(),
-//                blog.getDescription(), blog.getCreatedAt(), blog.getUpdatedAt(),
-//                blog.getCreatedBy(), blog.getStatus(),blog.getId()
-//        );
         ConnectionUtils.executeUpdate(UPDATE_BLOG, blog.getCategoryBlog().getId(), blog.getTitle(),
                 blog.getBrief(), blog.getDescription(),
                 blog.getCreatedAt(), blog.getUpdatedAt(), blog.getCreatedBy(), blog.getStatus(), blog.getId());
     }
-
-    public static void main(String[] args) throws SQLException {
-        // Tạo đối tượng Blog để thực hiện việc cập nhật
-        Blogs blog = new Blogs();
-        CategoryBlog categoryBlog = new CategoryBlog();
-        BlogDaoImpl blogDao = new BlogDaoImpl();
-        blog.setId(1L); // Thiết lập ID của bài viết cần cập nhật
-        blog.setTitle("New Title"); // Thiết lập tiêu đề mới
-        blog.setBrief("New Brief"); // Thiết lập phần giới thiệu mới
-        blog.setDescription("New Description"); // Thiết lập nội dung mới
-        blog.setCategoryBlog(CategoryBlog.builder().id(1L).build());
-        blogDao.update(blog);
-    }
-
 
     @Override
     public void delete(Blogs blog) throws SQLException {

@@ -22,7 +22,6 @@ public interface BlogDao extends GenericDao<Blogs> {
 
     Integer countListBlogSummary(String search,String status, String category) throws SQLException;
 
-    List<BlogResDto> getCategoryByCategoryId() throws SQLException;
 
 
 

@@ -35,13 +35,6 @@ public class BlogResDto {
     private long created_by;
 
 
-    //    public static void main(String[] args) throws SQLException {
-//        BlogDaoImpl blogDaoimpl = new BlogDaoImpl();
-//        List<Blogs> blog = blogDaoimpl.getAll(0,1,"title");
-//        System.out.println("" + blog.get(0).getCategory_id());
-////        List<Blogs> blogs = new List<Blogs>() ;
-////        List<BlogResDto> a = convert()
-//    }
     public static List<BlogResDto> convert(List<Blogs> blogs) {
         List<BlogResDto> blogResDtos = new ArrayList<>();
 
