@@ -30,24 +30,24 @@ public class BlogsDaoImpl implements BlogDao {
             "on b.category_id = c.id inner join employees e on b.created_by = e.id\n" +
             "where b.id = ?";
     private static final String SQL_GET_ALL_BLOGS = "SELECT b.id as id, b.category_id as category_id , b.title as title, " +
-            " b.title_img as title_img, b.brief as brief, b.description as description, c.name as category_name " +
+            " b.title_img , b.brief, b.description , c.name as category_name " +
             "FROM blogs b inner join category_blog c on b.category_id = c.id ";
 
-    private static final String SQL_GET_ALL_FILTER = "SELECT b.id as id, b.category_id as category_id , " +
-            "b.title as title, b.title_img as title_img, b.brief as brief," +
-            " b.description as description, c.name as category_name " +
+    private static final String SQL_GET_ALL_CATEGORY = "SELECT b.id , b.category_id , " +
+            "b.title , b.title_img , b.brief," +
+            " b.description, c.name as category_name " +
             "FROM blogs b inner join category_blog c on b.category_id = c.id " +
             "where ( title like ? or brief like ? or description like ?) ORDER BY ? LIMIT ? OFFSET ?";
 
-    private static final String SQL_GET_ALL_FILTER_CATEGORY = "SELECT b.id as id, b.category_id as category_id , " +
-            "b.title as title, b.title_img as title_img, b.brief as brief," +
-            " b.description as description, c.name as category_name " +
+    private static final String SQL_GET_ALL_ID_CATEGORY = "SELECT b.id, b.category_id  , " +
+            "b.title , b.title_img , b.brief ," +
+            " b.description , c.name as category_name " +
             "FROM blogs b inner join category_blog c on b.category_id = c.id " +
             "where ( title like ? or brief like ? or description like ?) and b.category_id = ? ORDER BY ? LIMIT ? OFFSET ?";
 
-    private static final String SQL_GET_ALL_BLOGS_REALEATED = "SELECT b.id as id, b.category_id as category_id , " +
-            "b.title as title, b.title_img as title_img, b.brief as brief," +
-            " b.description as description " +
+    private static final String SQL_GET_ALL_BLOGS_REALEATED = "SELECT b.id , b.category_id  , " +
+            "b.title , b.title_img , b.brief ," +
+            " b.description  " +
             "FROM blogs b " +
             "where id != ? and category_id = ? " +
             "ORDER BY create_at DESC " +
@@ -64,9 +64,9 @@ public class BlogsDaoImpl implements BlogDao {
         search = "%" + search + "%";
         ResultSet rs;
         if(categoryId != null) {
-            rs = ConnectionUtils.executeQuery(SQL_GET_ALL_FILTER_CATEGORY, search,search,search,categoryId, oder,limit,offset);
+            rs = ConnectionUtils.executeQuery(SQL_GET_ALL_ID_CATEGORY, search,search,search,categoryId, oder,limit,offset);
         } else {
-            rs = ConnectionUtils.executeQuery(SQL_GET_ALL_FILTER, search,search,search,oder,limit,offset);    
+            rs = ConnectionUtils.executeQuery(SQL_GET_ALL_CATEGORY, search,search,search,oder,limit,offset);
         }
         
         List<BlogsSummaryRes> result = new ArrayList<>();
@@ -171,17 +171,4 @@ public class BlogsDaoImpl implements BlogDao {
         return result;
     }
 
-    public static void main(String[] args) throws Exception {
-        BlogsDaoImpl blogsDaoIpml = new BlogsDaoImpl();
-        Blogs blogs = blogsDaoIpml.getBlogID(1);
-        System.out.println(""+ blogs.getBrief());
-
-        System.out.println(""+ blogs.getId());
-        System.out.println(""+ blogs.getTitle());
-        System.out.println(""+ blogs.getDescription());
-
-
-
-
-    }
 }
