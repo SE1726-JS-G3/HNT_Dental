@@ -61,6 +61,21 @@ public class DoctorDaoImpl implements DoctorDao {
             "    OR LOWER(dr.name) LIKE ?" +
             "  ORDER BY" +
             "    d.id";
+
+    private static final String SQL_COUNT_DOCTOR = "SELECT " +
+            "  COUNT(*)" +
+            "  FROM" +
+            "    doctors d" +
+            "    INNER JOIN doctor_rank dr ON d.rank_id = dr.id" +
+            "    INNER JOIN accounts a ON d.id = a.id" +
+            "  WHERE" +
+            "    (LOWER(d.full_name) LIKE ?" +
+            "    OR LOWER(d.position) LIKE ?" +
+            "    OR LOWER(dr.name) LIKE ?)" +
+            "    AND d.status LIKE ?" +
+            "    AND d.gender LIKE ?" +
+            "  ORDER BY" +
+            "    d.id";
     private static final String SQL_GET_TOP_DOCTOR = "select * from doctors " +
             "ORDER BY RAND() LIMIT 4";
 
@@ -152,6 +167,20 @@ public class DoctorDaoImpl implements DoctorDao {
         }
         ConnectionUtils.closeConnection();
         return doctors;
+    }
+
+
+    @Override
+    public Integer countGetALLDoctor(String search, String status, String gender) throws SQLException {
+        search = StringUtils.isNotEmpty(search) ? "%" + search.toLowerCase() + "%" : "%";
+        status = StringUtils.isNotEmpty(status) ? status : "%";
+        gender = StringUtils.isNotEmpty(gender) ? gender : "%";
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_COUNT_DOCTOR, search, search, search, status, gender);
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        ConnectionUtils.closeConnection();
+        return null;
     }
 
     @Override
@@ -247,6 +276,7 @@ public class DoctorDaoImpl implements DoctorDao {
         }
         return result;
     }
+
 
 
     @Override

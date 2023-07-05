@@ -91,7 +91,7 @@ public class DoctorService {
 
         try {
             String renderedSearch = renderSearch(search.trim());
-            Integer totalItem = dao.countListDoctorSummary(renderedSearch);
+            Integer totalItem = dao.countGetALLDoctor(renderedSearch, status.trim(), gender.trim());
             Integer totalPage = PagingUtils.getTotalPage(totalItem);
             List<Doctors> doctors = dao.getAllDoctor(
                     PagingUtils.getOffset(pageNumber),
@@ -222,7 +222,10 @@ public class DoctorService {
         String address = req.getParameter("address");
         String position = req.getParameter("position");
         String description = req.getParameter("description");
-        Long rankId = Long.valueOf(req.getParameter("rankId"));
+        Long rankId = null;
+        if (req.getParameter("rankId") != null) {
+            rankId = Long.valueOf(req.getParameter("rankId"));
+        }
         String name = req.getParameter("name");
         String status = req.getParameter("status");
         String password = AesUtils.encrypt(CaptchaUtils.getCaptcha(8));

@@ -410,7 +410,7 @@
         var address = document.getElementById('address').value;
         var phone = document.getElementById('phone').value;
         var position = document.getElementById('position').value;
-
+        var rankId = document.getElementById('rankId').value;
         // Perform field validation
         if (fullName.trim() === '') {
             displayErrorMessage('Họ và tên không được bỏ trống');
@@ -418,6 +418,10 @@
         }
         if (dob.trim() === '') {
             displayErrorMessage('Ngày sinh không được bỏ trống');
+            return false;
+        }
+        if (!isValidDateFormat(dob)) {
+            displayErrorMessage('Ngày sinh phải có định dạng YYYY-MM-DD');
             return false;
         }
         if (email.trim() === '') {
@@ -432,22 +436,50 @@
             displayErrorMessage('Điện thoại không được bỏ trống');
             return false;
         }
+        if (!isValidPhoneNumber(phone)) {
+            displayErrorMessage('Số điện thoại chỉ được nhập chữ số');
+            return false;
+        }
         if (position.trim() === '') {
             displayErrorMessage('Chuyên môn không được bỏ trống');
             return false;
         }
-
+        if (rankId.trim() === '') {
+            displayErrorMessage('xếp hạng không được bỏ trống');
+            return false;
+        }
+        if (!isValidRankId(rankId)) {
+            displayErrorMessage('Xếp hạng phải chỉ có từ 1 đến 10');
+            return false;
+        }
         // If all fields are valid, display success message
         displaySuccessMessage('Thông tin đã được cập nhật thành công');
         return true;
     }
 
+    function isValidDateFormat(dateString) {
+        // Kiểm tra định dạng ngày sinh theo dạng YYYY-MM-DD
+        var pattern = /^\d{4}-\d{2}-\d{2}$/;
+        return pattern.test(dateString);
+    }
+    function isValidRankId(rankId) {
+        // Kiểm tra xếp hạng chỉ từ 1 đến 10
+        var rankNumber = parseInt(rankId, 10);
+        return rankNumber >= 1 && rankNumber <= 10;
+    }
+    function isValidPhoneNumber(phone) {
+        // Kiểm tra số điện thoại chỉ chứa nguyên số và không chứa ký tự đặc biệt hoặc chữ cái
+        var pattern = /^\d+$/;
+        return pattern.test(phone);
+    }
+
+    // Các hàm hiển thị thông báo lỗi và thành công không thay đổi.
     function displayErrorMessage(message) {
         Swal.fire({
             icon: 'error',
             title: 'Lỗi',
             text: message,
-            timer: 10000, // Hiển thị thông báo trong 3 giây
+            timer: 50000, // Hiển thị thông báo trong 30 giây
             showConfirmButton: false // Ẩn nút xác nhận
         });
     }
@@ -457,10 +489,11 @@
             icon: 'success',
             title: 'Thành công',
             text: message,
-            timer: 10000, // Hiển thị thông báo trong 3 giây
+            timer: 50000, // Hiển thị thông báo trong 30 giây
             showConfirmButton: false // Ẩn nút xác nhận
         });
     }
+
 </script>
 </html>
 

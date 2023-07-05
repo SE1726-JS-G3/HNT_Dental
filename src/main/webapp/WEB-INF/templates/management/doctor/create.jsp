@@ -42,13 +42,13 @@
                                 </div><!--end col-->
                             </div><!--end row-->
 
-                            <form class="mt-4" id="your-form-id" action="${pageContext.request.contextPath}/management/doctor/create" method="post">
+                            <form class="mt-4"  action="${pageContext.request.contextPath}/management/doctor/create" method="post"  onSubmit="return validateForm()">
                                 <div class="row">
+                                    <div id="message-container"></div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label" for="name">Họ và tên</label>
                                             <input name="full_name" id="name" type="text" class="form-control" placeholder="Họ và tên">
-                                            <label id="name-error" class="error" for="name" style="display: none;"></label>
                                         </div>
                                     </div><!--end col-->
 
@@ -56,7 +56,6 @@
                                         <div class="mb-3">
                                             <label class="form-label" for="dob">Ngày sinh</label>
                                             <input name="dob" id="dob" type="text" class="form-control" placeholder="YYYY-MM-DD" value="${param.dob}">
-                                            <label id="dob-error" class="error" for="dob" style="display: none;"></label>
                                         </div>
                                     </div><!--end col-->
 
@@ -64,7 +63,6 @@
                                         <div class="mb-3">
                                             <label class="form-label">Email</label>
                                             <input name="email" id="email" type="email" class="form-control" placeholder="Email :">
-                                            <label id="email-error" class="error" for="email" style="display: none;"></label>
                                         </div>
                                     </div><!--end col-->
 
@@ -72,7 +70,6 @@
                                         <div class="mb-3">
                                             <label class="form-label">Địa chỉ</label>
                                             <input name="address" id="address" type="text" class="form-control" placeholder="Địa chỉ">
-                                            <label id="address-error" class="error" for="address" style="display: none;"></label>
                                         </div>
                                     </div><!--end col-->
 
@@ -80,7 +77,6 @@
                                         <div class="mb-3">
                                             <label class="form-label">Điện thoại</label>
                                             <input name="phone" id="phone" type="text" class="form-control" placeholder="Điện thoại">
-                                            <label id="phone-error" class="error" for="phone" style="display: none;"></label>
                                         </div>
                                     </div><!--end col-->
 
@@ -88,7 +84,6 @@
                                         <div class="mb-3">
                                             <label class="form-label">Chuyên môn</label>
                                             <input name="position" id="position" type="text" class="form-control" placeholder="Chức vụ">
-                                            <label id="position-error" class="error" for="position" style="display: none;"></label>
                                         </div>
                                     </div><!--end col-->
 
@@ -157,109 +152,98 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    $(document).ready(function() {
-        $('#your-form-id').validate({
-            rules: {
-                full_name: {
-                    required: true
-                },
-                dob: {
-                    required: true,
-                    date: true
-                },
-                email: {
-                    required: true,
-                    email: true
-                },
-                address: {
-                    required: true
-                },
-                phone: {
-                    required: true
-                },
-                position: {
-                    required: true
-                },
-                rankId: {
-                    required: true
-                }
-                // Thêm các quy tắc kiểm tra cho các trường khác
-            },
-            messages: {
-                full_name: {
-                    required: "Vui lòng nhập họ và tên"
-                },
-                dob: {
-                    required: "Vui lòng nhập ngày sinh",
-                    date: "Vui lòng nhập ngày sinh hợp lệ (YYYY-MM-DD)"
-                },
-                email: {
-                    required: "Vui lòng nhập email",
-                    email: "Vui lòng nhập email hợp lệ"
-                },
-                address: {
-                    required: "Vui lòng nhập địa chỉ"
-                },
-                phone: {
-                    required: "Vui lòng nhập số điện thoại"
-                },
-                position: {
-                    required: "Vui lòng nhập chức vụ"
-                },
-                rankId: {
-                    required: "Vui lòng nhập xếp hạng"
-                }
-                // Thêm thông báo lỗi cho các trường khác
-            },
-            errorPlacement: function(error, element) {
-                element.addClass('error');
-                error.addClass('error-message');
-                error.insertAfter(element);
-            },
-            success: function(label, element) {
-                $(element).removeClass('error');
-                $(element).addClass('is-valid');
-                $(element).siblings('.error-message').hide();
-            },
-            invalidHandler: function(event, validator) {
-                var errors = validator.errorList;
-                for (var i = 0; i < errors.length; i++) {
-                    var element = $(errors[i].element);
-                    element.addClass('error');
-                    var errorLabel = $('#' + element.attr('name') + '-error');
-                    errorLabel.text(errors[i].message);
-                    errorLabel.show();
-                }
+    function validateForm() {
+        var fullName = document.getElementById('name').value;
+        var dob = document.getElementById('dob').value;
+        var email = document.getElementById('email').value;
+        var address = document.getElementById('address').value;
+        var phone = document.getElementById('phone').value;
+        var position = document.getElementById('position').value;
+        var rankId = document.getElementById('rankId').value;
+        // Perform field validation
+        if (fullName.trim() === '') {
+            displayErrorMessage('Họ và tên không được bỏ trống');
+            return false;
+        }
+        if (dob.trim() === '') {
+            displayErrorMessage('Ngày sinh không được bỏ trống');
+            return false;
+        }
+        if (!isValidDateFormat(dob)) {
+            displayErrorMessage('Ngày sinh phải có định dạng YYYY-MM-DD');
+            return false;
+        }
+        if (email.trim() === '') {
+            displayErrorMessage('Email không được bỏ trống');
+            return false;
+        }
+        if (address.trim() === '') {
+            displayErrorMessage('Địa chỉ không được bỏ trống');
+            return false;
+        }
+        if (phone.trim() === '') {
+            displayErrorMessage('Điện thoại không được bỏ trống');
+            return false;
+        }
+        if (!isValidPhoneNumber(phone)) {
+            displayErrorMessage('Số điện thoại chỉ có được nhập 10 chữ số (số 0 tự thêm sẵn)');
+            return false;
+        }
 
-                showErrorAlert();
-            },
-            submitHandler: function(form) {
-                showSuccessAlert(form);
-            }
+        if (position.trim() === '') {
+            displayErrorMessage('Chuyên môn không được bỏ trống');
+            return false;
+        }
+        if (rankId.trim() === '') {
+            displayErrorMessage('xếp hạng không được bỏ trống');
+            return false;
+        }
+        if (!isValidRankId(rankId)) {
+            displayErrorMessage('Xếp hạng phải chỉ có từ 1 đến 10');
+            return false;
+        }
+
+        // If all fields are valid, display success message
+        displaySuccessMessage('Thông tin đã được cập nhật thành công');
+        return true;
+    }
+
+    function isValidDateFormat(dateString) {
+        // Kiểm tra định dạng ngày sinh theo dạng YYYY-MM-DD
+        var pattern = /^\d{4}-\d{2}-\d{2}$/;
+        return pattern.test(dateString);
+    }
+    function isValidRankId(rankId) {
+        // Kiểm tra xếp hạng chỉ từ 1 đến 10
+        var rankNumber = parseInt(rankId, 10);
+        return rankNumber >= 1 && rankNumber <= 10;
+    }
+    function isValidPhoneNumber(phone) {
+        // Kiểm tra số điện thoại có 10 chữ số
+        var pattern = /^\d{10}$/;
+        return pattern.test(phone);
+    }
+
+    // Các hàm hiển thị thông báo lỗi và thành công không thay đổi.
+    function displayErrorMessage(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: message,
+            timer: 40000, // Hiển thị thông báo trong 30 giây
+            showConfirmButton: false // Ẩn nút xác nhận
         });
+    }
 
-        function showErrorAlert() {
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi xác thực',
-                text: 'Vui lòng kiểm tra lại các thông tin bên trên'
-            }).then(function() {
-                $('html, body').animate({
-                    scrollTop: $('.error').first().offset().top - 100
-                }, 500);
-            });
-        }
-
-        function showSuccessAlert(form) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Thành công',
-                text: 'Đã thêm thành công!'
-            }).then(function() {
-                form.submit();
-            });
-        }
-    });
+    function displaySuccessMessage(message) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: message,
+            timer: 40000, // Hiển thị thông báo trong 30 giây
+            showConfirmButton: false // Ẩn nút xác nhận
+        });
+    }
 </script>
 </body>
 </html>
