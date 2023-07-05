@@ -334,6 +334,7 @@
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
 <script src="https://kit.fontawesome.com/yourcode.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 <style>
     .Choicefile {
@@ -442,13 +443,23 @@
     }
 
     function displayErrorMessage(message) {
-        var messageContainer = document.getElementById('message-container');
-        messageContainer.innerHTML = '<div class="alert alert-danger">' + message + '</div>';
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: message,
+            timer: 10000, // Hiển thị thông báo trong 3 giây
+            showConfirmButton: false // Ẩn nút xác nhận
+        });
     }
 
     function displaySuccessMessage(message) {
-        var messageContainer = document.getElementById('message-container');
-        messageContainer.innerHTML = '<div class="alert alert-success">' + message + '</div>';
+        Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: message,
+            timer: 10000, // Hiển thị thông báo trong 3 giây
+            showConfirmButton: false // Ẩn nút xác nhận
+        });
     }
 </script>
 </html>

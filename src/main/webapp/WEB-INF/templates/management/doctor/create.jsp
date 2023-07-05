@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="en">
@@ -43,53 +42,53 @@
                                 </div><!--end col-->
                             </div><!--end row-->
 
-                            <form class="mt-4" action="${pageContext.request.contextPath}/management/doctor/create" method="post">
+                            <form class="mt-4" id="your-form-id" action="${pageContext.request.contextPath}/management/doctor/create" method="post">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Họ và tên</label>
-                                            <input name="full_name" id="name" type="text" class="form-control"
-                                                   placeholder="Họ và tên :">
+                                            <label class="form-label" for="name">Họ và tên</label>
+                                            <input name="full_name" id="name" type="text" class="form-control" placeholder="Họ và tên">
+                                            <label id="name-error" class="error" for="name" style="display: none;"></label>
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Ngày sinh</label>
-                                            <input name="dob" id="name2" type="text" class="form-control"
-                                                   placeholder="DD/MM/YYYY">
+                                            <label class="form-label" for="dob">Ngày sinh</label>
+                                            <input name="dob" id="dob" type="text" class="form-control" placeholder="YYYY-MM-DD" value="${param.dob}">
+                                            <label id="dob-error" class="error" for="dob" style="display: none;"></label>
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Email</label>
-                                            <input name="email" id="email" type="email" class="form-control"
-                                                   placeholder="Email :">
+                                            <input name="email" id="email" type="email" class="form-control" placeholder="Email :">
+                                            <label id="email-error" class="error" for="email" style="display: none;"></label>
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Địa chỉ</label>
-                                            <input name="address" id="address" type="text" class="form-control"
-                                                   placeholder="Địa chỉ">
+                                            <input name="address" id="address" type="text" class="form-control" placeholder="Địa chỉ">
+                                            <label id="address-error" class="error" for="address" style="display: none;"></label>
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Điện thoại</label>
-                                            <input name="phone" id="phone" type="text" class="form-control"
-                                                   placeholder="Điện thoại">
+                                            <input name="phone" id="phone" type="text" class="form-control" placeholder="Điện thoại">
+                                            <label id="phone-error" class="error" for="phone" style="display: none;"></label>
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Chuyên môn</label>
-                                            <input name="position" id="position" type="text" class="form-control"
-                                                   placeholder="Chức vụ">
+                                            <input name="position" id="position" type="text" class="form-control" placeholder="Chức vụ">
+                                            <label id="position-error" class="error" for="position" style="display: none;"></label>
                                         </div>
                                     </div><!--end col-->
 
@@ -106,10 +105,11 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Xếp hạng</label>
-                                            <input name="rankId" id="rankId" type="text" class="form-control"
-                                                   placeholder="Xếp hạng">
+                                            <input name="rankId" id="rankId" type="text" class="form-control" placeholder="Xếp hạng">
+                                            <label id="rankId-error" class="error" for="rankId" style="display: none;"></label>
                                         </div>
                                     </div>
+
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Trạng thái</label>
@@ -128,11 +128,11 @@
                                             </select>
                                         </div>
                                     </div><!--end col-->
+
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label class="form-label">Mô tả</label>
-                                            <textarea name="description" id="comments" rows="3" class="form-control"
-                                                      placeholder="Bio :"></textarea>
+                                            <textarea name="description" id="comments" rows="3" class="form-control" placeholder="Bio :"></textarea>
                                         </div>
                                     </div>
                                 </div><!--end row-->
@@ -153,5 +153,113 @@
 <script src="${pageContext.request.contextPath}/static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function() {
+        $('#your-form-id').validate({
+            rules: {
+                full_name: {
+                    required: true
+                },
+                dob: {
+                    required: true,
+                    date: true
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                address: {
+                    required: true
+                },
+                phone: {
+                    required: true
+                },
+                position: {
+                    required: true
+                },
+                rankId: {
+                    required: true
+                }
+                // Thêm các quy tắc kiểm tra cho các trường khác
+            },
+            messages: {
+                full_name: {
+                    required: "Vui lòng nhập họ và tên"
+                },
+                dob: {
+                    required: "Vui lòng nhập ngày sinh",
+                    date: "Vui lòng nhập ngày sinh hợp lệ (YYYY-MM-DD)"
+                },
+                email: {
+                    required: "Vui lòng nhập email",
+                    email: "Vui lòng nhập email hợp lệ"
+                },
+                address: {
+                    required: "Vui lòng nhập địa chỉ"
+                },
+                phone: {
+                    required: "Vui lòng nhập số điện thoại"
+                },
+                position: {
+                    required: "Vui lòng nhập chức vụ"
+                },
+                rankId: {
+                    required: "Vui lòng nhập xếp hạng"
+                }
+                // Thêm thông báo lỗi cho các trường khác
+            },
+            errorPlacement: function(error, element) {
+                element.addClass('error');
+                error.addClass('error-message');
+                error.insertAfter(element);
+            },
+            success: function(label, element) {
+                $(element).removeClass('error');
+                $(element).addClass('is-valid');
+                $(element).siblings('.error-message').hide();
+            },
+            invalidHandler: function(event, validator) {
+                var errors = validator.errorList;
+                for (var i = 0; i < errors.length; i++) {
+                    var element = $(errors[i].element);
+                    element.addClass('error');
+                    var errorLabel = $('#' + element.attr('name') + '-error');
+                    errorLabel.text(errors[i].message);
+                    errorLabel.show();
+                }
+
+                showErrorAlert();
+            },
+            submitHandler: function(form) {
+                showSuccessAlert(form);
+            }
+        });
+
+        function showErrorAlert() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi xác thực',
+                text: 'Vui lòng kiểm tra lại các thông tin bên trên'
+            }).then(function() {
+                $('html, body').animate({
+                    scrollTop: $('.error').first().offset().top - 100
+                }, 500);
+            });
+        }
+
+        function showSuccessAlert(form) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Thành công',
+                text: 'Đã thêm thành công!'
+            }).then(function() {
+                form.submit();
+            });
+        }
+    });
+</script>
 </body>
 </html>
