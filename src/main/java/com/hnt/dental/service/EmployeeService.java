@@ -161,7 +161,7 @@ public class EmployeeService {
         employee.setAccount(account);
         req.setAttribute("employee", employee);
         req.setAttribute("error", error);
-        ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/employee/1.jsp");
+        ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/employee/update.jsp");
     }
 
     private String renderSearch(String search){

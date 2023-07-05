@@ -10,6 +10,8 @@ import java.time.LocalDate;
 @Setter
 @SuperBuilder
 public class Patient extends BaseEntity{
+
+    private Booking booking;
     private Account account;
     private String fullName;
     private LocalDate dob;
@@ -17,6 +19,11 @@ public class Patient extends BaseEntity{
     private String phone;
     private String address;
     private String description;
+
+    private Boolean status;
+    private Long image;
+
+
 
 
 }

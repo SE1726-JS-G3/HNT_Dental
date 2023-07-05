@@ -8,6 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ServiceTypeDto {
+
     private Long idType;
     private String nameType;
 }

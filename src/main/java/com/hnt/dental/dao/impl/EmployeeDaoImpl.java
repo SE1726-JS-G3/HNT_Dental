@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -50,6 +51,38 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     private static final String DELETE_EMPLOYEE = "DELETE FROM employees WHERE id=?";
 
+    private static final String SQL_GET_EMPLOYEE_AVALABLE = "SELECT DISTINCT e.full_name , e.id from employees e " +
+            "inner join booking b on e.id = b.staff_id " +
+            "where e.id NOT IN " +
+            " (" +
+            "SELECT DISTINCT e.id from employees e " +
+            "inner join booking b on e.id = b.staff_id " +
+            " WHERE b.date = ? " +
+            " AND b.time = ?)";
+    @Override
+    public List<Employee> getEmployeeAvailable(LocalDate date, LocalTime time) throws Exception {
+        List<Employee> employees = new ArrayList<>();
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_EMPLOYEE_AVALABLE, date, time);
+        while (rs.next()) {
+            employees.add(
+                    Employee.builder()
+                            .account(
+                                    Account.builder()
+                                            .id(rs.getLong("id"))
+                                            .build()
+                            )
+                            .fullName(rs.getString("full_name"))
+                            .build()
+            );
+        }
+        ConnectionUtils.closeConnection();
+        return employees;
+    }
+
+//    public static void main(String[] args) throws Exception {
+//        EmployeeDaoImpl employeeDao = new EmployeeDaoImpl();
+//        System.out.println(employeeDao.getEmployeeAvailable("2021-05-05", "08:00:00"));
+//    }
     @Override
     public List<Employee> getAll(Integer offset, Integer limit, String search) throws SQLException {
         List<Employee> employees = new ArrayList<>();
@@ -107,6 +140,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     }
 
+
     @Override
     public void update(Employee employee) throws SQLException {
         ConnectionUtils.executeUpdate(UPDATE_EMPLOYEE, employee.getFullName(),
@@ -156,4 +190,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
         ConnectionUtils.closeConnection();
         return Optional.empty();
     }
+
+
+
 }

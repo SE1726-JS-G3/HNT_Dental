@@ -1,43 +1,111 @@
 package com.hnt.dental.controllers.management;
 
+import com.hnt.dental.dao.PatientDao;
+import com.hnt.dental.dao.impl.PatientDaoImpl;
+import com.hnt.dental.entities.Patient;
+import com.hnt.dental.exception.SystemRuntimeException;
+import com.hnt.dental.service.AuthService;
+import com.hnt.dental.service.PatientService;
+import com.hnt.dental.util.ServletUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.EOFException;
 import java.io.IOException;
+import java.rmi.RemoteException;
+import java.sql.SQLException;
+import java.util.List;
+
 
 @WebServlet(name = "PatientController", value = {
         "/management/patient",
+        "/management/patient/detail",
+        "/management/patient/delete",
         "/management/patient/create",
-        "/management/patient/update",
-        "/management/patient/delete"
+        "/management/patient/update"
 })
 public class PatientController extends HttpServlet {
+
+    private static final PatientService service;
+
+    static {
+        service = new PatientService();
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getServletPath();
         switch (action) {
             case "/management/patient":
-                req.getRequestDispatcher("/WEB-INF/templates/management/patient/index.jsp").forward(req, resp);
+                try {
+                    service.getAll(req, resp);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
                 break;
+
+            case "/management/patient/detail":
+                try {
+                    service.patientDetail(req, resp);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                } catch (ServletException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
+            case "/management/patient/delete":
+                try {
+                    service.delete(req,resp);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
+
             case "/management/patient/create":
                 req.getRequestDispatcher("/WEB-INF/templates/management/patient/create.jsp").forward(req, resp);
                 break;
+
             case "/management/patient/update":
-                req.getRequestDispatcher("/WEB-INF/templates/management/patient/1.jsp").forward(req, resp);
+                try {
+                    service.patientDetail(req, resp);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
                 break;
-            case "/management/patient/delete":
-                req.getRequestDispatcher("/WEB-INF/templates/management/patient/delete.jsp").forward(req, resp);
-                break;
+
+
             default:
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String action = req.getServletPath();
-        // TODO
+        switch (action) {
+            case "/management/patient/create":
+                try {
+                    service.create(req, resp);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                break;
+
+            case "/management/patient/update":
+                try {
+                    service.update(req, resp);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                break;
+            default:
+        }
     }
+
+
 }
+
+
+
