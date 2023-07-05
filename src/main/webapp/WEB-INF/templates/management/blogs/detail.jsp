@@ -1,9 +1,9 @@
 <%--
-  Created by IntelliJ IDEA.
-  User: Huyen Nguyen
-  Date: 6/21/2023
-  Time: 7:45 PM
-  To change this template use File | Settings | File Templates.
+Created by IntelliJ IDEA.
+User: Huyen Nguyen
+Date: 6/21/2023
+Time: 7:45 PM
+To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -28,17 +28,17 @@
                                 </div>
                                 <div class="modal-body p-3 pt-4">
                                     <form  action="${pageContext.request.contextPath}/management/blog/update" method="POST">
-<%--                                        <input value="${blog_id}" name="id" type="hidden">--%>
-                                        <input value="${blog_id}" name="id">
-<%--                                        <input value="${blog_id}" name="id">--%>
+                                        <%--                                        <input value="${blog_id}" name="id" type="hidden">--%>
+                                        <input value="${blog_id}" type="hidden" name="id">
+                                        <%--                                        <input value="${blog_id}" name="id">--%>
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="mb-3">
                                                     <label class="form-label">Danh Mục<span class="text-danger">*</span></label>
                                                     <select name="category_id" class="form-select"
                                                             aria-label="Default select example">
-                                                        <c:forEach var="c" items="${category}">
-                                                            <option value="${c.name}"
+                                                        <c:forEach var="c" items="${sessionScope.category_lst}">
+                                                            <option value="${c.id}"
                                                                     <c:if test="${c.name eq blogs.categoryBlog.name}">selected=""</c:if>
                                                             >${c.name}</option>
                                                         </c:forEach>
@@ -126,12 +126,12 @@
                                                     <tbody>
                                                     <tr class="d-flex align-items-center">
                                                         <td><input id="credit" name="status" value="true" type="radio"
-                                                                   class="form-check-input"
-                                                                   checked required></td>
-                                                        <td><label class="form-check-label">status</label></td>
+                                                                   class="form-check-input" <c:if test="${blogs.status eq true}">checked</c:if>
+                                                                   required></td>
+                                                        <td><label class="form-check-label">Enable</label></td>
                                                         <td></td>
                                                         <td><input id="debit" name="status" value="false" type="radio"
-                                                                   class="form-check-input"
+                                                                   class="form-check-input" <c:if test="${blogs.status eq false}">checked</c:if>
                                                                    required></td>
                                                         <td><label class="form-check-label">Disable</label></td>
                                                     </tr>

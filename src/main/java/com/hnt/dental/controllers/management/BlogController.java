@@ -1,5 +1,8 @@
 package com.hnt.dental.controllers.management;
 
+import com.hnt.dental.dao.CategoryBlogDao;
+import com.hnt.dental.dao.impl.CategoryBlogDaoImpl;
+import com.hnt.dental.entities.CategoryBlog;
 import com.hnt.dental.service.BlogService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -31,11 +34,13 @@ public class BlogController extends HttpServlet {
         try {
             switch (action) {
                 case "/management/blog":
-                    blogService.getAll(req, resp);
+                    blogService.getAllManagement(req, resp);
 //        req.getRequestDispatcher("/WEB-INF/templates/management/blogs/index.jsp").forward(req, resp);
 
                     break;
                 case "/management/blog/create":
+                    CategoryBlogDaoImpl cateblog = new CategoryBlogDaoImpl();
+                    req.setAttribute("cate_list",cateblog.getAll());
                     req.getRequestDispatcher("/WEB-INF/templates/management/blogs/create.jsp").forward(req, resp);
                     break;
                 case "/management/blog/update":

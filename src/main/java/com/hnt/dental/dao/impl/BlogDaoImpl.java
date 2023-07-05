@@ -1,10 +1,13 @@
 package com.hnt.dental.dao.impl;
 
+import com.hnt.dental.constant.BlogStatusEnum;
 import com.hnt.dental.dao.BlogDao;
 import com.hnt.dental.dao.CategoryBlogDao;
+import com.hnt.dental.dto.response.BlogResDto;
 import com.hnt.dental.entities.Blogs;
 import com.hnt.dental.entities.CategoryBlog;
 import com.hnt.dental.entities.Employee;
+import com.hnt.dental.entities.Service;
 import com.hnt.dental.util.ConnectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -30,20 +33,33 @@ public class BlogDaoImpl implements BlogDao {
             "where (1=1) and b.title like ?" +
             "LIMIT ?,?";
 
-    private static final String GET_BLOG_BY_ID ="SELECT b.id, b.category_id, b.title, b.brief, b.description, b.create_at,\n" +
+    private static final String SQL_COUNT_BLOG = "SELECT count(*) FROM blogs b \n" +
+            "                                   inner join category_blog cb on b.category_id = cb.id \n" +
+            "                                  where LOWER(b.title) like ?  AND b.status LIKE ? \n" +
+            "                     AND b.category_id LIKE ?" +
+            " order by b.id";
+//    private static final String GET_ALL_BLOG = "SELECT b.id, b.title, b.create_at, b.status, cb.name FROM blogs b\n" +
+//            "inner join category_blog cb on b.category_id = cb.id\n" +
+//            "where LOWER(b.title) like ? AND cb.id LIKE ? AND b.status LIKE ? order by b.create_at desc\n" +
+//            "LIMIT ?, ?";
+
+    private static final String SQL_GET_CATEGORY_BY_CATEGORY_ID = "select DISTINCT cb.name, cb.id from blogs b \n" +
+            "            inner join category_blog cb on b.category_id = cb.id;";
+
+    private static final String GET_BLOG_BY_ID = "SELECT b.id, b.category_id, b.title, b.brief, b.description, b.create_at,\n" +
             " b.update_at, b.created_by, b.status\n" +
             ",e.full_name,cb.name FROM blogs b inner join employees e \n" +
             "on e.id = b.created_by inner join category_blog cb on b.category_id = cb.id\n" +
-            "where (1=1) and b.id = ?\n" ;
+            "where (1=1) and b.id = ?\n";
 
-    private static final String GET_BLOG_BY_CATEGORY ="SELECT b.id, b.category_id, b.title, b.brief, b.description, b.create_at,\n" +
+    private static final String GET_BLOG_BY_CATEGORY = "SELECT b.id, b.category_id, b.title, b.brief, b.description, b.create_at,\n" +
             "             b.update_at, b.created_by, b.status\n" +
             "            ,e.full_name,cb.name FROM blogs b inner join employees e \n" +
             "            on e.id = b.created_by inner join category_blog cb on b.category_id = cb.id\n" +
             "            where (1=1) and b.category_id = ?";
     private static final String SAVE_BLOG = "INSERT INTO blogs " +
-            "(id,category_id , title, brief, description, create_at, update_at, create_by, status) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "(id, category_id, title, brief, description, create_at, status) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     private static final String COUNT_BLOG = "SELECT COUNT(*) AS count FROM blogs";
 
@@ -63,6 +79,15 @@ public class BlogDaoImpl implements BlogDao {
 
     private static final String GET_CATEGORYBLOG = "SELECT distinct category_id FROM blogs";
 
+    private static final String GET_ALL_BLOGS = " SELECT b.id, b.category_id , b.title, b.brief, b.description, b.create_at, b.update_at, b.created_by, b.status, e.full_name, cb.name\n" +
+            "            FROM blogs b\n" +
+            "            INNER JOIN category_blog cb ON b.category_id = cb.id\n" +
+            "            LEFT JOIN employees e ON b.created_by = e.id\n" +
+            "            WHERE LOWER(b.title) LIKE ?\n" +
+            "            AND b.status LIKE ? \n" +
+            "            AND b.category_id LIKE ? \n" +
+            "            LIMIT ?, ?";
+
     @Override
     public Integer count(String search) throws Exception {
 
@@ -80,9 +105,9 @@ public class BlogDaoImpl implements BlogDao {
     @Override
     public void changeStatus(int id, String status) throws SQLException {
         if (status.equals("0")) {
-            ConnectionUtils.executeUpdate(CHANGE_status, 1,id);
+            ConnectionUtils.executeUpdate(CHANGE_status, 1, id);
         } else {
-            ConnectionUtils.executeUpdate(CHANGE_status, 0,id);
+            ConnectionUtils.executeUpdate(CHANGE_status, 0, id);
         }
     }
 
@@ -111,6 +136,71 @@ public class BlogDaoImpl implements BlogDao {
         return blogs;
     }
 
+    @Override
+    public List<Blogs> getAllBlog(int offset, int limit, String search, String status, String category) throws SQLException {
+        List<Blogs> blogs = new ArrayList<>();
+        search = StringUtils.isNotEmpty(search) ? "%" + search.toLowerCase() + "%" : "%";
+        status = !status.equals("all") ? status : "%";
+        category = !category.equals("all") ? category : "%";
+        ResultSet rs = ConnectionUtils.executeQuery(GET_ALL_BLOGS, search, status, category, offset, limit);
+        while (rs.next()) {
+            blogs.add(
+                    Blogs.builder()
+                            .employee(
+                                    Employee.builder()
+                                            .id(rs.getLong("id"))
+                                            .fullName(rs.getString("full_name"))
+                                            .build()
+                            )
+                            .categoryBlog(CategoryBlog.builder()
+                                    .name(rs.getString("name"))
+                                    .build())
+                            .id(rs.getLong("id"))
+                            .categoryID(rs.getInt("category_id"))
+                            .title(rs.getString("title"))
+                            .brief(rs.getString("brief"))
+                            .description(rs.getString("description"))
+                            .status(rs.getBoolean("status"))
+                            .createdAt(rs.getTimestamp("create_at").toLocalDateTime())
+                            .createdBy(rs.getLong("created_by"))
+                            .build()
+            );
+        }
+        ConnectionUtils.closeConnection();
+        return blogs;
+    }
+
+    @Override
+    public Integer countListBlogSummary(String search, String status, String category) throws SQLException {
+        search = StringUtils.isNotEmpty(search) ? "%" + search.toLowerCase() + "%" : "%";
+        status = !status.equals("all") ? status : "%";
+        category = !category.equals("all") ? category : "%";
+//        search = "%" + search + "%";
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_COUNT_BLOG, search, status, category);
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        ConnectionUtils.closeConnection();
+        return null;
+
+    }
+
+    @Override
+    public List<BlogResDto> getCategoryByCategoryId() throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_CATEGORY_BY_CATEGORY_ID);
+        List<BlogResDto> list = new ArrayList<>();
+        while (rs.next()) {
+            list.add(BlogResDto.builder()
+                    .categoryBlog(CategoryBlog.builder()
+                            .name(rs.getString("name"))
+                            .id(rs.getLong("id"))
+                            .build())
+                    .build());
+        }
+        ConnectionUtils.closeConnection();
+        return list;
+    }
+
 
 //    public static void main(String[] args) throws Exception {
 //        BlogDaoImpl blogDaoImpl = new BlogDaoImpl();
@@ -130,7 +220,7 @@ public class BlogDaoImpl implements BlogDao {
         List<Blogs> blogs = new ArrayList<>();
         search = StringUtils.isNotEmpty(search) ? "%" + search + "%" : "%";
         try {
-            ResultSet rs = ConnectionUtils.executeQuery(GET_ALL_BLOG ,search , offset, limit);
+            ResultSet rs = ConnectionUtils.executeQuery(GET_ALL_BLOG, search, offset, limit);
 //            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
             while (rs.next()) {
 
@@ -149,7 +239,7 @@ public class BlogDaoImpl implements BlogDao {
                                 .brief(rs.getString("brief"))
                                 .description(rs.getString("description"))
                                 .createdAt(rs.getTimestamp("create_at").toLocalDateTime())
-                                .status(rs.getString("status"))
+                                .status(rs.getBoolean("status"))
                                 .build()
                 );
             }
@@ -160,6 +250,7 @@ public class BlogDaoImpl implements BlogDao {
 
 
         return blogs;
+//        return null;
     }
 
 
@@ -183,7 +274,7 @@ public class BlogDaoImpl implements BlogDao {
                         .title(rs.getString("title"))
                         .brief(rs.getString("brief"))
                         .description(rs.getString("description"))
-                        .status(rs.getString("status"))
+                        .status(rs.getBoolean("status"))
                         .build());
             }
             ConnectionUtils.closeConnection();
@@ -194,12 +285,14 @@ public class BlogDaoImpl implements BlogDao {
     }
 
 
-
     @Override
     public Long save(Blogs blog) throws SQLException, ClassNotFoundException {
-        ConnectionUtils.executeUpdate(SAVE_BLOG,blog.getId(),blog.getCategoryBlog().getId(),blog.getTitle(),blog.getBrief(),
-                blog.getDescription(),blog.getCreatedAt(),blog.getUpdatedAt(),blog.getCreatedBy(), blog.getStatus());
+        ConnectionUtils.executeUpdate(SAVE_BLOG, blog.getId(), blog.getCategoryID(), blog.getTitle(), blog.getBrief(),
+                blog.getDescription(), blog.getCreatedAt()
+//                ,blog.getCreatedBy()
+                , blog.getStatus());
         return null;
+
     }
 
     @Override
@@ -209,7 +302,7 @@ public class BlogDaoImpl implements BlogDao {
 //                blog.getCreatedBy(), blog.getStatus(),blog.getId()
 //        );
         ConnectionUtils.executeUpdate(UPDATE_BLOG, blog.getCategoryBlog().getId(), blog.getTitle(),
-                blog.getBrief(),blog.getDescription(),
+                blog.getBrief(), blog.getDescription(),
                 blog.getCreatedAt(), blog.getUpdatedAt(), blog.getCreatedBy(), blog.getStatus(), blog.getId());
     }
 
@@ -222,15 +315,9 @@ public class BlogDaoImpl implements BlogDao {
         blog.setTitle("New Title"); // Thiết lập tiêu đề mới
         blog.setBrief("New Brief"); // Thiết lập phần giới thiệu mới
         blog.setDescription("New Description"); // Thiết lập nội dung mới
-        blog.setCategoryBlog(CategoryBlog.builder() .id(1L) .build());
+        blog.setCategoryBlog(CategoryBlog.builder().id(1L).build());
         blogDao.update(blog);
     }
-
-
-
-
-
-
 
 
     @Override
@@ -240,7 +327,7 @@ public class BlogDaoImpl implements BlogDao {
     }
 
 
-    public ArrayList<String> listCategory() throws SQLException{
+    public ArrayList<String> listCategory() throws SQLException {
 
         ArrayList<String> data = new ArrayList<>();
         try {
@@ -255,79 +342,6 @@ public class BlogDaoImpl implements BlogDao {
         }
         return data;
     }
-
-    @Override
-    public Optional<Blogs> filterCategoryBlog(int category_id) throws SQLException {
-        try {
-            ResultSet rs = ConnectionUtils.executeQuery(GET_BLOG_BY_ID, category_id);
-            assert rs != null;
-            if (rs.next()) {
-                return Optional.ofNullable(Blogs.builder()
-                        .categoryBlog(
-                                CategoryBlog.builder()
-                                        .name(rs.getString("name"))
-                                        .build()
-                        )
-                        .employee(Employee.builder().fullName(rs.getString("full_name"))
-                                .build())
-                        .createdAt(rs.getTimestamp("create_at").toLocalDateTime())
-                        .createdBy(rs.getLong("created_by"))
-                        .title(rs.getString("title"))
-                        .brief(rs.getString("brief"))
-                        .description(rs.getString("description"))
-                        .status(rs.getString("status"))
-                        .build());
-            }
-            ConnectionUtils.closeConnection();
-        } catch (Exception e) {
-            System.out.println("filterCategoryBlog:" + e);
-        }
-        return Optional.empty();
-    }
-
-//    public ArrayList<Blogs> paggingV2( String position, int status) {
-//        String sql = "SELECT * FROM blogs where(1=1) \n";
-//        Integer count = 0;
-//        HashMap<Integer, Object> params = new HashMap<>();
-//
-//        if (!position.equals("-1")) {
-//            count++;
-//            sql += "and category_id = ? \n ";
-//            params.put(count,  position );
-//        }
-//        if (status != -1) {
-//            count++;
-//            sql += "and status = ? \n ";
-//            params.put(count, status);
-//        }
-//        ArrayList<Blogs> list = new ArrayList<>();
-//
-//        try {
-//            ResultSet rs = ConnectionUtils.executeQuery(sql);
-//            while (rs.next()) {
-//                String id = String.valueOf(rs.getInt(1));
-//                String full_name1 = rs.getString(2);
-//                String dob = String.valueOf(rs.getDate(3));
-//                String gender1 = String.valueOf(rs.getInt(4));
-//                String phone = String.valueOf(rs.getInt(5));
-//                String address = rs.getString(6);
-//                String position1 = rs.getString(7);
-//                String fee = String.valueOf(rs.getDouble(8));
-//                String description = rs.getString(9);
-//                String rank_id = String.valueOf(rs.getInt(10));
-//                String created_at = String.valueOf(rs.getDate(11));
-//                String update_at = String.valueOf(rs.getDate(12));
-//                String created_by = String.valueOf(rs.getInt(13));
-//                list.add(new Doctor(id, full_name1, dob, gender1, phone, address, position1, fee, description, rank_id, created_at, update_at, created_by));
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (ClassNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        return list;
-//    }
 
 
 }

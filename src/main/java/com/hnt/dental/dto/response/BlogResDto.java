@@ -29,8 +29,8 @@ public class BlogResDto {
     private String title;
     private String brief;
     private String description;
-    private String create_at;
-    private String update_at;
+    private LocalDateTime create_at;
+    private LocalDateTime update_at;
     private String status;
     private long created_by;
 
@@ -55,8 +55,9 @@ public class BlogResDto {
                             .title(blog.getTitle())
                             .brief(blog.getBrief())
                             .description(blog.getDescription())
-                            .create_at(String.valueOf(blog.getCreatedAt()))
-                            .status(blog.getStatus())
+                            .create_at(blog.getCreatedAt())
+                            .status(blog.getStatus() ? "Hiện" : "Ẩn")
+
                             .build()
             );
         }

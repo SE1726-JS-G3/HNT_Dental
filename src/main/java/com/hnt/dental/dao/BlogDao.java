@@ -1,5 +1,6 @@
 package com.hnt.dental.dao;
 
+import com.hnt.dental.dto.response.BlogResDto;
 import com.hnt.dental.entities.Blogs;
 
 import java.sql.SQLException;
@@ -17,7 +18,12 @@ public interface BlogDao extends GenericDao<Blogs> {
 
     ArrayList<Blogs> getAllCreatedBy() throws Exception;
 
-    public ArrayList<String> listCategory() throws SQLException;
+    List<Blogs> getAllBlog(int offset, int limit, String search, String status, String category) throws SQLException;
 
-    public Optional<Blogs> filterCategoryBlog(int category_id) throws SQLException ;
+    Integer countListBlogSummary(String search,String status, String category) throws SQLException;
+
+    List<BlogResDto> getCategoryByCategoryId() throws SQLException;
+
+
+
 }

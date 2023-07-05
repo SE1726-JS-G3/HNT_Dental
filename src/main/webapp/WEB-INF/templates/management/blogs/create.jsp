@@ -20,23 +20,25 @@
                                             aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body p-3 pt-4">
-                                    <form enctype="multipart/form-data" action="${pageContext.request.contextPath}/management/blog" method="POST">
+                                    <form
+                                            action="${pageContext.request.contextPath}/management/blog/create"
+                                            method="POST">
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="mb-3">
                                                     <label class="form-label">Danh Mục<span class="text-danger">*</span></label>
-                                                    <select name="category_id" class="form-select"
+                                                    <select name="categoryId" class="form-select"
                                                             aria-label="Default select example">
-<%--                                                        <c:forEach items="${categories}" var="c">--%>
-<%--                                                            <option value="${c.id}">${c.name}</option>--%>
-<%--                                                        </c:forEach>--%>
+                                                        <%--                                                        <c:forEach items="${categories}" var="c">--%>
+                                                        <%--                                                            <option value="${c.id}">${c.name}</option>--%>
+                                                        <%--                                                        </c:forEach>--%>
 
-    <c:forEach var="c" items="${category}">
-        <option value="${c.name}"
-                <c:if test="${c.name eq blogs.categoryBlog.name}">selected=""</c:if>
-        >${c.name}</option>
-    </c:forEach>
-<%--    <option value="theloai1">Title 1</option>--%>
+                                                        <c:forEach var="c" items="${cate_list}">
+                                                            <option value="${c.id}"
+                                                                    <c:if test="${c.name eq categoryID}">selected=""</c:if>
+                                                            >${c.name}</option>
+                                                        </c:forEach>
+                                                        <%--    <option value="theloai1">Title 1</option>--%>
 
 
                                                     </select>
@@ -64,7 +66,7 @@
                                             <div class="mb-3">
                                                 <label class="form-label">Thông Tin Tóm Tắt<span
                                                         class="text-danger">*</span></label>
-                                                <textarea rows="" cols="" class="brief" name="brief"
+                                                <textarea class="brief" name="brief"
                                                           placeholder="Thông Tin Tóm Tắt:"></textarea>
                                             </div>
 
@@ -73,33 +75,22 @@
                                                         class="text-danger">*</span></label>
 
                                                 <textarea rows="10" cols="70" class="describe"
-                                                          name="describe"
+                                                          name="description"
                                                           placeholder="Mô tả:"></textarea>
                                             </div>
 
                                             <div class="mb-3">
                                                 <label class="form-label">Trạng thái <span
                                                         class="text-danger"></span></label>
-                                                <table>
-                                                    <tbody>
-                                                    <tr class="d-flex align-items-center">
-                                                        <td><input id="credit" name="status" value="true" type="radio"
-                                                                   class="form-check-input"
-                                                                   checked required></td>
-                                                        <td><label class="form-check-label">status</label></td>
-                                                        <td></td>
-                                                        <td><input id="debit" name="status" value="false" type="radio"
-                                                                   class="form-check-input"
-                                                                   required></td>
-                                                        <td><label class="form-check-label">Disable</label></td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
+                                                <select name="status" class="form-select form-control">
+                                                    <option value="Đang làm việc">Hiện</option>
+                                                    <option value="Đã nghỉ việc">Ẩn</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="d-grid">
-                                                <button type="submit" class="btn btn-primary">Thêm</button>
+                                                <input type="submit" class="btn btn-primary" value="Thêm">
                                             </div>
                                         </div>
                                     </form>
