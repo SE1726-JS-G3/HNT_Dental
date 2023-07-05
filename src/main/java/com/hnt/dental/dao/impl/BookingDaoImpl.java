@@ -12,8 +12,6 @@ import com.hnt.dental.util.ConnectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import com.hnt.dental.dto.response.BookingDto;
 import com.hnt.dental.dto.response.ServiceResDto;
-
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalTime;
@@ -48,42 +46,36 @@ public class BookingDaoImpl implements BookingDao {
             "inner join service_type st on st.id = b.service_type_id " +
             "inner join payment p on p.booking_id = b.id " +
             "where b.id = ? ";
-
     private static final String SQL_GET_BOOKING_DETAIL_BY_BOOKING_ID = "select b.date, b.time,b.status as statusBooking, d.full_name as doctorName ," +
             " e.full_name as employeeName, p.status as statusPayment, p.type, b.decription  from booking b " +
             "inner join doctors d on b.doctor_id = d.id " +
             "inner join employees e on e.id = b.staff_id " +
             "inner join payment p on p.booking_id = b.id " +
             "where b.id = ? ";
-
-
     private static final String HISTORY_PATIENT = "SELECT  b.fee ,b.account_id, b.status ,b.time,b.date ,s.name  FROM booking b join service s \n" +
             " where b.service_id = s.id ";
     private static final String HISTORY_DETAIL = "SELECT b.date,b.name, b.age, b.email,b.decription,b.status,b.phone,s.name as service FROM booking b join service_type s \n" +
             "                       on b.service_id = s.id where b.id =?";
 
+
     @Override
     public List<Booking> getAll(Integer offset, Integer limit, String search) throws SQLException {
         return null;
     }
-
     @Override
     public Optional<Booking> get(int id) throws SQLException {
         return Optional.empty();
     }
-
     @Override
     public Long save(Booking booking) throws SQLException, ClassNotFoundException {
         return ConnectionUtils.executeUpdateForIdentity(SAVE_BOOKING, booking.getName(), booking.getPhone(), booking.isGender(), booking.getAge(),
                 booking.getAccount().getId(), booking.getService().getId(), booking.getDate(), booking.getTime(),
                 booking.getDescription(), booking.getStatus(), booking.getCreatedAt(), booking.getUpdatedAt());
     }
-
     @Override
     public void update(Booking booking) throws SQLException {
 
     }
-
     @Override
     public void delete(Booking booking) throws SQLException {
 
@@ -177,6 +169,12 @@ public class BookingDaoImpl implements BookingDao {
         return null;
 
     }
+
+    @Override
+    public void updateBookingDetail(BookingDetailDto bookingDetailDto) throws SQLException {
+
+    }
+
 
     @Override
     public Optional<BookingDetailPatientDto> getPatientByBookingId(Long id) throws SQLException {

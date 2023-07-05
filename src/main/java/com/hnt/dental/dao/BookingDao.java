@@ -29,4 +29,5 @@ public interface BookingDao extends GenericDao<Booking> {
     
     List<BookingDto> getAllHistory() throws SQLException;
     BookingDto DetailHistory(String id) throws SQLException;
+    void updateBookingDetail(BookingDetailDto bookingDetailDto) throws SQLException;
 }
