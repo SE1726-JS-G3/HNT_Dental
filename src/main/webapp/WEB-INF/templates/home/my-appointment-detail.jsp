@@ -16,162 +16,68 @@
                 <h3 class="mb-0"></h3>
                 <div class="rounded shadow mt-4">
                     <div class="p-4 border-bottom">
-                        <h5 class="mb-0">Lịch hẹn chi tiết</h5>
+                        <h5 class="mb-0">Lịch hẹn của tôi</h5>
+                        <p style="color: blue; text-align: center;">
+                            ${requestScope.updatesuccess}
+                        </p>
                     </div>
                     <div class="p-4">
-                        <form action="doctor?action=updateappointmentstatus&id=${a.id}" method="POST"
-                              enctype="multipart/form-data">
+                        <form action="/management/doctor/my-appointment-detail" method="post" onsubmit="return confirmSubmit(${details.id});"><!-- Fix: Added form action -->
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
+                                        <label class="form-label">ID cuộc hẹn</label>
+                                        <input readonly value="${details != null ? details.id : ''}" type="text" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Tên bệnh nhân</label>
+                                        <input readonly value="${details != null ? details.patient.fullName : ''}" type="text" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">ID bệnh nhân</label>
+                                        <input readonly value="${details != null ? details.patient.id : ''}" type="text" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="mb-3">
                                         <label class="form-label">Ngày đặt lịch</label>
-                                        <input name="appointment_id" readonly value="" type="text"
-                                               class="form-control">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Tên Bệnh Nhân</label>
-                                        <input readonly value="" type="email"
-                                               class="form-control">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Tên dịch vụ</label>
-                                        <input readonly value="" type="email"
-                                               class="form-control">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Loại dịch vụ</label>
-                                        <input readonly value="" type="text" class="form-control">
+                                        <input readonly value="${details != null ? details.date : ''}" type="text" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">Giá</label>
-                                        <input readonly value="" type="text" class="form-control">
+                                        <label class="form-label">Giờ đặt lịch</label>
+                                        <input readonly value="${details != null ? details.time : ''}" type="text" class="form-control">
                                     </div>
                                 </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Nhân viên hỗ trợ</label>
-                                        <input readonly value="" type="text" class="form-control">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Bác sĩ phụ trách</label>
-                                        <input readonly value="" type="text" class="form-control">
-                                    </div>
-                                </div>
-
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Trạng thái</label>
-                                        <input readonly value="" type="text" class="form-control">
-
+                                        <input readonly value="${details != null ? details.status : ''}" type="text" class="form-control">
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input type="hidden" name="id" value="${details.id}"> <!-- Fix: Added hidden input field for id -->
+                                    <input type="hidden" name="status" value="1"> <!-- Fix: Hard-coded status value as 1 for "Chấp nhận" -->
+                                    <input type="submit" id="submit" name="send" class="btn btn-primary active" value="Hoàn thành lịch hẹn"> <!-- Added "active" class to the button -->
+                                </div>
+                            </div>
                         </form>
-                        <div class="col-md-6">
-                            <button class="btn btn-secondary active" type="button" data-bs-toggle="modal" data-bs-target="#newblogadd">
-                                Kết quả khám
-                            </button>
-                            <button class="btn btn-info active" type="button">
-                                Hủy đặt lịch
-                            </button>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
-<!-- Start Modal -->
-<div class="modal fade" id="newblogadd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header border-bottom p-3">
-                <h5 class="modal-title" id="exampleModalLabel">Đây là trang hiển thị kết quả khám</h5>
-                <button type="button" class="btn btn-icon btn-close" data-bs-dismiss="modal" id="close-modal"><i class="uil uil-times fs-4 text-dark"></i></button>
-            </div>
-
-            <div class="modal-body p-3 pt-4">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="ms-md-4">
-                            <form>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="mb-3">
-                                            <label class="form-label">Blog Title <span class="text-danger">*</span></label>
-                                            <input name="name" id="name" type="text" class="form-control" placeholder="Title :">
-                                        </div>
-                                    </div><!--end col-->
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label"> Date : </label>
-                                            <input name="date" type="text" class="form-control start" id="date" value="Select date:">
-                                        </div>
-                                    </div><!--end col-->
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label"> Time to read : </label>
-                                            <input name="time" type="text" class="form-control" id="time" value="5 min read">
-                                        </div>
-                                    </div><!--end col-->
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Tag</label>
-                                            <select class="form-select form-control">
-                                                <option value="EY">Eye Care</option>
-                                                <option value="GY">Gynecologist</option>
-                                                <option value="PS">Psychotherapist</option>
-                                                <option value="OR">Orthopedic</option>
-                                                <option value="DE">Dentist</option>
-                                                <option value="GA">Gastrologist</option>
-                                                <option value="UR">Urologist</option>
-                                                <option value="NE">Neurologist</option>
-                                            </select>
-                                        </div>
-                                    </div><!--end col-->
-
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <label class="form-label">Description <span class="text-danger">*</span></label>
-                                            <textarea name="comments" id="comments" rows="4" class="form-control" placeholder="Blog description :"></textarea>
-                                        </div>
-                                    </div><!--end col-->
-
-                                    <div class="col-lg-12 text-end">
-                                        <button type="submit" class="btn btn-primary">Add Blog</button>
-                                    </div><!--end col-->
-                                </div>
-                            </form>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-                    <div class="d-grid">
-                        <label class="btn-upload btn btn-primary mt-4">Tải xuống</label>
-                    </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End modal -->
 
 <jsp:include page="layout/footer.jsp"/>
 <a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i
@@ -186,12 +92,52 @@
         </div>
     </div>
 </div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="${pageContext.request.contextPath}/static/libs/tobii/js/tobii.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/libs/feather-icons/feather.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
 
+<script>
+    function confirmSubmit(id) {
+        var id = $("input[name='id']").val(); // Lấy giá trị của trường id
+        swal({
+            title: "Cảnh báo",
+            text: "Bạn có chắc chắn muốn hoàn thành lịch hẹn?",
+            buttons: ["Hủy bỏ", "Đồng ý"],
+            dangerMode: true
+        }).then((willDelete) => {
+            if (willDelete) {
+                // Sử dụng Ajax để gửi yêu cầu hoàn thành lịch hẹn
+                $.ajax({
+                    url: "/management/doctor/my-appointment-detail",
+                    type: "POST",
+                    data: { id: id, status: 1 },
+                    success: function (data) {
+                        // Xử lý kết quả trả về từ server
+                        if (data.success) {
+                            swal("Thành công!", "Lịch hẹn đã được hoàn thành.", "success").then(() => {
+                                window.location = "${pageContext.request.contextPath}/management/doctor/my-appointment-detail?id=" + id;
+                            });
+                        } else {
+                            swal("Lỗi!", "Có lỗi xảy ra khi hoàn thành lịch hẹn.", "error");
+                        }
+                    },
+                    error: function () {
+                        swal("Lỗi!", "Có lỗi xảy ra khi hoàn thành lịch hẹn.", "error");
+                    }
+                });
+            }
+        });
+
+        return false; // Ngăn chặn việc gửi yêu cầu submit của form
+    }
+</script>
 </body>
 
 </html>

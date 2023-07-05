@@ -23,8 +23,8 @@ public class PatientDaoImpl implements PatientDao {
             "(id,dob, full_name, gender, phone, address) \n" +
             "VALUES(?, ?, ?, ?, ?, ?)";
     private static final String DETAIL_PATIENT = "SELECT p.id, p.full_name, p.dob, p.gender,p.address,p.description ,p.phone,p.status,a.email \n" +
-        "                       FROM patients p inner join  accounts a on p.id = a.id\n" +
-        "                      where p.id = ?";
+            "                       FROM patients p inner join  accounts a on p.id = a.id\n" +
+            "                      where p.id = ?";
     private static final String DELETE_PATIENT = "DELETE FROM patients " +
             "WHERE id=?";
     private static final String CREATE_PATIENT ="INSERT INTO patients " +
@@ -107,8 +107,8 @@ public class PatientDaoImpl implements PatientDao {
             return Optional.ofNullable(Patient.builder()
                     .fullName(rs.getString("full_name"))
                     .account(Account.builder()
-                                    .email("email")
-                                    .build())
+                            .email("email")
+                            .build())
                     .phone(rs.getString("phone"))
                     .address(rs.getString("address"))
                     .dob(DateUtils.convertDateToLocalDate(rs.getDate("dob")))
@@ -126,14 +126,14 @@ public class PatientDaoImpl implements PatientDao {
     public Long save(Patient patient) throws SQLException,ClassNotFoundException {
         ConnectionUtils.executeUpdate(CREATE_PATIENT,patient.getAccount().getId(), patient.getFullName(), patient.getDob(),
                 patient.getGender(), patient.getPhone(), patient.getAddress(),patient.getCreatedAt());
-      return null;
+        return null;
     }
 
     @Override
     public void update(Patient patient) throws SQLException {
         ConnectionUtils.executeUpdate(UPDATE_PATIENT, patient.getFullName(),
                 patient.getDob(), patient.getGender(), patient.getPhone(), patient.getAddress(),patient.getDescription(),patient.getStatus(),patient.getCreatedAt(),patient.getUpdatedAt(),
-                  patient.getAccount().getId());
+                patient.getAccount().getId());
     }
     @Override
     public void delete(Patient patient) throws SQLException {

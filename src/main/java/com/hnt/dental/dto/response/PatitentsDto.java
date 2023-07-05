@@ -1,16 +1,16 @@
-package com.hnt.dental.entities;
-
+package com.hnt.dental.dto.response;
+import com.hnt.dental.entities.Account;
+import com.hnt.dental.entities.Booking;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@SuperBuilder
-public class Patient extends BaseEntity{
-
+@Builder
+public class PatitentsDto {
     private Booking booking;
     private Account account;
     private String fullName;
@@ -19,11 +19,5 @@ public class Patient extends BaseEntity{
     private String phone;
     private String address;
     private String description;
-
-    private Boolean status;
-    private Long image;
-
-
-
-
+    private Long id;
 }

@@ -39,29 +39,29 @@ public class PatientService {
     }
 
     public void getAll(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-    String page = req.getParameter("page");
-    String search = req.getParameter("search");
-    int pageNumber = 1;
+        String page = req.getParameter("page");
+        String search = req.getParameter("search");
+        int pageNumber = 1;
 
-    if (StringUtils.isNotEmpty(page)) {
-        pageNumber = Integer.parseInt(page);
+        if (StringUtils.isNotEmpty(page)) {
+            pageNumber = Integer.parseInt(page);
+        }
+
+        if(StringUtils.isEmpty(search)) {
+            search = "";
+        }
+        Integer totalItem = patientDao.count(renderSearch(search.trim()));
+        Integer totalPage = PagingUtils.getTotalPage(totalItem);
+
+        List<Patient> patients = patientDao.getAll(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE, renderSearch(search.trim()));
+
+        req.setAttribute("patients", PatientResDto.convert(patients));
+        req.setAttribute("totalPage", totalPage);
+        req.setAttribute("currentPage", pageNumber);
+        req.setAttribute("search", search);
+        req.setAttribute("url", "/management/patient");
+        ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/patient/index.jsp");
     }
-
-    if(StringUtils.isEmpty(search)) {
-        search = "";
-    }
-    Integer totalItem = patientDao.count(renderSearch(search.trim()));
-    Integer totalPage = PagingUtils.getTotalPage(totalItem);
-
-    List<Patient> patients = patientDao.getAll(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE, renderSearch(search.trim()));
-
-    req.setAttribute("patients", PatientResDto.convert(patients));
-    req.setAttribute("totalPage", totalPage);
-    req.setAttribute("currentPage", pageNumber);
-    req.setAttribute("search", search);
-    req.setAttribute("url", "/management/patient");
-    ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/patient/index.jsp");
-}
 
 
     public void patientDetail(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException, ServletException {
@@ -101,7 +101,7 @@ public class PatientService {
                         .build()
         );
         patientDao.save(
-              Patient.builder()
+                Patient.builder()
                         .account(Account.builder().id(id).build())
                         .fullName(fullName)
                         .dob(LocalDate.parse(dob, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
