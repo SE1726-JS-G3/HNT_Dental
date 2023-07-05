@@ -1,4 +1,4 @@
-package com.hnt.dental.controllers;
+package com.hnt.dental.controllers.management;
 
 import com.hnt.dental.dao.PatientDao;
 import com.hnt.dental.dao.impl.PatientDaoImpl;

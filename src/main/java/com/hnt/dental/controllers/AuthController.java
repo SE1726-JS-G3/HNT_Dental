@@ -26,7 +26,6 @@ import java.sql.SQLException;
         "/auth/my-appointment",
         "/auth/my-appointment/detail",
         "/auth/my-patient",
-        "/auth/my-patient",
         "/auth/patient-booking-history",
         "/auth/detail-history-booking"
 

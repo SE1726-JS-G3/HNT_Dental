@@ -2,14 +2,8 @@ package com.hnt.dental.service;
 
 import com.hnt.dental.constant.BookingStatusEnum;
 import com.hnt.dental.constant.PaymentEnum;
-import com.hnt.dental.dao.BookingDao;
-import com.hnt.dental.dao.DoctorDao;
-import com.hnt.dental.dao.PaymentDao;
-import com.hnt.dental.dao.ServiceDao;
-import com.hnt.dental.dao.impl.BookingDaoImpl;
-import com.hnt.dental.dao.impl.DoctorDaoImpl;
-import com.hnt.dental.dao.impl.PaymentDaoImpl;
-import com.hnt.dental.dao.impl.ServiceDaoImpl;
+import com.hnt.dental.dao.*;
+import com.hnt.dental.dao.impl.*;
 import com.hnt.dental.dto.response.*;
 import com.hnt.dental.entities.*;
 import com.hnt.dental.exception.SystemRuntimeException;
@@ -36,6 +30,7 @@ public class BookingService {
 
     private static final ServiceDao dao;
     private static final DoctorDao doctorDao;
+    private static final EmployeeDao edao;
 
     private static final BookingDao adao;
     private static final PaymentDao pdao;
@@ -47,6 +42,7 @@ public class BookingService {
         pdao = new PaymentDaoImpl();
         vnPayService = new VNPayService();
         doctorDao = new DoctorDaoImpl();
+        edao = new EmployeeDaoImpl();
     }
 
     public void renderData(HttpServletRequest req, HttpServletResponse resp) throws Exception {
@@ -261,12 +257,14 @@ public class BookingService {
             Optional<BookingDetailServiceDto> getDetailServiceBooking = adao.getServiceByBookingId(Long.valueOf(id ));
             Optional<BookingDetailDto> getBookingDetailById = adao.getBookingDetailById(Long.valueOf(id));
             List<DoctorSummaryRes> getListDoctorAvailable = doctorDao.getListDoctorAvailable(getBookingDetailById.get().getDate(), getBookingDetailById.get().getTime(), getDetailServiceBooking.get().getTypeId(), getDetailServiceBooking.get().getId());
+            List<Employee> getEmployeeAvailable = edao.getEmployeeAvailable(getBookingDetailById.get().getDate(), getBookingDetailById.get().getTime());
             req.setAttribute("id", id);
             req.setAttribute("patientBooking", getDetailPatientBooking.get());
             req.setAttribute("doctorBooking", getDetailDoctorBooking.get());
             req.setAttribute("serviceBooking", getDetailServiceBooking.get());
             req.setAttribute("booking", getBookingDetailById.get());
             req.setAttribute("doctors", getListDoctorAvailable);
+            req.setAttribute("employee", getEmployeeAvailable);
             req.getRequestDispatcher("/WEB-INF/templates/management/booking/detail.jsp").forward(req, resp);
         } catch (Exception e) {
             System.out.println(e.getMessage());

@@ -174,11 +174,9 @@
                                 <div class="mb-3">
                                     <label class="form-label">Bác sĩ</label>
                                     <select name="staff" class="form-select">
-                                        <option
-                                                class="form-control" value=""></option>
+                                        <option class="form-control" value=""></option>
                                         <c:forEach items="${doctors}" var="doctor">
-                                            <option
-                                                    class="form-control" value="${doctor.id}">${doctor.fullName}</option>
+                                            <option class="form-control" value="${doctor.id}">${doctor.fullName}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -187,8 +185,10 @@
                                 <div class="mb-3">
                                     <label class="form-label">Nhân viên hỗ trợ</label>
                                     <select name="staff" class="form-select">
-                                        <option
-                                                class="form-control" value=""></option>
+                                        <option class="form-control" value=""></option>
+                                        <c:forEach items="${employee}" var="e">
+                                            <option class="form-control" value="${e.id}">${e.fullName}</option>
+                                        </c:forEach>
                                     </select>
                                 </div>
                             </div>
@@ -255,8 +255,6 @@
                         </div>
                     </form>
                 </div>
-
-
                 <%--Staff & doctor--%>
                 <div class="card border-0 shadow overflow-hidden mt-4">
                     <div class="p-4 border-bottom">

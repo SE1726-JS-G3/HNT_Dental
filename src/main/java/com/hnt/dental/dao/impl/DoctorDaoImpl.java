@@ -63,7 +63,7 @@ public class DoctorDaoImpl implements DoctorDao {
             "INNER JOIN service_type st ON st.id = dor.type_id " +
             "WHERE sd.id_service = ? " +
             "  AND st.id = ? " +
-            "  AND d.id <> (" +
+            "  AND d.id NOT IN (" +
             "    SELECT DISTINCT d .id " +
             "    FROM doctors d " +
             "    INNER JOIN booking b ON d.id = b.doctor_id " +
