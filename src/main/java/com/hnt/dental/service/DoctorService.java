@@ -169,11 +169,12 @@ public class DoctorService {
                     BookingDto booking = bookingOptional.get();
                     if (booking.getStatus().equals("0")) {
                         booking.setStatus("1"); // Change the status to "Chấp nhận"
-                        dao.updateBookingStatus(BookingDto.builder()
-                                .id(id)
-                                .status(String.valueOf(Integer.parseInt(status)))
-                                .build()
-                        ); // Update the booking status in the database using your DAO or service class
+//                        dao.updateBookingStatus(BookingDto.builder()
+//                                .id(id)
+//                                .status(String.valueOf(Integer.parseInt(status)))
+//                                .build()
+                        booking.setStatus("1");
+                        dao.updateBookingStatus(booking);// Update the booking status in the database using your DAO or service class
                     }
                 }
             } catch (Exception e) {
@@ -181,7 +182,8 @@ public class DoctorService {
             }
 
             if (StringUtils.isNotEmpty(error)) {
-                ServletUtils.redirect(req, resp, "/management/doctor/my-appointment-detail?id=" + id + "&error=" + error);
+//                ServletUtils.redirect(req, resp, "/management/doctor/my-appointment-detail?id=" + id + "&error=" + error);
+                resp.sendRedirect("/management/doctor/my-appointment-detail?id=" + id + "&error=" + error);
             } else {
                 ServletUtils.redirect(req, resp, "/management/doctor/my-appointment-detail?id=" + id);
 //                ServletUtils.redirect(req, resp, "/management/doctor/MyAppointment"); // Redirect to the appointment list page
