@@ -48,8 +48,8 @@ public class BookingDaoImpl implements BookingDao {
             "where b.id = ? ";
     private static final String SQL_GET_BOOKING_DETAIL_BY_BOOKING_ID = "select b.date, b.time,b.status as statusBooking, d.full_name as doctorName ," +
             " e.full_name as employeeName, p.status as statusPayment, p.type, b.decription  from booking b " +
-            "inner join doctors d on b.doctor_id = d.id " +
-            "inner join employees e on e.id = b.staff_id " +
+            "LEFT join doctors d on b.doctor_id = d.id " +
+            "LEFT join employees e on e.id = b.staff_id " +
             "inner join payment p on p.booking_id = b.id " +
             "where b.id = ? ";
     private static final String HISTORY_PATIENT = "SELECT  b.fee ,b.account_id, b.status ,b.time,b.date ,s.name  FROM booking b join service s \n" +
@@ -60,6 +60,7 @@ public class BookingDaoImpl implements BookingDao {
     private static final String UPDATE_BOOKING_FOR_MARKETING = "UPDATE hnt_dental.booking " +
             "SET   doctor_id=?, staff_id=?, status=? " +
             "WHERE id=? ";
+
     @Override
     public void updateBookingDetail(Booking bookingDetailDto) throws SQLException {
         ConnectionUtils.executeUpdate(UPDATE_BOOKING_FOR_MARKETING, bookingDetailDto.getDoctors().getId(),
@@ -195,84 +196,83 @@ public class BookingDaoImpl implements BookingDao {
 
 
     @Override
-    public Optional<BookingDetailPatientDto> getPatientByBookingId(Long id) throws SQLException {
+    public BookingDetailPatientDto getPatientByBookingId(Long id) throws SQLException {
+        BookingDetailPatientDto bookingDetailPatientDto = new BookingDetailPatientDto();
         ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_PATIENT, id);
         if (rs.next()) {
-            return Optional.ofNullable(
-                    BookingDetailPatientDto
-                            .builder()
-                            .id(rs.getLong("id"))
-                            .name(rs.getString("name"))
-                            .gender(rs.getBoolean("gender"))
-                            .phone(rs.getString("phone"))
-                            .age(rs.getInt("age"))
-                            .build()
-            );
+            bookingDetailPatientDto = BookingDetailPatientDto
+                    .builder()
+                    .id(rs.getLong("id"))
+                    .name(rs.getString("name"))
+                    .gender(rs.getBoolean("gender"))
+                    .phone(rs.getString("phone"))
+                    .age(rs.getInt("age"))
+                    .build();
         }
         ConnectionUtils.closeConnection();
-        return Optional.empty();
+        return bookingDetailPatientDto;
     }
 
     @Override
-    public Optional<BookingDetailDoctorDto> getDoctorByBookingId(Long id) throws SQLException {
+    public BookingDetailDoctorDto getDoctorByBookingId(Long id) throws SQLException {
+        BookingDetailDoctorDto bookingDetailDoctorDto = new BookingDetailDoctorDto();
         ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_DOCTOR, id);
         if (rs.next()) {
-            return Optional.ofNullable(
-                    BookingDetailDoctorDto
-                            .builder()
-                            .id(rs.getLong("id"))
-                            .doctors(
-                                    Doctors.builder()
-                                            .fullName(rs.getString("full_name"))
-                                            .gender(rs.getBoolean("gender"))
-                                            .position(rs.getString("position"))
-                                            .image(rs.getString("image"))
-                                            .build())
-                            .doctorRank(
-                                    DoctorRank.builder()
-                                            .name(rs.getString("name"))
-                                            .build())
-                            .build());
+            bookingDetailDoctorDto = BookingDetailDoctorDto
+                    .builder()
+                    .id(rs.getLong("id"))
+                    .doctors(
+                            Doctors.builder()
+                                    .fullName(rs.getString("full_name"))
+                                    .gender(rs.getBoolean("gender"))
+                                    .position(rs.getString("position"))
+                                    .image(rs.getString("image"))
+                                    .build())
+                    .doctorRank(
+                            DoctorRank.builder()
+                                    .name(rs.getString("name"))
+                                    .build())
+                    .build();
         }
         ConnectionUtils.closeConnection();
-        return Optional.empty();
+        return bookingDetailDoctorDto;
     }
 
     @Override
-    public Optional<BookingDetailServiceDto> getServiceByBookingId(Long id) throws SQLException {
+    public BookingDetailServiceDto getServiceByBookingId(Long id) throws SQLException {
+        BookingDetailServiceDto bookingDetailServiceDto = new BookingDetailServiceDto();
         ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_SERVICE_BY_BOOKING_ID, id);
         if (rs.next()) {
-            return Optional.ofNullable(
-                    BookingDetailServiceDto
-                            .builder()
-                            .id(rs.getLong("id"))
-                            .name(rs.getString("name"))
-                            .image(rs.getString("image"))
-                            .type(rs.getString("serviceType"))
-                            .fee(rs.getDouble("fee"))
-                            .typeId(rs.getLong("typeID"))
-                            .build());
+            bookingDetailServiceDto = BookingDetailServiceDto
+                    .builder()
+                    .id(rs.getLong("id"))
+                    .name(rs.getString("name"))
+                    .image(rs.getString("image"))
+                    .type(rs.getString("serviceType"))
+                    .fee(rs.getDouble("fee"))
+                    .typeId(rs.getLong("typeID"))
+                    .build();
         }
-        return Optional.empty();
+        return bookingDetailServiceDto;
     }
 
     @Override
-    public Optional<BookingDetailDto> getBookingDetailById(Long id) throws SQLException {
+    public BookingDetailDto getBookingDetailById(Long id) throws SQLException {
+        BookingDetailDto bookingDetailDto = new BookingDetailDto();
         ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_BOOKING_DETAIL_BY_BOOKING_ID, id);
         if (rs.next()) {
-            return Optional.ofNullable(
-                    BookingDetailDto
-                            .builder()
-                            .date(rs.getDate("date").toLocalDate())
-                            .time(rs.getTime("time").toLocalTime())
-                            .status(BookingStatusEnum.getBookingStatusString(rs.getInt("statusBooking")))
-                            .doctors(Doctors.builder().fullName(rs.getString("doctorName")).build())
-                            .employee(Employee.builder().fullName(rs.getString("employeeName")).build())
-                            .payment(Payment.builder().status(rs.getBoolean("statusPayment")).type(rs.getInt("type")).build())
-                            .decription(rs.getString("decription"))
-                            .paymentType(PaymentEnum.getPaymentString(rs.getInt("type")))
-                            .build());
+            bookingDetailDto = BookingDetailDto
+                    .builder()
+                    .date(rs.getDate("date").toLocalDate())
+                    .time(rs.getTime("time").toLocalTime())
+                    .status(BookingStatusEnum.getBookingStatusString(rs.getInt("statusBooking")))
+                    .doctors(Doctors.builder().fullName(rs.getString("doctorName")).build())
+                    .employee(Employee.builder().fullName(rs.getString("employeeName")).build())
+                    .payment(Payment.builder().status(rs.getBoolean("statusPayment")).type(rs.getInt("type")).build())
+                    .decription(rs.getString("decription"))
+                    .paymentType(PaymentEnum.getPaymentString(rs.getInt("type")))
+                    .build();
         }
-        return Optional.empty();
+        return bookingDetailDto;
     }
 }

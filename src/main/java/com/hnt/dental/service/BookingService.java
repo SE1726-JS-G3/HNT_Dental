@@ -23,7 +23,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.io.EOFException;
 
 
 public class BookingService {
@@ -252,17 +251,16 @@ public class BookingService {
     public void getDetailBooking(HttpServletRequest req, HttpServletResponse resp) {
         String id = req.getParameter("id");
         try {
-            Optional<BookingDetailPatientDto> getDetailPatientBooking = adao.getPatientByBookingId(Long.valueOf(id))
-            Optional<BookingDetailDoctorDto> getDetailDoctorBooking = adao.getDoctorByBookingId(Long.valueOf(id));
-            Optional<BookingDetailServiceDto> getDetailServiceBooking = adao.getServiceByBookingId(Long.valueOf(id));
-            Optional<BookingDetailDto> getBookingDetailById = adao.getBookingDetailById(Long.valueOf(id));
-            List<DoctorSummaryRes> getListDoctorAvailable = doctorDao.getListDoctorAvailable(getBookingDetailById.get().getDate(), getBookingDetailById.get().getTime(), getDetailServiceBooking.get().getTypeId(), getDetailServiceBooking.get().getId());
-            List<Employee> getEmployeeAvailable = edao.getEmployeeAvailable(getBookingDetailById.get().getDate(), getBookingDetailById.get().getTime());
-            req.setAttribute("id", id);
-            req.setAttribute("patientBooking", getDetailPatientBooking.get());
-            req.setAttribute("doctorBooking", getDetailDoctorBooking.get());
-            req.setAttribute("serviceBooking", getDetailServiceBooking.get());
-            req.setAttribute("booking", getBookingDetailById.get());
+            BookingDetailPatientDto getDetailPatientBooking = adao.getPatientByBookingId(Long.valueOf(id));
+            BookingDetailServiceDto getDetailServiceBooking = adao.getServiceByBookingId(Long.valueOf(id));
+            BookingDetailDoctorDto getDetailDoctorBooking = adao.getDoctorByBookingId(Long.valueOf(id));
+            BookingDetailDto getBookingDetailById = adao.getBookingDetailById(Long.valueOf(id));
+            List<DoctorSummaryRes> getListDoctorAvailable = doctorDao.getListDoctorAvailable(getBookingDetailById.getDate(), getBookingDetailById.getTime(), getDetailServiceBooking.getTypeId(), getDetailServiceBooking.getId());
+            List<Employee> getEmployeeAvailable = edao.getEmployeeAvailable(getBookingDetailById.getDate(), getBookingDetailById.getTime());
+            req.setAttribute("patientBooking", getDetailPatientBooking);
+            req.setAttribute("doctorBooking", getDetailDoctorBooking);
+            req.setAttribute("serviceBooking", getDetailServiceBooking);
+            req.setAttribute("booking", getBookingDetailById);
             req.setAttribute("doctors", getListDoctorAvailable);
             req.setAttribute("employee", getEmployeeAvailable);
             req.getRequestDispatcher("/WEB-INF/templates/management/booking/detail.jsp").forward(req, resp);
@@ -276,8 +274,8 @@ public class BookingService {
         String doctor = req.getParameter("doctor");
         String staff = req.getParameter("staff");
         String status = req.getParameter("status");
-        String payment_type = req.getParameter("payment_type");
-        String payment_status = req.getParameter("payment_status");
+        String paymentType = req.getParameter("payment_type");
+        String paymentStatus = req.getParameter("payment_status");
 
         String id = req.getParameter("id");
 
@@ -289,8 +287,8 @@ public class BookingService {
                 .status(BookingStatusEnum.getBookingStatusEnum(status).ordinal())
                 .build());
         pdao.updatePaymentForMarketing(Payment.builder()
-                .status(payment_status.equals("1"))
-                .type(PaymentEnum.getPaymentEnum(payment_type).ordinal())
+                .status(paymentStatus.equals("1"))
+                .type(PaymentEnum.getPaymentEnum(paymentType).ordinal())
                 .serviceFee(ServiceFee.builder().fee(Double.valueOf(fee)).build())
                 .booking(Booking.builder().id(Long.valueOf(id)).build())
                 .build());
