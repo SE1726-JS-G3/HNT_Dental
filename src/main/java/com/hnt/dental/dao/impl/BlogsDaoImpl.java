@@ -75,7 +75,7 @@ public class BlogsDaoImpl implements BlogDao {
 
         List<BlogsSummaryRes> result = new ArrayList<>();
 
-        if (rs.next()) {
+        while (rs.next()) {
             BlogsSummaryRes blogSummary = new BlogsSummaryRes();
             blogSummary.setId(rs.getLong("id"));
             blogSummary.setCategoryBlog(new CategoryBlog(rs.getLong("category_id"), rs.getString("category_name")));
@@ -140,7 +140,7 @@ public class BlogsDaoImpl implements BlogDao {
     public Blogs getBlogID(int id) throws Exception {
         Blogs blogs = new Blogs();
         ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_BLOGS_BY_ID, id);
-        if (rs.next()) {
+        while (rs.next()) {
             CategoryBlog categoryBlog = CategoryBlog.builder()
                     .name(rs.getString("name"))
                     .build();
