@@ -60,28 +60,35 @@ public class BlogsDaoImpl implements BlogDao {
     private static final String SQL_LIST_CATEGORY = "select id, name from category_blog";
 
     @Override
-    public List<BlogsSummaryRes> getListBlogsFilter(Integer offset, Integer limit, String search, String oder, Integer categoryId) throws SQLException {
+    public List<BlogsSummaryRes> getListBlogsFilter(Integer offset, Integer limit, String search, String order, Integer categoryId) throws SQLException {
         search = "%" + search + "%";
         ResultSet rs;
-        if(categoryId != null) {
-            rs = ConnectionUtils.executeQuery(SQL_GET_ALL_ID_CATEGORY, search,search,search,categoryId, oder,limit,offset);
+        String sqlQuery;
+
+        if (categoryId != null) {
+            sqlQuery = SQL_GET_ALL_ID_CATEGORY;
+            rs = ConnectionUtils.executeQuery(sqlQuery, search, search, search, categoryId, order, limit, offset);
         } else {
-            rs = ConnectionUtils.executeQuery(SQL_GET_ALL_CATEGORY, search,search,search,oder,limit,offset);
+            sqlQuery = SQL_GET_ALL_CATEGORY;
+            rs = ConnectionUtils.executeQuery(sqlQuery, search, search, search, order, limit, offset);
         }
-        
+
         List<BlogsSummaryRes> result = new ArrayList<>();
-        while (rs.next()) {
-            result.add(BlogsSummaryRes.builder()
-                    .id(rs.getLong("id"))
-                    .categoryBlog(new CategoryBlog(rs.getLong("category_id"), rs.getString("category_name")))
-                    .title(rs.getString("title"))
-                    .title_img(rs.getString("title_img"))
-                    .brief(rs.getString("brief"))
-                    .description(rs.getString("description"))
-                    .build());
+
+        if (rs.next()) {
+            BlogsSummaryRes blogSummary = new BlogsSummaryRes();
+            blogSummary.setId(rs.getLong("id"));
+            blogSummary.setCategoryBlog(new CategoryBlog(rs.getLong("category_id"), rs.getString("category_name")));
+            blogSummary.setTitle(rs.getString("title"));
+            blogSummary.setTitle_img(rs.getString("title_img"));
+            blogSummary.setBrief(rs.getString("brief"));
+            blogSummary.setDescription(rs.getString("description"));
+            result.add(blogSummary);
         }
+
         return result;
     }
+
 
     @Override
     public List<Blogs> getAll(Integer offset, Integer limit, String search) throws SQLException {
@@ -133,25 +140,30 @@ public class BlogsDaoImpl implements BlogDao {
     public Blogs getBlogID(int id) throws Exception {
         Blogs blogs = new Blogs();
         ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_BLOGS_BY_ID, id);
-        while (rs.next()) {
-            blogs = Blogs.builder()
-                    .id((long) rs.getInt("id"))
-                    .title(rs.getString("title"))
-                    .title_img(rs.getString("title_img"))
-                    .description(rs.getString("description"))
-                    .brief(rs.getString("brief"))
-                    .categoryBlog(
-                            CategoryBlog.builder()
-                                    .id(rs.getLong("category_id"))
-                                    .name((rs.getString("name")))
-                                    .build()
-                    )
-                    .employee(Employee.builder().fullName(rs.getString("full_name")).build())
+        if (rs.next()) {
+            CategoryBlog categoryBlog = CategoryBlog.builder()
+                    .name(rs.getString("name"))
                     .build();
-            return blogs;
+
+            if (rs.getObject("category_id") != null) {
+                categoryBlog.setId(rs.getLong("category_id"));
+            }
+
+            Employee employee = Employee.builder()
+                    .fullName(rs.getString("full_name"))
+                    .build();
+
+            blogs.setId(rs.getLong("id"));
+            blogs.setTitle(rs.getString("title"));
+            blogs.setTitle_img(rs.getString("title_img"));
+            blogs.setDescription(rs.getString("description"));
+            blogs.setBrief(rs.getString("brief"));
+            blogs.setCategoryBlog(categoryBlog);
+            blogs.setEmployee(employee);
         }
         return blogs;
     }
+
 
     @Override
     public List<BlogsSummaryRes> getListBlogRelated(long id, long categoryId) throws SQLException {
@@ -170,5 +182,4 @@ public class BlogsDaoImpl implements BlogDao {
         }
         return result;
     }
-
 }

@@ -9,7 +9,11 @@ import lombok.*;
 @Builder
 public class CategoryBlog extends BaseEntity{
 
-    private Long id;
+
     private String name;
+    public CategoryBlog(Long id, String name) {
+        super.setId(id);
+        this.name = name;
+    }
 
 }
