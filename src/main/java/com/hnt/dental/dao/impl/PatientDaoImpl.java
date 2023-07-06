@@ -63,7 +63,8 @@ public class PatientDaoImpl implements PatientDao {
                     .description(rs.getString("description"))
                     .phone(String.valueOf(rs.getInt("phone")))
                     .address(rs.getString("address"))
-                    .status(Boolean.parseBoolean(rs.getString("status")))
+                    //.status(Boolean.parseBoolean(rs.getString("status")))
+                    .status(rs.getBoolean("status"))
                     .build());
         }
         return null;
@@ -114,7 +115,7 @@ public class PatientDaoImpl implements PatientDao {
                     .dob(DateUtils.convertDateToLocalDate(rs.getDate("dob")))
                     .gender(rs.getBoolean("gender"))
                     .description(rs.getString("description"))
-
+                    .status(rs.getBoolean("status"))
                     .build());
         }
         ConnectionUtils.closeConnection();

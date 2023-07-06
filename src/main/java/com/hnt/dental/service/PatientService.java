@@ -81,17 +81,21 @@ public class PatientService {
         ServletUtils.redirect(req, resp, "/management/patient");
     }
 
-
     public void create(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        String fullName = req.getParameter("full_name");
-        String dob = req.getParameter("dob");
-        String gender = req.getParameter("gender");
-        String email = req.getParameter("email");
-        String phone = req.getParameter("phone");
-        String address = req.getParameter("address");
-        String description = req.getParameter("description");
-        String password = AesUtils.encrypt(CaptchaUtils.getCaptcha(8));
-        RoleEnum role = RoleEnum.ROLE_PATIENT;
+    String fullName = req.getParameter("full_name");
+    String dob = req.getParameter("dob");
+    String gender = req.getParameter("gender");
+    String email = req.getParameter("email");
+    String phone = req.getParameter("phone");
+    String address = req.getParameter("address");
+    String description = req.getParameter("description");
+    String password = AesUtils.encrypt(CaptchaUtils.getCaptcha(8));
+    RoleEnum role = RoleEnum.ROLE_PATIENT;
+    String error = null;
+    try {
+        if (accountDao.findByEmail(email) != null) {
+            throw new SystemRuntimeException(StringUtils.join("Email ", email, " already exists"));
+        }
         Long id = accountDao.save(
                 Account.builder()
                         .email(email)
@@ -101,7 +105,7 @@ public class PatientService {
                         .build()
         );
         patientDao.save(
-              Patient.builder()
+                Patient.builder()
                         .account(Account.builder().id(id).build())
                         .fullName(fullName)
                         .dob(LocalDate.parse(dob, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
@@ -111,8 +115,18 @@ public class PatientService {
                         .description(description)
                         .build()
         );
+    } catch (Exception e) {
+        error = e.getMessage();
+    }
+    if (StringUtils.isNotEmpty(error)) {
+        ServletUtils.redirect(req, resp, "/management/patient/create?error=" + error);
+
+    } else {
         ServletUtils.redirect(req, resp, "/management/patient");
     }
+}
+
+
 
     public void update(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         Long id = Long.valueOf(req.getParameter("id"));
@@ -143,7 +157,7 @@ public class PatientService {
                             .account(Account.builder().id(id).build())
                             .fullName(fullname)
                             .dob(LocalDate.parse(dob, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-                            .gender(Objects.equals(gender, "nam"))
+                            .gender(Objects.equals(gender,"nam"))
                             .phone(phone)
                             .status(Objects.equals(status, "active"))
                             .address(address)

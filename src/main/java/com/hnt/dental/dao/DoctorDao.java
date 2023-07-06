@@ -18,4 +18,6 @@ public interface DoctorDao extends GenericDao<Doctors> {
     Integer countListDoctorSummary(String search) throws SQLException;
 
     List<DoctorDetailDto> getTopDoctor() throws SQLException;
+
+    List<DoctorSummaryRes> serviceDoctor() throws SQLException;
 }

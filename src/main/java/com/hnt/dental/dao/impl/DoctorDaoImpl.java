@@ -1,12 +1,13 @@
 package com.hnt.dental.dao.impl;
 
 import com.hnt.dental.dao.DoctorDao;
+import com.hnt.dental.dao.ServiceDao;
 import com.hnt.dental.dto.response.DoctorDetailDto;
 import com.hnt.dental.dto.response.DoctorSummaryRes;
 import com.hnt.dental.dto.response.ServiceResDto;
 import com.hnt.dental.entities.Doctors;
 import com.hnt.dental.util.ConnectionUtils;
-
+import com.hnt.dental.entities.Service;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,6 +15,13 @@ import java.util.List;
 import java.util.Optional;
 
 public class DoctorDaoImpl implements DoctorDao {
+    private static ServiceDao serviceDao;
+
+    static {
+        serviceDao = new ServiceDaoImpl();
+    }
+
+
     private static final String SQL_GET_ALL_SERVICE_BY_ID_DOCTOR = "select s.id, s.name, GROUP_CONCAT(st.name SEPARATOR ',')" +
             " as type, CONCAT(MIN(sf.fee), ' ~ ', MAX(sf.fee)) as fee, s.image from service s " +
             "inner join service_doctor sd on sd.id_service = s.id " +
@@ -50,6 +58,9 @@ public class DoctorDaoImpl implements DoctorDao {
             "    d.id";
     private static final String SQL_GET_TOP_DOCTOR = "select * from doctors\n" +
             "ORDER BY RAND() LIMIT 4";
+
+    private static final String MY_DOCTOR = "SELECT d.full_name ,d.id ,s.name ,s.created_at FROM doctors d  INNER JOIN service s  ON d.id = s.id";
+
 
     @Override
     public List<Doctors> getAll(Integer offset, Integer limit, String search) throws SQLException {
@@ -160,4 +171,27 @@ public class DoctorDaoImpl implements DoctorDao {
         }
         return result;
     }
+
+    @Override
+    public List<DoctorSummaryRes> serviceDoctor() throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(MY_DOCTOR);
+        List<DoctorSummaryRes> list = new ArrayList<>();
+
+        while (true) {
+            assert rs != null;
+            if (!rs.next()) break;
+            list.add(DoctorSummaryRes
+                    .builder().service(Service.builder()
+                            .name(rs.getString("name"))
+                            .createdAt(rs.getDate("created_at").toLocalDate().atStartOfDay())
+                            .build())
+                    .id(rs.getLong("id"))
+                    .fullName(rs.getString("full_name"))
+                    .build());
+        }
+        return list;
+
+    }
+
+
 }

@@ -12,6 +12,13 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
+import java.sql.SQLException;
+import java.util.List;
+import java.io.EOFException;
+import java.io.IOException;
+import jakarta.servlet.ServletException;
+import com.hnt.dental.util.ServletUtils;
+import com.hnt.dental.exception.SystemRuntimeException;
 
 public class DoctorService {
 
@@ -73,6 +80,28 @@ public class DoctorService {
 
     public List<DoctorDetailDto> getTopDoctor() throws Exception {
         return dao.getTopDoctor();
+    }
+
+    public void myDoctor(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException, ServletException, SQLException {
+        resp.setContentType("text/html;charset=UTF-8");
+        DoctorDao dao = new DoctorDaoImpl();
+        List<DoctorSummaryRes> list = null;
+
+        try {
+            list = dao.serviceDoctor();
+            int page =1;
+            String pageStr = req.getParameter("page");
+            if(pageStr!=null){
+                page = Integer.parseInt(pageStr);
+            }
+            final int PAGE_SIZE =2;
+            req.setAttribute("list", list.subList((page-1)*PAGE_SIZE,page*PAGE_SIZE));
+            // ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/doctor/mydoctor.jsp");
+            ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/my-doctor.jsp");
+        } catch (SQLException e) {
+            //throw new SystemRuntimeException(e.getMessage());
+
+        }
     }
 
 

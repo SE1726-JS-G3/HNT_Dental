@@ -94,15 +94,17 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Giới tính</label>
-                                            <select name="gender" id="gender" class="form-select form-control">
-                                                <option value="nu">Nữ</option>
-                                                <c:if test="${detail.gender == false}">
-                                                    selected
-                                                </c:if>
-                                                <option value="nam">Nam</option>
+                                            <select name="gender" class="form-select form-control">
+                                                <option value="nam"
                                                 <c:if test="${detail.gender == true}">
                                                     selected
                                                 </c:if>
+                                                >Nam</option>
+                                                <option value="nu"
+                                                <c:if test="${detail.gender == false}">
+                                                    selected
+                                                </c:if>
+                                                >Nữ</option>
                                             </select>
                                         </div>
                                     </div>
@@ -111,14 +113,17 @@
                                         <div class="mb-3">
                                             <label class="form-label">Trạng thái</label>
                                             <select name="status" class="form-select form-control">
-                                                <option value="notActive">nactive</option>
+                                                <option value="active"
+                                                        <c:if test="${detail.status == true}">
+                                                            selected
+                                                        </c:if>
+                                                >active</option>
+                                                <option value="nactive"
                                                 <c:if test="${detail.status == false}">
                                                     selected
                                                 </c:if>
-                                                <option value="active">active</option>
-                                                <c:if test="${detail.status == true}">
-                                                    selected
-                                                </c:if>
+                                                >nactive</option>
+
                                             </select>
                                         </div>
                                     </div>

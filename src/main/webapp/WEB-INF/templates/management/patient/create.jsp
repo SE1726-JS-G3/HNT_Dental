@@ -43,7 +43,7 @@
                                 </div><!--end col-->
                             </div><!--end row-->
 
-                            <form class="mt-4" action="${pageContext.request.contextPath}/management/patient/create" method="post">
+                            <form class="mt-4" action="${pageContext.request.contextPath}/management/patient/create" method="post" onSubmit="return validateForm()">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
@@ -56,7 +56,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Ngày sinh</label>
-                                            <input name="dob" id="name2" type="text" class="form-control"
+                                            <input name="dob" id="dob" type="text" class="form-control"
                                                    placeholder="DD/MM/YYYY">
                                         </div>
                                     </div><!--end col-->
@@ -118,5 +118,78 @@
 <script src="${pageContext.request.contextPath}/static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function validateForm() {
+        var fullName = document.getElementById('name').value;
+        var dob = document.getElementById('dob').value;
+        var email = document.getElementById('email').value;
+        var address = document.getElementById('address').value;
+        var phone = document.getElementById('phone').value;
+
+
+        if (fullName.trim() === '') {
+            displayErrorMessage('Họ và tên không được bỏ trống');
+            return false;
+        }
+        if (dob.trim() === '') {
+            displayErrorMessage('Ngày sinh không được bỏ trống');
+            return false;
+        }
+        if (!isValidDateFormat(dob)) {
+            displayErrorMessage('Ngày sinh phải có định dạng YYYY-MM-DD');
+            return false;
+        }
+        if (email.trim() === '') {
+            displayErrorMessage('Email không được bỏ trống');
+            return false;
+        }
+        if (address.trim() === '') {
+            displayErrorMessage('Địa chỉ không được bỏ trống');
+            return false;
+        }
+        if (phone.trim() === '') {
+            displayErrorMessage('Điện thoại không được bỏ trống');
+            return false;
+        }
+        if (!isValidPhoneNumber(phone)) {
+            displayErrorMessage('Số điện thoại chỉ có được nhập 10 chữ số (số 0 tự thêm sẵn)');
+            return false;
+        }
+        displaySuccessMessage('Thông tin đã được cập nhật thành công');
+        return true;
+    }
+
+    function isValidDateFormat(dateString) {
+        var pattern = /^\d{4}-\d{2}-\d{2}$/;
+        return pattern.test(dateString);
+    }
+    function isValidPhoneNumber(phone) {
+        var pattern = /^\d{10}$/;
+        return pattern.test(phone);
+    }
+    function displayErrorMessage(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: message,
+            timer: 40000,
+            showConfirmButton: false
+        });
+    }
+
+    function displaySuccessMessage(message) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: message,
+            timer: 40000,
+            showConfirmButton: false
+        });
+    }
+</script>
 </body>
 </html>
