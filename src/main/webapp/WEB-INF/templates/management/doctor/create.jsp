@@ -63,6 +63,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Email</label>
                                             <input name="email" id="email" type="email" class="form-control" placeholder="Email :">
+                                            <label id="email-error" class="error" for="email" style="display: none;"></label>
                                         </div>
                                     </div><!--end col-->
 
@@ -160,6 +161,7 @@
         var phone = document.getElementById('phone').value;
         var position = document.getElementById('position').value;
         var rankId = document.getElementById('rankId').value;
+
         // Perform field validation
         if (fullName.trim() === '') {
             displayErrorMessage('Họ và tên không được bỏ trống');
@@ -177,6 +179,10 @@
             displayErrorMessage('Email không được bỏ trống');
             return false;
         }
+        if (!isValidEmailAddress(email)) {
+            displayErrorMessage('Email không hợp lệ');
+            return false;
+        }
         if (address.trim() === '') {
             displayErrorMessage('Địa chỉ không được bỏ trống');
             return false;
@@ -186,10 +192,9 @@
             return false;
         }
         if (!isValidPhoneNumber(phone)) {
-            displayErrorMessage('Số điện thoại chỉ có được nhập 10 chữ số (số 0 tự thêm sẵn)');
+            displayErrorMessage('Số điện thoại chỉ được nhập 10 chữ số');
             return false;
         }
-
         if (position.trim() === '') {
             displayErrorMessage('Chuyên môn không được bỏ trống');
             return false;
@@ -213,24 +218,31 @@
         var pattern = /^\d{4}-\d{2}-\d{2}$/;
         return pattern.test(dateString);
     }
+
+    function isValidEmailAddress(email) {
+        // Kiểm tra định dạng email hợp lệ
+        var pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return pattern.test(email);
+    }
+
     function isValidRankId(rankId) {
         // Kiểm tra xếp hạng chỉ từ 1 đến 10
         var rankNumber = parseInt(rankId, 10);
         return rankNumber >= 1 && rankNumber <= 10;
     }
+
     function isValidPhoneNumber(phone) {
         // Kiểm tra số điện thoại có 10 chữ số
         var pattern = /^\d{10}$/;
         return pattern.test(phone);
     }
-
     // Các hàm hiển thị thông báo lỗi và thành công không thay đổi.
     function displayErrorMessage(message) {
         Swal.fire({
             icon: 'error',
             title: 'Lỗi',
             text: message,
-            timer: 40000, // Hiển thị thông báo trong 30 giây
+            timer: 50000, // Hiển thị thông báo trong 30 giây
             showConfirmButton: false // Ẩn nút xác nhận
         });
     }
@@ -240,10 +252,11 @@
             icon: 'success',
             title: 'Thành công',
             text: message,
-            timer: 40000, // Hiển thị thông báo trong 30 giây
+            timer: 50000, // Hiển thị thông báo trong 30 giây
             showConfirmButton: false // Ẩn nút xác nhận
         });
     }
 </script>
+
 </body>
 </html>

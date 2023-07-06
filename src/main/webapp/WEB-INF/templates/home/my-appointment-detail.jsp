@@ -18,11 +18,11 @@
                     <div class="p-4 border-bottom">
                         <h5 class="mb-0">Lịch hẹn của tôi</h5>
                         <p style="color: blue; text-align: center;">
-                            ${requestScope.updatesuccess}
+                            ${requestScope.updateBookingStatus}
                         </p>
                     </div>
                     <div class="p-4">
-                        <form action="/management/doctor/my-appointment-detail" method="post" onsubmit="return confirmSubmit(${details.id});"><!-- Fix: Added form action -->
+                        <form action="${pageContext.request.contextPath}/management/doctor/my-appointment-detail" method="post">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
@@ -102,41 +102,21 @@
 <script src="${pageContext.request.contextPath}/static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/toastr@2.1.4"></script>
 <script>
-    function confirmSubmit(id) {
-        var id = $("input[name='id']").val(); // Lấy giá trị của trường id
-        swal({
-            title: "Cảnh báo",
-            text: "Bạn có chắc chắn muốn hoàn thành lịch hẹn?",
-            buttons: ["Hủy bỏ", "Đồng ý"],
-            dangerMode: true
-        }).then((willDelete) => {
-            if (willDelete) {
-                // Sử dụng Ajax để gửi yêu cầu hoàn thành lịch hẹn
-                $.ajax({
-                    url: "/management/doctor/my-appointment-detail",
-                    type: "POST",
-                    data: { id: id, status: 1 },
-                    success: function (data) {
-                        // Xử lý kết quả trả về từ server
-                        if (data.success) {
-                            swal("Thành công!", "Lịch hẹn đã được hoàn thành.", "success").then(() => {
-                                window.location = "${pageContext.request.contextPath}/management/doctor/my-appointment-detail?id=" + id;
-                            });
-                        } else {
-                            swal("Lỗi!", "Có lỗi xảy ra khi hoàn thành lịch hẹn.", "error");
-                        }
-                    },
-                    error: function () {
-                        swal("Lỗi!", "Có lỗi xảy ra khi hoàn thành lịch hẹn.", "error");
-                    }
-                });
+    document.getElementById("submit").addEventListener("click", function() {
+        Swal.fire({
+            icon: 'success',
+            title: 'Hoàn thành lịch hẹn',
+            text: 'Lịch hẹn đã được hoàn thành!',
+            timer: 50000,
+            showConfirmButton: false,
+            position: 'top-right',
+            didClose: function() {
+                form.submit(); // Gửi form sau khi thông báo đã đóng
             }
         });
-
-        return false; // Ngăn chặn việc gửi yêu cầu submit của form
-    }
+    });
 </script>
 </body>
 
