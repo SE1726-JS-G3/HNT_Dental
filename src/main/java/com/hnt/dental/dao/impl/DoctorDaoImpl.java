@@ -7,6 +7,7 @@ import com.hnt.dental.dto.response.ServiceResDto;
 import com.hnt.dental.entities.Doctors;
 import com.hnt.dental.util.ConnectionUtils;
 
+import javax.management.MBeanAttributeInfo;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -26,6 +27,7 @@ public class DoctorDaoImpl implements DoctorDao {
             "group by s.id";
     private static final String SQL_GET_DOCTOR_BY_ID = "select * from doctors " +
             "where id = ?";
+
 
     private static final String SQL_GET_SUMMARY = "SELECT" +
             "  d.id," +
@@ -50,8 +52,42 @@ public class DoctorDaoImpl implements DoctorDao {
             "    d.full_name LIKE ?" +
             "  ORDER BY" +
             "    d.id";
-    private static final String SQL_GET_TOP_DOCTOR = "select * from doctors\n" +
+    private static final String SQL_GET_TOP_DOCTOR = "select * from doctors " +
             "ORDER BY RAND() LIMIT 4";
+
+    private static final String SQL_GET_LIST_DOCTOR_AVAILABLE = "SELECT DISTINCT d.full_name, d.id " +
+            "FROM doctors d " +
+            "INNER JOIN service_doctor sd ON d.id = sd.id_doctor " +
+            "INNER JOIN doctor_rank dr ON dr.id = d.rank_id " +
+            "INNER JOIN doctor_of_rank dor ON dor.rank_id = dr.id " +
+            "INNER JOIN service_type st ON st.id = dor.type_id " +
+            "WHERE sd.id_service = ? " +
+            "  AND st.id = ? " +
+            "  AND d.id NOT IN (" +
+            "    SELECT DISTINCT d .id " +
+            "    FROM doctors d " +
+            "    INNER JOIN booking b ON d.id = b.doctor_id " +
+            "    INNER JOIN service_doctor sd ON d.id = sd.id_doctor " +
+            "    INNER JOIN doctor_rank dr ON dr.id = d.rank_id " +
+            "    INNER JOIN doctor_of_rank dor ON dor.rank_id = dr.id " +
+            "    INNER JOIN service_type st ON st.id = dor.type_id " +
+            "    WHERE b.date = ? " +
+            "      AND b.time = ? " +
+            "      AND b.id <> ? " +
+            "  )";
+
+    @Override
+    public List<DoctorSummaryRes> getListDoctorAvailable(LocalDate date, LocalTime time, Long typeId, Long serviceId, Long bookingId) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_LIST_DOCTOR_AVAILABLE, serviceId, typeId, date, time, bookingId);
+        List<DoctorSummaryRes> result = new ArrayList<>();
+        while (rs.next()) {
+            result.add(DoctorSummaryRes.builder()
+                    .id(rs.getLong("id"))
+                    .fullName(rs.getString("full_name"))
+                    .build());
+        }
+        return result;
+    }
 
     @Override
     public List<Doctors> getAll(Integer offset, Integer limit, String search) throws SQLException {
@@ -95,6 +131,7 @@ public class DoctorDaoImpl implements DoctorDao {
         }
         return result;
     }
+
     @Override
     public Long save(Doctors doctors) throws SQLException, ClassNotFoundException {
         return null;
@@ -163,8 +200,5 @@ public class DoctorDaoImpl implements DoctorDao {
         return result;
     }
 
-    @Override
-    public List<DoctorSummaryRes> getListDoctorAvailable(LocalDate date, LocalTime time) throws SQLException {
-        return null;
-    }
+
 }
