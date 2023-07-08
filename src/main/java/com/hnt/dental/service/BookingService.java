@@ -255,8 +255,9 @@ public class BookingService {
             BookingDetailServiceDto getDetailServiceBooking = adao.getServiceByBookingId(Long.valueOf(id));
             BookingDetailDoctorDto getDetailDoctorBooking = adao.getDoctorByBookingId(Long.valueOf(id));
             BookingDetailDto getBookingDetailById = adao.getBookingDetailById(Long.valueOf(id));
-            List<DoctorSummaryRes> getListDoctorAvailable = doctorDao.getListDoctorAvailable(getBookingDetailById.getDate(), getBookingDetailById.getTime(), getDetailServiceBooking.getTypeId(), getDetailServiceBooking.getId());
-            List<Employee> getEmployeeAvailable = edao.getEmployeeAvailable(getBookingDetailById.getDate(), getBookingDetailById.getTime());
+            List<DoctorSummaryRes> getListDoctorAvailable = doctorDao.getListDoctorAvailable(getBookingDetailById.getDate(),
+                    getBookingDetailById.getTime(), getDetailServiceBooking.getTypeId(), getDetailServiceBooking.getId(), Long.valueOf(id));
+            List<Employee> getEmployeeAvailable = edao.getEmployeeAvailable(getBookingDetailById.getDate(), getBookingDetailById.getTime(), Long.valueOf(id));
             req.setAttribute("patientBooking", getDetailPatientBooking);
             req.setAttribute("doctorBooking", getDetailDoctorBooking);
             req.setAttribute("serviceBooking", getDetailServiceBooking);
@@ -292,8 +293,7 @@ public class BookingService {
                 .serviceFee(ServiceFee.builder().fee(Double.valueOf(fee)).build())
                 .booking(Booking.builder().id(Long.valueOf(id)).build())
                 .build());
-
-        ServletUtils.requestDispatcher(req, resp, "/management/booking/detail?id=" + id);
+        ServletUtils.redirect(req, resp, "/management/booking/detail?id=" + id);
     }
 
 }

@@ -46,8 +46,8 @@ public class BookingDaoImpl implements BookingDao {
             "inner join service_type st on st.id = b.service_type_id " +
             "inner join payment p on p.booking_id = b.id " +
             "where b.id = ? ";
-    private static final String SQL_GET_BOOKING_DETAIL_BY_BOOKING_ID = "select b.date, b.time,b.status as statusBooking, d.full_name as doctorName ," +
-            " e.full_name as employeeName, p.status as statusPayment, p.type, b.decription  from booking b " +
+    private static final String SQL_GET_BOOKING_DETAIL_BY_BOOKING_ID = "select b.date, b.time, b.status as statusBooking, d.id as doctorID, d.full_name as doctorName ," +
+            " e.full_name as employeeName, e.id as employeeId, p.status as statusPayment, p.type, b.decription  from booking b " +
             "LEFT join doctors d on b.doctor_id = d.id " +
             "LEFT join employees e on e.id = b.staff_id " +
             "inner join payment p on p.booking_id = b.id " +
@@ -266,8 +266,8 @@ public class BookingDaoImpl implements BookingDao {
                     .date(rs.getDate("date").toLocalDate())
                     .time(rs.getTime("time").toLocalTime())
                     .status(BookingStatusEnum.getBookingStatusString(rs.getInt("statusBooking")))
-                    .doctors(Doctors.builder().fullName(rs.getString("doctorName")).build())
-                    .employee(Employee.builder().fullName(rs.getString("employeeName")).build())
+                    .doctors(Doctors.builder().id(rs.getLong("doctorID")).fullName(rs.getString("doctorName")).build())
+                    .employee(Employee.builder().id(rs.getLong("employeeId")).fullName(rs.getString("employeeName")).build())
                     .payment(Payment.builder().status(rs.getBoolean("statusPayment")).type(rs.getInt("type")).build())
                     .decription(rs.getString("decription"))
                     .paymentType(PaymentEnum.getPaymentString(rs.getInt("type")))

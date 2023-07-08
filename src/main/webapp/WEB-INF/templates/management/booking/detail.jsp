@@ -167,17 +167,22 @@
                             <div class="col-lg-12">
                                 <div class="mb-3">
                                     <label class="form-label">Phí tư vấn</label>
-                                    <input name="fee" oninvalid="CheckNumber(this);" oninput="CheckNumber(this);"
-                                           id="number" type="number" class="form-control" value="${appointment.fee}">
+                                    <input name="fee"
+                                           id="number" type="number" class="form-control" value="${serviceBooking.fee}">
                                 </div>
                             </div>
                             <div class="col-lg-12">
                                 <div class="mb-3">
                                     <label class="form-label">Bác sĩ</label>
                                     <select name="doctor" class="form-select">
-                                        <option class="form-control" value=""></option>
+                                        <option class="form-control" value="">Chọn bác sĩ</option>
                                         <c:forEach items="${doctors}" var="doctor">
-                                            <option class="form-control"
+                                            <option
+                                                    <c:if test="${doctor.id == booking.doctors.id}">
+                                                        selected
+                                                    </c:if>
+
+                                                    class="form-control"
                                                     value="${doctor.id}">${doctor.fullName}</option>
                                         </c:forEach>
                                     </select>
@@ -187,9 +192,13 @@
                                 <div class="mb-3">
                                     <label class="form-label">Nhân viên hỗ trợ</label>
                                     <select name="staff" class="form-select">
-                                        <option class="form-control" value=""></option>
+                                        <option class="form-control" value="">Chọn nhân viên</option>
                                         <c:forEach items="${employee}" var="e">
-                                            <option class="form-control" value="${e.id}">${e.fullName}</option>
+                                            <option
+                                                    <c:if test="${e.id == booking.employee.id}">
+                                                        selected
+                                                    </c:if>
+                                                    class="form-control" value="${e.id}">${e.fullName}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -198,20 +207,34 @@
                                 <div class="mb-3">
                                     <label class="form-label">Trạng thái lịch hẹn</label>
                                     <select name="status" class="form-select" aria-label="Default select example">
-                                        PENDING, CANCEL, CONFIRM, ASSIGNED, DONE, REJECT;
                                         <option
+                                                <c:if test="${booking.status == 'PENDING'}">
+                                                    selected
+                                                </c:if>
                                                 value="PENDING">Pending
                                         </option>
                                         <option
+                                                <c:if test="${booking.status == 'CANCEL'}">
+                                                    selected
+                                                </c:if>
                                                 value="CANCEL">Cancel
                                         </option>
                                         <option
+                                                <c:if test="${booking.status == 'CONFIRM'}">
+                                                    selected
+                                                </c:if>
                                                 value="CONFIRM">Confirm
                                         </option>
                                         <option
+                                                <c:if test="${booking.status == 'ASSIGNED'}">
+                                                    selected
+                                                </c:if>
                                                 value="ASSIGNED">Assigned
                                         </option>
                                         <option
+                                                <c:if test="${booking.status == 'REJECT'}">
+                                                    selected
+                                                </c:if>
                                                 value="REJECT">Reject
                                         </option>
                                     </select>
@@ -222,9 +245,15 @@
                                         <select name="payment_type" class="form-select"
                                                 aria-label="Default select example">
                                             <option
+                                                    <c:if test="${booking.paymentType == 'VNPAY'}">
+                                                        selected
+                                                    </c:if>
                                                     value="VNPAY">VNPay
                                             </option>
                                             <option
+                                                    <c:if test="${booking.paymentType == 'CASH'}">
+                                                        selected
+                                                    </c:if>
                                                     value="CASH">Thanh toán tại phòng khám
                                             </option>
                                         </select>
@@ -235,9 +264,15 @@
                                         <select name="payment_status" class="form-select"
                                                 aria-label="Default select example">
                                             <option
+                                                    <c:if test="${booking.payment.status == true}">
+                                                        selected
+                                                    </c:if>
                                                     value="1">Đã thanh toán
                                             </option>
                                             <option
+                                                    <c:if test="${booking.payment.status == false}">
+                                                        selected
+                                                    </c:if>
                                                     value="0">Chưa thanh toán
                                             </option>
                                         </select>
