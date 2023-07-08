@@ -46,4 +46,20 @@ public class BookingController extends HttpServlet {
 
         }
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getServletPath();
+        switch (action) {
+            case "/management/booking/update":
+                try {
+                    bookingService.updateBookingForMarketing(req, resp);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
+            default:
+                break;
+        }
+    }
 }

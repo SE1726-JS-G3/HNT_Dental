@@ -56,11 +56,13 @@ public class EmployeeDaoImpl implements EmployeeDao {
             "SELECT DISTINCT e.id from employees e " +
             "inner join booking b on e.id = b.staff_id " +
             " WHERE b.date = ? " +
-            " AND b.time = ?)";
+            " AND b.time = ?" +
+            " AND b.id <> ?" +
+            ")";
     @Override
-    public List<Employee> getEmployeeAvailable(LocalDate date, LocalTime time) throws Exception {
+    public List<Employee> getEmployeeAvailable(LocalDate date, LocalTime time, Long bookingId) throws Exception {
         List<Employee> employees = new ArrayList<>();
-        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_EMPLOYEE_AVALABLE, date, time);
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_EMPLOYEE_AVALABLE, date, time, bookingId);
         while (rs.next()) {
             employees.add(
                     Employee.builder()

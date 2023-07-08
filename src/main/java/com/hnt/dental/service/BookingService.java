@@ -23,7 +23,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.io.EOFException;
 
 
 public class BookingService {
@@ -31,8 +30,8 @@ public class BookingService {
     private static final ServiceDao dao;
     private static final DoctorDao doctorDao;
     private static final EmployeeDao edao;
-
     private static final BookingDao adao;
+
     private static final PaymentDao pdao;
     private static final VNPayService vnPayService;
 
@@ -252,23 +251,49 @@ public class BookingService {
     public void getDetailBooking(HttpServletRequest req, HttpServletResponse resp) {
         String id = req.getParameter("id");
         try {
-            Optional<BookingDetailPatientDto> getDetailPatientBooking = adao.getPatientByBookingId(Long.valueOf(id));
-            Optional<BookingDetailDoctorDto> getDetailDoctorBooking = adao.getDoctorByBookingId(Long.valueOf(id));
-            Optional<BookingDetailServiceDto> getDetailServiceBooking = adao.getServiceByBookingId(Long.valueOf(id ));
-            Optional<BookingDetailDto> getBookingDetailById = adao.getBookingDetailById(Long.valueOf(id));
-            List<DoctorSummaryRes> getListDoctorAvailable = doctorDao.getListDoctorAvailable(getBookingDetailById.get().getDate(), getBookingDetailById.get().getTime(), getDetailServiceBooking.get().getTypeId(), getDetailServiceBooking.get().getId());
-            List<Employee> getEmployeeAvailable = edao.getEmployeeAvailable(getBookingDetailById.get().getDate(), getBookingDetailById.get().getTime());
-            req.setAttribute("id", id);
-            req.setAttribute("patientBooking", getDetailPatientBooking.get());
-            req.setAttribute("doctorBooking", getDetailDoctorBooking.get());
-            req.setAttribute("serviceBooking", getDetailServiceBooking.get());
-            req.setAttribute("booking", getBookingDetailById.get());
+            BookingDetailPatientDto getDetailPatientBooking = adao.getPatientByBookingId(Long.valueOf(id));
+            BookingDetailServiceDto getDetailServiceBooking = adao.getServiceByBookingId(Long.valueOf(id));
+            BookingDetailDoctorDto getDetailDoctorBooking = adao.getDoctorByBookingId(Long.valueOf(id));
+            BookingDetailDto getBookingDetailById = adao.getBookingDetailById(Long.valueOf(id));
+            List<DoctorSummaryRes> getListDoctorAvailable = doctorDao.getListDoctorAvailable(getBookingDetailById.getDate(),
+                    getBookingDetailById.getTime(), getDetailServiceBooking.getTypeId(), getDetailServiceBooking.getId(), Long.valueOf(id));
+            List<Employee> getEmployeeAvailable = edao.getEmployeeAvailable(getBookingDetailById.getDate(), getBookingDetailById.getTime(), Long.valueOf(id));
+            req.setAttribute("patientBooking", getDetailPatientBooking);
+            req.setAttribute("doctorBooking", getDetailDoctorBooking);
+            req.setAttribute("serviceBooking", getDetailServiceBooking);
+            req.setAttribute("booking", getBookingDetailById);
             req.setAttribute("doctors", getListDoctorAvailable);
             req.setAttribute("employee", getEmployeeAvailable);
             req.getRequestDispatcher("/WEB-INF/templates/management/booking/detail.jsp").forward(req, resp);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void updateBookingForMarketing(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException, ServletException {
+        String fee = req.getParameter("fee");
+        String doctor = req.getParameter("doctor");
+        String staff = req.getParameter("staff");
+        String status = req.getParameter("status");
+        String paymentType = req.getParameter("payment_type");
+        String paymentStatus = req.getParameter("payment_status");
+
+        String id = req.getParameter("id");
+
+        assert BookingStatusEnum.getBookingStatusEnum(status) != null;
+        adao.updateBookingDetail(Booking.builder()
+                .id(Long.valueOf(id))
+                .doctors(Doctors.builder().id(Objects.equals(doctor, "") ? null : Long.valueOf(doctor)).build())
+                .employee(Employee.builder().id(Objects.equals(staff, "") ? null : Long.valueOf(staff)).build())
+                .status(BookingStatusEnum.getBookingStatusEnum(status).ordinal())
+                .build());
+        pdao.updatePaymentForMarketing(Payment.builder()
+                .status(paymentStatus.equals("1"))
+                .type(PaymentEnum.getPaymentEnum(paymentType).ordinal())
+                .serviceFee(ServiceFee.builder().fee(Double.valueOf(fee)).build())
+                .booking(Booking.builder().id(Long.valueOf(id)).build())
+                .build());
+        ServletUtils.redirect(req, resp, "/management/booking/detail?id=" + id);
     }
 
 }

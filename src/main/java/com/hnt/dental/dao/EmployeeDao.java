@@ -10,5 +10,5 @@ public interface EmployeeDao extends GenericDao<Employee> {
 
     Integer count(String search) throws Exception;
 
-    List<Employee> getEmployeeAvailable(LocalDate date, LocalTime time) throws Exception;
+    List<Employee> getEmployeeAvailable(LocalDate date, LocalTime time, Long bookingId) throws Exception;
 }
