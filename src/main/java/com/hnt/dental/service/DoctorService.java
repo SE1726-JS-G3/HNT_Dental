@@ -405,4 +405,35 @@ public class DoctorService {
         ServletUtils.redirect(req, resp, "/management/doctor");
     }
 
+    public void profile(HttpServletRequest req, HttpServletResponse resp) {
+        String id = req.getParameter("id");
+
+        try {
+            Long doctorId = null;
+            if (id != null && !id.isEmpty()) {
+                doctorId = Long.valueOf(id);
+            } else {
+                // Set a default value for 'doctorId' (e.g., 2)
+                doctorId = 2L;
+            }
+
+            Account doctorProfile = dao.getProfile(doctorId);
+
+            if (doctorProfile != null) {
+                req.setAttribute("doctorProfile", doctorProfile);
+                req.setAttribute("id", id);
+                req.setAttribute("url", "/doctor/profile");
+                req.getRequestDispatcher("/WEB-INF/templates/home/profile.jsp").forward(req, resp);
+            } else {
+                resp.sendRedirect("/error-page.jsp");
+            }
+        } catch (NumberFormatException e) {
+            // Handle the case where the 'id' parameter is not a valid Long
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Handle the exception appropriately
+        }
+    }
+
 }

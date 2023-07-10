@@ -586,6 +586,30 @@ public class DoctorDaoImpl implements DoctorDao {
 
 
 
+    private static final String GET_PROFILE_BY_EMAIL_SQL = "SELECT * FROM doctors " +
+            "INNER JOIN accounts a ON doctors.id = a.id " +
+            "WHERE doctors.id = ?";
+    @Override
+    public Account getProfile(Long id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(GET_PROFILE_BY_EMAIL_SQL,id);
+        assert rs != null;
+        if (rs.next()) {
+            return Account.builder()
+                    .id(rs.getLong("id"))
+                    .email(rs.getString("email"))
+                    .password(rs.getString("password"))
+//                    .role(rs.getInt("role"))
+//                    .isVerified(rs.getBoolean("is_verified"))
+//                    .image(rs.getLong("image"))
+                    .doctors(Doctors.builder()
+                            .fullName(rs.getString("full_name"))
+                            .phone (rs.getString("phone"))
+                            .build())
+
+                    .build();
+        }
+        return null;
+    }
 
 
 }

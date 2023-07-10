@@ -1,6 +1,7 @@
 package com.hnt.dental.dao;
 
 import com.hnt.dental.dto.response.*;
+import com.hnt.dental.entities.Account;
 import com.hnt.dental.entities.Doctors;
 
 import java.sql.SQLException;
@@ -33,5 +34,7 @@ public interface DoctorDao extends GenericDao<Doctors> {
 
     List<DoctorSummaryRes> getListDoctorAvailable(LocalDate date, LocalTime time, Long typeId, Long serviceId) throws SQLException;
     Integer countGetALLDoctor(String search, String status, String gender) throws SQLException;
+
+    Account getProfile(Long id) throws SQLException;
 
 }
