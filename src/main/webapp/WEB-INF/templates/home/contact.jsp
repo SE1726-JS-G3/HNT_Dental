@@ -27,7 +27,7 @@
                     <nav aria-label="breadcrumb" class="d-inline-block mt-3">
                         <ul class="breadcrumb bg-light rounded mb-0 py-1 px-2">
                             <li class="breadcrumb-item"><a href="home">Trang chủ</a></li>
-                            <li class="breadcrumb-item status" aria-current="page">Liên hệ</li>
+                            <li class="breadcrumb-item active" aria-current="page">Liên hệ</li>
                         </ul>
                     </nav>
                 </div>

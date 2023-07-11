@@ -22,7 +22,7 @@
           <nav aria-label="breadcrumb" class="d-inline-block mt-3">
             <ul class="breadcrumb bg-light rounded mb-0 py-1 px-2">
               <li class="breadcrumb-item"><a href="home">Trang chủ</a></li>
-              <li class="breadcrumb-item status" aria-current="page">Tin tức</li>
+              <li class="breadcrumb-item active" aria-current="page">Tin tức</li>
             </ul>
           </nav>
         </div>
@@ -254,7 +254,7 @@
       <div class="col-12">
         <ul class="pagination justify-content-center mb-0 list-unstyled">
           <li class="page-item"><a class="page-link" href="javascript:void(0)" aria-label="Previous">Prev</a></li>
-          <li class="page-item status"><a class="page-link" href="javascript:void(0)">1</a></li>
+          <li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a></li>
           <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>
           <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
           <li class="page-item"><a class="page-link" href="javascript:void(0)" aria-label="Next">Next</a></li>

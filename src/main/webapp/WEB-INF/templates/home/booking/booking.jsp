@@ -26,7 +26,7 @@
                     <nav aria-label="breadcrumb" class="d-inline-block mt-3">
                         <ul class="breadcrumb bg-transparent mb-0 py-1">
                             <li class="breadcrumb-item"><a href="#">Doctris</a></li>
-                            <li class="breadcrumb-item status" aria-current="page">Đặt Lịch</li>
+                            <li class="breadcrumb-item active" aria-current="page">Đặt Lịch</li>
                         </ul>
                     </nav>
                 </div>
