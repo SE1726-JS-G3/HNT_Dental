@@ -65,7 +65,6 @@
                             <div class="col-12 mt-4">
                                 <div class="d-md-flex align-items-center text-center justify-content-between">
                                     <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                        <<<<<<< HEAD
                                         <li class="page-item status"><a class="page-link">1</a>
                                         </li>
                                         <li class="page-item status"><a class="page-link">1</a>
@@ -73,11 +72,9 @@
                                         <li class="page-item status"><a class="page-link">1</a>
                                         </li>
                                         <li class="page-item status"><a class="page-link">1</a>
-                                            =======
                                         <li class="page-item active"><a class="page-link" href="patient-booking-history?page=1">1</a>
                                         </li>
                                         <li class="page-item active"><a class="page-link" href="patient-booking-history?page=2">2</a>
-                                            >>>>>>> develop
                                         </li>
                                     </ul>
                                 </div>

@@ -86,7 +86,6 @@
                 </div>
 
 
-                <<<<<<< HEAD
                 <div class="row">
                     <div class="col-12 mt-4">
                         <div class="table-responsive bg-white shadow rounded">
@@ -134,7 +133,6 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            =======
                             <div class="row">
                                 <div class="col-12 mt-4">
                                     <div class="table-responsive bg-white shadow rounded">
@@ -191,10 +189,8 @@
                                     </div>
                                 </div>
                             </div>
-                            >>>>>>> develop
                         </div>
                     </div>
-                    <<<<<<< HEAD
                     <div class="row text-center">
                         <div class="col-12 mt-4">
                             <div class="d-md-flex align-items-center text-center justify-content-between">
@@ -213,10 +209,10 @@
             </div>
             <jsp:include page="../layout/footer.jsp"/>
     </main>
-    =======
+
     <jsp:include page="../layout/footer.jsp"/>
     </main>
-    >>>>>>> develop
+
 </div>
 
 <script src="${pageContext.request.contextPath}/static/libs/simplebar/simplebar.min.js"></script>

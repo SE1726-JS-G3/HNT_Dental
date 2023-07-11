@@ -16,8 +16,7 @@ import java.io.IOException;
         "/management/blog",
         "/management/blog/create",
         "/management/blog/update",
-        "/management/blog/delete",
-        "/test"
+        "/management/blog/delete"
 })
 public class BlogController extends HttpServlet {
 
@@ -48,10 +47,6 @@ public class BlogController extends HttpServlet {
                     break;
                 case "/management/blog/delete":
                     blogService.delete(req, resp);
-                    break;
-                case "/test":
-                    req.getRequestDispatcher("/WEB-INF/templates/management/blogs/create.jsp").forward(req, resp);
-
                     break;
                 default:
             }

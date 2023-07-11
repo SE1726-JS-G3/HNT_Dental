@@ -12,11 +12,9 @@ import java.util.Optional;
 public interface BlogDao extends GenericDao<Blogs> {
 
 
-    Integer count(String search) throws Exception;
+
 
     void changeStatus(int id, String status) throws SQLException;
-
-    ArrayList<Blogs> getAllCreatedBy() throws Exception;
 
     List<Blogs> getAllBlog(int offset, int limit, String search, String status, String category) throws SQLException;
 

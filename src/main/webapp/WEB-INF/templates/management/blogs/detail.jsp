@@ -27,7 +27,7 @@ To change this template use File | Settings | File Templates.
                                             aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body p-3 pt-4">
-                                    <form  action="${pageContext.request.contextPath}/management/blog/update" method="POST">
+                                    <form  action="${pageContext.request.contextPath}/management/blog/update" method="POST"  onSubmit="return validateForm()" >
                                         <%--                                        <input value="${blog_id}" name="id" type="hidden">--%>
                                         <input value="${blog_id}" type="hidden" name="id">
                                         <%--                                        <input value="${blog_id}" name="id">--%>
@@ -159,6 +159,52 @@ To change this template use File | Settings | File Templates.
 
 
 <script>
+
+
+    function validateForm() {
+        var title = document.getElementById('title').value;
+        var brief = document.getElementById('brief').value;
+        var describe = document.getElementById('describe').value;
+
+        if (title.trim() === '') {
+            displayErrorMessage('Tiêu đề không được bỏ trống');
+            return false;
+        }
+
+        if (brief.trim() === '') {
+            displayErrorMessage('Thông Tin Tóm Tắt không được bỏ trống');
+            return false;
+        }
+        if (describe.trim() === '') {
+            displayErrorMessage('Mô tả không được bỏ trống');
+            return false;
+        }
+
+        displaySuccessMessage('Thông tin đã được cập nhật thành công');
+        return true;
+    }
+
+    // Các hàm hiển thị thông báo lỗi và thành công không thay đổi.
+    function displayErrorMessage(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: message,
+            timer: 5000, // Hiển thị thông báo trong 5 giây
+            showConfirmButton: false // Ẩn nút xác nhận
+        });
+    }
+
+    function displaySuccessMessage(message) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: message,
+            timer: 5000, // Hiển thị thông báo trong 5 giây
+            showConfirmButton: false // Ẩn nút xác nhận
+        });
+    }
+
     // function Sort(type) {
     //     window.location.href = "blogmanage?action=sort&type=" + type;
     // }
