@@ -541,6 +541,10 @@ public class DoctorDaoImpl implements DoctorDao {
         return null;
     }
 
+    @Override
+    public List<DoctorSummaryRes> getListDoctorAvailable(LocalDate date, LocalTime time, Long typeId, Long serviceId) throws SQLException {
+        return null;
+    }
 
 
     @Override
