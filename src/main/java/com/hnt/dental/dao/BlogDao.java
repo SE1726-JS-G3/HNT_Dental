@@ -19,4 +19,6 @@ public interface BlogDao extends GenericDao<Blogs> {
 
     List<BlogsSummaryRes> getListBlogRelated(long id, long categoryId ) throws SQLException;
 
+    List<Blogs> RecentPosts() throws Exception;
+
 }
