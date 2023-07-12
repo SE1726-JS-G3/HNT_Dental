@@ -127,7 +127,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Mô tả</label>
                                             <textarea name="description" id="comments" rows="3" class="form-control"
-                                                      placeholder="Bio :">${detai.description}</textarea>
+                                                      placeholder="Bio :">${detail.description}</textarea>
                                         </div>
                                     </div>
                                 </div>
