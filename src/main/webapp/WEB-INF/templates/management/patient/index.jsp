@@ -52,23 +52,6 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <<<<<<< HEAD
-                                <tr>
-                                    <td class="p-3">1</td>
-                                    <td class="p-3">Khương Văn Hùng</td>
-                                    <td class="p-3">24/08/2001</td>
-                                    <td class="p-3">Nam</td>
-                                    <td class="p-3">status</td>
-                                    <td class="p-3 text-center">
-                                        <a href="#">
-                                            <button class="btn btn-primary">Sửa</button>
-                                        </a>
-                                        <a href="#">
-                                            <button class="btn btn-danger">Xóa</button>
-                                        </a>
-                                    </td>
-                                </tr>
-                                =======
                                 <c:forEach items="${patients}" var="p">
                                     <tr>
                                         <td>${p.id}</td>
@@ -87,7 +70,6 @@
                                         </td>
                                     </tr>
                                 </c:forEach>
-                                >>>>>>> develop
                                 </tbody>
                             </table>
                         </div>
@@ -98,20 +80,17 @@
                     <div class="col-12 mt-4">
                         <div class="d-md-flex align-items-center text-center justify-content-between">
                             <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                <<<<<<< HEAD
                                 <li class="page-item status pl-1"><a class="page-link"
                                                                      href="#">1</a>
                                 </li>
                                 <li class="page-item pl-1"><a class="page-link"
                                                               href="#">2</a>
                                 </li>
-                                =======
                                 <c:forEach begin="${1}" end="${totalPage}" var="i">
                                     <li class="page-item ${i==page?"active":""}"><a class="page-link"
                                                                                     href="${url}?page=${i}&search=${search}">${i}</a>
                                     </li>
                                 </c:forEach>
-                                >>>>>>> develop
                             </ul>
                         </div>
                     </div>

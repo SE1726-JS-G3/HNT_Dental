@@ -30,7 +30,6 @@
                                                value="${search}"
                                                id="search" placeholder="Tìm kiếm nhân viên...">
                                     </div>
-
                                     <div class="col-lg-4">
                                         <button class="btn btn-primary rounded-pill" id="btn-search">Tìm kiếm</button>
                                     </div>
@@ -60,8 +59,6 @@
 
                                     </div>
                                 </div>
-
-
                                 <div class="col-md-5 row align-items-center">
                                     <div class="col-md-4">
                                         <label class="form-label">Trạng thái</label>
@@ -83,7 +80,6 @@
                         </form>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-12 mt-4">
                         <div class="table-responsive bg-white shadow rounded">
@@ -131,20 +127,17 @@
                     <div class="col-12 mt-4">
                         <div class="d-md-flex align-items-center text-center justify-content-between">
                             <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                <<<<<<< HEAD
                                 <li class="page-item status pl-1"><a class="page-link"
                                                                      href="#">1</a>
                                 </li>
                                 <li class="page-item pl-1"><a class="page-link"
                                                               href="#">2</a>
                                 </li>
-                                =======
                                 <c:forEach begin="${1}" end="${totalPage}" var="i">
                                     <li class="page-item ${i==page?"active":""}"><a class="page-link"
                                                                                     href="${url}?page=${i}&search=${search}">${i}</a>
                                     </li>
                                 </c:forEach>
-                                >>>>>>> develop
                             </ul>
                         </div>
                     </div>
