@@ -130,6 +130,7 @@ public class BookingService {
                     .name(name)
                     .account(Account.builder().id(loginInfo.getId()).build())
                     .service(Service.builder().id(serviceResDtos.getId()).build())
+                    .typeId(Long.valueOf(typeId))
                     .phone(Integer.parseInt(phone))
                     .gender(Boolean.parseBoolean(gender))
                     .age(Integer.parseInt(age))
@@ -152,7 +153,11 @@ public class BookingService {
                             .updated_at(LocalDateTime.now())
                             .build()
             );
-
+            adao.insertBookingId(BookingResult.builder()
+                    .bookingId(id)
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
+                    .build());
             if (PaymentEnum.getPaymentEnum(payment) == PaymentEnum.CASH) {
                 ServletUtils.redirect(req, resp, "/booking/success");
             } else {
@@ -258,12 +263,14 @@ public class BookingService {
             List<DoctorSummaryRes> getListDoctorAvailable = doctorDao.getListDoctorAvailable(getBookingDetailById.getDate(),
                     getBookingDetailById.getTime(), getDetailServiceBooking.getTypeId(), getDetailServiceBooking.getId(), Long.valueOf(id));
             List<Employee> getEmployeeAvailable = edao.getEmployeeAvailable(getBookingDetailById.getDate(), getBookingDetailById.getTime(), Long.valueOf(id));
+            BookingResult getBookingResultById = adao.getBookingResultById(Long.valueOf(id));
             req.setAttribute("patientBooking", getDetailPatientBooking);
             req.setAttribute("doctorBooking", getDetailDoctorBooking);
             req.setAttribute("serviceBooking", getDetailServiceBooking);
             req.setAttribute("booking", getBookingDetailById);
             req.setAttribute("doctors", getListDoctorAvailable);
             req.setAttribute("employee", getEmployeeAvailable);
+            req.setAttribute("bookingResult", getBookingResultById);
             req.getRequestDispatcher("/WEB-INF/templates/management/booking/detail.jsp").forward(req, resp);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -294,6 +301,18 @@ public class BookingService {
                 .booking(Booking.builder().id(Long.valueOf(id)).build())
                 .build());
         ServletUtils.redirect(req, resp, "/management/booking/detail?id=" + id);
+    }
+
+    public void updateBookingResult(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        String bookingId = req.getParameter("id");
+        String result = req.getParameter("result");
+
+        adao.updateBookingResult(BookingResult.builder()
+                .bookingId(Long.valueOf(bookingId))
+                .result(result)
+                .updatedAt(LocalDateTime.now())
+                .build());
+        ServletUtils.redirect(req, resp, "/management/booking/detail?id=" + bookingId);
     }
 
 }

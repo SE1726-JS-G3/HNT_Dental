@@ -25,7 +25,6 @@ public class Booking extends BaseEntity{
     private String description;
     private Patient patient;
     private int status;
-   
-
+    private Long typeId;
     private String payment;
 }

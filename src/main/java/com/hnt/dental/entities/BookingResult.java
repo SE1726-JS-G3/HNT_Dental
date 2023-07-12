@@ -3,6 +3,8 @@ package com.hnt.dental.entities;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
@@ -11,12 +13,9 @@ import lombok.experimental.SuperBuilder;
 public class BookingResult extends BaseEntity{
     private Long id;
     private Long bookingId;
-    private String medicalHistory;
-    private String symptoms;
-    private String attachments;
-    private String diagnosis;
-    private String prescription;
-    private String recommendations;
+    private String result;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
 
 }

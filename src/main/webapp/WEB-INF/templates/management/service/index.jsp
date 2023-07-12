@@ -33,10 +33,14 @@
                             </div>
                         </div>
                         <div class="col-md-4 col-sm-12">
-                            <a href="${pageContext.request.contextPath}/management/employee/create">
-                                <button class="btn btn-primary">Thêm mới</button>
+                            <a href="${pageContext.request.contextPath}/management/service/create">
+                                <button class="btn btn-primary">Thêm dịch vụ</button>
+                            </a>
+                            <a href="${pageContext.request.contextPath}/management/service/serviceType">
+                                <button class="btn btn-primary">Loại dịch vụ</button>
                             </a>
                         </div>
+
                     </div>
                     <div class="col-md-7">
                         <br><br>
@@ -70,10 +74,13 @@
                                             <option <c:if test="${speciality == 'all'}"> selected </c:if> value="all">
                                                 Tất cả
                                             </option>
-                                            <c:forEach items="${speciality}" var="s">
-                                                <option <c:if test="${speciality1 == s.id}"> selected </c:if>
-                                                        value="${s.id}">${s.name}</option>
-                                            </c:forEach>
+                                            <option <c:if test="${speciality == 'all'}"> selected </c:if> value="all">
+                                                Active
+                                            </option>
+                                            <option <c:if test="${speciality == 'all'}"> selected </c:if> value="all">
+                                                Deactive
+                                            </option>
+
                                         </select>
                                     </div>
                                 </div>
@@ -101,36 +108,28 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td class="p-3">1</td>
-                                    <td class="p-3">Lấy cao răng</td>
-                                    <td class="p-3">VIP1</td>
-                                    <td class="p-3">50</td>
-                                    <td class="p-3">status</td>
-                                    <td class="p-3 text-center">
-                                        <a href="#">
-                                            <button class="btn btn-primary">Chuyển trạng thái</button>
-                                        </a>
-                                        <a href="#">
-                                            <button class="btn btn-danger" onclick="window.location.href=''">Chi tiết</button>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3">2</td>
-                                    <td class="p-3">Niêng răng trong suốt</td>
-                                    <td class="p-3">THƯỜNG</td>
-                                    <td class="p-3">1000000</td>
-                                    <td class="p-3">status</td>
-                                    <td class="p-3 text-center">
-                                        <a href="#">
-                                            <button class="btn btn-primary">Chuyển trạng thái</button>
-                                        </a>
-                                        <a href="#">
-                                            <button class="btn btn-danger">Chi tiết</button>
-                                        </a>
-                                    </td>
-                                </tr>
+                                <c:forEach items="${serviceManagementDtos}" var="s">
+                                    <tr>
+                                        <td class="border-bottom p-3 text-center">${s.id}</td>
+                                        <td class="border-bottom p-3 ">${s.name}</td>
+                                        <td class="border-bottom p-3 text-center">${s.type}</td>
+                                        <td class="border-bottom p-3 text-center">${s.fee}</td>
+                                        <c:if test="${s.status == 1}">
+                                            <td class="border-bottom p-3 text-center">Active</td>
+                                        </c:if>
+                                        <c:if test="${s.status == 0}">
+                                            <td class="border-bottom p-3 text-center">Deactive</td>
+                                        </c:if>
+                                        <td class="text-center">
+                                            <a href="#">
+                                                <button class="btn btn-primary"
+                                                        onclick="window.location.href='${pageContext.request.contextPath}/management/service/detail?id=${s.id}'"
+                                                >Chi tiết
+                                                </button>
+                                            </a>
+                                        <td>
+                                    </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                             <div class="row">

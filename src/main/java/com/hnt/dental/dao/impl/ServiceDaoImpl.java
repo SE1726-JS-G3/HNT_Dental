@@ -2,12 +2,14 @@ package com.hnt.dental.dao.impl;
 
 import com.hnt.dental.dao.ServiceDao;
 import com.hnt.dental.dto.response.*;
+import com.hnt.dental.entities.Doctors;
 import com.hnt.dental.entities.Service;
 import com.hnt.dental.util.ConnectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -76,7 +78,42 @@ public class ServiceDaoImpl implements ServiceDao {
             "            where ( s.name like ? ) " +
             "            OR s.status like ?" +
             "            GROUP BY s.id " +
-            "            LIMIT ? OFFSET ? " ;
+            "            LIMIT ? OFFSET ? ";
+    private static final String SQL_GET_SERVICE_DETAIL_MANAGEMENT_BY_ID = "SELECT s.id, s.name, s.description, s.image FROM service s " +
+            "where s.id = ?";
+
+    private static final String SQL_GET_SERVICE_TYPE_MANAGEMENT_BY_ID = "SELECT st.id, sf.fee, st.name as type  FROM service s " +
+            "            inner join service_fee sf on sf.service_id = s.id  " +
+            "            inner join service_type st on sf.service_type = st.id " +
+            "            where  s.id = ? ";
+
+    private static final String SQL_GET_DOCTOR_OF_SERVICE_MANAGEMENT_BY_ID = "SELECT d.id as doctorId, d.full_name, a.email, group_concat(st.name) as type " +
+            "            FROM service s " +
+            "            INNER JOIN service_doctor sd on s.id = sd.id_service " +
+            "            INNER JOIN doctors d on d.id = sd.id_doctor " +
+            "            INNER JOIN accounts a on d.id = a.id " +
+            "            INNER JOIN doctor_rank dr on d.rank_id = dr.id " +
+            "            INNER JOIN doctor_of_rank dor on dor.rank_id = dr.id " +
+            "            INNER JOIN service_type st on dor.type_id = st.id " +
+            "            WHERE s.id =  ? " +
+            "            group by d.id, d.full_name, a.email";
+
+    private static final String SQL_GET_TYPE_OF_DOCTOR_BY_ID = "SELECT d.id as doctorId, st.name, st.id as typeId " +
+            "FROM service s " +
+            "INNER JOIN service_doctor sd on s.id = sd.id_service " +
+            "INNER JOIN doctors d on d.id = sd.id_doctor " +
+            "INNER JOIN accounts a on d.id = a.id " +
+            "INNER JOIN doctor_rank dr on d.rank_id = dr.id " +
+            "INNER JOIN doctor_of_rank dor on dor.rank_id = dr.id " +
+            "INNER JOIN service_type st on dor.type_id = st.id " +
+            "WHERE s.id = ? and d.id = ? " +
+            "group by  d.full_name, a.email, st.name,st.id ";
+
+    private static final String SQL_UPDATE_SERVICE_DETAIL_MANAGEMENT_BY_ID = "UPDATE service " +
+            "            SET name= ? , " +
+            "            image= ?, description= ?, " +
+            "            updated_at= ?, status= ? " +
+            "            where id= ?";
 
     @Override
     public List<Service> getAll(Integer offset, Integer limit, String search) throws SQLException {
@@ -122,10 +159,11 @@ public class ServiceDaoImpl implements ServiceDao {
         ConnectionUtils.closeConnection();
         return result;
     }
+
     @Override
     public List<ServiceManagementDto> getAllServiceManagement(Integer offset, Integer limit, String search) throws SQLException {
         search = StringUtils.isNotEmpty(search) ? "%" + search.toLowerCase() + "%" : "%";
-        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_All_SERVICE_MANAGEMENT , search, search, limit, offset);
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_All_SERVICE_MANAGEMENT, search, search, limit, offset);
         List<ServiceManagementDto> result = new ArrayList<>();
         while (rs.next()) {
             result.add(
@@ -139,6 +177,77 @@ public class ServiceDaoImpl implements ServiceDao {
                             .build());
         }
         ConnectionUtils.closeConnection();
+        return result;
+    }
+
+    @Override
+    public ServiceDetailDto getServiceDetailManagementById(Long id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_SERVICE_DETAIL_MANAGEMENT_BY_ID, id);
+        if (rs.next()) {
+            return ServiceDetailDto.builder()
+                    .id(rs.getLong("id"))
+                    .name(rs.getString("name"))
+                    .image(rs.getString("image"))
+                    .description(rs.getString("description"))
+                    .build();
+        }
+        return null;
+    }
+
+    @Override
+    public void updateServiceDetailManagementById(ServiceDetailDto serviceDetailDto) throws SQLException {
+        ConnectionUtils.executeUpdate(SQL_UPDATE_SERVICE_DETAIL_MANAGEMENT_BY_ID,
+                serviceDetailDto.getName(),
+                serviceDetailDto.getImage(),
+                serviceDetailDto.getDescription(),
+                serviceDetailDto.getUpdateAt(),
+                serviceDetailDto.getStatus(),
+                serviceDetailDto.getId());
+    }
+
+    @Override
+    public List<ServiceManagementDto> getServiceTypeDetailManagementById(Long id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_SERVICE_TYPE_MANAGEMENT_BY_ID, id);
+        List<ServiceManagementDto> result = new ArrayList<>();
+        while (rs.next()) {
+            result.add(
+                    ServiceManagementDto.builder()
+                            .id(rs.getLong("id"))
+                            .fee(rs.getString("fee"))
+                            .type(rs.getString("type"))
+                            .build());
+        }
+        return result;
+    }
+
+    @Override
+    public List<ServiceDoctorManagementDto> getDoctorOfServiceManagementById(Long id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_DOCTOR_OF_SERVICE_MANAGEMENT_BY_ID, id);
+        List<ServiceDoctorManagementDto> result = new ArrayList<>();
+        while (rs.next()) {
+            result.add(
+                    ServiceDoctorManagementDto.builder()
+                            .id(rs.getLong("doctorId"))
+                            .name(rs.getString("full_name"))
+                            .email(rs.getString("email"))
+                            .type(rs.getString("type"))
+                            .build());
+        }
+        return result;
+    }
+
+    @Override
+    public List<ServiceTypeOfDoctor> getTypeOfDoctorByDoctorId(Long idService, Long idDoctor) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_TYPE_OF_DOCTOR_BY_ID, idService, idDoctor);
+        List<ServiceTypeOfDoctor> result = new ArrayList<>();
+        while (rs.next()) {
+            result.add(
+                    ServiceTypeOfDoctor.builder()
+                            .doctors(Doctors.builder().id(rs.getLong("doctorId")).build())
+                            .idType(rs.getLong("typeId"))
+                            .nameType(rs.getString("name"))
+                            .build());
+        }
         return result;
     }
 
@@ -246,8 +355,5 @@ public class ServiceDaoImpl implements ServiceDao {
         ConnectionUtils.closeConnection();
         return result;
     }
-
-
-
 
 }

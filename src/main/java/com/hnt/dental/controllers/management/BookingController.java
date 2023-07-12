@@ -19,6 +19,7 @@ import java.sql.SQLException;
         "/management/booking",
         "/management/booking/create",
         "/management/booking/update",
+        "/management/booking/result",
         "/management/booking/detail",
         "/management/booking/delete"
 })
@@ -39,7 +40,6 @@ public class BookingController extends HttpServlet {
                 break;
             case "/management/booking/detail":
                 bookingService.getDetailBooking(req, resp);
-                //req.getRequestDispatcher("/WEB-INF/templates/management/booking/detail.jsp").forward(req, resp);
                 break;
 
             default:
@@ -54,6 +54,13 @@ public class BookingController extends HttpServlet {
             case "/management/booking/update":
                 try {
                     bookingService.updateBookingForMarketing(req, resp);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
+            case "/management/booking/result":
+                try {
+                    bookingService.updateBookingResult(req, resp);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }

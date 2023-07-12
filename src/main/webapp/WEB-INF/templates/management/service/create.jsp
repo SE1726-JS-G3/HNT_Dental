@@ -43,6 +43,16 @@
                       <input name="title" oninvalid="CheckTitle(this);" oninput="CheckTitle(this);" id="name1" type="text" class="form-control" >
                     </div>
                   </div>
+                  <div class="col-lg-12">
+                    <div class="mb-3">
+                      <label class="form-label">Thể loại</label>
+                      <select name="catetogory" class="form-select">
+                        <c:forEach items="${catetogory}" var="s">
+                          <option <c:if test="${service.setting.name == s.name}">selected</c:if> class="form-control" value="${s.id}">${s.name}</option>
+                        </c:forEach>
+                      </select>
+                    </div>
+                  </div>
 
                   <div class="col-lg-12">
                     <div class="mb-3">
@@ -59,16 +69,7 @@
                       <textarea class="form-control" id="name" name="description" oninvalid="CheckTitle(this);" oninput="CheckTitle(this);" type="text" rows="5" cols="33" ></textarea>
                     </div>
                   </div>
-                  <div class="col-lg-12">
-                    <div class="mb-3">
-                      <label class="form-label">Thể loại</label>
-                      <select name="catetogory" class="form-select">
-                        <c:forEach items="${catetogory}" var="s">
-                          <option <c:if test="${service.setting.name == s.name}">selected</c:if> class="form-control" value="${s.id}">${s.name}</option>
-                        </c:forEach>
-                      </select>
-                    </div>
-                  </div>
+
                   <br>
                   <div class="col-lg-12">
                     <div class="mb-3">
@@ -93,7 +94,7 @@
                 <div class="row">
                   <div class="col-sm-12">
                     <input type="submit" id="submit" name="send" class="btn btn-primary"
-                           value="thêm mới">
+                           value="Thêm mới">
                   </div>
                 </div>
               </form>
