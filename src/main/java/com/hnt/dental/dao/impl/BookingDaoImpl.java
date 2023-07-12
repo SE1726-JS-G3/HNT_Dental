@@ -15,14 +15,15 @@ import com.hnt.dental.dto.response.ServiceResDto;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class BookingDaoImpl implements BookingDao {
     private static final String SAVE_BOOKING = "INSERT INTO booking " +
-            "           ( name, phone, gender, age, account_id, service_id, `date`, `time`, decription, status, created_at, updated_at) " +
-            "            VALUES(?, ?, ?, ? , ?, ?, ? ,? ,?, ?, ?, ?)";
+            "           ( name, phone, gender, age, account_id, service_id,service_type_id, `date`, `time`, decription, status, created_at, updated_at) " +
+            "            VALUES(?, ?, ?, ? , ?, ?, ? ,? ,?, ?, ?,?, ?)";
     private static final String GET_ALL_BOOKING = "SELECT b.id, b.name, s.name as service, b.date, b.time, b.status FROM booking b " +
             "            inner join service s on b.service_id = s.id " +
             "            where (LOWER(b.name) like ? OR LOWER(s.name) like ?) AND s.id LIKE ? AND b.status LIKE ? order by b.created_at desc " +
@@ -61,23 +62,44 @@ public class BookingDaoImpl implements BookingDao {
             "SET   doctor_id=?, staff_id=?, status=? " +
             "WHERE id=? ";
 
+    private static final String INSERT_BOOKING_RESULT = "INSERT INTO booking_result " +
+            "(booking_id, result, created_at, updated_at) " +
+            "VALUES(?, ?, ?, ?)";
+    private static final String SQL_UPDATE_BOOKING_RESULT = "UPDATE booking_result " +
+            "SET  `result`= ?, updated_at=? " +
+            "WHERE booking_id = ? ";
+
+    private static final String SQL_GET_BOOKING_RESULT_BY_ID = "select * from booking_result " +
+            "where booking_id = ? ";
+
     @Override
     public void updateBookingDetail(Booking bookingDetailDto) throws SQLException {
         ConnectionUtils.executeUpdate(UPDATE_BOOKING_FOR_MARKETING, bookingDetailDto.getDoctors().getId(),
                 bookingDetailDto.getEmployee().getId(), bookingDetailDto.getStatus(), bookingDetailDto.getId());
     }
 
-    public static void main(String[] args) throws SQLException {
-        BookingDaoImpl bookingDao = new BookingDaoImpl();
-        bookingDao.updateBookingDetail(
-                Booking.builder()
-                        .id(1L)
-                        .doctors(Doctors.builder().id(1L).build())
-                        .employee(Employee.builder().id(1L).build())
-                        .status(BookingStatusEnum.CONFIRM.ordinal())
-                        .build());
+    @Override
+    public void updateBookingResult(BookingResult bookingResult) throws SQLException {
+        ConnectionUtils.executeUpdate(SQL_UPDATE_BOOKING_RESULT, bookingResult.getResult(),
+                bookingResult.getUpdatedAt(), bookingResult.getBookingId());
     }
 
+    @Override
+    public Long insertBookingId(BookingResult bookingResult) throws SQLException {
+        return ConnectionUtils.executeUpdateForIdentity(INSERT_BOOKING_RESULT, bookingResult.getBookingId(),
+                bookingResult.getResult(), bookingResult.getCreatedAt(), bookingResult.getUpdatedAt());
+    }
+
+    @Override
+    public BookingResult getBookingResultById(Long id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_BOOKING_RESULT_BY_ID,id);
+        while (rs.next()){
+            return BookingResult.builder()
+                    .result(rs.getString("result"))
+                    .build();
+        }
+        return null;
+    }
     @Override
     public List<Booking> getAll(Integer offset, Integer limit, String search) throws SQLException {
         return null;
@@ -91,7 +113,7 @@ public class BookingDaoImpl implements BookingDao {
     @Override
     public Long save(Booking booking) throws SQLException, ClassNotFoundException {
         return ConnectionUtils.executeUpdateForIdentity(SAVE_BOOKING, booking.getName(), booking.getPhone(), booking.isGender(), booking.getAge(),
-                booking.getAccount().getId(), booking.getService().getId(), booking.getDate(), booking.getTime(),
+                booking.getAccount().getId(), booking.getService().getId(), booking.getTypeId(), booking.getDate(), booking.getTime(),
                 booking.getDescription(), booking.getStatus(), booking.getCreatedAt(), booking.getUpdatedAt());
     }
 

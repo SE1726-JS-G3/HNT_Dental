@@ -279,8 +279,7 @@
                                     </div>
                                 </div>
                                 <div class="tab-content p-0">
-                                    <input type="submit" name="send" class="btn btn-primary"
-                                           value="Cập nhật">
+                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
                                 </div>
                             </div>
                         </div>
@@ -289,82 +288,22 @@
                 <%--Staff & doctor--%>
                 <div class="card border-0 shadow overflow-hidden mt-4">
                     <div class="p-4 border-bottom">
-                        <h5 class="mb-0">Cập nhật thông tin</h5>
+                        <h5 class="mb-0">Kết quả khám</h5>
                     </div>
-                    <form action=""
+                    <form action="${pageContext.request.contextPath}/management/booking/result"
                           method="POST">
                         <div class="row tab-content p-4">
-
                             <div class="col-lg-12">
+                                <input hidden="" name="id" value="${param.id}">
                                 <div class="mb-3">
-                                    <label class="form-label">Tiểu sử bệnh</label>
-                                    <textarea name="history" class="form-control history"
-                                              rows="3">${appointment.history}</textarea>
+                                    <label class="form-label">Kết quả khám bao gồm kết luần của bác sĩ + đơn thuốc + Phim XQ (nếu có)</label>
+                                    <textarea name="result" class="form-control attachments"
+                                              rows="3">${bookingResult.result}</textarea>
                                 </div>
                             </div>
-
                             <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <label class="form-label">Triệu chứng</label>
-                                    <textarea name="history" class="form-control"
-                                              rows="3">${appointment.history}</textarea>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <label class="form-label">Tài liệu đính kèm (Phim XQ...)</label>
-                                    <textarea name="history" class="form-control"
-                                              rows="3">Đây là chỗ tải ảnh lên ... </textarea>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <label class="form-label">Chẩn đoán</label>
-                                    <textarea name="history" class="form-control"
-                                              rows="3">${appointment.history}</textarea>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <label class="form-label">Đơn thuốc</label>
-                                    <textarea name="history" class="form-control"
-                                              rows="3">${appointment.history}</textarea>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <label class="form-label">Khuyến nghị và lời khuyên</label>
-                                    <textarea name="history" class="form-control"
-                                              rows="3">${appointment.history}</textarea>
-                                </div>
-                            </div>
-
-
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <label class="form-label">Trạng thái</label>
-                                    <select name="status" class="form-select" aria-label="Default select example">
-                                        <option
-                                                value="Complete">Complete
-                                        </option>
-                                        <option
-                                                value="Assigned">Assigned
-                                        </option>
-                                        <option
-                                                value="Pending">Pending
-                                        </option>
-                                        <option
-                                                value="Cancelled">Cancelled
-                                        </option>
-                                    </select>
-                                </div>
                                 <div class="tab-content p-0">
-                                    <input type="submit" id="submit" name="send" class="btn btn-primary"
-                                           value="Cập nhật">
+                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
                                 </div>
                             </div>
                         </div>
@@ -384,6 +323,117 @@
 
 <script>
     ClassicEditor.create(document.querySelector(".history"), {
+        toolbar: {
+            items: [
+                "heading",
+                "|",
+                "bold",
+                "italic",
+                "link",
+                "bulletedList",
+                "numberedList",
+                "|",
+                "indent",
+                "outdent",
+                "|",
+                "imageUpload",
+                "blockQuote",
+                "mediaEmbed",
+                "undo",
+                "redo",
+            ],
+        },
+        image: {
+            toolbar: ["imageTextAlternative", "imageStyle:full", "imageStyle:side"],
+        },
+    }).then((editor) => {
+        window.editor = editor;
+    })
+
+    ClassicEditor.create(document.querySelector(".symptoms"), {
+        toolbar: {
+            items: [
+                "heading",
+                "|",
+                "bold",
+                "italic",
+                "link",
+                "bulletedList",
+                "numberedList",
+                "|",
+                "indent",
+                "outdent",
+                "|",
+                "imageUpload",
+                "blockQuote",
+                "mediaEmbed",
+                "undo",
+                "redo",
+            ],
+        },
+        image: {
+            toolbar: ["imageTextAlternative", "imageStyle:full", "imageStyle:side"],
+        },
+    }).then((editor) => {
+        window.editor = editor;
+    })
+
+
+    ClassicEditor.create(document.querySelector(".attachments"), {
+        toolbar: {
+            items: [
+                "heading",
+                "|",
+                "bold",
+                "italic",
+                "link",
+                "bulletedList",
+                "numberedList",
+                "|",
+                "indent",
+                "outdent",
+                "|",
+                "imageUpload",
+                "blockQuote",
+                "mediaEmbed",
+                "undo",
+                "redo",
+            ],
+        },
+        image: {
+            toolbar: ["imageTextAlternative", "imageStyle:full", "imageStyle:side"],
+        },
+    }).then((editor) => {
+        window.editor = editor;
+    })
+    ClassicEditor.create(document.querySelector(".diagnosis"), {
+        toolbar: {
+            items: [
+                "heading",
+                "|",
+                "bold",
+                "italic",
+                "link",
+                "bulletedList",
+                "numberedList",
+                "|",
+                "indent",
+                "outdent",
+                "|",
+                "imageUpload",
+                "blockQuote",
+                "mediaEmbed",
+                "undo",
+                "redo",
+            ],
+        },
+        image: {
+            toolbar: ["imageTextAlternative", "imageStyle:full", "imageStyle:side"],
+        },
+    }).then((editor) => {
+        window.editor = editor;
+    })
+    ClassicEditor.create(document.querySelector(".prescription"), {
         toolbar: {
             items: [
                 "heading",

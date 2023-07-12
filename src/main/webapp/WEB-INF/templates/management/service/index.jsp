@@ -33,10 +33,14 @@
                             </div>
                         </div>
                         <div class="col-md-4 col-sm-12">
-                            <a href="${pageContext.request.contextPath}/management/employee/create">
-                                <button class="btn btn-primary">Thêm mới</button>
+                            <a href="${pageContext.request.contextPath}/management/service/create">
+                                <button class="btn btn-primary">Thêm dịch vụ</button>
+                            </a>
+                            <a href="${pageContext.request.contextPath}/management/service/serviceType">
+                                <button class="btn btn-primary">Loại dịch vụ</button>
                             </a>
                         </div>
+
                     </div>
                     <div class="col-md-7">
                         <br><br>
@@ -70,10 +74,13 @@
                                             <option <c:if test="${speciality == 'all'}"> selected </c:if> value="all">
                                                 Tất cả
                                             </option>
-                                            <c:forEach items="${speciality}" var="s">
-                                                <option <c:if test="${speciality1 == s.id}"> selected </c:if>
-                                                        value="${s.id}">${s.name}</option>
-                                            </c:forEach>
+                                            <option <c:if test="${speciality == 'all'}"> selected </c:if> value="all">
+                                                Active
+                                            </option>
+                                            <option <c:if test="${speciality == 'all'}"> selected </c:if> value="all">
+                                                Deactive
+                                            </option>
+
                                         </select>
                                     </div>
                                 </div>
@@ -116,7 +123,7 @@
                                         <td class="text-center">
                                             <a href="#">
                                                 <button class="btn btn-primary"
-                                                        onclick="window.location.href='${pageContext.request.contextPath}/management/employee/update?id=${e.id}'"
+                                                        onclick="window.location.href='${pageContext.request.contextPath}/management/service/detail?id=${s.id}'"
                                                 >Chi tiết
                                                 </button>
                                             </a>

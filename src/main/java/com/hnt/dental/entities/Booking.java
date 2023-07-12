@@ -23,5 +23,6 @@ public class Booking extends BaseEntity{
     private LocalTime time;
     private String description;
     private int status;
+    private Long typeId;
     private String payment;
 }
