@@ -30,8 +30,5 @@ public interface DoctorDao extends GenericDao<Doctors> {
     Integer countPatitent() throws Exception;
 
     Integer countPatitentDetails(Long id) throws Exception;
-
-    List<DoctorSummaryRes> getListDoctorAvailable(LocalDate date, LocalTime time, Long typeId, Long serviceId) throws SQLException;
-
-
+    List<DoctorSummaryRes> getListDoctorAvailable(LocalDate date, LocalTime time, Long typeId, Long serviceId, Long bookingId) throws SQLException;
 }
