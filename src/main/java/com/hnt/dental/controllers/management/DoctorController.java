@@ -18,6 +18,7 @@ import java.io.IOException;
         "/management/doctor/my-appointment-detail",
         "/management/mypatient",
         "/management/mypatient/detail",
+        "/doctor/profile",
         "/management/doctor/delete"
 })
 public class DoctorController extends HttpServlet {
@@ -54,6 +55,9 @@ public class DoctorController extends HttpServlet {
                 case "/management/mypatient/detail":
                     doctorService.getMyPatientDetails(req, resp);
                     break;
+                case "/doctor/profile":
+                    doctorService.profile(req, resp);
+                    break;
                 default:
             }
         } catch (Exception e) {
@@ -77,6 +81,9 @@ public class DoctorController extends HttpServlet {
                     break;
                 case "/management/mypatient/detail":
                     doctorService.getMyPatientDetails(req, resp);
+                    break;
+                case "/doctor/profile":
+                    doctorService.profile(req, resp);
                     break;
                 default:
             }

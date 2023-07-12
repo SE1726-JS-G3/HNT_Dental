@@ -61,6 +61,21 @@ public class DoctorDaoImpl implements DoctorDao {
             "    OR LOWER(dr.name) LIKE ?" +
             "  ORDER BY" +
             "    d.id";
+
+    private static final String SQL_COUNT_DOCTOR = "SELECT " +
+            "  COUNT(*)" +
+            "  FROM" +
+            "    doctors d" +
+            "    INNER JOIN doctor_rank dr ON d.rank_id = dr.id" +
+            "    INNER JOIN accounts a ON d.id = a.id" +
+            "  WHERE" +
+            "    (LOWER(d.full_name) LIKE ?" +
+            "    OR LOWER(d.position) LIKE ?" +
+            "    OR LOWER(dr.name) LIKE ?)" +
+            "    AND d.status LIKE ?" +
+            "    AND d.gender LIKE ?" +
+            "  ORDER BY" +
+            "    d.id";
     private static final String SQL_GET_TOP_DOCTOR = "select * from doctors " +
             "ORDER BY RAND() LIMIT 4";
 
@@ -152,6 +167,20 @@ public class DoctorDaoImpl implements DoctorDao {
         }
         ConnectionUtils.closeConnection();
         return doctors;
+    }
+
+
+    @Override
+    public Integer countGetALLDoctor(String search, String status, String gender) throws SQLException {
+        search = StringUtils.isNotEmpty(search) ? "%" + search.toLowerCase() + "%" : "%";
+        status = StringUtils.isNotEmpty(status) ? status : "%";
+        gender = StringUtils.isNotEmpty(gender) ? gender : "%";
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_COUNT_DOCTOR, search, search, search, status, gender);
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        ConnectionUtils.closeConnection();
+        return null;
     }
 
     @Override
@@ -248,6 +277,7 @@ public class DoctorDaoImpl implements DoctorDao {
         }
         return result;
     }
+
 
 
     @Override
@@ -511,6 +541,10 @@ public class DoctorDaoImpl implements DoctorDao {
         return null;
     }
 
+    @Override
+    public List<DoctorSummaryRes> getListDoctorAvailable(LocalDate date, LocalTime time, Long typeId, Long serviceId) throws SQLException {
+        return null;
+    }
 
 
     @Override
@@ -557,6 +591,30 @@ public class DoctorDaoImpl implements DoctorDao {
 
 
 
+    private static final String GET_PROFILE_BY_EMAIL_SQL = "SELECT * FROM doctors " +
+            "INNER JOIN accounts a ON doctors.id = a.id " +
+            "WHERE doctors.id = ?";
+    @Override
+    public Account getProfile(Long id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(GET_PROFILE_BY_EMAIL_SQL,id);
+        assert rs != null;
+        if (rs.next()) {
+            return Account.builder()
+                    .id(rs.getLong("id"))
+                    .email(rs.getString("email"))
+                    .password(rs.getString("password"))
+//                    .role(rs.getInt("role"))
+//                    .isVerified(rs.getBoolean("is_verified"))
+//                    .image(rs.getLong("image"))
+                    .doctors(Doctors.builder()
+                            .fullName(rs.getString("full_name"))
+                            .phone (rs.getString("phone"))
+                            .build())
+
+                    .build();
+        }
+        return null;
+    }
 
 
 }

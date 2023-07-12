@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="en">
@@ -43,53 +42,49 @@
                                 </div><!--end col-->
                             </div><!--end row-->
 
-                            <form class="mt-4" action="${pageContext.request.contextPath}/management/doctor/create" method="post">
+                            <form class="mt-4"  action="${pageContext.request.contextPath}/management/doctor/create" method="post"  onSubmit="return validateForm()">
                                 <div class="row">
+                                    <div id="message-container"></div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Họ và tên</label>
-                                            <input name="full_name" id="name" type="text" class="form-control"
-                                                   placeholder="Họ và tên :">
+                                            <label class="form-label" for="name">Họ và tên</label>
+                                            <input name="full_name" id="name" type="text" class="form-control" placeholder="Họ và tên">
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Ngày sinh</label>
-                                            <input name="dob" id="name2" type="text" class="form-control"
-                                                   placeholder="DD/MM/YYYY">
+                                            <label class="form-label" for="dob">Ngày sinh</label>
+                                            <input name="dob" id="dob" type="text" class="form-control" placeholder="YYYY-MM-DD" value="${param.dob}">
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Email</label>
-                                            <input name="email" id="email" type="email" class="form-control"
-                                                   placeholder="Email :">
+                                            <input name="email" id="email" type="email" class="form-control" placeholder="Email :">
+                                            <label id="email-error" class="error" for="email" style="display: none;"></label>
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Địa chỉ</label>
-                                            <input name="address" id="address" type="text" class="form-control"
-                                                   placeholder="Địa chỉ">
+                                            <input name="address" id="address" type="text" class="form-control" placeholder="Địa chỉ">
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Điện thoại</label>
-                                            <input name="phone" id="phone" type="text" class="form-control"
-                                                   placeholder="Điện thoại">
+                                            <input name="phone" id="phone" type="text" class="form-control" placeholder="Điện thoại">
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Chuyên môn</label>
-                                            <input name="position" id="position" type="text" class="form-control"
-                                                   placeholder="Chức vụ">
+                                            <input name="position" id="position" type="text" class="form-control" placeholder="Chức vụ">
                                         </div>
                                     </div><!--end col-->
 
@@ -106,10 +101,11 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Xếp hạng</label>
-                                            <input name="rankId" id="rankId" type="text" class="form-control"
-                                                   placeholder="Xếp hạng">
+                                            <input name="rankId" id="rankId" type="text" class="form-control" placeholder="Xếp hạng">
+                                            <label id="rankId-error" class="error" for="rankId" style="display: none;"></label>
                                         </div>
                                     </div>
+
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Trạng thái</label>
@@ -128,11 +124,11 @@
                                             </select>
                                         </div>
                                     </div><!--end col-->
+
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label class="form-label">Mô tả</label>
-                                            <textarea name="description" id="comments" rows="3" class="form-control"
-                                                      placeholder="Bio :"></textarea>
+                                            <textarea name="description" id="comments" rows="3" class="form-control" placeholder="Bio :"></textarea>
                                         </div>
                                     </div>
                                 </div><!--end row-->
@@ -153,5 +149,114 @@
 <script src="${pageContext.request.contextPath}/static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function validateForm() {
+        var fullName = document.getElementById('name').value;
+        var dob = document.getElementById('dob').value;
+        var email = document.getElementById('email').value;
+        var address = document.getElementById('address').value;
+        var phone = document.getElementById('phone').value;
+        var position = document.getElementById('position').value;
+        var rankId = document.getElementById('rankId').value;
+
+        // Perform field validation
+        if (fullName.trim() === '') {
+            displayErrorMessage('Họ và tên không được bỏ trống');
+            return false;
+        }
+        if (dob.trim() === '') {
+            displayErrorMessage('Ngày sinh không được bỏ trống');
+            return false;
+        }
+        if (!isValidDateFormat(dob)) {
+            displayErrorMessage('Ngày sinh phải có định dạng YYYY-MM-DD');
+            return false;
+        }
+        if (email.trim() === '') {
+            displayErrorMessage('Email không được bỏ trống');
+            return false;
+        }
+        if (!isValidEmailAddress(email)) {
+            displayErrorMessage('Email không hợp lệ');
+            return false;
+        }
+        if (address.trim() === '') {
+            displayErrorMessage('Địa chỉ không được bỏ trống');
+            return false;
+        }
+        if (phone.trim() === '') {
+            displayErrorMessage('Điện thoại không được bỏ trống');
+            return false;
+        }
+        if (!isValidPhoneNumber(phone)) {
+            displayErrorMessage('Số điện thoại chỉ được nhập 10 chữ số');
+            return false;
+        }
+        if (position.trim() === '') {
+            displayErrorMessage('Chuyên môn không được bỏ trống');
+            return false;
+        }
+        if (rankId.trim() === '') {
+            displayErrorMessage('xếp hạng không được bỏ trống');
+            return false;
+        }
+        if (!isValidRankId(rankId)) {
+            displayErrorMessage('Xếp hạng phải chỉ có từ 1 đến 10');
+            return false;
+        }
+
+        // If all fields are valid, display success message
+        displaySuccessMessage('Thông tin đã được cập nhật thành công');
+        return true;
+    }
+
+    function isValidDateFormat(dateString) {
+        // Kiểm tra định dạng ngày sinh theo dạng YYYY-MM-DD
+        var pattern = /^\d{4}-\d{2}-\d{2}$/;
+        return pattern.test(dateString);
+    }
+
+    function isValidEmailAddress(email) {
+        // Kiểm tra định dạng email hợp lệ
+        var pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return pattern.test(email);
+    }
+
+    function isValidRankId(rankId) {
+        // Kiểm tra xếp hạng chỉ từ 1 đến 10
+        var rankNumber = parseInt(rankId, 10);
+        return rankNumber >= 1 && rankNumber <= 10;
+    }
+
+    function isValidPhoneNumber(phone) {
+        // Kiểm tra số điện thoại có 10 chữ số
+        var pattern = /^\d{10}$/;
+        return pattern.test(phone);
+    }
+    // Các hàm hiển thị thông báo lỗi và thành công không thay đổi.
+    function displayErrorMessage(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: message,
+            timer: 50000, // Hiển thị thông báo trong 30 giây
+            showConfirmButton: false // Ẩn nút xác nhận
+        });
+    }
+
+    function displaySuccessMessage(message) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: message,
+            timer: 50000, // Hiển thị thông báo trong 30 giây
+            showConfirmButton: false // Ẩn nút xác nhận
+        });
+    }
+</script>
+
 </body>
 </html>

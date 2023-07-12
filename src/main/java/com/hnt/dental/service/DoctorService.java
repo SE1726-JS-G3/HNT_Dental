@@ -91,7 +91,7 @@ public class DoctorService {
 
         try {
             String renderedSearch = renderSearch(search.trim());
-            Integer totalItem = dao.countListDoctorSummary(renderedSearch);
+            Integer totalItem = dao.countGetALLDoctor(renderedSearch, status.trim(), gender.trim());
             Integer totalPage = PagingUtils.getTotalPage(totalItem);
             List<Doctors> doctors = dao.getAllDoctor(
                     PagingUtils.getOffset(pageNumber),
@@ -169,11 +169,12 @@ public class DoctorService {
                     BookingDto booking = bookingOptional.get();
                     if (booking.getStatus().equals("0")) {
                         booking.setStatus("1"); // Change the status to "Chấp nhận"
-                        dao.updateBookingStatus(BookingDto.builder()
-                                .id(id)
-                                .status(String.valueOf(Integer.parseInt(status)))
-                                .build()
-                        ); // Update the booking status in the database using your DAO or service class
+//                        dao.updateBookingStatus(BookingDto.builder()
+//                                .id(id)
+//                                .status(String.valueOf(Integer.parseInt(status)))
+//                                .build()
+                        booking.setStatus("1");
+                        dao.updateBookingStatus(booking);// Update the booking status in the database using your DAO or service class
                     }
                 }
             } catch (Exception e) {
@@ -181,7 +182,8 @@ public class DoctorService {
             }
 
             if (StringUtils.isNotEmpty(error)) {
-                ServletUtils.redirect(req, resp, "/management/doctor/my-appointment-detail?id=" + id + "&error=" + error);
+//                ServletUtils.redirect(req, resp, "/management/doctor/my-appointment-detail?id=" + id + "&error=" + error);
+                resp.sendRedirect("/management/doctor/my-appointment-detail?id=" + id + "&error=" + error);
             } else {
                 ServletUtils.redirect(req, resp, "/management/doctor/my-appointment-detail?id=" + id);
 //                ServletUtils.redirect(req, resp, "/management/doctor/MyAppointment"); // Redirect to the appointment list page
@@ -222,7 +224,10 @@ public class DoctorService {
         String address = req.getParameter("address");
         String position = req.getParameter("position");
         String description = req.getParameter("description");
-        Long rankId = Long.valueOf(req.getParameter("rankId"));
+        Long rankId = null;
+        if (req.getParameter("rankId") != null) {
+            rankId = Long.valueOf(req.getParameter("rankId"));
+        }
         String name = req.getParameter("name");
         String status = req.getParameter("status");
         String password = AesUtils.encrypt(CaptchaUtils.getCaptcha(8));
@@ -398,6 +403,37 @@ public class DoctorService {
         int id = Integer.parseInt(req.getParameter("id"));
         dao.delete(Doctors.builder().id((long) id).build());
         ServletUtils.redirect(req, resp, "/management/doctor");
+    }
+
+    public void profile(HttpServletRequest req, HttpServletResponse resp) {
+        String id = req.getParameter("id");
+
+        try {
+            Long doctorId = null;
+            if (id != null && !id.isEmpty()) {
+                doctorId = Long.valueOf(id);
+            } else {
+                // Set a default value for 'doctorId' (e.g., 2)
+                doctorId = 2L;
+            }
+
+            Account doctorProfile = dao.getProfile(doctorId);
+
+            if (doctorProfile != null) {
+                req.setAttribute("doctorProfile", doctorProfile);
+                req.setAttribute("id", id);
+                req.setAttribute("url", "/doctor/profile");
+                req.getRequestDispatcher("/WEB-INF/templates/home/profile.jsp").forward(req, resp);
+            } else {
+                resp.sendRedirect("/error-page.jsp");
+            }
+        } catch (NumberFormatException e) {
+            // Handle the case where the 'id' parameter is not a valid Long
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Handle the exception appropriately
+        }
     }
 
 }

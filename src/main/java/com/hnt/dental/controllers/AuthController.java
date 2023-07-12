@@ -1,3 +1,4 @@
+
 package com.hnt.dental.controllers;
 
 import com.hnt.dental.exception.SystemRuntimeException;
@@ -66,7 +67,7 @@ public class AuthController extends HttpServlet {
                 ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/verification-result.jsp");
                 break;
             case "/auth/profile":
-                ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/profile.jsp");
+//                ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/profile.jsp");
                 break;
             case "/auth/booking-history":
                 ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/booking-history.jsp");
@@ -105,3 +106,4 @@ public class AuthController extends HttpServlet {
         }
     }
 }
+

@@ -49,33 +49,33 @@
                 </div>
               </div>
             </form>
-            <form action="user?action=updateprofile" method="POST">
+            <form  action="${pageContext.request.contextPath}/doctor/profile" method="POST">
               <div class="row">
                 <div class="col-md-6">
                   <div class="mb-3">
                     <label class="form-label">Tên người dùng</label>
-                    <input name="username" readonly value="${sessionScope.user.username}" id="name" type="text" class="form-control">
+                    <input name="id" readonly value="${doctorProfile != null ? doctorProfile.id : 2}" id="name" type="text" class="form-control">
                   </div>
                 </div>
 
                 <div class="col-md-6">
                   <div class="mb-3">
                     <label class="form-label">Email</label>
-                    <input name="email" readonly value="${sessionScope.user.email}" id="email" type="email" class="form-control">
+                    <input name="email" readonly value="${doctorProfile != null ? doctorProfile.email : ''}" id="email" type="email" class="form-control">
                   </div>
                 </div>
 
                 <div class="col-md-6">
                   <div class="mb-3">
                     <label class="form-label">Họ tên</label>
-                    <input name="name" oninvalid="CheckFullName(this);" oninput="CheckFullName(this);"  value="${sessionScope.user.name}" id="name2" type="text" class="form-control" >
+                    <input name="name" oninvalid="CheckFullName(this);" oninput="CheckFullName(this);"  value="${doctorProfile != null ? doctorProfile.doctors.fullName : ''}" id="name2" type="text" class="form-control" >
                   </div>
                 </div>
 
                 <div class="col-md-6">
                   <div class="mb-3">
                     <label class="form-label">Số điện thoại</label>
-                    <input name="phone" oninvalid="CheckPhone(this);" oninput="CheckPhone(this);" value="0${sessionScope.user.phone}" id="number" type="text" class="form-control">
+                    <input name="phone" oninvalid="CheckPhone(this);" oninput="CheckPhone(this);" value="0${doctorProfile != null ? doctorProfile.doctors.phone : ''}" id="number" type="text" class="form-control">
                   </div>
                 </div>
 
@@ -84,12 +84,12 @@
                     <label class="form-label">Giới tính</label>
                     <div class="my-3">
                       <div class="form-check">
-                        <input id="credit" name="gender" ${sessionScope.user.gender==true?"checked":""} value="true" type="radio" class="form-check-input"
+                        <input id="credit" name="gender" ${doctorProfile != null && doctorProfile.doctors.gender == true ? "checked" : ""} value="true" type="radio" class="form-check-input"
                                checked required >
                         <label class="form-check-label">Nam</label>
                       </div>
                       <div class="form-check">
-                        <input id="debit" name="gender" ${sessionScope.user.gender==false?"checked":""} value="false" type="radio" class="form-check-input"
+                        <input id="debit" name="gender" ${doctorProfile != null && doctorProfile.doctors.gender == false ? "checked" : ""} value="false" type="radio" class="form-check-input"
                                required>
                         <label class="form-check-label">Nữ</label>
                       </div>
