@@ -29,7 +29,7 @@ public interface DoctorDao extends GenericDao<Doctors> {
     List<PatitentsDto> MyPatientDoctor(Integer offset, Integer limit) throws SQLException;
     List<PatitentsDto> getPatientDetails(Long id, Integer offset, Integer limit) throws SQLException;
     Integer countPatitent() throws Exception;
-
+    void updateProfile(Doctors doctors) throws SQLException;
     Integer countPatitentDetails(Long id) throws Exception;
 
     List<DoctorSummaryRes> getListDoctorAvailable(LocalDate date, LocalTime time, Long typeId, Long serviceId) throws SQLException;

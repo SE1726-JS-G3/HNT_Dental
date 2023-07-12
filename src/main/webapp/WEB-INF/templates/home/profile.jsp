@@ -49,28 +49,21 @@
                 </div>
               </div>
             </form>
-            <form  action="${pageContext.request.contextPath}/doctor/profile" method="POST">
+            <form action="${pageContext.request.contextPath}/doctor/profile" method="POST">
               <div class="row">
                 <div class="col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Tên người dùng</label>
-                    <input name="id" readonly value="${doctorProfile != null ? doctorProfile.id : 2}" id="name" type="text" class="form-control">
+                    <label class="form-label">Họ tên</label>
+                    <input name="name" oninvalid="CheckFullName(this);" oninput="CheckFullName(this);" value="${doctorProfile != null ? doctorProfile.doctors.fullName : ''}" id="name2" type="text" class="form-control">
                   </div>
                 </div>
-
                 <div class="col-md-6">
                   <div class="mb-3">
                     <label class="form-label">Email</label>
-                    <input name="email" readonly value="${doctorProfile != null ? doctorProfile.email : ''}" id="email" type="email" class="form-control">
+                    <input name="email" value="${doctorProfile != null ? doctorProfile.email : ''}" id="email" type="email" class="form-control">
                   </div>
                 </div>
 
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">Họ tên</label>
-                    <input name="name" oninvalid="CheckFullName(this);" oninput="CheckFullName(this);"  value="${doctorProfile != null ? doctorProfile.doctors.fullName : ''}" id="name2" type="text" class="form-control" >
-                  </div>
-                </div>
 
                 <div class="col-md-6">
                   <div class="mb-3">
@@ -81,16 +74,35 @@
 
                 <div class="col-md-6">
                   <div class="mb-3">
+                    <label class="form-label">Ngày sinh</label>
+                    <input name="dob"  value="${doctorProfile != null ? doctorProfile.doctors.dob : ''}" id="dob" type="text" class="form-control">
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Địa chỉ</label>
+                    <input name="address"  value="${doctorProfile != null ? doctorProfile.doctors.address : ''}" id="address" type="text" class="form-control">
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Mô tả</label>
+                    <input name="description"  value="${doctorProfile != null ? doctorProfile.doctors.description : ''}" id="description" type="text" class="form-control">
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="mb-3">
                     <label class="form-label">Giới tính</label>
                     <div class="my-3">
                       <div class="form-check">
-                        <input id="credit" name="gender" ${doctorProfile != null && doctorProfile.doctors.gender == true ? "checked" : ""} value="true" type="radio" class="form-check-input"
-                               checked required >
+                        <input id="credit" name="gender" ${doctorProfile != null && doctorProfile.doctors.gender == true ? "checked" : ""} value="true" type="radio" class="form-check-input" checked required>
                         <label class="form-check-label">Nam</label>
                       </div>
                       <div class="form-check">
-                        <input id="debit" name="gender" ${doctorProfile != null && doctorProfile.doctors.gender == false ? "checked" : ""} value="false" type="radio" class="form-check-input"
-                               required>
+                        <input id="debit" name="gender" ${doctorProfile != null && doctorProfile.doctors.gender == false ? "checked" : ""} value="false" type="radio" class="form-check-input" required>
                         <label class="form-check-label">Nữ</label>
                       </div>
                     </div>

@@ -520,6 +520,8 @@ public class DoctorDaoImpl implements DoctorDao {
         ConnectionUtils.closeConnection();
         return null;
     }
+
+
     private static final String COUNT_PATIENT_DETAILS = "SELECT COUNT(*) FROM (" +
             "SELECT DISTINCT p.id " +
             "FROM patients p " +
@@ -602,14 +604,24 @@ public class DoctorDaoImpl implements DoctorDao {
 //                    .isVerified(rs.getBoolean("is_verified"))
 //                    .image(rs.getLong("image"))
                     .doctors(Doctors.builder()
+                            .gender(rs.getBoolean("gender"))
                             .fullName(rs.getString("full_name"))
                             .phone (rs.getString("phone"))
+                            .dob(LocalDate.parse(rs.getString("dob")))
+                            .address((rs.getString("address")))
+                            .description(rs.getString("description"))
                             .build())
 
                     .build();
         }
         return null;
     }
+    private static final String UPDATE_PROFILE_SQL = "UPDATE hnt_dental.doctors SET full_name = ?, phone = ?, dob = ?, address = ?, description = ?, gender = ? WHERE id = ?";
+    @Override
+    public void updateProfile(Doctors doctors) throws SQLException {
+        ConnectionUtils.executeUpdate(UPDATE_PROFILE_SQL, doctors.getFullName(), doctors.getPhone(),doctors.getDob(),
+                doctors.getAddress(),doctors.getDescription(),doctors.getGender(),doctors.getAccount().getId());
+    }
 
+    }
 
-}

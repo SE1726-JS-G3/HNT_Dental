@@ -83,8 +83,9 @@ public class DoctorController extends HttpServlet {
                     doctorService.getMyPatientDetails(req, resp);
                     break;
                 case "/doctor/profile":
-                    doctorService.profile(req, resp);
+                    doctorService.updateProfile(req,resp);
                     break;
+
                 default:
             }
         } catch (Exception e) {

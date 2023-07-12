@@ -14,6 +14,7 @@ import com.hnt.dental.util.AesUtils;
 import com.hnt.dental.util.CaptchaUtils;
 import com.hnt.dental.util.PagingUtils;
 import com.hnt.dental.util.ServletUtils;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
@@ -114,13 +115,14 @@ public class DoctorService {
     }
 
 
-    private String renderSearch(String search){
-        if(search.matches("\\d{2}/\\d{2}/\\d{4}")){
+    private String renderSearch(String search) {
+        if (search.matches("\\d{2}/\\d{2}/\\d{4}")) {
             String[] date = search.split("/");
             return StringUtils.join(date[2], "-", date[1], "-", date[0]);
         }
         return search;
     }
+
     public void getMyAppointments(HttpServletRequest req, HttpServletResponse resp) {
         String page = req.getParameter("page");
         int pageNumber = 1;
@@ -143,6 +145,7 @@ public class DoctorService {
             System.out.println(e.getMessage());
         }
     }
+
     public void getAppointmentDetail(HttpServletRequest req, HttpServletResponse resp) {
         String id = req.getParameter("id");
         try {
@@ -157,6 +160,7 @@ public class DoctorService {
             System.out.println(e.getMessage());
         }
     }
+
     public void updateBookingStatus(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         Long id = Long.valueOf(req.getParameter("id"));
         String status = req.getParameter("status");
@@ -272,6 +276,7 @@ public class DoctorService {
             ServletUtils.redirect(req, resp, "/management/doctor");
         }
     }
+
     public void update(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         Long id = Long.valueOf(req.getParameter("id"));
         String fullname = req.getParameter("full_name");
@@ -290,10 +295,10 @@ public class DoctorService {
         //  RoleEnum role = position.equals("DOCTOR") ? RoleEnum.ROLE_DOCTOR : RoleEnum.ROLE_STAFF;
         RoleEnum role = RoleEnum.ROLE_DOCTOR;
         String error = null;
-        try{
+        try {
             Account account = accountDao.findByEmail(email);
 
-            if(account != null && !Objects.equals(account.getId(), id)){
+            if (account != null && !Objects.equals(account.getId(), id)) {
                 throw new SystemRuntimeException(StringUtils.join("Email ", email, " already exists"));
             }
 
@@ -317,11 +322,11 @@ public class DoctorService {
                             .rankId(rankId)
                             .build()
             );
-        } catch (Exception e){
+        } catch (Exception e) {
             error = e.getMessage();
         }
 
-        if(StringUtils.isNotEmpty(error)){
+        if (StringUtils.isNotEmpty(error)) {
             ServletUtils.redirect(req, resp, "/management/doctor/detail?id=" + id + "&error=" + error);
         } else {
             ServletUtils.redirect(req, resp, "/management/doctor/detail?id=" + id);
@@ -352,11 +357,12 @@ public class DoctorService {
         req.setAttribute("feedbacks", getAllFeedbackByIdDoctor);
         ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/doctor/detail.jsp");
     }
+
     public void MyPatientDoctor(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String page = req.getParameter("page");
         int pageNumber = 1;
 
-        if(StringUtils.isNotEmpty(page)){
+        if (StringUtils.isNotEmpty(page)) {
             pageNumber = Integer.parseInt(page);
         }
 
@@ -374,12 +380,13 @@ public class DoctorService {
             // Handle the exception appropriately
         }
     }
+
     public void getMyPatientDetails(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         Long id = Long.valueOf(req.getParameter("id"));
         String page = req.getParameter("page");
         int pageNumber = 1;
 
-        if(StringUtils.isNotEmpty(page)){
+        if (StringUtils.isNotEmpty(page)) {
             pageNumber = Integer.parseInt(page);
         }
 
@@ -405,35 +412,84 @@ public class DoctorService {
         ServletUtils.redirect(req, resp, "/management/doctor");
     }
 
-    public void profile(HttpServletRequest req, HttpServletResponse resp) {
-        String id = req.getParameter("id");
+    public void profile(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException{
+        Account account = (Account) req.getSession().getAttribute("account");
+        if (account != null) {
+            try {
+                Long doctorId = account.getId();
+                if (doctorId != null) {
+                    Account doctorProfile = dao.getProfile(doctorId);
+
+                    if (doctorProfile != null) {
+                        req.setAttribute("doctorProfile", doctorProfile);
+                        req.setAttribute("id", String.valueOf(doctorId));
+                        req.getRequestDispatcher("/WEB-INF/templates/home/profile.jsp").forward(req, resp);
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+    public void updateProfile(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        Account account = (Account) req.getSession().getAttribute("account");
+        if (account != null) {
+            Long doctorId = account.getId();
+
+            if (doctorId != null) {
+                Account doctorProfile = dao.getProfile(doctorId);
+
+                if (doctorProfile != null) {
+                    Long id = doctorProfile.getId(); // Lấy ID của bác sĩ từ tài khoản đăng nhập
+                    String email = req.getParameter("email");
+                    String fullName = req.getParameter("name");
+                    String phone = req.getParameter("phone");
+                    LocalDate dob = LocalDate.parse(req.getParameter("dob"));
+                    String address = req.getParameter("address");
+                    String description = req.getParameter("description");
+                    String gender = req.getParameter("gender");
+                    Boolean isVerified = doctorProfile.getIsVerified(); // Retrieve the isVerified value
+
+                    // Update thông tin trong Account
+                    Account updatedAccount = Account.builder()
+                            .id(id)
+                            .email(email)
+                            .password(doctorProfile.getPassword())
+                            .role(doctorProfile.getRole())
+                            .isVerified(isVerified) // Set the isVerified value
+                            .build();
+                    accountDao.update(updatedAccount);
+
+                    // Update thông tin trong Doctors
+                    Doctors updatedDoctor = Doctors.builder()
+                            .fullName(fullName)
+                            .phone(phone)
+                            .dob(dob)
+                            .address(address)
+                            .description(description)
+                            .gender(Objects.equals(gender, "Nam"))
+                            .account(updatedAccount)
+                            .build();
+                    dao.update(updatedDoctor);
+
+                    try {
+                        req.setAttribute("updatesuccess", "Cập nhật thông tin thành công.");
+                    } catch (Exception e) {
+                        req.setAttribute("updatesuccess", "Cập nhật thông tin thất bại.");
+                        System.out.println(e.getMessage());
+                    }
+                }
+            }
+        }
 
         try {
-            Long doctorId = null;
-            if (id != null && !id.isEmpty()) {
-                doctorId = Long.valueOf(id);
-            } else {
-                // Set a default value for 'doctorId' (e.g., 2)
-                doctorId = 2L;
-            }
-
-            Account doctorProfile = dao.getProfile(doctorId);
-
-            if (doctorProfile != null) {
-                req.setAttribute("doctorProfile", doctorProfile);
-                req.setAttribute("id", id);
-                req.setAttribute("url", "/doctor/profile");
-                req.getRequestDispatcher("/WEB-INF/templates/home/profile.jsp").forward(req, resp);
-            } else {
-                resp.sendRedirect("/error-page.jsp");
-            }
-        } catch (NumberFormatException e) {
-            // Handle the case where the 'id' parameter is not a valid Long
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-            // Handle the exception appropriately
+            req.getRequestDispatcher("/WEB-INF/templates/home/profile.jsp").forward(req, resp);
+        } catch (ServletException e) {
+            throw new RuntimeException(e);
         }
     }
 
+
 }
+
+
