@@ -23,7 +23,7 @@
         <img src="${pageContext.request.contextPath}/static/images/booking/booking-success.gif" class="img-fluid" alt="">
         <br><br><br><br>
         <h3 class="mb-4">Lịch hẹn đã được khởi tạo thành công.</h3>
-        <a href="home" class="btn btn-primary mt-2">Quay lại trang chủ</a>
+        <a href="/home" class="btn btn-primary mt-2">Quay lại trang chủ</a>
       </div>
     </div>
   </div>

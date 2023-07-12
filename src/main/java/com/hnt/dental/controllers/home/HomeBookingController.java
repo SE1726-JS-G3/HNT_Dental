@@ -33,6 +33,7 @@ public class HomeBookingController extends HttpServlet {
                     service.renderData(req, resp);
                     break;
                 case "/booking/success":
+                    req.getRequestDispatcher("/WEB-INF/templates/home/booking/booking-success.jsp").forward(req, resp);
                     break;
                 case "/booking/payment/verify":
                     service.paymentCallback(req, resp);
