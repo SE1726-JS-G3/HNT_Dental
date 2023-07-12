@@ -17,7 +17,7 @@
                         <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
                             <li class="breadcrumb-item"><a href="#">Quản lí</a></li>
                             <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/management/employee">Nhân viên</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Thêm nhân viên</li>
+                            <li class="breadcrumb-item status" aria-current="page">Thêm nhân viên</li>
                         </ul>
                     </nav>
                 </div>

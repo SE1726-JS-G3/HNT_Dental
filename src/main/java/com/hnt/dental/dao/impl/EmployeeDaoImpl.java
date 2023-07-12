@@ -47,6 +47,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     private static final String GET_EMPLOYEE_BY_ID = "SELECT * FROM hnt_dental.employees where id=?";
 
+    private static final String GET_EMPLOYEE_BY_NAME = "SELECT * FROM hnt_dental.employees where full_name like ?";
+
     private static final String DELETE_EMPLOYEE = "DELETE FROM employees WHERE id=?";
 
     private static final String SQL_GET_EMPLOYEE_AVALABLE = "SELECT DISTINCT e.full_name , e.id from employees e " +
@@ -56,11 +58,13 @@ public class EmployeeDaoImpl implements EmployeeDao {
             "SELECT DISTINCT e.id from employees e " +
             "inner join booking b on e.id = b.staff_id " +
             " WHERE b.date = ? " +
-            " AND b.time = ?)";
+            " AND b.time = ?" +
+            " AND b.id <> ?" +
+            ")";
     @Override
-    public List<Employee> getEmployeeAvailable(LocalDate date, LocalTime time) throws Exception {
+    public List<Employee> getEmployeeAvailable(LocalDate date, LocalTime time, Long bookingId) throws Exception {
         List<Employee> employees = new ArrayList<>();
-        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_EMPLOYEE_AVALABLE, date, time);
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_EMPLOYEE_AVALABLE, date, time, bookingId);
         while (rs.next()) {
             employees.add(
                     Employee.builder()
@@ -135,6 +139,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
                 employee.getDob(), employee.getGender(), employee.getPhone(), employee.getAddress(),
                 employee.getSalary(), employee.isStatus(), employee.getCreatedAt(), employee.getUpdatedAt());
         return null;
+
     }
 
 
@@ -144,6 +149,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
                 employee.getDob(), employee.getGender(), employee.getPhone(), employee.getAddress(),
                 employee.getSalary(), employee.isStatus(), employee.getCreatedAt(), employee.getUpdatedAt(), employee.getAccount().getId());
     }
+
+
 
     @Override
     public void delete(Employee employee) throws SQLException {
@@ -163,6 +170,28 @@ public class EmployeeDaoImpl implements EmployeeDao {
         return null;
     }
 
+        @Override
+    public Optional<Employee> findByName(String name) throws Exception {
+        ResultSet rs = ConnectionUtils.executeQuery(GET_EMPLOYEE_BY_NAME, name);
+        assert rs != null;
+        if (rs.next()) {
+            return Optional.ofNullable(Employee.builder().id(rs.getLong("id"))
+                    .fullName(rs.getString("full_name"))
+                    .account(
+                            Account.builder()
+                                    .email("email")
+                                    .build())
+                    .phone(rs.getString("phone"))
+                    .address(rs.getString("address"))
+                    .dob(DateUtils.convertDateToLocalDate(rs.getDate("dob")))
+                    .gender(rs.getBoolean("gender"))
+                    .salary(rs.getDouble("salary"))
+                    .description(rs.getString("description"))
+                    .build());
+        }
+        ConnectionUtils.closeConnection();
+        return Optional.empty();
+    }
 
 
 

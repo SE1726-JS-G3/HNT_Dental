@@ -16,7 +16,7 @@
 <jsp:include page="layout/menu-header-white.jsp"/>
 
 <section class="bg-dashboard">
-  <div class="container">
+  <div>
     <div class="row justify-content-center">
       <jsp:include page="layout/profile-sidebar.jsp"/>
       <div class="col-xl-8 col-lg-8 col-md-7 mt-4 pt-2 mt-sm-0 pt-sm-0">

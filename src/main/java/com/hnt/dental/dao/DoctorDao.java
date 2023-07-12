@@ -37,4 +37,5 @@ public interface DoctorDao extends GenericDao<Doctors> {
 
     Account getProfile(Long id) throws SQLException;
 
+    List<DoctorSummaryRes> getListDoctorAvailable(LocalDate date, LocalTime time, Long typeId, Long serviceId, Long bookingId) throws SQLException;
 }
