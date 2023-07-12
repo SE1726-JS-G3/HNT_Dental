@@ -119,7 +119,7 @@ public class BookingService {
                     .gender(Boolean.parseBoolean(gender))
                     .age(Integer.parseInt(age))
                     .date(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy")))
-                    .time(time)
+                    .time(LocalTime.parse(time))
                     .description(decription)
                     .payment(payment)
                     .build();

@@ -14,4 +14,5 @@ public class Account extends BaseEntity{
     private int role;
     private Boolean isVerified;
     private Long image;
+    private Doctors doctors;
 }

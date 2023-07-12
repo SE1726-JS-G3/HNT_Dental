@@ -22,11 +22,12 @@
                         <ul class="nav nav-pills nav-justified flex-column flex-sm-row rounded" id="pills-tab"
                             role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link rounded active" id="pills-cloud-tab" data-bs-toggle="pill"
+                                <a class="nav-link rounded status" id="pills-cloud-tab" data-bs-toggle="pill"
                                    href="#info" role="tab" aria-controls="infor" aria-selected="false">
                                     <div class="text-center pt-1 pb-1">
                                         <h4 class="title font-weight-normal mb-0">Thông tin</h4>
                                     </div>
+
                                 </a>
                             </li>
 
@@ -42,7 +43,7 @@
                     </div>
                 </div>
                 <div class="tab-content" id="1">
-                    <div class="tab-pane show active row" id="info" role="tabpanel" aria-labelledby="info">
+                    <div class="tab-pane show status row" id="info" role="tabpanel" aria-labelledby="info">
                         <div class="col-lg-12 col-md-12 mt-4">
                             <div class="bg-white rounded shadow overflow-hidden">
                                 <div class="p-4 border-bottom">
@@ -53,9 +54,8 @@
 
                                     <img src="https://taimuihongsg.com/wp-content/uploads/2018/05/Kim-Bun-ThuongE_taimuihongsg.jpg"
                                          class="img-fluid avatar avatar-large rounded" alt="">
-
-                                    <h5 class="mt-3 mb-1">${doctor.doctor_name}</h5>
-                                    <p class="text-muted mb-0">${doctor.setting.name}</p>
+                                    <h5 class="mt-3 mb-1">${doctor.fullName}</h5>
+                                    <p class="text-muted mb-0"></p>
                                 </div>
 
                                 <div class="p-4">
@@ -72,8 +72,7 @@
                                     <div class="d-flex align-items-center mt-2">
                                         <i class="uil uil-envelope align-text-bottom text-primary h5 mb-0 me-2"></i>
                                         <h6 class="mb-0">Ngày sinh</h6>
-                                        <p class="text-muted mb-0 ms-2"><fmt:formatDate pattern="dd/MM/yyyy"
-                                                                                        value="${doctor.DOB}"/></p>
+                                        <p class="text-muted mb-0 ms-2">${doctor.dob}</p>
                                     </div>
                                     <div class="d-flex align-items-center mt-2">
                                         <i class="uil uil-book-open align-text-bottom text-primary h5 mb-0 me-2"></i>
@@ -96,17 +95,25 @@
                                     <div class="d-flex align-items-center mt-2">
                                         <i class="uil uil-medical-drip align-text-bottom text-primary h5 mb-0 me-2"></i>
                                         <h6 class="mb-0">Role</h6>
-                                        <p class="text-muted mb-0 ms-2">Doctor</p>
+                                        <p class="text-muted mb-0 ms-2">
+                                            <c:if test="${doctor.account.role == 2}">
+                                                Doctor
+                                            </c:if>
+                                        </p>
                                     </div>
-
+                                    <div class="d-flex align-items-center mt-2">
+                                        <i class="uil uil-italic align-text-bottom text-primary h5 mb-0 me-2"></i>
+                                        <h6 class="mb-0">Xếp hạng</h6>
+                                        <p class="text-muted mb-0 ms-2">${doctor.rankId}</p>
+                                    </div>
                                     <div class="d-flex align-items-center mt-2">
                                         <i class="uil uil-medical-drip align-text-bottom text-primary h5 mb-0 me-2"></i>
                                         <h6 class="mb-0">Trạng thái</h6>
                                         <c:if test="${doctor.status == true}">
-                                            <p class="text-muted mb-0 ms-2">Hoạt động</p>
+                                            <p class="text-muted mb-0 ms-2">Đang làm việc</p>
                                         </c:if>
                                         <c:if test="${doctor.status == false}">
-                                            <p class="text-muted mb-0 ms-2">Khóa</p>
+                                            <p class="text-muted mb-0 ms-2">Đã nghỉ việc</p>
                                         </c:if>
                                     </div>
                                 </div>
@@ -120,78 +127,87 @@
                                 <table class="table p-4 mb-0 table-center">
                                     <thead>
                                     <tr>
-                                        <th class="border-bottom p-3">ID</th>
-                                        <th class="border-bottom p-3">Bệnh nhân</th>
-                                        <th class="border-bottom p-3">Ngày</th>
-                                        <th class="border-bottom p-3">Thời gian</th>
-                                        <th class="border-bottom p-3">Trạng thái</th>
+                                        <th class="border-bottom p-3" style="min-width: 100px;">Tên bệnh nhân</th>
+                                        <th class="border-bottom p-3" style="min-width: 110px;">Ngày khám</th>
+                                        <th class="border-bottom p-3" style="min-width: 110px;">Giờ</th>
+                                        <th class="border-bottom p-3" style="min-width: 70px;">Điện thoại</th>
+                                        <th class="border-bottom p-3" style="min-width: 70px;">Trạng thái</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-
-                                    <tr>
-                                        <th class="p-3">1</th>
-                                        <td class="p-3">Huyenxinhgai</td>
-                                        <td class="p-3">21/05/2023</td>
-                                        <td class="p-3">$10AM</td>
-                                        <td class="p-3">done</td>
-                                    </tr>
-
+                                    <c:choose>
+                                        <c:when test="${empty patients}">
+                                            <tr>
+                                                <td colspan="5" class="text-center">Không có lịch sử cuộc hẹn</td>
+                                            </tr>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:forEach items="${patients}" var="p">
+                                                <tr>
+                                                    <td class="p-3">${p.name}</td>
+                                                    <td class="p-3">${p.date}</td>
+                                                    <td class="p-3">${p.time}</td>
+                                                    <td class="p-3">${p.phone}</td>
+                                                    <td class="p-3">${p.status}</td>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:otherwise>
+                                    </c:choose>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+
                         <div class="col-lg-12 col-md-12 mt-4">
                             <div class="bg-white rounded shadow overflow-hidden">
                                 <div class="p-4 border-bottom">
                                     <h5 class="mb-0">Đánh giá từ bệnh nhân</h5>
                                 </div>
                                 <ul class="media-list list-unstyled p-4 mb-0">
-                                    <c:forEach items="${rate}" var="r">
-                                        <li class="mt-4">
-                                            <div class="d-flex justify-content-between">
+                                    <c:choose>
+                                        <c:when test="${empty feedbacks}">
+                                            <li class="mt-4">
                                                 <div class="d-flex align-items-center">
-                                                    <a class="pe-3" href="#">
-                                                        <img src="https://trivia-nextdoor.com/wp-content/uploads/2022/02/noiroze-study-man.png"
-                                                             class="img-fluid avatar avatar-md-sm rounded-circle shadow"
-                                                             alt="img">
-
-                                                    </a>
-                                                    <div class="commentor-detail">
-                                                        <h6 class="mb-0"><a href="javascript:void(0)"
-                                                                            class="text-dark media-heading">${r.user.username}</a>
-                                                        </h6>
-                                                        <small class="text-muted"><fmt:formatDate
-                                                                pattern="dd/MM/yyyy hh:mm"
-                                                                value="${r.date}"/></small>
-                                                    </div>
+                                                    <p> Chưa có đánh giá nào  <i class="uil uil-sad-cry" style="font-size: 35px; color: black;"></i></p>
                                                 </div>
-                                                <ul class="list-unstyled text-warning h5 mb-0">
-                                                    <c:if test="${r.star != 0}">
-                                                        <c:forEach var="i" begin="1" end="${r.star}">
-                                                            <li class="list-inline-item"><i
-                                                                    class="mdi mdi-star"></i></li>
-                                                        </c:forEach>
-                                                    </c:if>
-                                                </ul>
-                                            </div>
-                                            <div class="mt-3">
-                                                <p class="text-muted font-italic p-3 bg-light rounded">${r.feedback}</p>
-                                            </div>
-                                        </li>
-                                    </c:forEach>
+                                            </li>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:forEach items="${feedbacks}" var="f">
+                                                <li class="mt-4">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="d-flex align-items-center">
+                                                            <a class="pe-3" href="#">
+                                                                <img src="${f.image}" class="img-fluid avatar avatar-md-sm rounded-circle shadow" alt="img">
+                                                            </a>
+                                                            <div class="commentor-detail">
+                                                                <h6 class="mb-0"><a href="javascript:void(0)" class="text-dark media-heading">${f.fullName}</a></h6>
+                                                                <small class="text-muted">${f.createdAt}</small>
+                                                                <ul class="list-unstyled text-warning h5 mb-0">
+                                                                    <c:forEach var="i" begin="1" end="${f.star}">
+                                                                        <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                                                    </c:forEach>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mt-3">
+                                                        <p class="text-muted font-italic p-3 bg-light rounded">${f.description}</p>
+                                                    </div>
+                                                </li>
+                                            </c:forEach>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </ul>
                             </div>
-
                         </div>
                     </div>
-
                     <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit">
                         <div class="card border-0 shadow overflow-hidden">
                             <div class="tab-content p-4" id="pills-tabContent">
-                                <form action="doctormanage?action=update_image&id=${doctor.doctor_id}" method="POST"
+                                <form action="${pageContext.request.contextPath}/management/doctor/update" method="POST"
                                       enctype="multipart/form-data"
-                                      onSubmit="document.getElementById('submit').disabled = true;">
+                                      onSubmit="return validateForm()">
                                     <h5 class="mb-0">Chỉnh sửa thông tin :</h5>
                                     <div>
                                         <p class="text-muted">Cập nhật ảnh đại diện.</p>
@@ -216,109 +232,92 @@
                                     </div>
                                 </form>
 
-                                <form action="doctormanage?action=update_info&id=${doctor.doctor_id}" method="POST"
-                                      class="mt-4" onSubmit="document.getElementById('submit').disabled = true;">
+                                <form action="${pageContext.request.contextPath}/management/doctor/update" method="POST" class="mt-4"  onSubmit="return validateForm()">
                                     <div class="row">
-                                        <div class="col-lg-12">
+                                        <div id="message-container"></div>
+                                        <input name="id" type="hidden" value="${doctor.account.id}">
+                                        <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label class="form-label">Họ tên</label>
-                                                <input name="name" oninvalid="CheckFullName(this);"
-                                                       oninput="CheckFullName(this);" id="name" type="text"
-                                                       class="form-control" value="${doctor.doctor_name}">
+                                                <label class="form-label" >Họ và tên</label>
+                                                <input name="full_name" id="name" type="text" class="form-control" value="${doctor.fullName}" placeholder="Họ và tên">
                                             </div>
                                         </div>
-
-                                        <div class="col-lg-12">
+                                        <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label class="form-label">Giới tính</label>
-                                                <table>
-                                                    <tbody>
-                                                    <tr>
-                                                        <td><input value="true" type="radio"
-                                                                   class="form-check-input"
-                                                                   checked required></td>
-                                                        <td><label class="form-check-label">Nam</label></td>
-                                                        <td></td>
-                                                        <td><input value="false" type="radio"
-                                                                   class="form-check-input"
-                                                                   required></td>
-                                                        <td><label class="form-check-label">Nữ</label></td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
+                                                <label class="form-label">Ngày sinh</label>
+                                                <input name="dob" id="name2" type="text" class="form-control" value="${doctor.dob}" placeholder="YYYY-MM-DD">
                                             </div>
                                         </div>
-
-                                        <div class="col-lg-12">
+                                        <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label class="form-label">Số điện thoại</label>
-                                                <input name="phone" oninvalid="CheckPhone(this);"
-                                                       oninput="CheckPhone(this);" type="text" class="form-control">
+                                                <label class="form-label">Email</label>
+                                                <input name="email" id="email" type="email" class="form-control" value="${doctor.account.email}" placeholder="Email">
                                             </div>
                                         </div>
-                                        <div class="col-lg-12">
+                                        <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label class="form-label">Ngày Sinh</label>
-                                                <input name="DOB" id="number" type="date" onkeydown="return false"
-                                                       min="1922-01-01" max="2003-01-01" class="form-control"
-                                                       value="${doctor.DOB}">
+                                                <label class="form-label">Địa chỉ</label>
+                                                <input name="address" id="address" type="text" class="form-control" placeholder="Địa chỉ" value="${doctor.address}">
                                             </div>
                                         </div>
-
-                                        <div class="col-lg-12">
+                                        <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label class="form-label">Mô tả</label>
-                                                <input name="description" type="text" class="form-control"
-                                                       value="${doctor.description}">
+                                                <label class="form-label">Điện thoại</label>
+                                                <input name="phone" id="phone" type="text" class="form-control" placeholder="Điện thoại" value="${doctor.phone}">
                                             </div>
                                         </div>
-                                        <div class="col-lg-12">
+                                        <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Chuyên môn</label>
-                                                <select name="speciality" class="form-select">
-                                                    <c:forEach items="${speciality}" var="s">
-                                                        <option
-                                                                <c:if test="${doctor.setting.name == s.name}">selected</c:if>
-                                                                class="form-control"
-                                                                value="${s.id}">${s.name}</option>
-                                                    </c:forEach>
+                                                <input name="position" id="position" type="text" class="form-control" placeholder="Chuyên môn " value="${doctor.position}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Giới tính</label>
+                                                <select name="gender" class="form-select form-control">
+                                                    <option value="Nam" ${doctor.gender == true ? "selected" : ""}>Nam</option>
+                                                    <option value="Nữ" ${doctor.gender == false ? "selected" : ""}>Nữ</option>
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-lg-12">
+                                        <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label class="form-label">Trạng thái <span
-                                                        class="text-danger"></span></label>
-                                                <table>
-                                                    <tbody>
-                                                    <tr>
-                                                        <td><input id="credit"
-                                                                   name="status" ${doctor.status==true?"checked":""}
-                                                                   value="true" type="radio"
-                                                                   class="form-check-input"
-                                                                   checked required></td>
-                                                        <td><label class="form-check-label">Hoạt động</label></td>
-                                                        <td></td>
-                                                        <td><input id="debit"
-                                                                   name="status" ${doctor.status==false?"checked":""}
-                                                                   value="false" type="radio"
-                                                                   class="form-check-input"
-                                                                   required></td>
-                                                        <td><label class="form-check-label">Khóa</label></td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
+                                                <label class="form-label">Xếp hạng</label>
+                                                <input name="rankId" id="rankId" type="text" class="form-control"
+                                                       value="${doctor.rankId}"
+                                                       placeholder="Xếp hạng">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Trạng thái</label>
+                                                <select name="status" class="form-select form-control">
+                                                    <option value="Đang làm việc" ${doctor.status == true ? "selected" : ""}>Đang làm việc</option>
+                                                    <option value="Đã nghỉ việc" ${doctor.status == false ? "selected" : ""}>Đã nghỉ việc</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Chức vụ</label>
+                                                <select name="Role" class="form-select form-control" disabled>
+                                                    <c:if test="${doctor.account.role == 2}">
+                                                        <option selected>Doctor</option>
+                                                    </c:if>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label class="form-label">Mô tả</label>
+                                                <textarea name="description" id="comments" rows="3" class="form-control" placeholder="Bio">${doctor.description}</textarea>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <input type="submit" id="submit" name="send" class="btn btn-primary"
-                                                   value="Cập nhật">
-                                        </div>
-                                    </div>
+                                    <button type="submit" class="btn btn-primary">Lưu</button>
                                 </form>
+
                             </div>
                         </div>
                     </div>
@@ -334,7 +333,8 @@
 <script src="${pageContext.request.contextPath}/static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
-
+<script src="https://kit.fontawesome.com/yourcode.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 <style>
     .Choicefile {
@@ -402,5 +402,98 @@
         margin-top: -2px;
     }
 </style>
+<script>
+    function validateForm() {
+        var fullName = document.getElementById('name').value;
+        var dob = document.getElementById('name2').value;
+        var email = document.getElementById('email').value;
+        var address = document.getElementById('address').value;
+        var phone = document.getElementById('phone').value;
+        var position = document.getElementById('position').value;
+        var rankId = document.getElementById('rankId').value;
+        // Perform field validation
+        if (fullName.trim() === '') {
+            displayErrorMessage('Họ và tên không được bỏ trống');
+            return false;
+        }
+        if (dob.trim() === '') {
+            displayErrorMessage('Ngày sinh không được bỏ trống');
+            return false;
+        }
+        if (!isValidDateFormat(dob)) {
+            displayErrorMessage('Ngày sinh phải có định dạng YYYY-MM-DD');
+            return false;
+        }
+        if (email.trim() === '') {
+            displayErrorMessage('Email không được bỏ trống');
+            return false;
+        }
+        if (address.trim() === '') {
+            displayErrorMessage('Địa chỉ không được bỏ trống');
+            return false;
+        }
+        if (phone.trim() === '') {
+            displayErrorMessage('Điện thoại không được bỏ trống');
+            return false;
+        }
+        if (!isValidPhoneNumber(phone)) {
+            displayErrorMessage('Số điện thoại chỉ được nhập chữ số');
+            return false;
+        }
+        if (position.trim() === '') {
+            displayErrorMessage('Chuyên môn không được bỏ trống');
+            return false;
+        }
+        if (rankId.trim() === '') {
+            displayErrorMessage('xếp hạng không được bỏ trống');
+            return false;
+        }
+        if (!isValidRankId(rankId)) {
+            displayErrorMessage('Xếp hạng phải chỉ có từ 1 đến 10');
+            return false;
+        }
+        // If all fields are valid, display success message
+        displaySuccessMessage('Thông tin đã được cập nhật thành công');
+        return true;
+    }
+
+    function isValidDateFormat(dateString) {
+        // Kiểm tra định dạng ngày sinh theo dạng YYYY-MM-DD
+        var pattern = /^\d{4}-\d{2}-\d{2}$/;
+        return pattern.test(dateString);
+    }
+    function isValidRankId(rankId) {
+        // Kiểm tra xếp hạng chỉ từ 1 đến 10
+        var rankNumber = parseInt(rankId, 10);
+        return rankNumber >= 1 && rankNumber <= 10;
+    }
+    function isValidPhoneNumber(phone) {
+        // Kiểm tra số điện thoại chỉ chứa nguyên số và không chứa ký tự đặc biệt hoặc chữ cái
+        var pattern = /^\d+$/;
+        return pattern.test(phone);
+    }
+
+    // Các hàm hiển thị thông báo lỗi và thành công không thay đổi.
+    function displayErrorMessage(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: message,
+            timer: 50000, // Hiển thị thông báo trong 30 giây
+            showConfirmButton: false // Ẩn nút xác nhận
+        });
+    }
+
+    function displaySuccessMessage(message) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: message,
+            timer: 50000, // Hiển thị thông báo trong 30 giây
+            showConfirmButton: false // Ẩn nút xác nhận
+        });
+    }
+
+</script>
 </html>
 

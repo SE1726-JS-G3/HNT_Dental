@@ -4,6 +4,20 @@
 <html lang="en">
 <jsp:include page="../layout/head.jsp"/>
 <body>
+<div id="demo-modal" class="modal">
+    <div class="modal__content" id="model_content">
+        <h2>Confirm</h2>
+        <p>
+            Do you want to change blog status ?
+        </p>
+        <div class="modal__footer">
+            <button type="button" onclick="modal_close()" class="button-10">Cancel</button>
+            <button type="button" onclick="modal_change()" class="button-10">Confirm</button>
+        </div>
+
+        <a href="#" class="modal__close">&times;</a>
+    </div>
+</div>
 <div class="page-wrapper doctris-theme toggled">
     <jsp:include page="../layout/slide_bar.jsp"/>
     <main class="page-content bg-light">
@@ -14,12 +28,14 @@
                     <div class="col-md-10 row">
                         <div class="col-md-6">
                             <div class="search-bar p-0 d-lg-block ms-2">
-                                <div id="search" class="menu-search mb-0">
-                                    <form action="blogmanage?action=search" method="POST" id="searchform"
-                                          class="searchform">
+                                <div class="menu-search mb-0">
+                                    <form action="${pageContext.request.contextPath}/management/blog" method="get"
+                                            id="searchform" class="searchform">
                                         <div>
-                                            <input value="${requestScope.content}" type="text" class="border rounded"
-                                                   name="content" id="s" placeholder="Nhập từ khóa">
+                                            <input
+                                                    value="${search}"
+                                                    type="text" class="border rounded"
+                                                    name="search" id="search" placeholder="Nhập từ khóa">
                                             <input type="submit" id="searchsubmit" value="Search">
                                         </div>
                                     </form>
@@ -27,7 +43,7 @@
                             </div>
                         </div>
                         <div class="col-md-2 row align-items-center">
-                            <a href="#" class="btn btn-primary" onclick="window.location.href='/management/blog/create'">Thêm mới</a>
+                            <a href="${pageContext.request.contextPath}/management/blog/create" class="btn btn-primary" onclick="window.location.href='/management/blog/create'">Thêm mới</a>
                         </div>
 
                     </div>
@@ -37,44 +53,31 @@
                 <br>
 
                 <div class="row">
-                    <form action="blogmanage?action=filter" method="POST"
-                          onSubmit="document.getElementById('submit').disabled = true;">
+                    <form action="${pageContext.request.contextPath}/management/blog" method="get" >
                         <div class="row">
                             <div class="col-md-4 row align-items-center">
                                 <div class="col-md-4">
                                     <label class="form-label">Danh Mục</label>
                                 </div>
                                 <div class="col-md-8">
-                                    <select name="category_id" class="form-select" aria-label="Default select example">
-                                        <option
-                                                <c:if test="${category_id == 'all'}">selected</c:if> value="all">Tất cả
-                                        </option>
-                                        <c:forEach items="${categories}" var="c">
-                                            <option
-                                                    <c:if test="${category_id == c.id}">selected
-                                                    checked="checked"</c:if> value="${c.id}">${c.name}</option>
+                                    <select name="category" class="form-select">
+                                        <option value="all">Tất cả</option>
+                                        <c:forEach var="c" items="${cate_lst}">
+                                            <option value="${c.id}" <c:if test="${c.id.toString() eq category}">selected</c:if>
+                                            >${c.name}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-3 row align-items-center">
                                 <div class="col-md-5">
-                                    <label class="form-label">Status</label>
+                                    <label class="form-label">Trạng Thái</label>
                                 </div>
                                 <div class="col-md-7">
-                                    <select name="status" class="form-select" aria-label="Default select example">
-                                        <option
-                                                <c:if test="${status == 'all'}">selected checked="checked"</c:if>
-                                                value="all">Tất cả
-                                        </option>
-                                        <option
-                                                <c:if test="${status == '1'}">selected checked="checked"</c:if>
-                                                value="1">Active
-                                        </option>
-                                        <option
-                                                <c:if test="${status == '0'}">selected checked="checked"</c:if>
-                                                value="0">Disable
-                                        </option>
+                                    <select name="status" class="form-select" >
+                                        <option value="all" ${status == 'all' ? 'selected' : ''}>Tất cả</option>
+                                        <option value="0" ${status == '0' ? 'selected' : ''}>Ẩn</option>
+                                        <option value="1" ${status == '1' ? 'selected' : ''}>Hiện</option>
                                     </select>
                                 </div>
                             </div>
@@ -87,56 +90,71 @@
 
                 <div class="container-fluid">
                     <div class="layout-specing">
+
                         <div class="row">
-                            <div class="col-xl-3 col-lg-4 col-md-6 col-12 mt-4">
-                                <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-                                    <img src="https://trivia-nextdoor.com/wp-content/uploads/2022/02/noiroze-study-man.png"
-                                         class="img-fluid" alt="">
-                                    <div class="card-body p-4">
-                                        <ul class="list-unstyled mb-2">
-                                            <li class="list-inline-item text-muted small me-3"><i
-                                                    class="uil uil-calendar-alt text-dark h6 me-1"></i>21/06/2023
-                                            </li>
-                                            <li class="list-inline-item text-muted small"><i
-                                                    class="uil uil-clock text-dark h6 me-1"></i>5 min read
-                                            </li>
-                                        </ul>
-                                        <a href="#" class="text-dark title h5">Easily connect to doctor and make a
-                                            treatment</a>
-                                        <br>
-                                        <br>
-                                        <div class="post-meta d-flex justify-content-between mt-3">
-                                            <table>
-                                                <tbody>
-                                                <tr>
-                                                    <td class="p-3 text-center">
-                                                        <a href="#">
-                                                            <button class="btn btn-primary">Hide</button>
-                                                        </a>
-
-                                                            <button class="btn btn-danger" onclick="window.location.href='/management/blog/detail'">View</button>
-
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
+                            <c:forEach items="${blogs}" var="b">
+                                <div class="col-xl-3 col-lg-4 col-md-6 col-12 mt-4">
+                                    <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
+                                        <img src="https://trivia-nextdoor.com/wp-content/uploads/2022/02/noiroze-study-man.png"
+                                             class="img-fluid" alt="">
+                                        <div class="card-body p-4">
+                                            <ul class="list-unstyled mb-2">
+                                                <li class="list-inline-item text-muted small me-3"><i
+                                                        class="uil uil-calendar-alt text-dark h6 me-1"></i>${b.categoryBlog.name}
+                                                </li>
+                                                <li class="list-inline-item text-muted small"><i
+                                                        class="uil uil-clock text-dark h6 me-1"></i>${b.create_at}
+                                                </li>
+                                            </ul>
+                                            <a href="#" class="text-dark title h5">${b.title}</a>
+                                            <br>
+                                            <br>
+                                            <div class="post-meta d-flex justify-content-between mt-3">
+                                                <table>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td class="p-3 text-center">
+                                                                <%--                                                        <form id="status_form_${b.id}"  action="${pageContext.request.contextPath}/management/blog"method="get">--%>
+                                                                <%--                                                            <input type="hidden" name="change_status" value="${b.id}_${b.status}"/>--%>
+                                                                <%--                                                            <c:if test="${b.status eq 1}">--%>
+                                                                <%--                                                                <label class="switch-wrap" style="float: left">--%>
+                                                                <%--                                                                    <input class="btn btn-primary" type="button" id="status_check_${b.id}" checked onclick="modal_open(${b.id})"--%>
+                                                                <%--                                                                           value="Hiện" >--%>
+                                                                <%--                                                                    <div class="switch"></div>--%>
+                                                                <%--                                                                </label>--%>
+                                                                <%--                                                            </c:if>--%>
+                                                                <%--                                                            <c:if test="${b.status eq 0}">--%>
+                                                                <%--                                                                <label class="switch-wrap" style="float: left">--%>
+                                                                <%--                                                                    <input type="button" class="btn btn-primary" id="status_check_${b.id}" onclick="modal_open(${b.id})"--%>
+                                                                <%--                                                                           value="Ẩn" />--%>
+                                                                <%--                                                                    <div class="switch"></div>--%>
+                                                                <%--                                                                </label>--%>
+                                                                <%--                                                            </c:if>--%>
+                                                                <%--                                                        </form>--%>
+                                                            <button class="btn btn-danger"
+                                                                    onclick="window.location.href='${pageContext.request.contextPath}/management/blog/update?id=${b.id}'"
+                                                            >View</button>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div><!--end col-->
+                                </div><!--end col-->
+                            </c:forEach>
                         </div><!--end row-->
 
+
+                        <c:set var="page" value="${currentPage}"/>
                         <div class="row">
                             <div class="col-12 mt-4">
                                 <ul class="pagination justify-content-end mb-0 list-unstyled">
-                                    <li class="page-item"><a class="page-link" href="javascript:void(0)"
-                                                             aria-label="Previous">Prev</a></li>
-                                    <li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="javascript:void(0)"
-                                                             aria-label="Next">Next</a></li>
+                                    <c:forEach begin="${1}" end="${totalPage}" var="i">
+                                        <li class="page-item ${i==page?"status":""}"><a class="page-link"
+                                                                                        href="${url}?page=${i}&search=${search}&category=${category}&status=${status}">${i}</a>
+                                        </li>
+                                    </c:forEach>
                                 </ul><!--end pagination-->
                             </div><!--end col-->
                         </div><!--end row-->
@@ -144,6 +162,9 @@
                 </div><!--end container-->
 
                 <!-- Footer Start -->
+
+
+
 
 
             </div>
@@ -157,6 +178,7 @@
     function Sort(type) {
         window.location.href = "blogmanage?action=sort&type=" + type;
     }
+
 
 
 </script>
