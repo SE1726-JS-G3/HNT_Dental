@@ -1,11 +1,11 @@
 package com.hnt.dental.dao.impl;
-
+import com.hnt.dental.entities.Account;
 import com.hnt.dental.dao.DoctorDao;
-import com.hnt.dental.dao.ServiceDao;
 import com.hnt.dental.dto.response.DoctorDetailDto;
 import com.hnt.dental.dto.response.DoctorSummaryRes;
 import com.hnt.dental.dto.response.ServiceResDto;
 import com.hnt.dental.entities.Doctors;
+import com.hnt.dental.dto.response.DoctorDto;
 import com.hnt.dental.util.ConnectionUtils;
 import com.hnt.dental.entities.Service;
 import java.sql.ResultSet;
@@ -15,13 +15,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class DoctorDaoImpl implements DoctorDao {
-    private static ServiceDao serviceDao;
-
-    static {
-        serviceDao = new ServiceDaoImpl();
-    }
-
-
     private static final String SQL_GET_ALL_SERVICE_BY_ID_DOCTOR = "select s.id, s.name, GROUP_CONCAT(st.name SEPARATOR ',')" +
             " as type, CONCAT(MIN(sf.fee), ' ~ ', MAX(sf.fee)) as fee, s.image from service s " +
             "inner join service_doctor sd on sd.id_service = s.id " +
@@ -32,7 +25,6 @@ public class DoctorDaoImpl implements DoctorDao {
             "group by s.id";
     private static final String SQL_GET_DOCTOR_BY_ID = "select * from doctors " +
             "where id = ?";
-
     private static final String SQL_GET_SUMMARY = "SELECT" +
             "  d.id," +
             "  d.full_name," +
@@ -56,10 +48,19 @@ public class DoctorDaoImpl implements DoctorDao {
             "    d.full_name LIKE ?" +
             "  ORDER BY" +
             "    d.id";
-    private static final String SQL_GET_TOP_DOCTOR = "select * from doctors\n" +
+    private static final String SQL_GET_TOP_DOCTOR = "select * from doctors " +
             "ORDER BY RAND() LIMIT 4";
+    private static final String DETAIL_MY_DOCTOR ="SELECT d.full_name, d.gender,d.phone,d.description,d.position,a.email FROM doctors d join accounts a\n" +
+            "                        on d.id = a.id where d.id =?";
 
-    private static final String MY_DOCTOR = "SELECT d.full_name ,d.id ,s.name ,s.created_at FROM doctors d  INNER JOIN service s  ON d.id = s.id";
+    private static final String MY_DOCTOR = "SELECT  d.id, d.full_name,s.name ,s.created_at " +
+            "            FROM doctors d " +
+            "            INNER JOIN service s ON d.id = s.id  " +
+            "            ORDER BY d.id  " +
+            "            limit ?,?";
+
+    private static final String COUNT_DOCTOR = "SELECT COUNT(*) FROM doctors d " +
+            "JOIN service s ON d.id = s.id";
 
 
     @Override
@@ -173,25 +174,50 @@ public class DoctorDaoImpl implements DoctorDao {
     }
 
     @Override
-    public List<DoctorSummaryRes> serviceDoctor() throws SQLException {
-        ResultSet rs = ConnectionUtils.executeQuery(MY_DOCTOR);
-        List<DoctorSummaryRes> list = new ArrayList<>();
-
-        while (true) {
-            assert rs != null;
-            if (!rs.next()) break;
-            list.add(DoctorSummaryRes
-                    .builder().service(Service.builder()
-                            .name(rs.getString("name"))
-                            .createdAt(rs.getDate("created_at").toLocalDate().atStartOfDay())
-                            .build())
-                    .id(rs.getLong("id"))
-                    .fullName(rs.getString("full_name"))
-                    .build());
+    public List<DoctorDto> serviceDoctor(Integer offset, Integer limit) throws SQLException {
+        List<DoctorDto> doctor = new ArrayList<>();
+        ResultSet rs = ConnectionUtils.executeQuery(MY_DOCTOR, offset,limit);
+        while (rs.next()) {
+            doctor.add(
+                    DoctorDto.builder().service(Service.builder()
+                                    .name(rs.getString("name"))
+                                    .createdAt(rs.getDate("created_at").toLocalDate().atStartOfDay())
+                                    .build())
+                            .id(rs.getLong("id"))
+                            .fullName(rs.getString("full_name"))
+                            .build()
+            );
         }
-        return list;
-
+        ConnectionUtils.closeConnection();
+        return doctor;
     }
 
+    @Override
+    public Integer countDoctor() throws Exception {
+        ResultSet rs = ConnectionUtils.executeQuery(COUNT_DOCTOR);
+        assert rs != null;
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        ConnectionUtils.closeConnection();
+        return null;
+    }
 
+    @Override
+    public Doctors DetaiMyDoctor(String id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(DETAIL_MY_DOCTOR, id);
+        assert rs != null;
+        if (rs.next()) {
+            return (Doctors.builder().account(Account.builder()
+                            .email(rs.getString("email"))
+                            .build())
+                    .fullName(rs.getString("full_name"))
+                    .gender(rs.getBoolean("gender"))
+                    .description(rs.getString("description"))
+                    .phone(String.valueOf(rs.getInt("phone")))
+                    .position(rs.getString("position"))
+                    .build());
+        }
+        return null;
+    }
 }

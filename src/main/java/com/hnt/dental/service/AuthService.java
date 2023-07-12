@@ -23,7 +23,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
-
+import com.hnt.dental.util.PagingUtils;
 import java.io.EOFException;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -37,6 +37,7 @@ public class AuthService {
     private static final AccountDao accountDao;
     private static final PatientDao patientDao;
     private static final VerificationDao verificationDao;
+    private static final BookingDao bookingDao;
 
     private static final ResourceBundle bundle = ResourceBundle.getBundle("application");
 
@@ -44,6 +45,7 @@ public class AuthService {
         accountDao = new AccountDaoImpl();
         patientDao = new PatientDaoImpl();
         verificationDao = new VerificationDaoImpl();
+        bookingDao = new BookingDaoImpl();
     }
 
     public void login(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException {
@@ -223,27 +225,29 @@ public class AuthService {
         ServletUtils.redirect(req, resp, "/auth/login");
     }
 
-    public void historyBooking(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException, ServletException {
-        resp.setContentType("text/html;charset=UTF-8");
-        BookingDao dao = new BookingDaoImpl();
-        List<BookingDto> list = null;
+    public void historyBooking(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String page = req.getParameter("page");
+        int pageNumber = 1;
+
+        if(StringUtils.isNotEmpty(page)){
+            pageNumber = Integer.parseInt(page);
+        }
+        Integer totalItem = bookingDao.countHistory();
+        Integer totalPage = PagingUtils.getTotalPage(totalItem);
         try {
-            list = dao.getAllHistory();
-            int page =1;
-            String pageStr = req.getParameter("page");
-            if(pageStr!=null){
-                page = Integer.parseInt(pageStr);
-            }
-            final int PAGE_SIZE =8;
-            req.setAttribute("list", list.subList((page-1)*PAGE_SIZE,page*PAGE_SIZE));
-            ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/booking-history.jsp");
-        } catch (SQLException e) {
-            throw new EOFException();
+            List<BookingDto> service = bookingDao.getAllHistory(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE);
+            req.setAttribute("list",service);
+            req.setAttribute("totalPage", totalPage);
+            req.setAttribute("currentPage", pageNumber);
+            req.setAttribute("url", "/auth/patient-booking-history");
+            req.getRequestDispatcher("/WEB-INF/templates/home/booking-history.jsp").forward(req, resp);
+        } catch (Exception e) {
+            e.printStackTrace();
 
         }
     }
 
-    public void history(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException, ServletException {
+    public void historyDetail(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException, ServletException {
         resp.setContentType("text/html;charset=UTF-8");
         String id = req.getParameter("id");
         BookingDao dao = new BookingDaoImpl();

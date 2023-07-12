@@ -180,14 +180,17 @@
                                 </tbody>
                             </table>
                         </div>
+                        <c:set var="page" value="${currentPage}"/>
                         <div class="row text-center">
                             <div class="col-12 mt-4">
                                 <div class="d-md-flex align-items-center text-center justify-content-between">
                                     <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                        <li class="page-item active"><a class="page-link" href="patient-booking-history?page=1">1</a>
-                                        </li>
-                                        <li class="page-item active"><a class="page-link" href="patient-booking-history?page=2">2</a>
-                                        </li>
+                                        <c:forEach begin="${1}" end="${totalPage}" var="i">
+                                            <li class="page-item ${i==page?"active":""}"><a class="page-link"
+                                                                                            href="${url}?page=${i}">${i}</a>
+                                            </li>
+
+                                        </c:forEach>
                                     </ul>
                                 </div>
                             </div>

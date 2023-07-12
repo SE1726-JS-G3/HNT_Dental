@@ -9,6 +9,7 @@ import com.hnt.dental.util.PagingUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
+import com.hnt.dental.entities.Doctors;
 
 import java.util.List;
 import java.util.Optional;
@@ -82,26 +83,37 @@ public class DoctorService {
         return dao.getTopDoctor();
     }
 
-    public void myDoctor(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException, ServletException, SQLException {
-        resp.setContentType("text/html;charset=UTF-8");
-        DoctorDao dao = new DoctorDaoImpl();
-        List<DoctorSummaryRes> list = null;
+    public void mydoctor(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String page = req.getParameter("page");
+        int pageNumber = 1;
 
+        if(StringUtils.isNotEmpty(page)){
+            pageNumber = Integer.parseInt(page);
+        }
+
+        Integer totalItem = dao.countDoctor();
+        Integer totalPage = PagingUtils.getTotalPage(totalItem);
         try {
-            list = dao.serviceDoctor();
-            int page =1;
-            String pageStr = req.getParameter("page");
-            if(pageStr!=null){
-                page = Integer.parseInt(pageStr);
-            }
-            final int PAGE_SIZE =2;
-            req.setAttribute("list", list.subList((page-1)*PAGE_SIZE,page*PAGE_SIZE));
-            // ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/doctor/mydoctor.jsp");
-            ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/my-doctor.jsp");
-        } catch (SQLException e) {
-            //throw new SystemRuntimeException(e.getMessage());
+            List<DoctorDto> service = dao.serviceDoctor(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE);
+            req.setAttribute("list",service);
+            req.setAttribute("totalPage", totalPage);
+            req.setAttribute("currentPage", pageNumber);
+            req.setAttribute("url", "/management/my-doctor");
+            req.getRequestDispatcher("/WEB-INF/templates/home/my-doctor.jsp").forward(req, resp);
+        } catch (Exception e) {
+            e.printStackTrace();
 
         }
+    }
+
+
+    public void MyDoctorDetail(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException, ServletException {
+        resp.setContentType("text/html;charset=UTF-8");
+        String id = req.getParameter("id");
+        DoctorDao dao = new DoctorDaoImpl();
+        Doctors d = dao.DetaiMyDoctor(id);
+        req.setAttribute("detail", d);
+        ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/detail-my-doctor.jsp");
     }
 
 

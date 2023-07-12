@@ -4,7 +4,7 @@ import com.hnt.dental.dto.response.DoctorDetailDto;
 import com.hnt.dental.dto.response.DoctorSummaryRes;
 import com.hnt.dental.dto.response.ServiceResDto;
 import com.hnt.dental.entities.Doctors;
-
+import com.hnt.dental.dto.response.DoctorDto;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -19,5 +19,11 @@ public interface DoctorDao extends GenericDao<Doctors> {
 
     List<DoctorDetailDto> getTopDoctor() throws SQLException;
 
-    List<DoctorSummaryRes> serviceDoctor() throws SQLException;
+//    List<DoctorSummaryRes> serviceDoctor() throws SQLException;
+
+    List<DoctorDto> serviceDoctor(Integer offset, Integer limit) throws SQLException;
+
+    Integer countDoctor() throws Exception;
+
+    Doctors DetaiMyDoctor(String id) throws SQLException;
 }

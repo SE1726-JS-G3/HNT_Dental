@@ -12,5 +12,9 @@ public interface BookingDao extends GenericDao<Booking>{
 
     List<BookingDto> getAllHistory() throws SQLException;
 
+    List<BookingDto> getAllHistory(Integer offset, Integer limit) throws SQLException;
+
+    Integer countHistory() throws Exception;
+
     BookingDto DetailHistory(String id) throws SQLException;
 }

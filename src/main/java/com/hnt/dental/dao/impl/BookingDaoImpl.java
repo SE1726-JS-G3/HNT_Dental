@@ -25,9 +25,13 @@ public class BookingDaoImpl implements BookingDao {
             "            where LOWER(b.name) like ? OR LOWER(s.name) like ? " +
             "LIMIT ?, ?";
 
-
-    private static final String HISTORY_PATIENT = "SELECT  b.fee ,b.account_id, b.status ,b.time,b.date ,s.name  FROM booking b join service s \n" +
-            " where b.service_id = s.id ";
+    private static final String COUNT_HISTORY ="SELECT COUNT(*) FROM booking b " +
+            "            JOIN service s ON b.service_id = s.id";
+    private static final String HISTORY_PATIENT ="SELECT  b.fee ,b.account_id, b.status ,b.time,b.date ,s.name " +
+            "                     FROM booking b " +
+            "                       INNER JOIN service s ON b.service_id = s.id " +
+            "                   ORDER BY b.service_id " +
+            "                   limit ?,?";
     private static final String HISTORY_DETAIL ="SELECT b.date,b.name, b.age, b.email,b.decription,b.status,b.phone,s.name as service FROM booking b join service_type s \n" +
             "                       on b.service_id = s.id where b.id =?" ;
 
@@ -54,36 +58,48 @@ public class BookingDaoImpl implements BookingDao {
         return Optional.empty();
     }
 
-
     @Override
     public List<BookingDto> getAllHistory() throws SQLException {
-        ResultSet rs = ConnectionUtils.executeQuery(HISTORY_PATIENT);
-        List<BookingDto> list = new ArrayList<>();
-        while (true) {
-            assert rs != null;
-            if (!rs.next()) break;
-            list.add(BookingDto
-                    .builder().serviceResDto(ServiceResDto.builder()
-                            .name(rs.getString("name"))
-                            .build())
-                    .date(rs.getDate("date").toLocalDate())
-                    .status(String.valueOf(rs.getBoolean("status")))
-                    .time(String.valueOf(rs.getTime("time")))
-                    .fee(rs.getDouble("fee"))
-                    .account_id(rs.getInt("account_id"))
-                    .build());
-        }
-        return list;
-
+        return null;
     }
 
+    @Override
+    public List<BookingDto> getAllHistory(Integer offset, Integer limit) throws SQLException {
+        List<BookingDto> list = new ArrayList<>();
+        ResultSet rs = ConnectionUtils.executeQuery(HISTORY_PATIENT, offset,limit);
+        while (rs.next()) {
+            list.add(
+                    BookingDto
+                            .builder().serviceResDto(ServiceResDto.builder()
+                                    .name(rs.getString("name"))
+                                    .build())
+                            .date(rs.getDate("date").toLocalDate())
+                            .status(String.valueOf(rs.getBoolean("status")))
+                            .time(String.valueOf(rs.getTime("time")))
+                            .fee(rs.getDouble("fee"))
+                            .account_id(rs.getInt("account_id"))
 
-        @Override
+                            .build()
+            );
+        }
+        ConnectionUtils.closeConnection();
+        return list;
+    }
+    @Override
+    public Integer countHistory() throws Exception {
+        ResultSet rs = ConnectionUtils.executeQuery(COUNT_HISTORY);
+        assert rs != null;
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        ConnectionUtils.closeConnection();
+        return null;
+    }
+
+    @Override
     public BookingDto DetailHistory(String id) throws SQLException {
         ResultSet rs = ConnectionUtils.executeQuery(HISTORY_DETAIL,id);
-
         assert rs != null;
-
         if (rs.next()) {
             return (BookingDto.builder().serviceTypeDto(ServiceTypeDto.builder()
                             .nameType(rs.getString("service"))
@@ -100,8 +116,6 @@ public class BookingDaoImpl implements BookingDao {
         return null;
 
     }
-
-
 
     @Override
     public Long save(Booking booking) throws SQLException, ClassNotFoundException {

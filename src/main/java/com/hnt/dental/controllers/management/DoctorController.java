@@ -16,7 +16,8 @@ import java.sql.SQLException;
         "/management/doctor/myPatient",
         "/management/doctor/detail",
         "/management/doctor/delete",
-        "/management/my-doctor"
+        "/management/my-doctor",
+        "/management/detail-my-doctor"
 
 })
 public class DoctorController extends HttpServlet {
@@ -42,17 +43,21 @@ public class DoctorController extends HttpServlet {
             case "/management/doctor/delete":
                 req.getRequestDispatcher("/WEB-INF/templates/management/doctor/delete.jsp").forward(req, resp);
                 break;
-
-
-            case "/management/my-doctor":
-
+                case "/management/my-doctor":
                 try {
-                    service.myDoctor(req, resp);
+                    service.mydoctor(req, resp);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                break;
+            case "/management/detail-my-doctor":
+                try {
+                    service.MyDoctorDetail(req, resp);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
-
                 break;
+
             default:
         }
     }

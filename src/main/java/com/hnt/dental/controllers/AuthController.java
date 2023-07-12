@@ -78,15 +78,16 @@ public class AuthController extends HttpServlet {
                 ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/my-appointment.jsp");
                 break;
             case "/auth/patient-booking-history":
+
                 try {
                     service.historyBooking(req, resp);
-                } catch (SQLException e) {
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
                 break;
             case "/auth/detail-history-booking":
                 try {
-                    service.history(req, resp);
+                    service.historyDetail(req, resp);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }

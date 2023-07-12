@@ -24,72 +24,52 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">Tên bệnh nhân:</label><br>
-                                        ${d.name}
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Tuổi:</label><br>
-                                        ${d.age}
+                                        <label class="form-label">Tên bác sĩ:</label><br>
+                                        ${detail.fullName}
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Địa chỉ email:</label><br>
-                                        ${d.email}
+                                        ${detail.account.email}
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">Hồ sơ bệnh án:</label><br>
-                                        ${d.decription}
+                                        <label class="form-label">Mô tả:</label><br>
+                                        ${detail.description}
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Số điện thoại:</label><br>
-                                        ${d.phone}
+                                        ${detail.phone}
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">Ngày đặt lịch:</label><br>
-                                        ${d.date}
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Loại dịch vụ:</label><br>
-                                        ${d.serviceTypeDto.nameType}
+                                        <label class="form-label">Chức vụ:</label><br>
+                                        ${detail.position}
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">Trạng thái:</label><br>
-                                        <c:if test="${d.status == true}">
-                                            Assigned
+                                        <label class="form-label">Giới tính:</label><br>
+                                        <c:if test="${detail.gender == true}">
+                                            Nam
                                         </c:if>
-                                        <c:if test="${d.status == false}">
-                                           Complete
+                                        <c:if test="${detail.gender == false}">
+                                            Nữ
                                         </c:if>
                                     </div>
                                 </div>
                             </div>
 
                         </form>
-                        <div class="col-md-6">
-                            <button class="btn btn-secondary active" type="button" data-bs-toggle="modal" data-bs-target="#newblogadd">
-                                Kết quả khám
-                            </button>
-                            <button class="btn btn-info active" type="button">
-                                Hủy đặt lịch
-                            </button>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -164,9 +144,9 @@
                         </div>
                     </div><!--end col-->
                 </div><!--end row-->
-                    <div class="d-grid">
-                        <label class="btn-upload btn btn-primary mt-4">Tải xuống</label>
-                    </div>
+                <div class="d-grid">
+                    <label class="btn-upload btn btn-primary mt-4">Tải xuống</label>
+                </div>
             </div>
         </div>
     </div>
