@@ -81,28 +81,28 @@
                   </tr>
                   </thead>
                   <tbody>
-                      <c:forEach var="doctor" items="${doctors}">
-                        <tr>
-                          <td>${doctor.id}</td>
-                          <td>${doctor.fullName}</td>
-                          <td>${doctor.gender}</td>
-                          <td>${doctor.position}</td>
-                          <td>${doctor.name}</td>
-                          <td>${doctor.status}</td>
-                          <td class="p-3 text-center">
-                            <a href="#">
-                              <button class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/management/doctor/detail?id=${doctor.id}'">
-                                Chi tiết
-                              </button>
-                            </a>
-                            <a href="#">
-                              <button class="btn btn-danger"
-                                      onclick="onClickDelete(${doctor.id})"
-                              >Xóa
-                              </button>
-                            </a>
-                          </td>
-                      </c:forEach>
+                  <c:forEach var="doctor" items="${doctors}">
+                  <tr>
+                    <td>${doctor.id}</td>
+                    <td>${doctor.fullName}</td>
+                    <td>${doctor.gender}</td>
+                    <td>${doctor.position}</td>
+                    <td>${doctor.name}</td>
+                    <td>${doctor.status}</td>
+                    <td class="p-3 text-center">
+                      <a href="#">
+                        <button class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/management/doctor/detail?id=${doctor.id}'">
+                          Chi tiết
+                        </button>
+                      </a>
+                      <a href="#">
+                        <button class="btn btn-danger"
+                                onclick="onClickDelete(${doctor.id})"
+                        >Xóa
+                        </button>
+                      </a>
+                    </td>
+                    </c:forEach>
                   </tbody>
                 </table>
               </div>

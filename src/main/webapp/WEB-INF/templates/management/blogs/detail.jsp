@@ -1,9 +1,9 @@
 <%--
-  Created by IntelliJ IDEA.
-  User: Huyen Nguyen
-  Date: 6/21/2023
-  Time: 7:45 PM
-  To change this template use File | Settings | File Templates.
+Created by IntelliJ IDEA.
+User: Huyen Nguyen
+Date: 6/21/2023
+Time: 7:45 PM
+To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -27,15 +27,20 @@
                                             aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body p-3 pt-4">
-                                    <form enctype="multipart/form-data" action="blogmanage?action=addnew" method="POST">
+                                    <form  action="${pageContext.request.contextPath}/management/blog/update" method="POST" onsubmit="return submitForm() >
+                                        <%--                                        <input value="${blog_id}" name="id" type="hidden">--%>
+                                        <input value="${blog_id}" type="hidden" name="id">
+                                        <%--                                        <input value="${blog_id}" name="id">--%>
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="mb-3">
                                                     <label class="form-label">Danh Mục<span class="text-danger">*</span></label>
                                                     <select name="category_id" class="form-select"
                                                             aria-label="Default select example">
-                                                        <c:forEach items="${categories}" var="c">
-                                                            <option value="${c.id}">${c.name}</option>
+                                                        <c:forEach var="c" items="${sessionScope.category_lst}">
+                                                            <option value="${c.id}"
+                                                                    <c:if test="${c.name eq blogs.categoryBlog.name}">selected=""</c:if>
+                                                            >${c.name}</option>
                                                         </c:forEach>
                                                     </select>
                                                 </div>
@@ -43,7 +48,9 @@
                                             <div class="mb-3">
                                                 <label class="form-label">Tiêu đề <span
                                                         class="text-danger">*</span></label>
-                                                <input name="title" id="name" type="text" class="form-control">
+                                                <input name="title" id="title" type="text" class="form-control"
+                                                       value="${blogs.title}"
+                                                       placeholder="Tiêu đề:">
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Ảnh <span class="text-danger">*</span></label>
@@ -60,16 +67,57 @@
                                             <div class="mb-3">
                                                 <label class="form-label">Thông Tin Tóm Tắt<span
                                                         class="text-danger">*</span></label>
-                                                <textarea rows="" cols="" class="brief" name="brief"
-                                                          style="width: 720px; height:50px"></textarea>
+                                                <textarea rows="3" cols="70" class="brief" name="brief" id="brief" placeholder="Thông tin tóm tắt">${blogs.brief}</textarea>
+
+
+
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Mô tả<span
                                                         class="text-danger">*</span></label>
 
-                                                <textarea rows="10" cols="70" class="describe"
-                                                          name="describe"></textarea>
+                                                <textarea rows="10" cols="70" class="describe" name="description" id="describe" placeholder="Mô tả:">${blogs.description}</textarea>
+
+
+
+
+
                                             </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label"> Ngày đăng: </label>
+                                                    <input name="create_at" type="text" class="form-control start" id="createdAt"
+                                                           value="${blogs.createdAt}"
+                                                           placeholder="Ngày đăng :">
+
+                                                </div>
+                                            </div><!--end col-->
+
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label"> Người đăng: </label>
+                                                    <input name="create_by" type="text" class="form-control start" id="created_by"
+                                                           value="${blogs.employee.fullName}"
+                                                           placeholder="Ngày đăng :">
+
+                                                </div>
+                                            </div><!--end col-->
+
+
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label"> Ngày cập nhật : </label>
+                                                    <input name="update_at" type="text" class="form-control start" id="updatedAt"
+                                                           value="${blogs.updatedAt}"
+                                                           placeholder="Ngày đăng :">
+
+                                                </div>
+                                            </div><!--end col-->
+
+
+
+
+
 
                                             <div class="mb-3">
                                                 <label class="form-label">Trạng thái <span
@@ -78,12 +126,12 @@
                                                     <tbody>
                                                     <tr class="d-flex align-items-center">
                                                         <td><input id="credit" name="status" value="true" type="radio"
-                                                                   class="form-check-input"
-                                                                   checked required></td>
-                                                        <td><label class="form-check-label">Active</label></td>
+                                                                   class="form-check-input" <c:if test="${blogs.status eq true}">checked</c:if>
+                                                                   required></td>
+                                                        <td><label class="form-check-label">Enable</label></td>
                                                         <td></td>
                                                         <td><input id="debit" name="status" value="false" type="radio"
-                                                                   class="form-check-input"
+                                                                   class="form-check-input" <c:if test="${blogs.status eq false}">checked</c:if>
                                                                    required></td>
                                                         <td><label class="form-check-label">Disable</label></td>
                                                     </tr>
@@ -111,9 +159,41 @@
 
 
 <script>
-    function Sort(type) {
-        window.location.href = "blogmanage?action=sort&type=" + type;
+
+
+    // Hàm hiển thị thông báo swal
+    function showAlert(message) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Thông báo',
+            text: message,
+            confirmButtonText: 'Đồng ý'
+        });
     }
+
+    // Hàm kiểm tra và submit form
+    function submitForm() {
+        var title = document.getElementById('title').value;
+        var brief = document.getElementById('brief').value;
+
+        if (title.trim() === '') {
+            showAlert('Vui lòng không để trống trường Tiêu đề');
+            return false;
+        }
+
+        if (brief.trim() === '') {
+            showAlert('Vui lòng không để trống trường Thông Tin Tóm Tắt');
+            return false;
+        }
+
+        // Nếu không có lỗi, cho phép submit form
+        return true;
+    }
+
+
+    // function Sort(type) {
+    //     window.location.href = "blogmanage?action=sort&type=" + type;
+    // }
 
 
     ClassicEditor.create(document.querySelector(".describe"), {

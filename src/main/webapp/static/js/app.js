@@ -182,7 +182,7 @@ function topFunction() {
     document.documentElement.scrollTop = 0;
 }
 
-//ACtive Sidebar
+//active Sidebar
 (function () {
     let current = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);;
     if (current === "") return;
