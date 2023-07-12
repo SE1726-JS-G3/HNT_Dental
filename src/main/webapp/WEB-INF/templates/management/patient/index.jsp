@@ -63,9 +63,8 @@
                                             <a href="patient/update?id=${p.id}">
                                               <button class="btn btn-primary">Chi tiết</button>
                                             </a>
-
-                                            <a href="patient/delete?id=${p.id}">
-                                              <button class="btn btn-danger">Xóa</button>
+                                     <a href="#">
+                                         <button class="btn btn-danger"  onclick="onClickDelete(${p.id})">Xóa</button>
                                             </a>
                                           </td>
                   </tr>
@@ -102,6 +101,7 @@
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
   $(document).ready(function () {
     $("#btn-search").click(function () {
@@ -109,6 +109,25 @@
       window.location.href = "${url}?search=" + search;
     });
   });
+
+  function onClickDelete(id) {
+    Swal.fire({
+      title: 'Bạn có chắc chắn muốn xóa?',
+      text: "Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+
+      confirmButtonText: 'Xóa',
+      cancelButtonText: 'Hủy'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "${pageContext.request.contextPath}/management/patient/delete?id=" + id;
+      }
+    })
+  }
+
 </script>
 </body>
 </html>
