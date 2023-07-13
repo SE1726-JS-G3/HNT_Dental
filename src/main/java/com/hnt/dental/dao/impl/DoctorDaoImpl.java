@@ -600,8 +600,8 @@ public class DoctorDaoImpl implements DoctorDao {
                     .id(rs.getLong("id"))
                     .email(rs.getString("email"))
                     .password(rs.getString("password"))
-//                    .role(rs.getInt("role"))
-//                    .isVerified(rs.getBoolean("is_verified"))
+                    .role(rs.getInt("role"))
+                    .isVerified(rs.getBoolean("is_verified"))
 //                    .image(rs.getLong("image"))
                     .doctors(Doctors.builder()
                             .gender(rs.getBoolean("gender"))
@@ -618,10 +618,19 @@ public class DoctorDaoImpl implements DoctorDao {
     }
     private static final String UPDATE_PROFILE_SQL = "UPDATE hnt_dental.doctors SET full_name = ?, phone = ?, dob = ?, address = ?, description = ?, gender = ? WHERE id = ?";
     @Override
-    public void updateProfile(Doctors doctors) throws SQLException {
+    public void updateProfile(Doctors doctors,String newPassword) throws SQLException {
         ConnectionUtils.executeUpdate(UPDATE_PROFILE_SQL, doctors.getFullName(), doctors.getPhone(),doctors.getDob(),
                 doctors.getAddress(),doctors.getDescription(),doctors.getGender(),doctors.getAccount().getId());
-    }
 
+        if (newPassword != null) {
+            updatePassword(doctors.getAccount().getId(), newPassword);
+        }
+    }
+    private static final String UPDATE_PASSWORD_SQL = "UPDATE accounts SET password = ? WHERE id = ?";
+
+    @Override
+    public void updatePassword(Long id, String newPassword) throws SQLException {
+        ConnectionUtils.executeUpdate(UPDATE_PASSWORD_SQL, newPassword, id);
+    }
     }
 

@@ -29,9 +29,9 @@ public interface DoctorDao extends GenericDao<Doctors> {
     List<PatitentsDto> MyPatientDoctor(Integer offset, Integer limit) throws SQLException;
     List<PatitentsDto> getPatientDetails(Long id, Integer offset, Integer limit) throws SQLException;
     Integer countPatitent() throws Exception;
-    void updateProfile(Doctors doctors) throws SQLException;
+    void updateProfile(Doctors doctors,String newPassword) throws SQLException;
     Integer countPatitentDetails(Long id) throws Exception;
-
+    void updatePassword(Long id, String newPassword) throws SQLException;
     List<DoctorSummaryRes> getListDoctorAvailable(LocalDate date, LocalTime time, Long typeId, Long serviceId) throws SQLException;
     Integer countGetALLDoctor(String search, String status, String gender) throws SQLException;
 

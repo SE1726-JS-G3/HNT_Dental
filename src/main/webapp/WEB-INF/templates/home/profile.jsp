@@ -49,7 +49,7 @@
                 </div>
               </div>
             </form>
-            <form action="${pageContext.request.contextPath}/doctor/profile" method="POST">
+            <form action="${pageContext.request.contextPath}/doctor/profile" method="POST"  id="profileForm">
               <div class="row">
                 <div class="col-md-6">
                   <div class="mb-3">
@@ -98,11 +98,11 @@
                     <label class="form-label">Giới tính</label>
                     <div class="my-3">
                       <div class="form-check">
-                        <input id="credit" name="gender" ${doctorProfile != null && doctorProfile.doctors.gender == true ? "checked" : ""} value="true" type="radio" class="form-check-input" checked required>
+                        <input id="credit" name="gender" ${doctorProfile != null && doctorProfile.doctors.gender == true ? "checked" : ""} value="Nam" type="radio" class="form-check-input" checked required>
                         <label class="form-check-label">Nam</label>
                       </div>
                       <div class="form-check">
-                        <input id="debit" name="gender" ${doctorProfile != null && doctorProfile.doctors.gender == false ? "checked" : ""} value="false" type="radio" class="form-check-input" required>
+                        <input id="debit" name="gender" ${doctorProfile != null && doctorProfile.doctors.gender == false ? "checked" : ""} value="Nữ" type="radio" class="form-check-input" required>
                         <label class="form-check-label">Nữ</label>
                       </div>
                     </div>
@@ -130,7 +130,7 @@
           </div>
 
           <div class="p-4">
-            <form action="user?action=changepassword" method="POST">
+            <form action="${pageContext.request.contextPath}/doctor/profile" method="POST">
               <div class="row">
                 <div class="col-lg-12">
                   <div class="mb-3">
@@ -184,6 +184,44 @@
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  $(document).ready(function() {
+    $('#profileForm').submit(function(event) {
+      event.preventDefault(); // Ngăn chặn gửi yêu cầu mặc định của form
+
+      // Lấy dữ liệu từ các trường nhập liệu
+      var formData = $(this).serialize();
+
+      // Gửi yêu cầu AJAX để cập nhật thông tin
+      $.ajax({
+        type: 'POST',
+        url: '${pageContext.request.contextPath}/doctor/profile',
+        data: formData,
+        success: function(response) {
+          // Xử lý phản hồi từ server
+          Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: 'Cập nhật thông tin thành công.'
+          }).then(function() {
+            // Tải lại trang để hiển thị thông tin đã cập nhật
+            window.location.reload();
+          });
+        },
+        error: function() {
+          Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: 'Cập nhật thông tin thất bại.'
+          });
+        }
+      });
+    });
+  });
+</script>
 </body>
 
 </html>

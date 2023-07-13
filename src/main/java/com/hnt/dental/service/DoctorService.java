@@ -1,5 +1,6 @@
 package com.hnt.dental.service;
 
+import com.hnt.dental.constant.EncodeData;
 import com.hnt.dental.constant.RoleEnum;
 import com.hnt.dental.dao.AccountDao;
 import com.hnt.dental.dao.DoctorDao;
@@ -423,6 +424,7 @@ public class DoctorService {
                     if (doctorProfile != null) {
                         req.setAttribute("doctorProfile", doctorProfile);
                         req.setAttribute("id", String.valueOf(doctorId));
+                        req.setAttribute("url", "/doctor/profile");
                         req.getRequestDispatcher("/WEB-INF/templates/home/profile.jsp").forward(req, resp);
                     }
                 }
@@ -450,7 +452,9 @@ public class DoctorService {
                     String gender = req.getParameter("gender");
                     Boolean isVerified = doctorProfile.getIsVerified(); // Retrieve the isVerified value
 
-                    // Update thông tin trong Account
+
+                    // Cập nhật thông tin trong Account
+
                     Account updatedAccount = Account.builder()
                             .id(id)
                             .email(email)
@@ -460,7 +464,7 @@ public class DoctorService {
                             .build();
                     accountDao.update(updatedAccount);
 
-                    // Update thông tin trong Doctors
+                    // Cập nhật thông tin trong Doctors
                     Doctors updatedDoctor = Doctors.builder()
                             .fullName(fullName)
                             .phone(phone)
@@ -484,11 +488,11 @@ public class DoctorService {
 
         try {
             req.getRequestDispatcher("/WEB-INF/templates/home/profile.jsp").forward(req, resp);
+            req.setAttribute("url", "/doctor/profile");
         } catch (ServletException e) {
             throw new RuntimeException(e);
         }
     }
-
 
 }
 
