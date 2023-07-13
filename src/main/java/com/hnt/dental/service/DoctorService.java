@@ -413,7 +413,7 @@ public class DoctorService {
         ServletUtils.redirect(req, resp, "/management/doctor");
     }
 
-    public void profile(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException{
+    public void profile(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
         Account account = (Account) req.getSession().getAttribute("account");
         if (account != null) {
             try {
@@ -433,67 +433,90 @@ public class DoctorService {
             }
         }
     }
-    public void updateProfile(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+
+    public void updateProfile(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException, ServletException {
         Account account = (Account) req.getSession().getAttribute("account");
         if (account != null) {
             Long doctorId = account.getId();
-
             if (doctorId != null) {
                 Account doctorProfile = dao.getProfile(doctorId);
-
                 if (doctorProfile != null) {
-                    Long id = doctorProfile.getId(); // Lấy ID của bác sĩ từ tài khoản đăng nhập
+                    Long id = doctorProfile.getId();
                     String email = req.getParameter("email");
-                    String fullName = req.getParameter("name");
-                    String phone = req.getParameter("phone");
-                    LocalDate dob = LocalDate.parse(req.getParameter("dob"));
-                    String address = req.getParameter("address");
-                    String description = req.getParameter("description");
-                    String gender = req.getParameter("gender");
-                    Boolean isVerified = doctorProfile.getIsVerified(); // Retrieve the isVerified value
-
-
-                    // Cập nhật thông tin trong Account
-
-                    Account updatedAccount = Account.builder()
-                            .id(id)
-                            .email(email)
-                            .password(doctorProfile.getPassword())
-                            .role(doctorProfile.getRole())
-                            .isVerified(isVerified) // Set the isVerified value
-                            .build();
-                    accountDao.update(updatedAccount);
-
-                    // Cập nhật thông tin trong Doctors
-                    Doctors updatedDoctor = Doctors.builder()
-                            .fullName(fullName)
-                            .phone(phone)
-                            .dob(dob)
-                            .address(address)
-                            .description(description)
-                            .gender(Objects.equals(gender, "Nam"))
-                            .account(updatedAccount)
-                            .build();
-                    dao.update(updatedDoctor);
-
-                    try {
-                        req.setAttribute("updatesuccess", "Cập nhật thông tin thành công.");
-                    } catch (Exception e) {
-                        req.setAttribute("updatesuccess", "Cập nhật thông tin thất bại.");
-                        System.out.println(e.getMessage());
+                    if (email != null && !email.isEmpty()) {
+                        String fullName = req.getParameter("name");
+                        String phone = req.getParameter("phone");
+                        String dob = req.getParameter("dob");
+                        String address = req.getParameter("address");
+                        String description = req.getParameter("description");
+                        String gender = req.getParameter("gender");
+                        Boolean isVerified = doctorProfile.getIsVerified();
+                        Account updatedAccount = Account.builder()
+                                .id(id)
+                                .email(email)
+                                .role(doctorProfile.getRole())
+                                .isVerified(isVerified)
+                                .build();
+                        Doctors updatedDoctor = Doctors.builder()
+                                .fullName(fullName)
+                                .phone(phone)
+                                .dob(LocalDate.parse(dob))
+                                .address(address)
+                                .description(description)
+                                .gender(Objects.equals(gender, "Nam"))
+                                .account(updatedAccount)
+                                .build();
+                        // Update the password if provided
+                        String enteredCurrentPassword = req.getParameter("currentPassword");
+                        String enteredNewPassword = req.getParameter("newPassword");
+                        String confirmPassword = req.getParameter("confirmPassword");
+                        // Check if a new password is provided and update it
+                        if (enteredNewPassword != null && !enteredNewPassword.isEmpty()) {
+                            // Check if the current password matches the stored password
+                            String decryptedPassword;
+                            try {
+                                decryptedPassword = AesUtils.decrypt(doctorProfile.getPassword());
+                            } catch (Exception e) {
+                                throw new SystemRuntimeException("Error decrypting stored password", e);
+                            }
+                            if (enteredCurrentPassword.equals(decryptedPassword)) {
+                                // Check if the new password and confirm password match
+                                if (enteredNewPassword.equals(confirmPassword)) {
+                                    // Update the password
+                                    try {
+                                        String encryptedPassword = AesUtils.encrypt(enteredNewPassword);
+                                        updatedAccount.setPassword(encryptedPassword);
+                                        accountDao.update(updatedAccount);
+                                        req.getSession().invalidate();
+                                        resp.sendRedirect(req.getContextPath() + "/auth/login");
+                                        return;
+                                    } catch (Exception e) {
+                                        throw new SystemRuntimeException("Error updating password", e);
+                                    }
+                                } else {
+                                    req.setAttribute("passwordUpdateError", "Mật khẩu mới và mật khẩu xác nhận không khớp.");
+                                }
+                            } else {
+                                req.setAttribute("passwordUpdateError", "Mật khẩu hiện tại không chính xác.");
+                            }
+                        } else {
+                            accountDao.update(updatedAccount);
+                            dao.update(updatedDoctor);
+                            req.setAttribute("doctorProfile", updatedDoctor);
+                            req.setAttribute("currentPassword", enteredCurrentPassword);
+                            req.setAttribute("newPassword", enteredNewPassword);
+                            req.setAttribute("confirmPassword", confirmPassword);
+                            req.setAttribute("passwordUpdateSuccess", "Cập nhật mật khẩu thành công.");
+                        }
+                    } else {
+                        req.setAttribute("updateError", "Email không được để trống.");
                     }
                 }
             }
         }
-
-        try {
-            req.getRequestDispatcher("/WEB-INF/templates/home/profile.jsp").forward(req, resp);
-            req.setAttribute("url", "/doctor/profile");
-        } catch (ServletException e) {
-            throw new RuntimeException(e);
-        }
+        req.setAttribute("url", "/doctor/profile");
+        req.getRequestDispatcher("/WEB-INF/templates/home/profile.jsp").forward(req, resp);
     }
-
 }
 
 

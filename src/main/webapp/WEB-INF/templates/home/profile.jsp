@@ -122,39 +122,40 @@
           <div class="p-4 border-bottom">
             <h5 class="mb-0">Đổi mật khẩu :</h5>
             <p style="color: red; align-content: center;">
-              ${requestScope.passerror}
+              ${requestScope.passwordUpdateError}
             </p>
             <p style="color: blue; align-content: center;">
-              ${requestScope.passsuccess}
+              ${requestScope.passwordUpdateSuccess}
             </p>
           </div>
 
           <div class="p-4">
-            <form action="${pageContext.request.contextPath}/doctor/profile" method="POST">
+            <form id="passwordForm" action="${pageContext.request.contextPath}/doctor/profile" method="POST">
               <div class="row">
                 <div class="col-lg-12">
                   <div class="mb-3">
                     <label class="form-label">Mật khẩu cũ :</label>
-                    <input value="${oldpassword}" oninvalid="CheckPassword(this);" oninput="CheckPassword(this);" type="password"  name="oldpassword" class="form-control" required="">
+                    <input value="${currentPassword}" oninvalid="CheckPassword(this);" oninput="CheckPassword(this);" type="password" name="currentPassword" class="form-control" required="">
                   </div>
                 </div><!--end col-->
 
                 <div class="col-lg-12">
                   <div class="mb-3">
                     <label class="form-label">Mật khẩu mới :</label>
-                    <input value="${newpassword}" oninvalid="CheckPassword(this);" oninput="CheckPassword(this);" id="password" type="password" name="newpassword" class="form-control" required="">
+                    <input value="${newPassword}" oninvalid="CheckPassword(this);" oninput="CheckPassword(this);" id="password" type="password" name="newPassword" class="form-control" required="">
                   </div>
                 </div><!--end col-->
 
                 <div class="col-lg-12">
                   <div class="mb-3">
                     <label class="form-label">Nhập lại mật khẩu :</label>
-                    <input value="${renewpassword}" oninvalid="CheckRePassword(this);" oninput="CheckRePassword(this);"type="password" name="renewpassword" class="form-control" required="">
+                    <input value="${confirmPassword}" oninvalid="CheckRePassword(this);" oninput="CheckRePassword(this);" type="password" name="confirmPassword" class="form-control" required="">
                   </div>
                 </div><!--end col-->
 
+
                 <div class="col-lg-12 mt-2 mb-0">
-                  <button class="btn btn-primary">Thay đổi</button>
+                  <button id="changePasswordBtn" class="btn btn-primary">Thay đổi</button>
                 </div>
               </div>
             </form>
@@ -188,6 +189,54 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+  <%--$(document).ready(function() {--%>
+  <%--  $('#changePasswordBtn').click(function(event) {--%>
+  <%--    event.preventDefault(); // Prevent the default form submission--%>
+
+  <%--    // Get the form data--%>
+  <%--    var formData = $('#passwordForm').serialize();--%>
+
+  <%--    // Disable the change password button to prevent multiple submissions--%>
+  <%--    $(this).prop('disabled', true);--%>
+
+  <%--    // Send an AJAX request to change the password--%>
+  <%--    $.ajax({--%>
+  <%--      type: 'POST',--%>
+  <%--      url: '${pageContext.request.contextPath}/doctor/profile',--%>
+  <%--      data: formData,--%>
+  <%--      success: function(response) {--%>
+  <%--        // Handle the server response--%>
+  <%--        if (response.success) {--%>
+  <%--          Swal.fire({--%>
+  <%--            icon: 'success',--%>
+  <%--            title: 'Thành công',--%>
+  <%--            text: 'Cập nhật mật khẩu thành công.'--%>
+  <%--          }).then(function() {--%>
+  <%--            window.location.reload(); // Reload the page to apply the new password--%>
+  <%--          });--%>
+  <%--        } else {--%>
+  <%--          Swal.fire({--%>
+  <%--            icon: 'error',--%>
+  <%--            title: 'Lỗi',--%>
+  <%--            text: response.error--%>
+  <%--          });--%>
+  <%--        }--%>
+  <%--      },--%>
+  <%--      error: function() {--%>
+  <%--        Swal.fire({--%>
+  <%--          icon: 'error',--%>
+  <%--          title: 'Lỗi',--%>
+  <%--          text: 'Cập nhật mật khẩu thất bại.'--%>
+  <%--        });--%>
+  <%--      },--%>
+  <%--      complete: function() {--%>
+  <%--        // Re-enable the change password button after the request is complete--%>
+  <%--        $('#changePasswordBtn').prop('disabled', false);--%>
+  <%--      }--%>
+  <%--    });--%>
+  <%--  });--%>
+  <%--});--%>
+
   $(document).ready(function() {
     $('#profileForm').submit(function(event) {
       event.preventDefault(); // Ngăn chặn gửi yêu cầu mặc định của form
@@ -221,6 +270,8 @@
       });
     });
   });
+
+
 </script>
 </body>
 
