@@ -27,6 +27,26 @@ public class PaymentDaoImpl implements PaymentDao {
     private static final String UPDATE_PAYMENT = "UPDATE payment " +
             "SET account_id=?, booking_id=?, fee=?, status=?, `type`=?, created_at=?, updated_at=? " +
             "WHERE id=? ";
+    private static final String UPDATE_PAYMENT_FOR_MARKETING = "UPDATE payment SET status = ?, type = ?, fee = ?  WHERE (booking_id = ?);";
+
+    @Override
+    public void updatePaymentForMarketing(Payment payment) throws SQLException {
+        ConnectionUtils.executeUpdate(UPDATE_PAYMENT_FOR_MARKETING,
+                payment.getStatus(),
+                payment.getType(),
+                payment.getServiceFee().getFee(),
+                payment.getBooking().getId());
+    }
+
+    public static void main(String[] args) throws SQLException {
+        PaymentDaoImpl paymentDao = new PaymentDaoImpl();
+        paymentDao.updatePaymentForMarketing(Payment.builder()
+                .status(true)
+                .type(1)
+                .serviceFee(ServiceFee.builder().fee(110000.0).build())
+                .booking(Booking.builder().id(1L).build())
+                .build());
+    }
 
     @Override
     public List<Payment> getAll(Integer offset, Integer limit, String search) throws SQLException {
@@ -86,6 +106,5 @@ public class PaymentDaoImpl implements PaymentDao {
         }
         return Optional.empty();
     }
-
 
 }

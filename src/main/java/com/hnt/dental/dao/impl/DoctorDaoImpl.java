@@ -262,11 +262,12 @@ public class DoctorDaoImpl implements DoctorDao {
             "    INNER JOIN service_type st ON st.id = dor.type_id " +
             "    WHERE b.date = ? " +
             "      AND b.time = ? " +
+            "      AND b.id <> ? " +
             "  )";
 
     @Override
-    public List<DoctorSummaryRes> getListDoctorAvailable(LocalDate date, LocalTime time, Long typeId, Long serviceId) throws SQLException {
-        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_LIST_DOCTOR_AVAILABLE, serviceId, typeId, date, time);
+    public List<DoctorSummaryRes> getListDoctorAvailable(LocalDate date, LocalTime time, Long typeId, Long serviceId, Long bookingId) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_LIST_DOCTOR_AVAILABLE, serviceId, typeId, date, time, bookingId);
         List<DoctorSummaryRes> result = new ArrayList<>();
         while (rs.next()) {
             result.add(DoctorSummaryRes.builder()
@@ -542,6 +543,10 @@ public class DoctorDaoImpl implements DoctorDao {
         return null;
     }
 
+    @Override
+    public List<DoctorSummaryRes> getListDoctorAvailable(LocalDate date, LocalTime time, Long typeId, Long serviceId) throws SQLException {
+        return null;
+    }
 
 
     @Override

@@ -18,16 +18,16 @@ public interface BookingDao extends GenericDao<Booking> {
 
     List<BookingManagementDto> getServiceByServiceId() throws SQLException;
 
-    Optional<BookingDetailPatientDto> getPatientByBookingId(Long id) throws SQLException;
+   BookingDetailPatientDto getPatientByBookingId(Long id) throws SQLException;
 
-    Optional<BookingDetailDoctorDto> getDoctorByBookingId(Long id) throws SQLException;
+    BookingDetailDoctorDto getDoctorByBookingId(Long id) throws SQLException;
 
 
-    Optional<BookingDetailServiceDto> getServiceByBookingId(Long id) throws SQLException;
+    BookingDetailServiceDto getServiceByBookingId(Long id) throws SQLException;
 
-    Optional<BookingDetailDto> getBookingDetailById(Long id) throws SQLException;
-    
+    BookingDetailDto getBookingDetailById(Long id) throws SQLException;
+
     List<BookingDto> getAllHistory() throws SQLException;
     BookingDto DetailHistory(String id) throws SQLException;
-    void updateBookingDetail(BookingDetailDto bookingDetailDto) throws SQLException;
+    void updateBookingDetail(Booking bookingDetailDto) throws SQLException;
 }
