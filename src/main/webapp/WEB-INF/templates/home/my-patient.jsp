@@ -32,7 +32,7 @@
                                 </thead>
 
                                 <tbody>
-                                <c:forEach items="${zpatients}" var="p">
+                                <c:forEach items="${patients}" var="p">
                                     <tr>
                                         <td class="p-3">${p.id}</td>
                                         <td class="">
@@ -65,20 +65,9 @@
                             <div class="col-12 mt-4">
                                 <div class="d-md-flex align-items-center text-center justify-content-between">
                                     <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                        <<<<<<< HEAD
-                                        <li class="page-item active"><a class="page-link">1</a>
-                                        </li>
-                                        <li class="page-item active"><a class="page-link">1</a>
-                                        </li>
-                                        <li class="page-item active"><a class="page-link">1</a>
-                                        </li>
-                                        <li class="page-item active"><a class="page-link">1</a>
-                                        </li>
-                                        =======
                                         <c:forEach begin="${1}" end="${totalPage}" var="i">
                                             <li class="page-item ${i==page?'active':''}"><a class="page-link" href="${url}?page=${i}">${i}</a></li>
                                         </c:forEach>
-                                        >>>>>>> develop
                                     </ul>
                                 </div>
                             </div>

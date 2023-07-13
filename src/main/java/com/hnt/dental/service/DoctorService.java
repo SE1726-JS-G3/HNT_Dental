@@ -1,6 +1,5 @@
 package com.hnt.dental.service;
 
-import com.hnt.dental.constant.EncodeData;
 import com.hnt.dental.constant.RoleEnum;
 import com.hnt.dental.dao.AccountDao;
 import com.hnt.dental.dao.DoctorDao;
