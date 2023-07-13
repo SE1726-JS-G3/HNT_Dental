@@ -93,24 +93,26 @@
             <div class="col-lg-4 col-md-5 mt-4 mt-sm-0 pt-2 pt-sm-0">
                 <div class="card border-0 sidebar sticky-bar rounded shadow">
                     <div class="card-body">
-                        
+
 
                         <!-- RECENT POST -->
                         <div class="widget mb-4 pb-2">
                             <h5 class="widget-title">Recent Post</h5>
                             <div class="mt-4">
+                                <c:forEach items="${recentPosts}" var="recentPosts">
                                 <div class="clearfix post-recent">
-                                    <div class="post-recent-thumb float-start"> <a href="jvascript:void(0)"> <img alt="img" src="${pageContext.request.contextPath}/static/images/blog/07.jpg" class="img-fluid rounded"></a></div>
-                                    <div class="post-recent-content float-start"><a href="jvascript:void(0)">Nhổ răng khôn</a><span class="text-muted mt-2">27th July 2023</span></div>
+                                    <div class="post-recent-thumb float-start"> <a href="jvascript:void(0)"> <img alt="img" src="${pageContext.request.contextPath}/static/images/blogs/${recentPosts.title_img}" class="img-fluid rounded"></a></div>
+                                    <div class="post-recent-content float-start"><a href="detail?id=${recentPosts.id}">${recentPosts.title}</a><span class="text-muted mt-2">${recentPosts.createdAt}</span></div>
                                 </div>
-                                <div class="clearfix post-recent">
-                                    <div class="post-recent-thumb float-start"> <a href="jvascript:void(0)"> <img alt="img" src="${pageContext.request.contextPath}/static/images/blog/08.jpgx`" class="img-fluid rounded"></a></div>
-                                    <div class="post-recent-content float-start"><a href="jvascript:void(0)">Nhổ răng hàm</a> <span class="text-muted mt-2">27th Juny, 2023</span></div>
-                                </div>
-                                <div class="clearfix post-recent">
-                                    <div class="post-recent-thumb float-start"> <a href="jvascript:void(0)"> <img alt="img" src="${pageContext.request.contextPath}/static/images/blog/01.jpg" class="img-fluid rounded"></a></div>
-                                    <div class="post-recent-content float-start"><a href="jvascript:void(0)">Nhổ răng sâu.</a> <span class="text-muted mt-2">27th Juny, 2023</span></div>
-                                </div>
+                                </c:forEach>
+<%--                                <div class="clearfix post-recent">--%>
+<%--                                    <div class="post-recent-thumb float-start"> <a href="jvascript:void(0)"> <img alt="img" src="${pageContext.request.contextPath}/static/images/blog/08.jpgx`" class="img-fluid rounded"></a></div>--%>
+<%--                                    <div class="post-recent-content float-start"><a href="jvascript:void(0)">Nhổ răng hàm</a> <span class="text-muted mt-2">27th Juny, 2023</span></div>--%>
+<%--                                </div>--%>
+<%--                                <div class="clearfix post-recent">--%>
+<%--                                    <div class="post-recent-thumb float-start"> <a href="jvascript:void(0)"> <img alt="img" src="${pageContext.request.contextPath}/static/images/blog/01.jpg" class="img-fluid rounded"></a></div>--%>
+<%--                                    <div class="post-recent-content float-start"><a href="jvascript:void(0)">Nhổ răng sâu.</a> <span class="text-muted mt-2">27th Juny, 2023</span></div>--%>
+<%--                                </div>--%>
                             </div>
                         </div>
                         <!-- RECENT POST -->
@@ -172,7 +174,7 @@
                                         <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i class="mdi mdi-heart-outline me-1"></i>33</a></li>
                                         <li class="list-inline-item"><a href="#" class="text-muted comments"><i class="mdi mdi-comment-outline me-1"></i>08</a></li>
                                     </ul>
-                                    <a href="detail?id=${blog.id}" class="text-dark title h5">Read More <i class="mdi mdi-chevron-right align-middle"></i></a>
+                                    <a href="detail?id=${blog.id}" class="text-dark title h5"> Read More <i class="mdi mdi-chevron-right align-middle"></i></a>
                                 </div>
                             </div>
                         </div>

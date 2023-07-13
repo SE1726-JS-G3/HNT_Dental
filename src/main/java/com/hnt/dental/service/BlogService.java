@@ -63,14 +63,13 @@ public class BlogService {
         Blogs blogs = dao.getBlogID(Integer.parseInt(id));
         List<CategoryBlog> categoryBlogList = dao.getListCategoryBlog();
         List<BlogsSummaryRes> blogRelated = dao.getListBlogRelated(blogs.getId(), blogs.getCategoryBlog().getId() );
+        List<Blogs> recentPosts = dao.RecentPosts();
         req.setAttribute("blogs", blogs);
         req.setAttribute("blogRelated", blogRelated);
+        req.setAttribute("recentPosts", recentPosts);
         req.setAttribute("categoryBlogList", categoryBlogList);
         req.getRequestDispatcher("/WEB-INF/templates/home/blog/detail.jsp").forward(req, resp);
 //        ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/blog/detail.jsp");
     }
-
-
-
 
 }

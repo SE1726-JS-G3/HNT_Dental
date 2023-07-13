@@ -59,7 +59,7 @@ public class BlogsDaoImpl implements BlogDao {
 
     private static final String SQL_LIST_CATEGORY = "select id, name from category_blog";
 
-    private static final String RECENT_POST = "SELECT create_at, title FROM blogs order by create_at desc";
+    private static final String RECENT_POST = "SELECT id, create_at, title, title_img FROM blogs order by create_at desc";
 
     @Override
     public List<BlogsSummaryRes> getListBlogsFilter(Integer offset, Integer limit, String search, String order, Integer categoryId) throws SQLException {
@@ -186,18 +186,19 @@ public class BlogsDaoImpl implements BlogDao {
     }
 
     @Override
-    public List<Blogs> RecentPosts() throws Exception {
+    public  List<Blogs> RecentPosts() throws Exception {
         List<Blogs> data = new ArrayList<>();
         ResultSet rs = ConnectionUtils.executeQuery(RECENT_POST);
         try {
             int count = 0;
             while (rs.next()) {
                 if (count < 3) {
-                    Blogs blog = Blogs.builder()
-                            .title(rs.getString("title"))
-//                            .createAt(rs.getTimestamp("create_at").toLocalDateTime())
-                            .build();
-                    data.add(blog);
+                    Blogs blogs = new Blogs();
+                    blogs.setId(rs.getLong("id"));
+                    blogs.setTitle(rs.getString("title"));
+                   blogs.setTitle_img(rs.getString("title_img"));
+                    blogs.setCreatedAt(rs.getTimestamp("create_at").toLocalDateTime());
+                    data.add(blogs);
                     ++count;
                 }
 
@@ -207,5 +208,6 @@ public class BlogsDaoImpl implements BlogDao {
         }
         return data;
     }
+
 }
 
