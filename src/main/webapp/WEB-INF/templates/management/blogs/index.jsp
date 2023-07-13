@@ -30,7 +30,7 @@
                             <div class="search-bar p-0 d-lg-block ms-2">
                                 <div class="menu-search mb-0">
                                     <form action="${pageContext.request.contextPath}/management/blog" method="get"
-                                            id="searchform" class="searchform">
+                                          id="searchform" class="searchform">
                                         <div>
                                             <input
                                                     value="${search}"
@@ -43,7 +43,8 @@
                             </div>
                         </div>
                         <div class="col-md-2 row align-items-center">
-                            <a href="${pageContext.request.contextPath}/management/blog/create" class="btn btn-primary" onclick="window.location.href='/management/blog/create'">Thêm mới</a>
+                            <a href="${pageContext.request.contextPath}/management/blog/create" class="btn btn-primary"
+                               onclick="window.location.href='/management/blog/create'">Thêm mới</a>
                         </div>
 
                     </div>
@@ -53,7 +54,7 @@
                 <br>
 
                 <div class="row">
-                    <form action="${pageContext.request.contextPath}/management/blog" method="get" >
+                    <form action="${pageContext.request.contextPath}/management/blog" method="get">
                         <div class="row">
                             <div class="col-md-4 row align-items-center">
                                 <div class="col-md-4">
@@ -63,7 +64,8 @@
                                     <select name="category" class="form-select">
                                         <option value="all">Tất cả</option>
                                         <c:forEach var="c" items="${cate_lst}">
-                                            <option value="${c.id}" <c:if test="${c.id.toString() eq category}">selected</c:if>
+                                            <option value="${c.id}"
+                                                    <c:if test="${c.id.toString() eq category}">selected</c:if>
                                             >${c.name}</option>
                                         </c:forEach>
                                     </select>
@@ -74,7 +76,7 @@
                                     <label class="form-label">Trạng Thái</label>
                                 </div>
                                 <div class="col-md-7">
-                                    <select name="status" class="form-select" >
+                                    <select name="status" class="form-select">
                                         <option value="all" ${status == 'all' ? 'selected' : ''}>Tất cả</option>
                                         <option value="0" ${status == '0' ? 'selected' : ''}>Ẩn</option>
                                         <option value="1" ${status == '1' ? 'selected' : ''}>Hiện</option>
@@ -114,26 +116,15 @@
                                                     <tbody>
                                                     <tr>
                                                         <td class="p-3 text-center">
-                                                                <%--                                                        <form id="status_form_${b.id}"  action="${pageContext.request.contextPath}/management/blog"method="get">--%>
-                                                                <%--                                                            <input type="hidden" name="change_status" value="${b.id}_${b.status}"/>--%>
-                                                                <%--                                                            <c:if test="${b.status eq 1}">--%>
-                                                                <%--                                                                <label class="switch-wrap" style="float: left">--%>
-                                                                <%--                                                                    <input class="btn btn-primary" type="button" id="status_check_${b.id}" checked onclick="modal_open(${b.id})"--%>
-                                                                <%--                                                                           value="Hiện" >--%>
-                                                                <%--                                                                    <div class="switch"></div>--%>
-                                                                <%--                                                                </label>--%>
-                                                                <%--                                                            </c:if>--%>
-                                                                <%--                                                            <c:if test="${b.status eq 0}">--%>
-                                                                <%--                                                                <label class="switch-wrap" style="float: left">--%>
-                                                                <%--                                                                    <input type="button" class="btn btn-primary" id="status_check_${b.id}" onclick="modal_open(${b.id})"--%>
-                                                                <%--                                                                           value="Ẩn" />--%>
-                                                                <%--                                                                    <div class="switch"></div>--%>
-                                                                <%--                                                                </label>--%>
-                                                                <%--                                                            </c:if>--%>
-                                                                <%--                                                        </form>--%>
-                                                            <button class="btn btn-danger"
+                                                            <button class="btn btn-primary"
                                                                     onclick="window.location.href='${pageContext.request.contextPath}/management/blog/update?id=${b.id}'"
-                                                            >View</button>
+                                                            >View
+                                                            </button>
+
+                                                            <button class="btn btn-danger"
+                                                                    onclick="onClickDelete(${b.id})"
+                                                            >Xóa
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                     </tbody>
@@ -141,7 +132,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div><!--end col-->
+                                </div>
+                                <!--end col-->
                             </c:forEach>
                         </div><!--end row-->
 
@@ -164,14 +156,10 @@
                 <!-- Footer Start -->
 
 
-
-
-
             </div>
             <jsp:include page="../layout/footer.jsp"/>
     </main>
 </div>
-
 
 
 <script>
@@ -179,7 +167,23 @@
         window.location.href = "blogmanage?action=sort&type=" + type;
     }
 
+    function onClickDelete(id) {
+        Swal.fire({
+            title: 'Bạn có chắc chắn muốn xóa?',
+            text: "Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
 
+            confirmButtonText: 'Xóa',
+            cancelButtonText: 'Hủy'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "${pageContext.request.contextPath}/management/blog/delete?id=" + id;
+            }
+        })
+    }
 
 </script>
 <script src="${pageContext.request.contextPath}/static/libs/tobii/js/tobii.min.js"></script>
