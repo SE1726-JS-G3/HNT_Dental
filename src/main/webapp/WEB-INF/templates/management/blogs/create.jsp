@@ -22,7 +22,7 @@
                                 <div class="modal-body p-3 pt-4">
                                     <form
                                             action="${pageContext.request.contextPath}/management/blog/create"
-                                            method="POST">
+                                            method="POST" onSubmit="return validateForm()">
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="mb-3">
@@ -66,7 +66,7 @@
                                             <div class="mb-3">
                                                 <label class="form-label">Thông Tin Tóm Tắt<span
                                                         class="text-danger">*</span></label>
-                                                <textarea class="brief" name="brief"
+                                                <textarea class="brief" name="brief" id="brief"
                                                           placeholder="Thông Tin Tóm Tắt:"></textarea>
                                             </div>
 
@@ -75,7 +75,7 @@
                                                         class="text-danger">*</span></label>
 
                                                 <textarea rows="10" cols="70" class="describe"
-                                                          name="description"
+                                                          name="description" id="describe"
                                                           placeholder="Mô tả:"></textarea>
                                             </div>
 
@@ -108,6 +108,121 @@
 
 
 <script>
+    function validateForm() {
+        var title = document.getElementById('title').value;
+        var brief = document.getElementById('brief').value;
+        var describe = document.getElementById('describe').value;
+        // var dob = document.getElementById('dob').value;
+        // var email = document.getElementById('email').value;
+        // var address = document.getElementById('address').value;
+        // var phone = document.getElementById('phone').value;
+        // var position = document.getElementById('position').value;
+        // var rankId = document.getElementById('rankId').value;
+
+        // Perform field validation
+        if (title.trim() === '') {
+            displayErrorMessage('Tiêu đề không được bỏ trống');
+            return false;
+        }
+        if (brief.trim() === '') {
+            displayErrorMessage('Thông tin tóm tắt không được bỏ trống');
+            return false;
+        }
+        if (describe.trim() === '') {
+            displayErrorMessage('Mô tả không được bỏ trống');
+            return false;
+        }
+        // if (dob.trim() === '') {
+        //     displayErrorMessage('Ngày sinh không được bỏ trống');
+        //     return false;
+        // }
+        // if (!isValidDateFormat(dob)) {
+        //     displayErrorMessage('Ngày sinh phải có định dạng YYYY-MM-DD');
+        //     return false;
+        // }
+        // if (email.trim() === '') {
+        //     displayErrorMessage('Email không được bỏ trống');
+        //     return false;
+        // }
+        // if (!isValidEmailAddress(email)) {
+        //     displayErrorMessage('Email không hợp lệ');
+        //     return false;
+        // }
+        // if (address.trim() === '') {
+        //     displayErrorMessage('Địa chỉ không được bỏ trống');
+        //     return false;
+        // }
+        // if (phone.trim() === '') {
+        //     displayErrorMessage('Điện thoại không được bỏ trống');
+        //     return false;
+        // }
+        // if (!isValidPhoneNumber(phone)) {
+        //     displayErrorMessage('Số điện thoại chỉ được nhập 10 chữ số');
+        //     return false;
+        // }
+        // if (position.trim() === '') {
+        //     displayErrorMessage('Chuyên môn không được bỏ trống');
+        //     return false;
+        // }
+        // if (rankId.trim() === '') {
+        //     displayErrorMessage('xếp hạng không được bỏ trống');
+        //     return false;
+        // }
+        // if (!isValidRankId(rankId)) {
+        //     displayErrorMessage('Xếp hạng phải chỉ có từ 1 đến 10');
+        //     return false;
+        // }
+
+        // If all fields are valid, display success message
+        displaySuccessMessage('Thông tin đã được cập nhật thành công');
+        return true;
+    }
+
+    function isValidDateFormat(dateString) {
+        // Kiểm tra định dạng ngày sinh theo dạng YYYY-MM-DD
+        var pattern = /^\d{4}-\d{2}-\d{2}$/;
+        return pattern.test(dateString);
+    }
+
+    function isValidEmailAddress(email) {
+        // Kiểm tra định dạng email hợp lệ
+        var pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return pattern.test(email);
+    }
+
+    function isValidRankId(rankId) {
+        // Kiểm tra xếp hạng chỉ từ 1 đến 10
+        var rankNumber = parseInt(rankId, 10);
+        return rankNumber >= 1 && rankNumber <= 10;
+    }
+
+    function isValidPhoneNumber(phone) {
+        // Kiểm tra số điện thoại có 10 chữ số
+        var pattern = /^\d{10}$/;
+        return pattern.test(phone);
+    }
+    // Các hàm hiển thị thông báo lỗi và thành công không thay đổi.
+    function displayErrorMessage(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: message,
+            timer: 50000, // Hiển thị thông báo trong 30 giây
+            showConfirmButton: false // Ẩn nút xác nhận
+        });
+    }
+
+    function displaySuccessMessage(message) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: message,
+            timer: 50000, // Hiển thị thông báo trong 30 giây
+            showConfirmButton: false // Ẩn nút xác nhận
+        });
+    }
+
+
     function Sort(type) {
         window.location.href = "blogmanage?action=sort&type=" + type;
     }

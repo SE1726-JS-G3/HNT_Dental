@@ -127,6 +127,8 @@ public class BlogService {
             return;
         }
         String error = req.getParameter("error");
+
+
         Blogs blogs = blogDao.get(id).isPresent()
                 ? blogDao.get(Integer.parseInt(req.getParameter("id"))).get() : null;
 
@@ -141,6 +143,7 @@ public class BlogService {
         req.setAttribute("blog_id", id);
         req.setAttribute("error", error);
         ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/blogs/detail.jsp");
+
     }
 
 
