@@ -119,31 +119,65 @@ public class BlogService {
         }
     }
 
+//    public void updateRender(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+//        int id = Integer.parseInt(req.getParameter("id"));
+//        if(req.getParameter("id")==null)
+//        {
+//            System.out.println("id null roi");
+//            return;
+//        }
+//        String error = req.getParameter("error");
+//
+//
+//        Blogs blogs = blogDao.get(id).isPresent()
+//                ? blogDao.get(Integer.parseInt(req.getParameter("id"))).get() : null;
+//
+//        CategoryBlog categoryBlog = categoryBlogDao.get(id).isPresent()
+//                ? categoryBlogDao.get(Integer.parseInt(req.getParameter("id"))).get() : null;
+//
+//        ArrayList<CategoryBlog> categoryBlog1 = (ArrayList<CategoryBlog>) categoryBlogDao.getAll();
+//        assert blogs != null;
+//        blogs.setCategoryBlog(categoryBlog);
+//        req.setAttribute("blogs", blogs);
+//        req.getSession().setAttribute("category_lst", categoryBlog1);
+//        req.setAttribute("blog_id", id);
+//        req.setAttribute("error", error);
+//        ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/blogs/detail.jsp");
+//
+//    }
+
     public void updateRender(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        int id = Integer.parseInt(req.getParameter("id"));
-        if(req.getParameter("id")==null)
-        {
-            System.out.println("id null roi");
-            return;
-        }
         String error = req.getParameter("error");
 
+        String idParam = req.getParameter("id");
+        if (idParam == null) {
+            System.out.println("id is null");
+            return;
+        }
 
-        Blogs blogs = blogDao.get(id).isPresent()
-                ? blogDao.get(Integer.parseInt(req.getParameter("id"))).get() : null;
+        int id = Integer.parseInt(idParam);
+        Optional<Blogs> blogsOptional = blogDao.get(id);
+        if (blogsOptional.isEmpty()) {
+            System.out.println("blogs is null");
+            return;
+        }
+        Blogs blogs = blogsOptional.get();
 
-        CategoryBlog categoryBlog = categoryBlogDao.get(id).isPresent()
-                ? categoryBlogDao.get(Integer.parseInt(req.getParameter("id"))).get() : null;
+        Optional<CategoryBlog> categoryBlogOptional = categoryBlogDao.get(id);
+        if (categoryBlogOptional.isEmpty()) {
+            System.out.println("categoryBlog is null");
+            return;
+        }
+        CategoryBlog categoryBlog = categoryBlogOptional.get();
 
         ArrayList<CategoryBlog> categoryBlog1 = (ArrayList<CategoryBlog>) categoryBlogDao.getAll();
-        assert blogs != null;
+
         blogs.setCategoryBlog(categoryBlog);
         req.setAttribute("blogs", blogs);
         req.getSession().setAttribute("category_lst", categoryBlog1);
         req.setAttribute("blog_id", id);
         req.setAttribute("error", error);
         ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/blogs/detail.jsp");
-
     }
 
 
