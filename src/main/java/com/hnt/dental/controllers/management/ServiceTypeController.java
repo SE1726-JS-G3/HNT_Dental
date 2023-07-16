@@ -14,7 +14,9 @@ import java.io.IOException;
         "/management/type/create",
         "/management/type/update",
         "/management/type/detail",
-        "/management/type/type"
+        "/management/type/delete",
+        "/management/type/type",
+        "/management/type/deletemain",
 })
 public class ServiceTypeController extends HttpServlet {
     private static final ServiceTypeService service;
@@ -39,6 +41,19 @@ public class ServiceTypeController extends HttpServlet {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+        }else if (action.equals("/management/type/delete")) {
+            try {
+                service.deleteRankOfType(req, resp);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } else if (action.equals("/management/type/deletemain")) {
+            try {
+                service. deleteServiceType(req, resp);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
         }
     }
 
@@ -50,6 +65,18 @@ public class ServiceTypeController extends HttpServlet {
         if (action.equals("/management/type/create")) {
             try {
                 service.createServiceType(req, resp);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } else if (action.equals("/management/type/detail")) {
+            try {
+                service.updateRankOfType(req, resp);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }else if (action.equals("/management/type/update")) {
+            try {
+                service. updateServiceType(req, resp);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

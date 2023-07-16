@@ -18,4 +18,7 @@ public interface ServiceTypeDao extends GenericDao<ServiceType>{
     List<DoctorRank> addRankToType(Long idType) throws SQLException;
 
     List<DoctorRank> listRankOfTypeAvailable(Long idType) throws SQLException;
+    Long saveRankToType(Long idType, Long idRank) throws SQLException;
+
+    void deleteRankFromType(Long idType, Long idRank) throws SQLException;
 }

@@ -92,7 +92,7 @@
                                             <td class="p-3">${getAllRankOfType.indexOf(rank) + 1}</td>
                                             <td class="p-3">${rank.doctorRank.name}</td>
                                             <td>
-                                                <button type="button" class="btn btn-danger">
+                                                <button type="button" class="btn btn-danger" onclick="deleteType(${rank.id}, ${rank.doctorRank.id})">
                                                     Xoa
                                                 </button>
                                             </td>
@@ -108,34 +108,11 @@
                     <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit">
                         <div class="card border-0 shadow overflow-hidden">
                             <div class="tab-content p-4" id="pills-tabContent">
-                                <form action="${pageContext.request.contextPath}/management/service/update?id=${serviceDetail.id}"
+
+                                <form action="${pageContext.request.contextPath}/management/type/update"
                                       method="POST"
-                                      enctype="multipart/form-data"
-                                      onSubmit="document.getElementById('submit').disabled = true;">
-                                    <h5 class="mb-0">Chỉnh sửa thông tin :</h5>
-                                    <p hidden="">${serviceType.id}</p>
-
-                                    <div>
-                                        <div id="thumbbox">
-                                            <img class="rounded" height="20%" width="30%" alt="Thumb image"
-                                                 id="thumbimage" style="display: none"/>
-                                            <a class="removeimg" href="javascript:"></a>
-                                        </div>
-                                        <div id="boxchoice">
-
-                                            <p style="clear:both"></p>
-                                            <input type="submit" id="" style="display: none" name="send"
-                                                   class="Update btn btn-primary"
-                                                   value="Cập nhật">
-                                            <p style="clear:both"></p>
-                                        </div>
-                                    </div>
-                                </form>
-
-                                <form action="${pageContext.request.contextPath}/management/service/update"
-                                      method="POST"
-                                      class="mt-4" onSubmit="document.getElementById('submit').disabled = true;">
-                                    <input value="${serviceType.service.id}" name="id" hidden="hidden">
+                                      class="mt-4" >
+                                    <input value="${param.id}" name="id" hidden="hidden">
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="mb-3">
@@ -158,21 +135,6 @@
                                                         class="text-danger"></span></label>
                                                 <table>
                                                     <tbody>
-                                                    <tr class="d-flex align-items-center">
-                                                        <td><input id="credit"
-                                                                   name="status" ${serviceDetail.status==true?"checked":""}
-                                                                   value="true" type="radio"
-                                                                   class="form-check-input"
-                                                                   checked required></td>
-                                                        <td><label class="form-check-label">Hoạt động</label></td>
-                                                        <td></td>
-                                                        <td><input id="debit"
-                                                                   name="status" ${serviceDetail.status==false?"checked":""}
-                                                                   value="false" type="radio"
-                                                                   class="form-check-input"
-                                                                   required></td>
-                                                        <td><label class="form-check-label">Khóa</label></td>
-                                                    </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -195,24 +157,30 @@
         <div class="modal fade" id="rank_new" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
              aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-body mx-3">
-                        <div class="md-form mb-2">
-                            <i class="fas fa-envelope prefix grey-text"></i>
-                            <label data-error="wrong" data-success="right">Cấp bậc</label>
+                <form action="${pageContext.request.contextPath}/management/type/detail" method="post">
+                    <div class="modal-content">
+                        <div class="modal-body mx-3">
+                            <div class="md-form mb-2">
+                                <i class="fas fa-envelope prefix grey-text"></i>
+                                <label data-error="wrong" data-success="right">Cấp bậc</label>
+                                <input name="id" value="${param.id}" hidden="hidden">
+                                <select name="rank" class="form-control">
 
-                            <select name="types" class="form-control">
-                                <c:forEach items="${listRankOfTypeAvailable}" var="l">
-                                <option value="${l.id}">${l.name}</option>
-                                </c:forEach>
-                            </select>
+                                    <c:forEach items="${listRankOfTypeAvailable}" var="l">
+                                        <option value="${l.id}">${l.name}</option>
+                                    </c:forEach>
+                                </select>
 
+                            </div>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button <c:if test="${listRankOfTypeAvailable.size() == 0}"> disabled </c:if>
+
+
+                                    type="submit" class="btn btn-primary">Lưu</button>
                         </div>
                     </div>
-                    <div class="modal-footer d-flex justify-content-center">
-                        <button class="btn btn-primary">Lưu</button>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
         <jsp:include page="../layout/footer.jsp"/>
@@ -227,5 +195,10 @@
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
 
+<script>
+    function deleteType(id, rankId){
+        window.location.href = "${pageContext.request.contextPath}/management/type/delete?id="+id+"&rank="+rankId;
+    }
+</script>
 </body>
 </html>

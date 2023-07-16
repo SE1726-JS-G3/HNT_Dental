@@ -72,7 +72,7 @@
                                                     Chi tiết
                                                 </button>
                                                 <button type="button" class="btn btn-danger"
-                                                        data-bs-toggle="modal" data-bs-target="#service_type${s.id}">
+                                                         onclick="deleteType(${s.id})">
                                                     Xóa
                                                 </button>
                                             </td>
@@ -209,70 +209,9 @@
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
 
 </body>
-<style>
-    .Choicefile {
-        display: block;
-        background: #396CF0;
-        border: 1px solid #fff;
-        color: #fff;
-        width: 150px;
-        text-align: center;
-        text-decoration: none;
-        cursor: pointer;
-        padding: 5px 0px;
-        border-radius: 5px;
-        font-weight: 500;
-        align-items: center;
-        justify-content: center;
+<script>
+    function deleteType(id){
+        window.location.href = "${pageContext.request.contextPath}/management/type/deletemain?id="+id;
     }
-
-    .Choicefile:hover {
-        text-decoration: none;
-        color: white;
-    }
-
-    #uploadfile,
-    .removeimg {
-        display: none;
-    }
-
-    #thumbbox {
-        position: relative;
-        width: 100%;
-        margin-bottom: 20px;
-    }
-
-    .removeimg {
-        height: 25px;
-        position: absolute;
-        background-repeat: no-repeat;
-        top: 5px;
-        left: 5px;
-        background-size: 25px;
-        width: 25px;
-        border-radius: 50%;
-    }
-
-    .removeimg::before {
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        content: '';
-        border: 1px solid red;
-        background: red;
-        text-align: center;
-        display: block;
-        margin-top: 11px;
-        transform: rotate(45deg);
-    }
-
-    .removeimg::after {
-        content: '';
-        background: red;
-        border: 1px solid red;
-        text-align: center;
-        display: block;
-        transform: rotate(-45deg);
-        margin-top: -2px;
-    }
-</style>
+</script>
 </html>

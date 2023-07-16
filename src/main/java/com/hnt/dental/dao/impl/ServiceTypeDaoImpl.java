@@ -10,6 +10,7 @@ import com.hnt.dental.util.ConnectionUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +28,7 @@ public class ServiceTypeDaoImpl implements ServiceTypeDao {
     private static final String SQL_COUNT_SERVICE = "select count(*) from service_type st " +
             "LEFT join doctor_of_rank dor on dor.type_id = st.id " +
             "left join doctor_rank dr on dr.id = dor.rank_id";
-    private static final String SQL_GET_ALL_RANK_OF_TYPE = "select  dr.id, dr.name from doctor_rank dr " +
+    private static final String SQL_GET_ALL_RANK_OF_TYPE = "select  dr.id, dr.name, dor.type_id from doctor_rank dr " +
             "inner join doctor_of_rank dor on dr.id =  dor.rank_id " +
             "where dor.type_id= ?";
     private static final String GET_DETAIL_TYPE = "select * from service_type st " +
@@ -37,6 +38,17 @@ public class ServiceTypeDaoImpl implements ServiceTypeDao {
             "select  dr.id from doctor_rank dr " +
             "            inner join doctor_of_rank dor on dr.id =  dor.rank_id " +
             " where dor.type_id= ?)";
+
+    private static final String SQL_INSERT_RANK_TO_TYPE = "INSERT INTO hnt_dental.doctor_of_rank " +
+            "(rank_id,type_id) " +
+            "VALUES(?,?) ";
+    private static final String SQL_DELETE_RANK_FROM_TYPE = "DELETE FROM hnt_dental.doctor_of_rank\n" +
+            "WHERE rank_id= ? AND type_id= ? ";
+    private static final String SQL_UPDATE_SERVICE_TYPE = "UPDATE hnt_dental.service_type " +
+            "SET name= ? , description= ? , updated_at= ? " +
+            "WHERE id= ? ";
+    private static final String SQL_DELETE_SERVICE_TYPE = "DELETE FROM hnt_dental.service_type " +
+            "WHERE id= ?";
 
     @Override
     public List<ServiceType> getAll(Integer offset, Integer limit, String search) throws SQLException {
@@ -57,12 +69,13 @@ public class ServiceTypeDaoImpl implements ServiceTypeDao {
 
     @Override
     public void update(ServiceType serviceType) throws SQLException {
-
+        ConnectionUtils.executeUpdate(SQL_UPDATE_SERVICE_TYPE, serviceType.getName(), serviceType.getDescription(),
+                serviceType.getUpdatedAt(), serviceType.getId());
     }
 
     @Override
     public void delete(ServiceType serviceType) throws SQLException {
-
+        ConnectionUtils.executeUpdate(SQL_DELETE_SERVICE_TYPE, serviceType.getId());
     }
 
     @Override
@@ -97,7 +110,9 @@ public class ServiceTypeDaoImpl implements ServiceTypeDao {
         List<TypeServiceDto> doctorSummaryRes = new ArrayList<>();
         while (rs.next()) {
             doctorSummaryRes.add(TypeServiceDto.builder()
+                    .id(rs.getLong("type_id"))
                     .doctorRank(DoctorRank.builder()
+                            .id(rs.getLong("id"))
                             .name(rs.getString("name"))
                             .build())
                     .build());
@@ -136,5 +151,17 @@ public class ServiceTypeDaoImpl implements ServiceTypeDao {
         }
         return doctorRanks;
     }
+
+    @Override
+    public Long saveRankToType(Long idType, Long idRank) throws SQLException {
+        ConnectionUtils.executeUpdate(SQL_INSERT_RANK_TO_TYPE, idRank, idType);
+        return null;
+    }
+
+    @Override
+    public void deleteRankFromType(Long idType, Long idRank) throws SQLException {
+        ConnectionUtils.executeUpdate(SQL_DELETE_RANK_FROM_TYPE, idRank, idType);
+    }
+
 
 }
