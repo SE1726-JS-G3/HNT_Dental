@@ -30,6 +30,10 @@ public class HomeBlogController extends HttpServlet {
         switch (action) {
             case "/blog":
                 service.getAll(req, resp);
+
+                req.getRequestDispatcher("/WEB-INF/templates/home/blog/index.jsp").forward(req, resp);
+               // req.getRequestDispatcher("/WEB-INF/templates/home/payment/payment-error.jsp").forward(req, resp);
+
                 break;
             case "/blog/detail":
                 String id = req.getParameter("id");

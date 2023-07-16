@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Huyen Nguyen
-  Date: 6/9/2023
-  Time: 5:06 PM
-  To change this template use File | Settings | File Templates.
---%>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -51,6 +44,12 @@
                     <ul class="list-unstyled mt-4">
                         <li class="list-inline-item user text-muted me-2"><i class="mdi mdi-account"></i> ${blogs.employee.fullName}</li>
                         <li class="list-inline-item date text-muted"><i class="mdi mdi-calendar-check"></i> ${blogs.categoryBlog.name}</li>
+                    <h3 class="sub-title mb-4">Lockdowns lead to fewer people seeking medical care</h3>
+                    <p class="para-desc mx-auto text-muted">Great doctor if you need your family member to get effective immediate assistance, emergency treatment or a simple consultation.</p>
+
+                    <ul class="list-unstyled mt-4">
+                        <li class="list-inline-item user text-muted me-2"><i class="mdi mdi-account"></i> Calvin Carlo</li>
+                        <li class="list-inline-item date text-muted"><i class="mdi mdi-calendar-check"></i> 1st January, 2021</li>
                     </ul>
                 </div>
             </div><!--end col-->
@@ -77,15 +76,20 @@
 <%--                     class="img-fluid rounded shadow" alt="">--%>
                 <img src="${pageContext.request.contextPath}/static/images/blogs/${blogs.title_img}" class="img-fluid rounded shadow"
                      alt="">
+        <div class="row">
+            <div class="col-lg-8 col-lg-7">
+                <img src="https://shreethemes.in/doctris/layouts/assets/images/blog/single.jpg" class="img-fluid rounded shadow" alt="">
 
                 <!-- <ul class="list-unstyled mt-4">
                     <li class="list-inline-item user text-muted me-2"><i class="mdi mdi-account"></i> Calvin Carlo</li>
                     <li class="list-inline-item date text-muted"><i class="mdi mdi-calendar-check"></i> 1st January, 2021</li>
                 </ul> -->
-
                 <p class="text-muted mt-4">${blogs.description}</p>
 <%--                <p class="text-muted">Due to its widespread use as filler text for layouts, non-readability is of great importance: human perception is tuned to recognize certain patterns and repetitions in texts.</p>--%>
 <%--                <p class="text-muted mb-0">For this reason, dummy text usually consists of a more or less random series of words or syllables.</p>--%>
+                <p class="text-muted mt-4">This is required when, for example, the final text is not yet available. Dummy text is also known as 'fill text'. It is said that song composers of the past used dummy texts as lyrics when writing melodies in order to have a 'ready-made' text to sing with the melody. Dummy texts have been in use by typesetters since the 16th century.</p>
+                <p class="text-muted">Due to its widespread use as filler text for layouts, non-readability is of great importance: human perception is tuned to recognize certain patterns and repetitions in texts.</p>
+                <p class="text-muted mb-0">For this reason, dummy text usually consists of a more or less random series of words or syllables.</p>
 
 
             </div><!--end col-->
@@ -93,7 +97,19 @@
             <div class="col-lg-4 col-md-5 mt-4 mt-sm-0 pt-2 pt-sm-0">
                 <div class="card border-0 sidebar sticky-bar rounded shadow">
                     <div class="card-body">
-
+                        <!-- SEARCH -->
+                        <div class="widget mb-4 pb-2">
+                            <h5 class="widget-title">Search</h5>
+                            <div id="search2" class="widget-search mt-4 mb-0">
+                                <form role="search" method="get" id="searchform" class="searchform">
+                                    <div>
+                                        <input type="text" class="border rounded form-control" name="s" id="s" placeholder="Search Keywords...">
+                                        <input type="submit" id="searchsubmit" value="Search">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- SEARCH -->
 
                         <!-- RECENT POST -->
                         <div class="widget mb-4 pb-2">
@@ -113,6 +129,18 @@
 <%--                                    <div class="post-recent-thumb float-start"> <a href="jvascript:void(0)"> <img alt="img" src="${pageContext.request.contextPath}/static/images/blog/01.jpg" class="img-fluid rounded"></a></div>--%>
 <%--                                    <div class="post-recent-content float-start"><a href="jvascript:void(0)">Nhổ răng sâu.</a> <span class="text-muted mt-2">27th Juny, 2023</span></div>--%>
 <%--                                </div>--%>
+                                <div class="clearfix post-recent">
+                                    <div class="post-recent-thumb float-start"> <a href="jvascript:void(0)"> <img alt="img" src="${pageContext.request.contextPath}/static/images/blog/07.jpg" class="img-fluid rounded"></a></div>
+                                    <div class="post-recent-content float-start"><a href="jvascript:void(0)">Consultant Business</a><span class="text-muted mt-2">15th June, 2019</span></div>
+                                </div>
+                                <div class="clearfix post-recent">
+                                    <div class="post-recent-thumb float-start"> <a href="jvascript:void(0)"> <img alt="img" src="${pageContext.request.contextPath}/static/images/blog/08.jpg" class="img-fluid rounded"></a></div>
+                                    <div class="post-recent-content float-start"><a href="jvascript:void(0)">Look On The Glorious Balance</a> <span class="text-muted mt-2">15th June, 2019</span></div>
+                                </div>
+                                <div class="clearfix post-recent">
+                                    <div class="post-recent-thumb float-start"> <a href="jvascript:void(0)"> <img alt="img" src="${pageContext.request.contextPath}/static/images/blog/01.jpg" class="img-fluid rounded"></a></div>
+                                    <div class="post-recent-content float-start"><a href="jvascript:void(0)">Research Financial.</a> <span class="text-muted mt-2">15th June, 2019</span></div>
+                                </div>
                             </div>
                         </div>
                         <!-- RECENT POST -->
@@ -133,6 +161,16 @@
 <%--                                <a href="jvascript:void(0)" class="rounded">Beauty</a>--%>
 <%--                                <a href="jvascript:void(0)" class="rounded">Video</a>--%>
 <%--                                <a href="jvascript:void(0)" class="rounded">Audio</a>--%>
+                                <a href="jvascript:void(0)" class="rounded">Business</a>
+                                <a href="jvascript:void(0)" class="rounded">Finance</a>
+                                <a href="jvascript:void(0)" class="rounded">Marketing</a>
+                                <a href="jvascript:void(0)" class="rounded">Fashion</a>
+                                <a href="jvascript:void(0)" class="rounded">Bride</a>
+                                <a href="jvascript:void(0)" class="rounded">Lifestyle</a>
+                                <a href="jvascript:void(0)" class="rounded">Travel</a>
+                                <a href="jvascript:void(0)" class="rounded">Beauty</a>
+                                <a href="jvascript:void(0)" class="rounded">Video</a>
+                                <a href="jvascript:void(0)" class="rounded">Audio</a>
                             </div>
                         </div>
                         <!-- TAG CLOUDS -->
@@ -159,7 +197,6 @@
             <div class="col-lg-12 mt-4 pt-2">
                 <div class="slider-range-three">
                     <c:forEach items="${blogRelated}" var="blog">
-
                     <div class="tiny-slide">
                         <div class="card blog blog-primary border-0 shadow rounded overflow-hidden m-1">
                             <img src="${pageContext.request.contextPath}/static/images/blog/03.jpg" class="img-fluid" alt="">
@@ -169,12 +206,97 @@
                                     <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
                                 </ul>
                                 <a href="detail?id=${blog.id}" class="text-dark title h5">${blog.title}</a>
+                                    <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020</li>
+                                    <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
+                                </ul>
+                                <a href="blog-detail.html" class="text-dark title h5">medicine research course for doctors</a>
                                 <div class="post-meta d-flex justify-content-between mt-3">
                                     <ul class="list-unstyled mb-0">
                                         <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i class="mdi mdi-heart-outline me-1"></i>33</a></li>
                                         <li class="list-inline-item"><a href="#" class="text-muted comments"><i class="mdi mdi-comment-outline me-1"></i>08</a></li>
                                     </ul>
                                     <a href="detail?id=${blog.id}" class="text-dark title h5"> Read More <i class="mdi mdi-chevron-right align-middle"></i></a>
+                                    <a href="blog-detail.html" class="link">Read More <i class="mdi mdi-chevron-right align-middle"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tiny-slide">
+                        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden m-1">
+                            <img src="${pageContext.request.contextPath}/static/images/blog/04.jpg" class="img-fluid" alt="">
+                            <div class="card-body p-4">
+                                <ul class="list-unstyled mb-2">
+                                    <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020</li>
+                                    <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
+                                </ul>
+                                <a href="blog-detail.html" class="text-dark title h5">Comparing Nitrogen And Mechanical Freezers</a>
+                                <div class="post-meta d-flex justify-content-between mt-3">
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i class="mdi mdi-heart-outline me-1"></i>33</a></li>
+                                        <li class="list-inline-item"><a href="#" class="text-muted comments"><i class="mdi mdi-comment-outline me-1"></i>08</a></li>
+                                    </ul>
+                                    <a href="blog-detail.html" class="link">Read More <i class="mdi mdi-chevron-right align-middle"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tiny-slide">
+                        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden m-1">
+                            <img src="${pageContext.request.contextPath}/static/images/blog/05.jpg" class="img-fluid" alt="">
+                            <div class="card-body p-4">
+                                <ul class="list-unstyled mb-2">
+                                    <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020</li>
+                                    <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
+                                </ul>
+                                <a href="blog-detail.html" class="text-dark title h5">It Is Very Important To Wear Proper Clothing</a>
+                                <div class="post-meta d-flex justify-content-between mt-3">
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i class="mdi mdi-heart-outline me-1"></i>33</a></li>
+                                        <li class="list-inline-item"><a href="#" class="text-muted comments"><i class="mdi mdi-comment-outline me-1"></i>08</a></li>
+                                    </ul>
+                                    <a href="blog-detail.html" class="link">Read More <i class="mdi mdi-chevron-right align-middle"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tiny-slide">
+                        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden m-1">
+                            <img src="${pageContext.request.contextPath}/static/images/blog/06.jpg" class="img-fluid" alt="">
+                            <div class="card-body p-4">
+                                <ul class="list-unstyled mb-2">
+                                    <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020</li>
+                                    <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
+                                </ul>
+                                <a href="blog-detail.html" class="text-dark title h5">Hollowed-Out Faces More Cuts Amid Virus</a>
+                                <div class="post-meta d-flex justify-content-between mt-3">
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i class="mdi mdi-heart-outline me-1"></i>33</a></li>
+                                        <li class="list-inline-item"><a href="#" class="text-muted comments"><i class="mdi mdi-comment-outline me-1"></i>08</a></li>
+                                    </ul>
+                                    <a href="blog-detail.html" class="link">Read More <i class="mdi mdi-chevron-right align-middle"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tiny-slide">
+                        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden m-1">
+                            <img src="${pageContext.request.contextPath}/static/images/blog/07.jpg" class="img-fluid" alt="">
+                            <div class="card-body p-4">
+                                <ul class="list-unstyled mb-2">
+                                    <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020</li>
+                                    <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
+                                </ul>
+                                <a href="blog-detail.html" class="text-dark title h5">A Researcher Is Research On Coronavirus In Lab</a>
+                                <div class="post-meta d-flex justify-content-between mt-3">
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i class="mdi mdi-heart-outline me-1"></i>33</a></li>
+                                        <li class="list-inline-item"><a href="#" class="text-muted comments"><i class="mdi mdi-comment-outline me-1"></i>08</a></li>
+                                    </ul>
+                                    <a href="blog-detail.html" class="link">Read More <i class="mdi mdi-chevron-right align-middle"></i></a>
                                 </div>
                             </div>
                         </div>

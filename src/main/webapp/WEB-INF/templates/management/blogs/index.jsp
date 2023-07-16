@@ -4,279 +4,262 @@
 <html lang="en">
 <jsp:include page="../layout/head.jsp"/>
 <body>
+<div id="demo-modal" class="modal">
+    <div class="modal__content" id="model_content">
+        <h2>Confirm</h2>
+        <p>
+            Do you want to change blog status ?
+        </p>
+        <div class="modal__footer">
+            <button type="button" onclick="modal_close()" class="button-10">Cancel</button>
+            <button type="button" onclick="modal_change()" class="button-10">Confirm</button>
+        </div>
+
+        <a href="#" class="modal__close">&times;</a>
+    </div>
+</div>
 <div class="page-wrapper doctris-theme toggled">
     <jsp:include page="../layout/slide_bar.jsp"/>
     <main class="page-content bg-light">
         <jsp:include page="../layout/menu_bar.jsp"/>
         <div class="container-fluid">
             <div class="layout-specing">
-                <div class="d-md-flex justify-content-between">
-                    <div>
-                        <h5 class="mb-0">Blogs</h5>
+                <div class="row">
+                    <div class="col-md-10 row">
+                        <div class="col-md-6">
+                            <div class="search-bar p-0 d-lg-block ms-2">
+                                <div class="menu-search mb-0">
+                                    <form action="${pageContext.request.contextPath}/management/blog" method="get"
+                                            id="searchform" class="searchform">
+                                        <div>
+                                            <input
+                                                    value="${search}"
+                                                    type="text" class="border rounded"
+                                                    name="search" id="search" placeholder="Nhập từ khóa">
+                                            <input type="submit" id="searchsubmit" value="Search">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 row align-items-center">
+                            <a href="${pageContext.request.contextPath}/management/blog/create" class="btn btn-primary" onclick="window.location.href='/management/blog/create'">Thêm mới</a>
+                        </div>
 
-                        <nav aria-label="breadcrumb" class="d-inline-block mt-1">
-                            <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
-                                <li class="breadcrumb-item"><a href="index.html">Doctris</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Blogs</li>
-                            </ul>
-                        </nav>
                     </div>
 
-                    <div class="mt-4 mt-sm-0">
-                        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newblogadd">Add
-                            Blog</a>
-                    </div>
+                </div>
+                <br>
+                <br>
+
+                <div class="row">
+                    <form action="${pageContext.request.contextPath}/management/blog" method="get" >
+                        <div class="row">
+                            <div class="col-md-4 row align-items-center">
+                                <div class="col-md-4">
+                                    <label class="form-label">Danh Mục</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <select name="category" class="form-select">
+                                        <option value="all">Tất cả</option>
+                                        <c:forEach var="c" items="${cate_lst}">
+                                            <option value="${c.id}" <c:if test="${c.id.toString() eq category}">selected</c:if>
+                                            >${c.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3 row align-items-center">
+                                <div class="col-md-5">
+                                    <label class="form-label">Trạng Thái</label>
+                                </div>
+                                <div class="col-md-7">
+                                    <select name="status" class="form-select" >
+                                        <option value="all" ${status == 'all' ? 'selected' : ''}>Tất cả</option>
+                                        <option value="0" ${status == '0' ? 'selected' : ''}>Ẩn</option>
+                                        <option value="1" ${status == '1' ? 'selected' : ''}>Hiện</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-1 md-0">
+                                <button type="submit" class="btn btn-primary">Lọc</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
 
-                <div class="row">
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-12 mt-4">
-                        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-                            <img src="../assets/images/blog/01.jpg" class="img-fluid" alt="">
-                            <div class="card-body p-4">
-                                <ul class="list-unstyled mb-2">
-                                    <li class="list-inline-item text-muted small me-3"><i
-                                            class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020
-                                    </li>
-                                    <li class="list-inline-item text-muted small"><i
-                                            class="uil uil-clock text-dark h6 me-1"></i>5 min read
-                                    </li>
-                                </ul>
-                                <a href="blog-detail.html" class="text-dark title h5">Easily connect to doctor and make
-                                    a treatment</a>
-                                <div class="post-meta d-flex justify-content-between mt-3">
-                                    <ul class="list-unstyled mb-0">
-                                        <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i
-                                                class="mdi mdi-heart-outline me-1"></i>33</a></li>
-                                        <li class="list-inline-item"><a href="#" class="text-muted comments"><i
-                                                class="mdi mdi-comment-outline me-1"></i>08</a></li>
-                                    </ul>
-                                    <a href="blog-detail.html" class="link">Read More <i
-                                            class="mdi mdi-chevron-right align-middle"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!--end col-->
+                <div class="container-fluid">
+                    <div class="layout-specing">
 
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-12 mt-4">
-                        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-                            <img src="../assets/images/blog/02.jpg" class="img-fluid" alt="">
-                            <div class="card-body p-4">
-                                <ul class="list-unstyled mb-2">
-                                    <li class="list-inline-item text-muted small me-3"><i
-                                            class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020
-                                    </li>
-                                    <li class="list-inline-item text-muted small"><i
-                                            class="uil uil-clock text-dark h6 me-1"></i>5 min read
-                                    </li>
-                                </ul>
-                                <a href="blog-detail.html" class="text-dark title h5">Lockdowns lead to fewer people
-                                    seeking medical care</a>
-                                <div class="post-meta d-flex justify-content-between mt-3">
-                                    <ul class="list-unstyled mb-0">
-                                        <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i
-                                                class="mdi mdi-heart-outline me-1"></i>33</a></li>
-                                        <li class="list-inline-item"><a href="#" class="text-muted comments"><i
-                                                class="mdi mdi-comment-outline me-1"></i>08</a></li>
-                                    </ul>
-                                    <a href="blog-detail.html" class="link">Read More <i
-                                            class="mdi mdi-chevron-right align-middle"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!--end col-->
+                        <div class="row">
+                            <c:forEach items="${blogs}" var="b">
+                                <div class="col-xl-3 col-lg-4 col-md-6 col-12 mt-4">
+                                    <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
+                                        <img src="https://trivia-nextdoor.com/wp-content/uploads/2022/02/noiroze-study-man.png"
+                                             class="img-fluid" alt="">
+                                        <div class="card-body p-4">
+                                            <ul class="list-unstyled mb-2">
+                                                <li class="list-inline-item text-muted small me-3"><i
+                                                        class="uil uil-calendar-alt text-dark h6 me-1"></i>${b.categoryBlog.name}
+                                                </li>
+                                                <li class="list-inline-item text-muted small"><i
+                                                        class="uil uil-clock text-dark h6 me-1"></i>${b.create_at}
+                                                </li>
+                                            </ul>
+                                            <a href="#" class="text-dark title h5">${b.title}</a>
+                                            <br>
+                                            <br>
+                                            <div class="post-meta d-flex justify-content-between mt-3">
+                                                <table>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td class="p-3 text-center">
+                                                                <%--                                                        <form id="status_form_${b.id}"  action="${pageContext.request.contextPath}/management/blog"method="get">--%>
+                                                                <%--                                                            <input type="hidden" name="change_status" value="${b.id}_${b.status}"/>--%>
+                                                                <%--                                                            <c:if test="${b.status eq 1}">--%>
+                                                                <%--                                                                <label class="switch-wrap" style="float: left">--%>
+                                                                <%--                                                                    <input class="btn btn-primary" type="button" id="status_check_${b.id}" checked onclick="modal_open(${b.id})"--%>
+                                                                <%--                                                                           value="Hiện" >--%>
+                                                                <%--                                                                    <div class="switch"></div>--%>
+                                                                <%--                                                                </label>--%>
+                                                                <%--                                                            </c:if>--%>
+                                                                <%--                                                            <c:if test="${b.status eq 0}">--%>
+                                                                <%--                                                                <label class="switch-wrap" style="float: left">--%>
+                                                                <%--                                                                    <input type="button" class="btn btn-primary" id="status_check_${b.id}" onclick="modal_open(${b.id})"--%>
+                                                                <%--                                                                           value="Ẩn" />--%>
+                                                                <%--                                                                    <div class="switch"></div>--%>
+                                                                <%--                                                                </label>--%>
+                                                                <%--                                                            </c:if>--%>
+                                                                <%--                                                        </form>--%>
+                                                            <button class="btn btn-danger"
+                                                                    onclick="window.location.href='${pageContext.request.contextPath}/management/blog/update?id=${b.id}'"
+                                                            >View</button>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!--end col-->
+                            </c:forEach>
+                        </div><!--end row-->
 
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-12 mt-4">
-                        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-                            <img src="../assets/images/blog/03.jpg" class="img-fluid" alt="">
-                            <div class="card-body p-4">
-                                <ul class="list-unstyled mb-2">
-                                    <li class="list-inline-item text-muted small me-3"><i
-                                            class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020
-                                    </li>
-                                    <li class="list-inline-item text-muted small"><i
-                                            class="uil uil-clock text-dark h6 me-1"></i>5 min read
-                                    </li>
-                                </ul>
-                                <a href="blog-detail.html" class="text-dark title h5">medicine research course for
-                                    doctors</a>
-                                <div class="post-meta d-flex justify-content-between mt-3">
-                                    <ul class="list-unstyled mb-0">
-                                        <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i
-                                                class="mdi mdi-heart-outline me-1"></i>33</a></li>
-                                        <li class="list-inline-item"><a href="#" class="text-muted comments"><i
-                                                class="mdi mdi-comment-outline me-1"></i>08</a></li>
-                                    </ul>
-                                    <a href="blog-detail.html" class="link">Read More <i
-                                            class="mdi mdi-chevron-right align-middle"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!--end col-->
 
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-12 mt-4">
-                        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-                            <img src="../assets/images/blog/04.jpg" class="img-fluid" alt="">
-                            <div class="card-body p-4">
-                                <ul class="list-unstyled mb-2">
-                                    <li class="list-inline-item text-muted small me-3"><i
-                                            class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020
-                                    </li>
-                                    <li class="list-inline-item text-muted small"><i
-                                            class="uil uil-clock text-dark h6 me-1"></i>5 min read
-                                    </li>
-                                </ul>
-                                <a href="blog-detail.html" class="text-dark title h5">Comparing Nitrogen And Mechanical
-                                    Freezers</a>
-                                <div class="post-meta d-flex justify-content-between mt-3">
-                                    <ul class="list-unstyled mb-0">
-                                        <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i
-                                                class="mdi mdi-heart-outline me-1"></i>33</a></li>
-                                        <li class="list-inline-item"><a href="#" class="text-muted comments"><i
-                                                class="mdi mdi-comment-outline me-1"></i>08</a></li>
-                                    </ul>
-                                    <a href="blog-detail.html" class="link">Read More <i
-                                            class="mdi mdi-chevron-right align-middle"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!--end col-->
+                        <c:set var="page" value="${currentPage}"/>
+                        <div class="row">
+                            <div class="col-12 mt-4">
+                                <ul class="pagination justify-content-end mb-0 list-unstyled">
+                                    <c:forEach begin="${1}" end="${totalPage}" var="i">
+                                        <li class="page-item ${i==page?"status":""}"><a class="page-link"
+                                                                                        href="${url}?page=${i}&search=${search}&category=${category}&status=${status}">${i}</a>
+                                        </li>
+                                    </c:forEach>
+                                </ul><!--end pagination-->
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </div>
+                </div><!--end container-->
 
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-12 mt-4">
-                        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-                            <img src="../assets/images/blog/05.jpg" class="img-fluid" alt="">
-                            <div class="card-body p-4">
-                                <ul class="list-unstyled mb-2">
-                                    <li class="list-inline-item text-muted small me-3"><i
-                                            class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020
-                                    </li>
-                                    <li class="list-inline-item text-muted small"><i
-                                            class="uil uil-clock text-dark h6 me-1"></i>5 min read
-                                    </li>
-                                </ul>
-                                <a href="blog-detail.html" class="text-dark title h5">It Is Very Important To Wear
-                                    Proper Clothing</a>
-                                <div class="post-meta d-flex justify-content-between mt-3">
-                                    <ul class="list-unstyled mb-0">
-                                        <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i
-                                                class="mdi mdi-heart-outline me-1"></i>33</a></li>
-                                        <li class="list-inline-item"><a href="#" class="text-muted comments"><i
-                                                class="mdi mdi-comment-outline me-1"></i>08</a></li>
-                                    </ul>
-                                    <a href="blog-detail.html" class="link">Read More <i
-                                            class="mdi mdi-chevron-right align-middle"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!--end col-->
+                <!-- Footer Start -->
 
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-12 mt-4">
-                        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-                            <img src="../assets/images/blog/06.jpg" class="img-fluid" alt="">
-                            <div class="card-body p-4">
-                                <ul class="list-unstyled mb-2">
-                                    <li class="list-inline-item text-muted small me-3"><i
-                                            class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020
-                                    </li>
-                                    <li class="list-inline-item text-muted small"><i
-                                            class="uil uil-clock text-dark h6 me-1"></i>5 min read
-                                    </li>
-                                </ul>
-                                <a href="blog-detail.html" class="text-dark title h5">Hollowed-Out Faces More Cuts Amid
-                                    Virus</a>
-                                <div class="post-meta d-flex justify-content-between mt-3">
-                                    <ul class="list-unstyled mb-0">
-                                        <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i
-                                                class="mdi mdi-heart-outline me-1"></i>33</a></li>
-                                        <li class="list-inline-item"><a href="#" class="text-muted comments"><i
-                                                class="mdi mdi-comment-outline me-1"></i>08</a></li>
-                                    </ul>
-                                    <a href="blog-detail.html" class="link">Read More <i
-                                            class="mdi mdi-chevron-right align-middle"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!--end col-->
 
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-12 mt-4">
-                        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-                            <img src="../assets/images/blog/07.jpg" class="img-fluid" alt="">
-                            <div class="card-body p-4">
-                                <ul class="list-unstyled mb-2">
-                                    <li class="list-inline-item text-muted small me-3"><i
-                                            class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020
-                                    </li>
-                                    <li class="list-inline-item text-muted small"><i
-                                            class="uil uil-clock text-dark h6 me-1"></i>5 min read
-                                    </li>
-                                </ul>
-                                <a href="blog-detail.html" class="text-dark title h5">A Researcher Is Research On
-                                    Coronavirus In Lab</a>
-                                <div class="post-meta d-flex justify-content-between mt-3">
-                                    <ul class="list-unstyled mb-0">
-                                        <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i
-                                                class="mdi mdi-heart-outline me-1"></i>33</a></li>
-                                        <li class="list-inline-item"><a href="#" class="text-muted comments"><i
-                                                class="mdi mdi-comment-outline me-1"></i>08</a></li>
-                                    </ul>
-                                    <a href="blog-detail.html" class="link">Read More <i
-                                            class="mdi mdi-chevron-right align-middle"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!--end col-->
 
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-12 mt-4">
-                        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-                            <img src="../assets/images/blog/08.jpg" class="img-fluid" alt="">
-                            <div class="card-body p-4">
-                                <ul class="list-unstyled mb-2">
-                                    <li class="list-inline-item text-muted small me-3"><i
-                                            class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020
-                                    </li>
-                                    <li class="list-inline-item text-muted small"><i
-                                            class="uil uil-clock text-dark h6 me-1"></i>5 min read
-                                    </li>
-                                </ul>
-                                <a href="blog-detail.html" class="text-dark title h5">Using Spectroscopy To Assess Food
-                                    Quality</a>
-                                <div class="post-meta d-flex justify-content-between mt-3">
-                                    <ul class="list-unstyled mb-0">
-                                        <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i
-                                                class="mdi mdi-heart-outline me-1"></i>33</a></li>
-                                        <li class="list-inline-item"><a href="#" class="text-muted comments"><i
-                                                class="mdi mdi-comment-outline me-1"></i>08</a></li>
-                                    </ul>
-                                    <a href="blog-detail.html" class="link">Read More <i
-                                            class="mdi mdi-chevron-right align-middle"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
 
-                <div class="row">
-                    <div class="col-12 mt-4">
-                        <ul class="pagination justify-content-end mb-0 list-unstyled">
-                            <li class="page-item"><a class="page-link" href="javascript:void(0)" aria-label="Previous">Prev</a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a></li>
-                            <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>
-                            <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
-                            <li class="page-item"><a class="page-link" href="javascript:void(0)"
-                                                     aria-label="Next">Next</a></li>
-                        </ul><!--end pagination-->
-                    </div><!--end col-->
-                </div><!--end row-->
+
             </div>
-        </div><!--end container-->
-        <jsp:include page="../layout/footer.jsp"/>
+            <jsp:include page="../layout/footer.jsp"/>
     </main>
 </div>
 
-<script src="${pageContext.request.contextPath}/static/libs/simplebar/simplebar.min.js"></script>
+
+
+<script>
+    function Sort(type) {
+        window.location.href = "blogmanage?action=sort&type=" + type;
+    }
+
+
+
+</script>
+<script src="${pageContext.request.contextPath}/static/libs/tobii/js/tobii.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/libs/feather-icons/feather.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="${pageContext.request.contextPath}/static/libs/date/flatpickr.min.js"></script>
+<script src="${pageContext.request.contextPath}/static/libs/date/flatpickr.init.js"></script>
+<script src="${pageContext.request.contextPath}/static/libs/date/jquery.timepicker.min.js"></script>
+<script src="${pageContext.request.contextPath}/static/libs/date/timepicker.init.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
+<style>
+    .Choicefile {
+        display: block;
+        background: #396CF0;
+        border: 1px solid #fff;
+        color: #fff;
+        width: 150px;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        padding: 5px 0px;
+        border-radius: 5px;
+        font-weight: 500;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .Choicefile:hover {
+        text-decoration: none;
+        color: white;
+    }
+
+    #uploadfile,
+    .removeimg {
+        display: none;
+    }
+
+    #thumbbox {
+        position: relative;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .removeimg {
+        height: 25px;
+        position: absolute;
+        background-repeat: no-repeat;
+        top: 5px;
+        left: 5px;
+        background-size: 25px;
+        width: 25px;
+        border-radius: 50%;
+
+    }
+
+    .removeimg::before {
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        content: '';
+        border: 1px solid red;
+        background: red;
+        text-align: center;
+        display: block;
+        margin-top: 11px;
+        transform: rotate(45deg);
+    }
+
+    .removeimg::after {
+        content: '';
+        background: red;
+        border: 1px solid red;
+        text-align: center;
+        display: block;
+        transform: rotate(-45deg);
+        margin-top: -2px;
+    }
+
+</style>
 </html>

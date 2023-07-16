@@ -6,7 +6,6 @@
 <jsp:include page="../layout/header.jsp"/>
 
 <body>
-<jsp:include page="../layout/preloader.jsp"/>
 
 <jsp:include page="../layout/menu-header-white.jsp"/>
 

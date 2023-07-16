@@ -4,7 +4,7 @@ public class PagingUtils {
     private PagingUtils() {
     }
 
-    public static final int DEFAULT_PAGE_SIZE = 6;
+    public static final int DEFAULT_PAGE_SIZE = 8 ;
     public static int getOffset(int pageNumber) {
         return (pageNumber - 1) * DEFAULT_PAGE_SIZE;
     }

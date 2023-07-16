@@ -54,6 +54,24 @@ public class MailService {
         new MailService().sendEmail(emailDto);
     }
 
+    public static void sendMailForgotPassword(String username, String link, String email) throws IOException, UnirestException {
+        String mailBody = FileUtils.readFile("email/forgot-password.html");
+        Map<String, String> mailAttributes = new HashMap<>();
+        mailAttributes.put("name",username);
+        mailAttributes.put("link",link);
+        StringSubstitutor stringSubstitutor = new StringSubstitutor(mailAttributes);
+        mailBody = stringSubstitutor.replace(mailBody);
+        EmailDto emailDto = EmailDto.builder()
+                .to(List.of(MailerDto.builder()
+                        .email(email)
+                        .name(username)
+                        .build()))
+                .subject("Xác nhận đổi mật khẩu")
+                .htmlPart(mailBody)
+                .build();
+        new MailService().sendEmail(emailDto);
+    }
+
     public static void main(String[] args) {
         try {
             sendMailConfirm("Huy","https://google.com","huy@gmail");

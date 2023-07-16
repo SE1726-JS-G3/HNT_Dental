@@ -4,7 +4,7 @@
     <div class="container">
 
         <div>
-            <a class="logo" href="home">
+            <a class="logo" href="${pageContext.request.contextPath}/home">
                 <img src="${pageContext.request.contextPath}/static/images/logo.png" class="logo-light" alt=""
                      height="80" width="80">
             </a>
@@ -62,7 +62,7 @@
                                     class="uil uil-sign-out-alt align-middle h6"></i></span> Tài khoản của tôi</a>
                         </c:if>
                         <c:if test="${sessionScope.account != null}">
-                            <a class="dropdown-item text-" href="#"><span
+                            <a class="dropdown-item text-" href="${pageContext.request.contextPath}/auth/logout"><span
                                     class="mb-0 d-inline-block me-1"><i
                                     class="uil uil-sign-out-alt align-middle h6"></i></span> Đăng xuất</a>
                         </c:if>
