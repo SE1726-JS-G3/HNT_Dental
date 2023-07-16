@@ -46,20 +46,21 @@
                         <div class="col-lg-12 col-md-12 mt-4">
                             <div class="bg-white rounded shadow overflow-hidden">
                                 <div class="p-4 border-bottom">
-                                    <h5 class="mb-0">Thông tin dịch vụ</h5>
+                                    <h5 class="mb-0">Thông tin loại dịch vụ</h5>
                                 </div>
-                                <br><br><br><br><br>
-                                <div class="text-center margin-nagative mt-n5 position-relative pb-4 border-bottom">
+                                <br>
 
-                                    <img src="${serviceDetail.image}"
-                                         class="img-fluid rounded" alt="">
-                                    <h5 class="mt-3 mb-1">${serviceDetail.name}</h5>
+                                <div class="p-4">
+                                    <div class="d-flex align-items-center mt-2 row">
+                                        <h6 class="mb-0 col-1">Loại dịch vụ:</h6>
+                                        <p class="mb-0 col-11">${serviceType.name}</p>
+                                    </div>
                                 </div>
 
                                 <div class="p-4">
                                     <div class="d-flex align-items-center mt-2 row">
-                                        <h6 class="mb-0 col-1">Mô tả</h6>
-                                        <p class="mb-0 col-11">${serviceDetail.description}</p>
+                                        <h6 class="mb-0 col-1">Mô tả:</h6>
+                                        <p class="mb-0 col-11">${serviceType.description}</p>
                                     </div>
                                 </div>
                             </div>
@@ -67,69 +68,32 @@
                         <div class="col-lg-12 col-md-12 mt-4">
                             <div class="bg-white rounded shadow overflow-hidden">
                                 <div class="p-4 border-bottom">
-                                    <h5 class="mb-0">Danh sách loại dịch vụ</h5>
-                                    <button type="button" class="btn btn-soft-primary mt-2"
-                                            data-bs-toggle="modal" data-bs-target="#add_service_type">
-                                        Thêm
+                                    <h5 class="mb-0">Danh sách rank cua loai dịch vụ</h5>
+                                    <button type="button" class="btn btn-soft-primary"
+                                            data-bs-toggle="modal" data-bs-target="#rank_new">
+                                        Thêm rank
                                     </button>
                                 </div>
+
+
                                 <table class="table p-4 mb-0 table-center">
                                     <thead>
                                     <tr>
-                                        <th class="border-bottom p-3">Loại</th>
-                                        <th class="border-bottom p-3">Gía tiền</th>
+                                        <th class="border-bottom p-3">STT</th>
+                                        <th class="border-bottom p-3">Tên</th>
 
                                         <th class="border-bottom p-3">Tác vụ</th>
                                     </tr>
                                     </thead>
                                     <tbody>
 
-
-                                    <c:forEach items="${serviceTypeDetail}" var="s">
+                                    <c:forEach items="${getAllRankOfType}" var="rank">
                                         <tr>
-                                            <td class="p-3">${s.type}</td>
-                                            <td class="p-3">${s.fee}</td>
+                                            <td class="p-3">${getAllRankOfType.indexOf(rank) + 1}</td>
+                                            <td class="p-3">${rank.doctorRank.name}</td>
                                             <td>
-                                                <button type="button" class="btn btn-soft-primary"
-                                                        data-bs-toggle="modal" data-bs-target="#service_type${s.id}">
-                                                    Cập nhật
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="col-lg-12 col-md-12 mt-4">
-                            <div class="bg-white rounded shadow overflow-hidden">
-                                <div class="p-4 border-bottom">
-                                    <h5 class="mb-0">Danh sách bác sĩ của dịch vụ</h5>
-                                </div>
-                                <table class="table p-4 mb-0 table-center">
-                                    <thead>
-
-
-                                    <tr>
-                                        <th class="border-bottom p-3">Tên bác sĩ</th>
-                                        <th class="border-bottom p-3">Email</th>
-                                        <th class="border-bottom p-3">Loại</th>
-                                        <th class="border-bottom p-3">Tác vụ</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <c:forEach items="${doctorOfService}" var="d">
-                                        <tr>
-                                            <td class="p-3">${d.name}</td>
-                                            <td class="p-3">${d.email}</td>
-                                            <td class="p-3">${d.type}</td>
-
-                                            <td>
-                                                <button type="button" class="btn btn-danger"
-                                                        data-bs-toggle="modal" data-bs-target="#doctor_id${d.id}">
-                                                    Xóa
+                                                <button type="button" class="btn btn-danger">
+                                                    Xoa
                                                 </button>
                                             </td>
                                         </tr>
@@ -149,22 +113,16 @@
                                       enctype="multipart/form-data"
                                       onSubmit="document.getElementById('submit').disabled = true;">
                                     <h5 class="mb-0">Chỉnh sửa thông tin :</h5>
-                                    <p hidden="">${serviceDetail.id}</p>
+                                    <p hidden="">${serviceType.id}</p>
 
                                     <div>
-                                        <p class="text-muted">Cập nhật ảnh dịch vụ</p>
-                                        <div id="myfileupload">
-                                            <input type="file" name="image" id="uploadfile" name="ImageUpload"
-                                                   onchange="readURL(this);"/>
-                                        </div>
                                         <div id="thumbbox">
                                             <img class="rounded" height="20%" width="30%" alt="Thumb image"
                                                  id="thumbimage" style="display: none"/>
                                             <a class="removeimg" href="javascript:"></a>
                                         </div>
                                         <div id="boxchoice">
-                                            <a href="javascript:" class="Choicefile"><i
-                                                    class="fas fa-cloud-upload-alt"></i> Chọn ảnh</a>
+
                                             <p style="clear:both"></p>
                                             <input type="submit" id="" style="display: none" name="send"
                                                    class="Update btn btn-primary"
@@ -177,14 +135,13 @@
                                 <form action="${pageContext.request.contextPath}/management/service/update"
                                       method="POST"
                                       class="mt-4" onSubmit="document.getElementById('submit').disabled = true;">
-                                    <input value="${param.id}" name="id" hidden="hidden">
+                                    <input value="${serviceType.service.id}" name="id" hidden="hidden">
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="mb-3">
                                                 <label class="form-label">Tên dịch vụ</label>
-                                                <input name="name" oninvalid="CheckFullName(this);"
-                                                       oninput="CheckFullName(this);" id="name" type="text"
-                                                       class="form-control" value="${serviceDetail.name}">
+                                                <input name="name" id="name" type="text"
+                                                       class="form-control" value="${serviceType.name}">
                                             </div>
                                         </div>
 
@@ -192,7 +149,7 @@
                                             <div class="mb-3">
                                                 <label class="form-label">Mô tả</label>
                                                 <input name="description" type="text" class="form-control"
-                                                       value="${serviceDetail.description}">
+                                                       value="${serviceType.description}">
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
@@ -235,98 +192,29 @@
             </div>
         </div>
 
-        <c:forEach items="${serviceTypeDetail}" var="s">
-            <div class="modal fade" id="service_type${s.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-body mx-3">
-                            <div class="md-form mb-2">
-                                <i class="fas fa-envelope prefix grey-text"></i>
-                                <label data-error="wrong" data-success="right">Loại dịch vụ</label>
-                                <select name="types" class="form-control">
-                                    <c:forEach items="${types}" var="t">
-                                        <option
-                                                <c:if test="${s.type == t.nameType}">selected</c:if>
-                                                value="${t.idType}">${t.nameType}</option>
-                                    </c:forEach>
-                                </select>
-
-                            </div>
-
-                            <div class="md-form mb-2">
-                                <label data-error="wrong" data-success="right">Giá</label>
-                                <input type="text" name="price" value="${s.fee}" class="form-control validate">
-                            </div>
-
-                        </div>
-                        <div class="modal-footer d-flex justify-content-center">
-                            <button class="btn btn-primary">Lưu</button>
-                            <button class="btn btn-danger">Xóa</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </c:forEach>
-
-        <div class="modal fade" id="add_service_type" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        <div class="modal fade" id="rank_new" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
              aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-body mx-3">
                         <div class="md-form mb-2">
                             <i class="fas fa-envelope prefix grey-text"></i>
-                            <label data-error="wrong" data-success="right">Thêm loại của dịch vụ</label>
+                            <label data-error="wrong" data-success="right">Cấp bậc</label>
+
                             <select name="types" class="form-control">
-                                <c:forEach items="${getTypeOfServiceAvailable}" var="g">
-                                    <option value="${g.idType}">${g.nameType}</option>
+                                <c:forEach items="${listRankOfTypeAvailable}" var="l">
+                                <option value="${l.id}">${l.name}</option>
                                 </c:forEach>
                             </select>
 
                         </div>
-
-                        <div class="md-form mb-2">
-                            <label data-error="wrong" data-success="right">Giá</label>
-                            <input type="text" name="price"
-                                   <c:if test="${getTypeOfServiceAvailable.size() == 0}">disabled</c:if>
-                                   value="" class="form-control validate">
-                        </div>
-
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
-                        <button class="btn btn-primary"
-                                <c:if test="${getTypeOfServiceAvailable.size() == 0}">disabled</c:if>
-                        >Thêm
-                        </button>
+                        <button class="btn btn-primary">Lưu</button>
                     </div>
                 </div>
             </div>
         </div>
-        <c:forEach items="${doctorOfService}" var="d">
-            <div class="modal fade" id="doctor_id${d.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-body mx-3">
-                            <div class="md-form mb-2">
-                                <i class="fas fa-envelope prefix grey-text"></i>
-                                <div class="md-form mb-2">
-                                    <label data-error="wrong" data-success="right">Loại dịch vụ của bác sĩ
-                                        : ${d.name}</label>
-                                    <c:forEach items="${d.types}" var="t">
-                                        <div class="d-flex justify-content-between bg-light p-2 mb-2">
-                                            <p>${t.nameType}</p>
-                                            <button class="btn btn-danger">Xóa</button>
-                                        </div>
-                                    </c:forEach>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </c:forEach>
         <jsp:include page="../layout/footer.jsp"/>
     </main>
 
@@ -340,70 +228,4 @@
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
 
 </body>
-<style>
-    .Choicefile {
-        display: block;
-        background: #396CF0;
-        border: 1px solid #fff;
-        color: #fff;
-        width: 150px;
-        text-align: center;
-        text-decoration: none;
-        cursor: pointer;
-        padding: 5px 0px;
-        border-radius: 5px;
-        font-weight: 500;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .Choicefile:hover {
-        text-decoration: none;
-        color: white;
-    }
-
-    #uploadfile,
-    .removeimg {
-        display: none;
-    }
-
-    #thumbbox {
-        position: relative;
-        width: 100%;
-        margin-bottom: 20px;
-    }
-
-    .removeimg {
-        height: 25px;
-        position: absolute;
-        background-repeat: no-repeat;
-        top: 5px;
-        left: 5px;
-        background-size: 25px;
-        width: 25px;
-        border-radius: 50%;
-    }
-
-    .removeimg::before {
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        content: '';
-        border: 1px solid red;
-        background: red;
-        text-align: center;
-        display: block;
-        margin-top: 11px;
-        transform: rotate(45deg);
-    }
-
-    .removeimg::after {
-        content: '';
-        background: red;
-        border: 1px solid red;
-        text-align: center;
-        display: block;
-        transform: rotate(-45deg);
-        margin-top: -2px;
-    }
-</style>
 </html>

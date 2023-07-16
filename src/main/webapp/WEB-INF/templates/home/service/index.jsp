@@ -44,7 +44,7 @@
                 <div class="col-lg-4">
                     <input type="text" class="form-select form-control" name="txt"
                            value="${search}"
-                           id="search" placeholder="Tìm kiếm bác sĩ...">
+                           id="search" placeholder="Tìm kiếm dịch vụ...">
                 </div>
                 <div class="col-lg-2">
                     <button class="btn btn-primary rounded-pill" id="btn-search-1">Tìm kiếm</button>

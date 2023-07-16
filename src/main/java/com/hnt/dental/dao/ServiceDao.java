@@ -2,6 +2,7 @@ package com.hnt.dental.dao;
 
 import com.hnt.dental.dto.response.*;
 import com.hnt.dental.entities.Service;
+import com.hnt.dental.entities.ServiceType;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -22,12 +23,19 @@ public interface ServiceDao extends GenericDao<Service>{
     List<ServiceDetailDto> getTopService() throws SQLException;
 
     List<ServiceTypeDto> getALlType() throws SQLException;
+
     List<ServiceManagementDto> getAllServiceManagement(Integer offset, Integer limit, String search) throws SQLException;
 
     ServiceDetailDto getServiceDetailManagementById(Long id) throws SQLException;
+
     void updateServiceDetailManagementById(ServiceDetailDto serviceDetailDto) throws SQLException;
 
     List<ServiceManagementDto> getServiceTypeDetailManagementById(Long id) throws SQLException;
+
     List<ServiceDoctorManagementDto> getDoctorOfServiceManagementById(Long id) throws SQLException;
+
     List<ServiceTypeOfDoctor> getTypeOfDoctorByDoctorId(Long idService, Long idDoctor) throws SQLException;
+
+    List<ServiceTypeDto> getTypeOfServiceAvailable(Long idService) throws SQLException;
+
 }

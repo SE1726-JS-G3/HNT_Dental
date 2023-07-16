@@ -36,7 +36,7 @@
                             <a href="${pageContext.request.contextPath}/management/service/create">
                                 <button class="btn btn-primary">Thêm dịch vụ</button>
                             </a>
-                            <a href="${pageContext.request.contextPath}/management/service/serviceType">
+                            <a href="${pageContext.request.contextPath}/management/type">
                                 <button class="btn btn-primary">Loại dịch vụ</button>
                             </a>
                         </div>
@@ -53,15 +53,10 @@
                                     </div>
                                     <div class="col-md-9">
                                         <select name="gender" class="form-select">
-                                            <option <c:if test="${gender == 'all'}"> selected </c:if> value="all">Tất
-                                                cả
-                                            </option>
-                                            <option <c:if test="${gender == 'true'}"> selected </c:if> value="true">
-                                                VIP
-                                            </option>
-                                            <option <c:if test="${gender == 'false'}"> selected </c:if> value="false">
-                                                THƯỜNG
-                                            </option>
+                                            <option value="0">Tất cả</option>
+                                            <c:forEach items="${getALlType}" var="g">
+                                                <option value="${g.idType}">${g.nameType}</option>
+                                            </c:forEach>
                                         </select>
                                     </div>
                                 </div>

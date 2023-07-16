@@ -22,17 +22,10 @@
                         <form action="doctor?action=updateappointmentstatus&id=${a.id}" method="POST"
                               enctype="multipart/form-data">
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Ngày đặt lịch</label>
-                                        <input name="appointment_id" readonly value="" type="text"
-                                               class="form-control">
-                                    </div>
-                                </div>
 
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">Tên Bệnh Nhân</label>
+                                        <label class="form-label">Tên bệnh Nhân</label>
                                         <input readonly value="" type="email"
                                                class="form-control">
                                     </div>
@@ -56,6 +49,20 @@
                                     <div class="mb-3">
                                         <label class="form-label">Giá</label>
                                         <input readonly value="" type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Ngày đặt lịch</label>
+                                        <input name="appointment_id" readonly value="" type="text"
+                                               class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Giờ đặt lịch</label>
+                                        <input name="appointment_id" readonly value="" type="text"
+                                               class="form-control">
                                     </div>
                                 </div>
 
@@ -83,7 +90,8 @@
                             </div>
                         </form>
                         <div class="col-md-6">
-                            <button class="btn btn-secondary active" type="button" data-bs-toggle="modal" data-bs-target="#newblogadd">
+                            <button class="btn btn-secondary active" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#newblogadd">
                                 Kết quả khám
                             </button>
                             <button class="btn btn-info active" type="button">
@@ -103,7 +111,8 @@
         <div class="modal-content">
             <div class="modal-header border-bottom p-3">
                 <h5 class="modal-title" id="exampleModalLabel">Đây là trang hiển thị kết quả khám</h5>
-                <button type="button" class="btn btn-icon btn-close" data-bs-dismiss="modal" id="close-modal"><i class="uil uil-times fs-4 text-dark"></i></button>
+                <button type="button" class="btn btn-icon btn-close" data-bs-dismiss="modal" id="close-modal"><i
+                        class="uil uil-times fs-4 text-dark"></i></button>
             </div>
 
             <div class="modal-body p-3 pt-4">
@@ -114,22 +123,26 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="mb-3">
-                                            <label class="form-label">Blog Title <span class="text-danger">*</span></label>
-                                            <input name="name" id="name" type="text" class="form-control" placeholder="Title :">
+                                            <label class="form-label">Blog Title <span
+                                                    class="text-danger">*</span></label>
+                                            <input name="name" id="name" type="text" class="form-control"
+                                                   placeholder="Title :">
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label"> Date : </label>
-                                            <input name="date" type="text" class="form-control start" id="date" value="Select date:">
+                                            <input name="date" type="text" class="form-control start" id="date"
+                                                   value="Select date:">
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label"> Time to read : </label>
-                                            <input name="time" type="text" class="form-control" id="time" value="5 min read">
+                                            <input name="time" type="text" class="form-control" id="time"
+                                                   value="5 min read">
                                         </div>
                                     </div><!--end col-->
 
@@ -151,8 +164,10 @@
 
                                     <div class="col-lg-12">
                                         <div class="mb-3">
-                                            <label class="form-label">Description <span class="text-danger">*</span></label>
-                                            <textarea name="comments" id="comments" rows="4" class="form-control" placeholder="Blog description :"></textarea>
+                                            <label class="form-label">Description <span
+                                                    class="text-danger">*</span></label>
+                                            <textarea name="comments" id="comments" rows="4" class="form-control"
+                                                      placeholder="Blog description :"></textarea>
                                         </div>
                                     </div><!--end col-->
 
@@ -164,9 +179,9 @@
                         </div>
                     </div><!--end col-->
                 </div><!--end row-->
-                    <div class="d-grid">
-                        <label class="btn-upload btn btn-primary mt-4">Tải xuống</label>
-                    </div>
+                <div class="d-grid">
+                    <label class="btn-upload btn btn-primary mt-4">Tải xuống</label>
+                </div>
             </div>
         </div>
     </div>

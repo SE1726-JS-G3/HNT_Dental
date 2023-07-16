@@ -73,8 +73,8 @@ public class ServiceDaoImpl implements ServiceDao {
             "            CONCAT(MIN(sf.fee), ' ~ ', MAX(sf.fee)) as fee , " +
             "            s.image ,s.status " +
             "            FROM  service s " +
-            "            INNER JOIN service_fee sf on s.id = sf.service_id  " +
-            "            INNER JOIN service_type st on sf.service_type = st.id " +
+            "            LEFT JOIN service_fee sf on s.id = sf.service_id  " +
+            "            LEFT JOIN service_type st on sf.service_type = st.id " +
             "            where ( s.name like ? ) " +
             "            OR s.status like ?" +
             "            GROUP BY s.id " +
@@ -114,6 +114,16 @@ public class ServiceDaoImpl implements ServiceDao {
             "            image= ?, description= ?, " +
             "            updated_at= ?, status= ? " +
             "            where id= ?";
+    private static final String SQL_INSERT_SERVICE_MANAGEMENT = "INSERT INTO service " +
+            "(name, description, image, created_at, status) " +
+            "VALUES(?, ?, ?, ?, ?)";
+
+    private static final String SQL_GET_SERVICE_TYPE_AVAILABLE = "select st1.id, st1.name from service_type st1 " +
+            "where st1.id NOT IN " +
+            "(select st.id from service_type st " +
+            "inner join service_fee sf on sf.service_type = st.id " +
+            "inner join service s on s.id = sf.service_id " +
+            "where s.id =? )";
 
     @Override
     public List<Service> getAll(Integer offset, Integer limit, String search) throws SQLException {
@@ -127,8 +137,11 @@ public class ServiceDaoImpl implements ServiceDao {
 
     @Override
     public Long save(Service service) throws SQLException, ClassNotFoundException {
+        ConnectionUtils.executeUpdate(SQL_INSERT_SERVICE_MANAGEMENT, service.getName(),
+                service.getDescription(), service.getImage(), service.getCreatedAt(), service.getStatus());
         return null;
     }
+
 
     @Override
     public void update(Service service) throws SQLException {
@@ -248,6 +261,21 @@ public class ServiceDaoImpl implements ServiceDao {
                             .nameType(rs.getString("name"))
                             .build());
         }
+        return result;
+    }
+
+    @Override
+    public List<ServiceTypeDto> getTypeOfServiceAvailable(Long idService) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_SERVICE_TYPE_AVAILABLE, idService);
+        List<ServiceTypeDto> result = new ArrayList<>();
+        while (rs.next()) {
+            result.add(
+                    ServiceTypeDto.builder()
+                            .idType(rs.getLong("id"))
+                            .nameType(rs.getString("name"))
+                            .build());
+        }
+
         return result;
     }
 

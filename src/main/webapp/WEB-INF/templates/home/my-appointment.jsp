@@ -17,61 +17,61 @@
         <h3 class="mb-0"></h3>
         <div class="rounded shadow mt-4">
           <div class="p-4 border-bottom">
-            <h5 class="mb-0">Lịch hẹn của tôi</h5>
-            <p style="color: blue; align-content: center;">
-              ${requestScope.updatesuccess}
-            </p>
+            <h5 class="mb-0">Lịch sử lịch hẹn</h5>
           </div>
-          <div class="p-4">
-            <form action="user?action=updateprofile" method="POST">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">ID cuộc hẹn</label>
-                    <input name="username" readonly value="${sessionScope.user.username}" id="name" type="text" class="form-control">
-                  </div>
+          <div class="p-2">
+            <div class="table-responsive bg-white shadow rounded">
+              <table class="table mb-0 table-center">
+                <thead>
+                <tr>
+                  <th class="border-bottom p-3" style="min-width: 10px;">ID</th>
+                  <th class="border-bottom p-5" style="min-width: 190px;">Tên dịch vụ</th>
+                  <th class="border-bottom p-3">Loại dịch vụ</th>
+                  <th class="border-bottom p-3">Ngày khám</th>
+                  <th class="border-bottom p-5">Trạng thái</th>
+                  <th class="border-bottom p-5">Tác vụ</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <th class="p-3">1</th>
+                  <td class="p-5">
+                    <a href="#" class="text-dark">
+                      <div class="d-flex align-items-center">
+                        <img src="https://sendidau.com/wp-content/uploads/2021/01/meme-meo.jpg"
+                             class="avatar avatar-md-sm rounded-circle shadow" alt="">
+                        <span class="ms-2">ccjfsfkasf</span>
+                      </div>
+                    </a>
+                  </td>
+                  <td class="p-3">1</td>
+                  <td class="p-5">03/06/2023</td>
+                  <td class="p-5">Reject</td>
+                  <td class="p-3 text-center">
+                    <a href="#">
+                      <button class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/auth/my-appointment/detail'">Chi tiết</button>
+                    </a>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="row text-center">
+              <div class="col-12 mt-4">
+                <div class="d-md-flex align-items-center text-center justify-content-between">
+                  <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
+                    <li class="page-item active"><a class="page-link">1</a>
+                    </li>
+                    <li class="page-item active"><a class="page-link">1</a>
+                    </li>
+                    <li class="page-item active"><a class="page-link">1</a>
+                    </li>
+                    <li class="page-item active"><a class="page-link">1</a>
+                    </li>
+                  </ul>
                 </div>
-
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">Tên bệnh nhân</label>
-                    <input name="email" readonly value="${sessionScope.user.email}" id="email" type="email" class="form-control">
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">ID bệnh nhân</label>
-                    <input name="name" value="${sessionScope.user.name}" id="name2" type="text" class="form-control" >
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">Ngày đặt lịch</label>
-                    <input name="phone" oninvalid="CheckPhone(this);" oninput="CheckPhone(this);" value="" id="date" type="text" class="form-control">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">Giờ đặt lịch </label>
-                    <input name="phone" oninvalid="CheckPhone(this);" oninput="CheckPhone(this);" value="" id="time" type="text" class="form-control">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">Trạng thái</label>
-                    <input name="phone" oninvalid="CheckPhone(this);" oninput="CheckPhone(this);" value="" id="status" type="text" class="form-control">
-                  </div>
-                </div>
-
               </div>
-              <div class="row">
-                <div class="col-sm-12">
-                  <input type="submit" id="submit" name="send" class="btn btn-primary" value="Hoàn thành lịch hẹn">
-                </div>
-              </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>
