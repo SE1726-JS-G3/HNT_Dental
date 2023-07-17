@@ -25,9 +25,7 @@
                                 <tr>
                                     <th class="border-bottom p-3" style="min-width: 10px;">ID</th>
                                     <th class="border-bottom p-3" style="min-width: 190px;">Tên dịch vụ </th>
-                                    <th class="border-bottom p-3" style="min-width: 190px;">Ngày </th>
-                                    <th class="border-bottom p-3" style="min-width: 120px;">Thời gian</th>
-                                    <th class="border-bottom p-3" style="min-width: 30px;">Phí dịch vụ</th>
+                                    <th class="border-bottom p-3" style="min-width: 190px;">Loại dịch vụ </th>
                                     <th class="border-bottom p-3">Trạng thái</th>
                                     <th class="border-bottom p-3">Tác vụ</th>
                                 </tr>
@@ -37,27 +35,16 @@
                                 <c:forEach items="${list}" var="o">
                                     <tr>
 
-                                        <td class="p-3">${o.account_id}</td>
-                                        <td class="p-3">${o.serviceResDto.name}</td>
-                                        <td class="p-3">${o.date}</td>
-                                        <td class="p-3">${o.time}</td>
-                                        <td class="p-3">${o.fee}</td>
+                                        <td class="p-3">1</td>
+                                        <td class="p-3">Nhổ răng</td>
+                                        <td class="p-3">VIP</td>
+                                        <td class="p-3">Hoàn thành</td>
                                         <td class="p-3">
-                                            <c:if test="${o.status == true}">
-                                                Assigned
-                                            </c:if>
-                                            <c:if test="${o.status == false}">
-                                                Complete
-                                            </c:if>
-                                        </td>
-
-                                        <td class="p-3 text-center">
                                             <a href="detail-history-booking?id=${o.account_id}">
-                                                <button class="btn btn-primary">Chi tiết</button>
+                                                <button class="btn btn-primary">Xem dịch vụ</button>
                                             </a>
                                         </td>
                                     </tr>
-                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>

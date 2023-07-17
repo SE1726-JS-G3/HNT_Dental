@@ -60,10 +60,6 @@
                     </li>
                     <li class="page-item active"><a class="page-link" href="service-patient?page=2">2</a>
                     </li>
-<%--                    <li class="page-item active"><a class="page-link">3</a>--%>
-<%--                    </li>--%>
-<%--                    <li class="page-item active"><a class="page-link">4</a>--%>
-<%--                    </li>--%>
                   </ul>
                 </div>
               </div>

@@ -59,22 +59,41 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    <c:forEach items="${serviceTypes}" var="s">
+                                        <tr>
 
-                                    <tr>
-                                        <td class="p-3">1</td>
-                                        <td class="p-3">VIP</td>
-                                        <td class="p-3">Đây là dịch vụ vip</td>
-                                        <td class="p-3">Rank 3</td>
-                                        <td>
-                                            <button type="button" class="btn btn-danger"
-                                                    data-bs-toggle="modal" data-bs-target="#service_type${s.id}">
-                                                Xóa
-                                            </button>
-                                        </td>
-
-                                    </tr>
+                                            <td class="p-3">${s.id}</td>
+                                            <td class="p-3">${s.name}</td>
+                                            <td class="p-3">${s.description}</td>
+                                            <td class="p-3">${s.rankName}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary"
+                                                        data-bs-toggle="modal" onclick="window.location.href='${pageContext.request.contextPath}/management/type/detail?id=${s.id}'" >
+                                                    Chi tiết
+                                                </button>
+                                                <button type="button" class="btn btn-danger"
+                                                         onclick="deleteType(${s.id})">
+                                                    Xóa
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+                        <c:set var="page" value="${currentPage}"/>
+                        <div class="row text-center">
+                            <div class="col-12 mt-4">
+                                <div class="d-md-flex align-items-center text-center justify-content-between">
+                                    <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
+                                        <c:forEach begin="${1}" end="${totalPage}" var="i">
+                                            <li class="page-item ${i==page?"active":""}"><a class="page-link"
+                                                                                            href="${url}?page=${i}">${i}</a>
+                                            </li>
+                                        </c:forEach>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -82,41 +101,24 @@
                     <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit">
                         <div class="card border-0 shadow overflow-hidden">
                             <div class="tab-content p-4" id="pills-tabContent">
-                                <form action="${pageContext.request.contextPath}/management/service/update?id=${serviceDetail.id}"
-                                      method="POST"
-                                      enctype="multipart/form-data"
-                                      onSubmit="document.getElementById('submit').disabled = true;">
-                                    <h5 class="mb-0">Thêm mới loại dịch vụ :</h5>
-                                    <p hidden="">${serviceDetail.id}</p>
 
-                                </form>
+                                <h5 class="mb-0">Thêm mới loại dịch vụ :</h5>
 
-                                <form action="${pageContext.request.contextPath}/management/service/update?id=${serviceDetail.id}"
-                                      method="POST"
-                                      class="mt-4" onSubmit="document.getElementById('submit').disabled = true;">
+                                <form action="/management/type/create" method="POST"
+                                      class="mt-4">
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="mb-3">
                                                 <label class="form-label">Tên</label>
-                                                <input name="name" oninvalid="CheckFullName(this);"
-                                                       oninput="CheckFullName(this);" id="name" type="text"
-                                                       class="form-control" value="${serviceDetail.name}">
+                                                <input name="name" id="name" type="text"
+                                                       class="form-control">
                                             </div>
                                         </div>
 
                                         <div class="col-lg-12">
                                             <div class="mb-3">
                                                 <label class="form-label">Mô tả</label>
-                                                <input name="description" type="text" class="form-control"
-                                                       value="${serviceDetail.description}">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="mb-3">
-                                                <label class="form-label">Rank phụ trách <span
-                                                        class="text-danger"></span></label>
-                                                <input name="description" type="text" class="form-control"
-                                                       value="${serviceDetail.description}">
+                                                <input name="description" type="text" class="form-control">
                                             </div>
                                         </div>
                                     </div>
@@ -207,70 +209,9 @@
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
 
 </body>
-<style>
-    .Choicefile {
-        display: block;
-        background: #396CF0;
-        border: 1px solid #fff;
-        color: #fff;
-        width: 150px;
-        text-align: center;
-        text-decoration: none;
-        cursor: pointer;
-        padding: 5px 0px;
-        border-radius: 5px;
-        font-weight: 500;
-        align-items: center;
-        justify-content: center;
+<script>
+    function deleteType(id){
+        window.location.href = "${pageContext.request.contextPath}/management/type/deletemain?id="+id;
     }
-
-    .Choicefile:hover {
-        text-decoration: none;
-        color: white;
-    }
-
-    #uploadfile,
-    .removeimg {
-        display: none;
-    }
-
-    #thumbbox {
-        position: relative;
-        width: 100%;
-        margin-bottom: 20px;
-    }
-
-    .removeimg {
-        height: 25px;
-        position: absolute;
-        background-repeat: no-repeat;
-        top: 5px;
-        left: 5px;
-        background-size: 25px;
-        width: 25px;
-        border-radius: 50%;
-    }
-
-    .removeimg::before {
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        content: '';
-        border: 1px solid red;
-        background: red;
-        text-align: center;
-        display: block;
-        margin-top: 11px;
-        transform: rotate(45deg);
-    }
-
-    .removeimg::after {
-        content: '';
-        background: red;
-        border: 1px solid red;
-        text-align: center;
-        display: block;
-        transform: rotate(-45deg);
-        margin-top: -2px;
-    }
-</style>
+</script>
 </html>
