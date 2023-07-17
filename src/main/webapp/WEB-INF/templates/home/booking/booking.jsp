@@ -339,7 +339,7 @@
 <script>
 
     function redirectToService(id) {
-        window.location.href = "/appointment?serviceId=" + ${id} +"&typeId=" + id;
+        window.location.href = "/booking?serviceId=" + ${id} +"&typeId=" + id;
     }
 
     const selectedDate = document.querySelector("#checkin-date");

@@ -81,8 +81,11 @@ public class ServiceService {
 
         Integer totalItem = dao.countListService(search.trim());
         Integer totalPage = PagingUtils.getTotalPage(totalItem);
+
         List<ServiceManagementDto> serviceManagementDtos = dao.getAllServiceManagement(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE, search.trim());
+        List<ServiceTypeDto> getALlType = dao.getALlType();
         req.setAttribute("serviceManagementDtos", serviceManagementDtos);
+        req.setAttribute("getALlType", getALlType);
         req.setAttribute("totalPage", totalPage);
         req.setAttribute("currentPage", pageNumber);
         req.setAttribute("search", search);
@@ -136,7 +139,8 @@ public class ServiceService {
     public void getServiceDetailManagement(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String id = req.getParameter("id");
         ServiceDetailDto getServiceDetail = dao.getServiceDetailManagementById(Long.valueOf(id));
-        List<ServiceTypeDto> getTypeByServiceId = dao.getTypeByServiceId(Long.valueOf(id));
+        List<ServiceTypeDto> getAllTypeByServiceId = dao.getTypeByServiceId(Long.valueOf(id));
+        List<ServiceTypeDto> getTypeOfServiceAvailable= dao.getTypeOfServiceAvailable(Long.valueOf(id));
         List<ServiceManagementDto> getServiceTypeDetailManagementById = dao.getServiceTypeDetailManagementById(Long.valueOf(id));
         List<ServiceDoctorManagementDto> getDoctorOfServiceManagementById = dao.getDoctorOfServiceManagementById(Long.valueOf(id));
 
@@ -152,6 +156,7 @@ public class ServiceService {
         req.setAttribute("serviceTypeDetail", getServiceTypeDetailManagementById);
         req.setAttribute("doctorOfService", getDoctorOfServiceManagementById);
         req.setAttribute("types", getALlType);
+        req.setAttribute("getTypeOfServiceAvailable", getTypeOfServiceAvailable);
         ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/service/detail.jsp");
     }
 
@@ -165,6 +170,36 @@ public class ServiceService {
                 .name(name).description(description).image(image).updateAt(LocalDateTime.now())
                 .status(Boolean.valueOf(status)).build());
         ServletUtils.redirect(req, resp, "/management/service/detail?id=" + id);
+    }
+
+    public void createServiceDetailManagement(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String name = req.getParameter("name");
+        String description = req.getParameter("description");
+        String image = req.getParameter("image");
+        String status = req.getParameter("status");
+        dao.save(Service.builder().name(name)
+                .description(description).image(image)
+                .createdAt(LocalDateTime.now())
+                .status(Boolean.valueOf(status)).build());
+        ServletUtils.redirect(req, resp, "/management/service");
+    }
+
+    public void updateFeeByServiceId(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String idService= req.getParameter("id");
+        String idType= req.getParameter("idType");
+        String fee = req.getParameter("fee");
+
+        dao.updateServiceFeeByServiceTypeId(Long.valueOf(idService), Long.valueOf(idType), Double.valueOf(fee));
+        ServletUtils.redirect(req, resp, "/management/service/detail?id=" + idService);
+    }
+
+    public void updateFee(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String idService= req.getParameter("id");
+        String idServiceType= req.getParameter("idServiceType");
+        String fee = req.getParameter("fee");
+
+        dao.updateServiceFee(Long.valueOf(idService),Long.valueOf(idServiceType), Double.valueOf(fee));
+        ServletUtils.redirect(req, resp, "/management/service/detail?id=" + idService);
     }
 }
 

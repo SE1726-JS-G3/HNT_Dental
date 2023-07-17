@@ -31,7 +31,7 @@
                 <h3 class="mb-0"></h3>
                 <div class="rounded shadow mt-4">
                     <div class="p-4 border-bottom">
-                        <h5 class="mb-0">Chi tiết lịch sử dịch vụ</h5>
+                        <h5 class="mb-0">Chi tiết lịch sử dịch vụ (bỏ)</h5>
                         <p style="color: blue; align-content: center;">
                             ${requestScope.updatesuccess}
                         </p>

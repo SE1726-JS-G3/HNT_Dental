@@ -21,7 +21,7 @@
           <div class="card border-0 shadow overflow-hidden">
             <div class="tab-content p-4" id="pills-tabContent">
 
-              <form  method="POST" enctype="multipart/form-data" class="mt-4" onSubmit="document.getElementById('submit').disabled = true;">
+              <form  method="POST" action="/management/service/create">
                 <div class="row">
                   <div>
                     <p class="text-muted">Cập nhật ảnh Dịch vụ</p>
@@ -40,53 +40,14 @@
                   <div class="col-lg-12">
                     <div class="mb-3">
                       <label class="form-label">Tên dịch vụ</label>
-                      <input name="title" oninvalid="CheckTitle(this);" oninput="CheckTitle(this);" id="name1" type="text" class="form-control" >
+                      <input name="name" type="text" class="form-control" >
                     </div>
                   </div>
                   <div class="col-lg-12">
                     <div class="mb-3">
-                      <label class="form-label">Thể loại</label>
-                      <select name="catetogory" class="form-select">
-                        <c:forEach items="${catetogory}" var="s">
-                          <option <c:if test="${service.setting.name == s.name}">selected</c:if> class="form-control" value="${s.id}">${s.name}</option>
-                        </c:forEach>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="col-lg-12">
-                    <div class="mb-3">
-                      <label class="form-label">Giá dịch vụ</label>
-                      <input name="fee" oninvalid="CheckPrice(this);" oninput="CheckPrice(this);"  id="number" type="text" class="form-control">
-                    </div>
-                  </div>
-
-
-                  <div class="col-lg-12">
-                    <div class="mb-3">
-                      <label class="form-label">Mô tả</label>
+                      <label class="form-label" >Mô tả</label>
                       <br>
-                      <textarea class="form-control" id="name" name="description" oninvalid="CheckTitle(this);" oninput="CheckTitle(this);" type="text" rows="5" cols="33" ></textarea>
-                    </div>
-                  </div>
-
-                  <br>
-                  <div class="col-lg-12">
-                    <div class="mb-3">
-                      <label class="form-label">Trạng thái <span class="text-danger"></span></label>
-                      <table>
-                        <tbody>
-                        <tr class="d-flex align-items-center">
-                          <td><input id="credit" name="status"  value="true" type="radio" class="form-check-input"
-                                     checked required ></td>
-                          <td><label class="form-check-label ">Hoạt động</label></td>
-                          <td></td>
-                          <td><input id="debit" name="status"  value="false" type="radio" class="form-check-input"
-                                     required></td>
-                          <td><label class="form-check-label d-flex align-items-center">Khóa</label></td>
-                        </tr>
-                        </tbody>
-                      </table>
+                      <textarea class="form-control" id="description" name="description" type="text" rows="5" cols="33" ></textarea>
                     </div>
                   </div>
                 </div>

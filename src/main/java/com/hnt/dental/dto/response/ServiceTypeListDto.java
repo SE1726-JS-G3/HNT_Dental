@@ -6,20 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDateTime;
-
-@AllArgsConstructor
 @NoArgsConstructor
-@Setter
+@AllArgsConstructor
 @Getter
+@Setter
 @SuperBuilder
-public class ServiceManagementDto {
+public class ServiceTypeListDto {
     private Long id;
     private String name;
-    private String type;
-    private String fee;
-    private String image;
-    private String status;
     private String description;
-    private LocalDateTime createdAt;
+    private String rankName;
 }
