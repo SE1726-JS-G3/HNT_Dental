@@ -79,7 +79,7 @@ public class ServiceDaoImpl implements ServiceDao {
             "            OR s.status like ?" +
             "            GROUP BY s.id " +
             "            LIMIT ? OFFSET ? ";
-    private static final String SQL_GET_SERVICE_DETAIL_MANAGEMENT_BY_ID = "SELECT s.id, s.name, s.description, s.image FROM service s " +
+    private static final String SQL_GET_SERVICE_DETAIL_MANAGEMENT_BY_ID = "SELECT s.id, s.name, s.description, s.image, s.status FROM service s " +
             "where s.id = ?";
 
     private static final String SQL_GET_SERVICE_TYPE_MANAGEMENT_BY_ID = "SELECT st.id, sf.fee, st.name as type  FROM service s " +
@@ -124,6 +124,10 @@ public class ServiceDaoImpl implements ServiceDao {
             "inner join service_fee sf on sf.service_type = st.id " +
             "inner join service s on s.id = sf.service_id " +
             "where s.id =? )";
+    private static final String SQL_UPDATE_SERVICE_FEES = "INSERT INTO `hnt_dental`.`service_fee` (`service_id`, `service_type`, `fee`) VALUES (?, ?, ?)";
+    private static final String SQL_UPDATE_SERVICE_FEE = "UPDATE hnt_dental.service_fee " +
+            "SET fee= ?" +
+            "WHERE service_id= ? AND service_type= ?";
 
     @Override
     public List<Service> getAll(Integer offset, Integer limit, String search) throws SQLException {
@@ -202,6 +206,7 @@ public class ServiceDaoImpl implements ServiceDao {
                     .name(rs.getString("name"))
                     .image(rs.getString("image"))
                     .description(rs.getString("description"))
+                    .status(Boolean.valueOf(rs.getString("status")))
                     .build();
         }
         return null;
@@ -277,6 +282,16 @@ public class ServiceDaoImpl implements ServiceDao {
         }
 
         return result;
+    }
+
+    @Override
+    public void updateServiceFeeByServiceTypeId(Long idService, Long idServiceType, Double fee) throws SQLException {
+        ConnectionUtils.executeUpdate(SQL_UPDATE_SERVICE_FEES, idService, idServiceType, fee);
+    }
+
+    @Override
+    public void updateServiceFee(Long idService, Long idServiceType, Double fee) throws SQLException {
+        ConnectionUtils.executeUpdate(SQL_UPDATE_SERVICE_FEE, fee, idService, idServiceType);
     }
 
     @Override

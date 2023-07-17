@@ -89,13 +89,33 @@
                                 </div>
                             </div>
                         </form>
+
+                        <div class="card border-0 shadow overflow-hidden mt-4">
+                            <div class="p-4 border-bottom">
+                                <h5 class="mb-0">Kết quả khám</h5>
+                            </div>
+                            <form action="${pageContext.request.contextPath}/management/booking/result"
+                                  method="POST">
+                                <div class="row tab-content p-4">
+                                    <div class="col-lg-12">
+                                        <input hidden="" name="id" value="${param.id}">
+                                        <div class="mb-3">
+                                            <label class="form-label">Kết quả khám bao gồm kết luần của bác sĩ + đơn thuốc + Phim XQ (nếu có)</label>
+                                            <textarea name="result" class="form-control attachments"
+                                                      rows="3">${bookingResult.result}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+<br> <br>
                         <div class="col-md-6">
-                            <button class="btn btn-secondary active" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#newblogadd">
-                                Kết quả khám
-                            </button>
+
                             <button class="btn btn-info active" type="button">
                                 Hủy đặt lịch
+                            </button>
+                            <button class="btn btn-primary active" type="button">
+                                Đánh giá
                             </button>
                         </div>
                     </div>

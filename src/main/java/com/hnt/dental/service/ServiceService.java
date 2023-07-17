@@ -183,5 +183,23 @@ public class ServiceService {
                 .status(Boolean.valueOf(status)).build());
         ServletUtils.redirect(req, resp, "/management/service");
     }
+
+    public void updateFeeByServiceId(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String idService= req.getParameter("id");
+        String idType= req.getParameter("idType");
+        String fee = req.getParameter("fee");
+
+        dao.updateServiceFeeByServiceTypeId(Long.valueOf(idService), Long.valueOf(idType), Double.valueOf(fee));
+        ServletUtils.redirect(req, resp, "/management/service/detail?id=" + idService);
+    }
+
+    public void updateFee(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String idService= req.getParameter("id");
+        String idServiceType= req.getParameter("idServiceType");
+        String fee = req.getParameter("fee");
+
+        dao.updateServiceFee(Long.valueOf(idService),Long.valueOf(idServiceType), Double.valueOf(fee));
+        ServletUtils.redirect(req, resp, "/management/service/detail?id=" + idService);
+    }
 }
 

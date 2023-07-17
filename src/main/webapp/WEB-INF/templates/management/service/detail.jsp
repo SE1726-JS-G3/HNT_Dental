@@ -52,7 +52,7 @@
                                 <div class="text-center margin-nagative mt-n5 position-relative pb-4 border-bottom">
 
                                     <img src="${serviceDetail.image}"
-                                         class="img-fluid rounded" alt="">
+                                         class="img-fluid rounded w-50 h-50" alt="">
                                     <h5 class="mt-3 mb-1">${serviceDetail.name}</h5>
                                 </div>
 
@@ -64,6 +64,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-lg-12 col-md-12 mt-4">
                             <div class="bg-white rounded shadow overflow-hidden">
                                 <div class="p-4 border-bottom">
@@ -239,32 +240,34 @@
             <div class="modal fade" id="service_type${s.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-body mx-3">
-                            <div class="md-form mb-2">
-                                <i class="fas fa-envelope prefix grey-text"></i>
-                                <label data-error="wrong" data-success="right">Loại dịch vụ</label>
-                                <select name="types" class="form-control">
-                                    <c:forEach items="${types}" var="t">
-                                        <option
-                                                <c:if test="${s.type == t.nameType}">selected</c:if>
-                                                value="${t.idType}">${t.nameType}</option>
-                                    </c:forEach>
-                                </select>
+                    <form action="${pageContext.request.contextPath}/management/service/updateFee" method="post">
+                        <div class="modal-content">
+                            <div class="modal-body mx-3">
+                                <div class="md-form mb-2">
+                                    <i class="fas fa-envelope prefix grey-text"></i>
+                                    <label data-error="wrong" data-success="right">Loại dịch vụ</label>
+                                    <input value="${param.id}" name="id" hidden="">
+                                    <select name="idServiceType" class="form-control" hidden="">
+                                        <c:forEach items="${types}" var="t">
+                                            <option
+                                                    <c:if test="${s.type == t.nameType}">selected</c:if>
+                                                    value="${t.idType}">${t.nameType}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+
+                                <div class="md-form mb-2">
+                                    <label data-error="wrong" data-success="right">Giá</label>
+                                    <input type="text" name="fee" value="${s.fee}" class="form-control validate">
+                                </div>
 
                             </div>
-
-                            <div class="md-form mb-2">
-                                <label data-error="wrong" data-success="right">Giá</label>
-                                <input type="text" name="price" value="${s.fee}" class="form-control validate">
+                            <div class="modal-footer d-flex justify-content-center">
+                                <button class="btn btn-primary" type="submit">Lưu</button>
+                                <button class="btn btn-danger">Xóa</button>
                             </div>
-
                         </div>
-                        <div class="modal-footer d-flex justify-content-center">
-                            <button class="btn btn-primary">Lưu</button>
-                            <button class="btn btn-danger">Xóa</button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </c:forEach>
@@ -273,32 +276,34 @@
              aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-body mx-3">
-                        <div class="md-form mb-2">
-                            <i class="fas fa-envelope prefix grey-text"></i>
-                            <label data-error="wrong" data-success="right">Thêm loại của dịch vụ</label>
-                            <select name="types" class="form-control">
-                                <c:forEach items="${getTypeOfServiceAvailable}" var="g">
-                                    <option value="${g.idType}">${g.nameType}</option>
-                                </c:forEach>
-                            </select>
+                    <form action="${pageContext.request.contextPath}/management/service/createFee" method="POST"
+                          class="mt-4">
+                        <input value="${param.id}" name="id" hidden="">
+                        <div class="modal-body mx-3">
+                            <div class="md-form mb-2">
+                                <i class="fas fa-envelope prefix grey-text"></i>
+                                <label data-error="wrong" data-success="right">Thêm loại của dịch vụ</label>
+                                <select name="idType" class="form-control">
+                                    <c:forEach items="${getTypeOfServiceAvailable}" var="g">
+                                        <option value="${g.idType}">${g.nameType}</option>
+                                    </c:forEach>
+                                </select>
 
+                            </div>
+
+                            <div class="md-form mb-2">
+                                <label data-error="wrong" data-success="right">Giá</label>
+                                <input type="text" name="fee"
+                                       class="form-control validate">
+                            </div>
+                            <div class="modal-footer d-flex justify-content-center">
+                                <button class="btn btn-primary" type="submit"
+                                        <c:if test="${getTypeOfServiceAvailable.size() == 0}">disabled</c:if>
+                                >Thêm
+                                </button>
+                            </div>
                         </div>
-
-                        <div class="md-form mb-2">
-                            <label data-error="wrong" data-success="right">Giá</label>
-                            <input type="text" name="price"
-                                   <c:if test="${getTypeOfServiceAvailable.size() == 0}">disabled</c:if>
-                                   value="" class="form-control validate">
-                        </div>
-
-                    </div>
-                    <div class="modal-footer d-flex justify-content-center">
-                        <button class="btn btn-primary"
-                                <c:if test="${getTypeOfServiceAvailable.size() == 0}">disabled</c:if>
-                        >Thêm
-                        </button>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>

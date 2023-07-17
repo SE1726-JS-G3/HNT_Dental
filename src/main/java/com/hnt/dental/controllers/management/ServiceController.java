@@ -16,6 +16,8 @@ import java.io.IOException;
         "/management/service/update",
         "/management/service/detail",
         "/management/service/type",
+        "/management/service/createFee",
+        "/management/service/updateFee",
         "/management/service/type/detail",
         "/management/service/delete"
 })
@@ -61,6 +63,7 @@ public class ServiceController extends HttpServlet {
             case "/management/service/type":
                 req.getRequestDispatcher("/WEB-INF/templates/management/service/serviceType.jsp").forward(req, resp);
                 break;
+
             default:
         }
     }
@@ -78,6 +81,18 @@ public class ServiceController extends HttpServlet {
         } else if (action.equals("/management/service/create")) {
             try {
                 service.createServiceDetailManagement(req, resp);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } else if (action.equals("/management/service/createFee")) {
+            try {
+                service.updateFeeByServiceId(req, resp);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } else if (action.equals("/management/service/updateFee")) {
+            try {
+                service.updateFee(req, resp);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
