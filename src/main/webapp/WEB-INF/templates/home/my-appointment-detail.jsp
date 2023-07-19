@@ -141,22 +141,22 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="mb-3">
-                                            <label class="form-label">Blog Title <span class="text-danger">*</span></label>
-                                            <input name="name" id="name" type="text" class="form-control" placeholder="Title :">
+                                            <label class="form-label">Tiêu đề bài viết <span class="text-danger">*</span></label>
+                                            <input name="name" id="name" type="text" class="form-control" placeholder="Tiêu đề :">
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label"> Date : </label>
-                                            <input name="date" type="text" class="form-control start" id="date" value="Select date:">
+                                            <label class="form-label"> Ngày : </label>
+                                            <input name="date" type="text" class="form-control start" id="date" value="Chọn ngày :">
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label"> Time to read : </label>
-                                            <input name="time" type="text" class="form-control" id="time" value="5 min read">
+                                            <label class="form-label"> Thời gian đọc : </label>
+                                            <input name="time" type="text" class="form-control" id="time" value="5 phút">
                                         </div>
                                     </div><!--end col-->
 
@@ -178,13 +178,13 @@
 
                                     <div class="col-lg-12">
                                         <div class="mb-3">
-                                            <label class="form-label">Description <span class="text-danger">*</span></label>
-                                            <textarea name="comments" id="comments" rows="4" class="form-control" placeholder="Blog description :"></textarea>
+                                            <label class="form-label">Nội dung <span class="text-danger">*</span></label>
+                                            <textarea name="comments" id="comments" rows="4" class="form-control" placeholder="Nội dung BLog :"></textarea>
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-lg-12 text-end">
-                                        <button type="submit" class="btn btn-primary">Add Blog</button>
+                                        <button type="submit" class="btn btn-primary">Thêm Blog</button>
                                     </div><!--end col-->
                                 </div>
                             </form>

@@ -148,7 +148,7 @@
                 <div class="section-title text-center mb-4 pb-2">
                     <span class="badge badge-pill badge-soft-primary mb-3">Dịch vụ chăm sóc sức khỏe</span>
                     <h4 class="title mb-4">Những dịch vụ nổi bật của chúng tôi</h4>
-                    <p class="text-muted mx-auto para-desc mb-0">Đội ngũ Doctris luôn đem đến cho bạn những dịch vụ chăm
+                    <p class="text-muted mx-auto para-desc mb-0">Đội ngũ Bác sĩ luôn đem đến cho bạn những dịch vụ chăm
                         sóc sức khỏe hiện đại và tốt nhất trên thị trường với những bác sĩ chuyên sâu trong các lĩnh vực
                         .</p>
                 </div>

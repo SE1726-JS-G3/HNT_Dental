@@ -31,9 +31,9 @@
                                 </div><!--end col-->
 
                                 <div class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
-                                    <h5 class="">Upload your picture</h5>
-                                    <p class="text-muted mb-0">For best results, use an image at least 600px by 600px in
-                                        either .jpg or .png format</p>
+                                    <h5 class="">Tải lên ảnh của bạn </h5>
+                                    <p class="text-muted mb-0">Để có kết quả tốt nhất , vui lòng sử dụng một hình ảnh ít nhất 600px x 600px trong
+                                        định dạng .jpg hoặc .png</p>
                                 </div><!--end col-->
 
                                 <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">
@@ -120,7 +120,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Chức vụ</label>
                                             <select name="Role" class="form-select form-control">
-                                                <option value="doctor" selected>Doctor</option>
+                                                <option value="doctor" selected>Bác sĩ</option>
                                             </select>
                                         </div>
                                     </div><!--end col-->
@@ -128,7 +128,7 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label class="form-label">Mô tả</label>
-                                            <textarea name="description" id="comments" rows="3" class="form-control" placeholder="Bio :"></textarea>
+                                            <textarea name="description" id="comments" rows="3" class="form-control" placeholder="Mô tả :"></textarea>
                                         </div>
                                     </div>
                                 </div><!--end row-->
