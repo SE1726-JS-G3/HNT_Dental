@@ -40,7 +40,7 @@
                       <div class="d-flex align-items-center">
                         <img src="https://sendidau.com/wp-content/uploads/2021/01/meme-meo.jpg"
                              class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                        <span class="ms-2">ccjfsfkasf</span>
+                        <span class="ms-2">ccjfsfkfasf</span>
                       </div>
                     </a>
                   </td>
@@ -59,16 +59,6 @@
             <div class="row text-center">
               <div class="col-12 mt-4">
                 <div class="d-md-flex align-items-center text-center justify-content-between">
-                  <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                    <li class="page-item active"><a class="page-link">1</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link">1</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link">1</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link">1</a>
-                    </li>
-                  </ul>
                 </div>
               </div>
             </div>

@@ -32,9 +32,7 @@
                                 </thead>
                                 <tbody>
                                 <%--@elvariable id="list" type="java.util.List"--%>
-                                <c:forEach items="${list}" var="o">
                                     <tr>
-
                                         <td class="p-3">1</td>
                                         <td class="p-3">Nhổ răng</td>
                                         <td class="p-3">VIP</td>

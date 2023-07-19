@@ -28,7 +28,7 @@
                         <div class="card border-0 p-4 rounded shadow">
                             <div class="row align-items-center">
                                 <div class="col-lg-2 col-md-4">
-                                    <img src="${pageContext.request.contextPath}/static/images/user.png"
+                                    <img src="${employee.account.image}"
                                          class="avatar avatar-md-md rounded-pill shadow mx-auto d-block" alt="">
                                 </div>
                                 <div class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
