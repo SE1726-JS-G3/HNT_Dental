@@ -202,7 +202,6 @@ public class PatientDaoImpl implements PatientDao {
         ConnectionUtils.closeConnection();
         return null;
     }
-
     private static final String DETAIL_APPOINTMENT="SELECT b.id,b.date,b.name,b.status,b.time,b.account_id ,br.result FROM booking b inner join booking_result br on b.id = br.booking_id  where b.id =?";
     @Override
     public BookingDto detailAppointment(String id) throws SQLException {
@@ -246,7 +245,6 @@ public class PatientDaoImpl implements PatientDao {
                                     .nameType(rs.getString("type"))
                                     .build())
                             .status(String.valueOf(rs.getBoolean("status")))
-                            //.service_id(rs.getInt("service_id"))
                             .account_id(rs.getInt("account_id"))
                             .build()
             );
