@@ -8,11 +8,11 @@
     <div class="modal__content" id="model_content">
         <h2>Confirm</h2>
         <p>
-            Do you want to change blog status ?
+            Bạn có muốn thay đổi trạng thái của blog ?
         </p>
         <div class="modal__footer">
-            <button type="button" onclick="modal_close()" class="button-10">Cancel</button>
-            <button type="button" onclick="modal_change()" class="button-10">Confirm</button>
+            <button type="button" onclick="modal_close()" class="button-10">Hủy</button>
+            <button type="button" onclick="modal_change()" class="button-10">Xác nhận</button>
         </div>
 
         <a href="#" class="modal__close">&times;</a>

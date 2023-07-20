@@ -46,7 +46,7 @@
                                 <div class="col-lg-12">
                                     <div class="mb-3">
                                         <label class="form-label">Mật khẩu mới <span class="text-danger">*</span></label>
-                                        <input type="password" class="form-control" placeholder="NewPassword"
+                                        <input type="password" class="form-control" placeholder="Mật khẩu mới"
                                                name="newPassword">
                                     </div>
                                 </div>
@@ -54,7 +54,7 @@
                                 <div class="col-lg-12">
                                     <div class="mb-3">
                                         <label class="form-label">Xác nhận lại mật khẩu<span class="text-danger">*</span></label>
-                                        <input type="password" class="form-control" placeholder="RePassword"
+                                        <input type="password" class="form-control" placeholder="Xác nhận lại mật khẩu"
                                                name="rePassword">
                                     </div>
                                 </div>

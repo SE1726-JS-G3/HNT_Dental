@@ -55,14 +55,14 @@
                                 <div class="col-lg-12">
                                     <div class="mb-3">
                                         <label class="form-label">Mật khẩu <span class="text-danger">*</span></label>
-                                        <input type="password" class="form-control" placeholder="Password"
-                                               name="password">
+                                        <input type="password" class="form-control" placeholder="Mật khẩu"
+                                               name="Mật khẩu">
                                     </div>
                                 </div>
 
                                 <div class="col-lg-12">
                                     <div class="d-flex justify-content-between">
-                                        <a href="${pageContext.request.contextPath}/auth/forgot" class="text-dark h6 mb-0">Forgot password ?</a>
+                                        <a href="${pageContext.request.contextPath}/auth/forgot" class="text-dark h6 mb-0">Quên mật khẩu ?</a>
                                     </div>
                                 </div>
                                 <div class="col-lg-12 mb-0">
