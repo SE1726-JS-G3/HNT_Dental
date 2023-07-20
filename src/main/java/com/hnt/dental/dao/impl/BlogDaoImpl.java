@@ -207,7 +207,7 @@ public class BlogDaoImpl implements BlogDao {
     public void update(Blogs blog) throws SQLException {
         ConnectionUtils.executeUpdate(UPDATE_BLOG, blog.getCategoryBlog().getId(), blog.getTitle(),
                 blog.getBrief(), blog.getDescription(),
-                blog.getCreatedAt(), blog.getCreatedBy(), blog.getStatus(), blog.getId());
+                blog.getUpdatedAt(), blog.getCreatedBy(), blog.getStatus(), blog.getId());
     }
 
 //    public static void main(String[] args) {
