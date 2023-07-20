@@ -156,9 +156,6 @@ public class PatientDaoImpl implements PatientDao {
         return null;
     }
 
-
-
-
     private static final String HISTORY_APPOINTMENT ="SELECT b.id, b.status ,b.date ,s.name,st.name as type\n" +
             "                                             FROM booking b\n" +
             "                                             INNER JOIN service s \n" +
@@ -177,7 +174,6 @@ public class PatientDaoImpl implements PatientDao {
             list.add(
                     BookingDto
                             .builder().serviceResDto(ServiceResDto.builder()
-                                    //.id(rs.getLong("id"))
                                     .name(rs.getString("name"))
                                     .build()).serviceTypeDto(ServiceTypeDto.builder()
                                     .nameType(rs.getString("type"))
