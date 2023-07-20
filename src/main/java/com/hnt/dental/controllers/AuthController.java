@@ -68,7 +68,7 @@ public class AuthController extends HttpServlet {
                 ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/verification-result.jsp");
                 break;
             case "/auth/profile":
-//                ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/profile.jsp");
+               ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/profile.jsp");
                 break;
             case "/auth/service-history":
                 ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/service-history.jsp");

@@ -2,6 +2,7 @@ package com.hnt.dental.controllers.management;
 
 import com.hnt.dental.service.EmployeeService;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import java.io.IOException;
         "/management/employee/update",
         "/management/employee/delete"
 })
+@MultipartConfig(maxFileSize = 16177216) // Copy Upload
 public class EmployeeController extends HttpServlet {
 
     private static final EmployeeService employeeService;

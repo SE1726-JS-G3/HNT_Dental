@@ -41,7 +41,7 @@
                     </c:if>
 
                     <c:if test="${sessionScope.account == null}">
-                        <button class="btn btn-primary p-1" onclick="window.location.href = '/auth/login'">Login
+                        <button class="btn btn-primary p-1" onclick="window.location.href = '/auth/login'">Đăng nhập
                         </button>
                     </c:if>
                     <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3"

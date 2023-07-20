@@ -11,7 +11,7 @@
         <div class="container-fluid">
             <div class="layout-specing">
                 <div class="d-md-flex justify-content-between">
-                    <h5 class="mb-0">Đây là màn update bệnh nhân </h5>
+                    <h5 class="mb-0">Bệnh Nhân </h5>
                     <nav aria-label="breadcrumb" class="d-inline-block mt-4 mt-sm-0">
                         <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
                             <li class="breadcrumb-item"><a href="#">Quản lí</a></li>
@@ -32,9 +32,9 @@
                                          class="avatar avatar-md-md rounded-pill shadow mx-auto d-block" alt="">
                                 </div>
                                 <div class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
-                                    <h5 class="">Upload your picture</h5>
-                                    <p class="text-muted mb-0">For best results, use an image at least 600px by 600px in
-                                        either .jpg or .png format</p>
+                                    <h5 class="">Tải lên hình ảnh của bạn </h5>
+                                    <p class="text-muted mb-0"> Để có kết quả tốt nhất , vui lòng sử dụng một hình ảnh ít nhất 600px x 600px trong
+                                        định dạng .jpg hoặc .png</p>
                                 </div>
 
                                 <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">

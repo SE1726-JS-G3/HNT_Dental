@@ -26,8 +26,8 @@
                         lập tức, điều trị khẩn cấp hãy đặt lịch hẹn.</p>
                     <nav aria-label="breadcrumb" class="d-inline-block mt-3">
                         <ul class="breadcrumb bg-transparent mb-0">
-                            <li class="breadcrumb-item"><a href="home">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#">Service</a></li>
+                            <li class="breadcrumb-item"><a href="home">Trang chủ</a></li>
+                            <li class="breadcrumb-item"><a href="#">Dịch vụ</a></li>
                         </ul>
                     </nav>
                 </div>
