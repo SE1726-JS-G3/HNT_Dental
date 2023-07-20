@@ -20,12 +20,11 @@
             <div class="col-12">
                 <div class="section-title text-center">
                     <h3 class="sub-title mb-4">Đặt lịch</h3>
-                    <p class="para-desc mx-auto text-muted">Great doctor if you need your family member to get effective
-                        immediate assistance, emergency treatment or a simple consultation.</p>
+                    <p class="para-desc mx-auto text-muted">hỗ trợ ngay lập tức, điều trị khẩn cấp hoặc tư vấn đơn giản.</p>
 
                     <nav aria-label="breadcrumb" class="d-inline-block mt-3">
                         <ul class="breadcrumb bg-transparent mb-0 py-1">
-                            <li class="breadcrumb-item"><a href="#">Doctris</a></li>
+                            <li class="breadcrumb-item"><a href="#">Bác sĩ</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Đặt Lịch</li>
                         </ul>
                     </nav>
@@ -339,7 +338,7 @@
 <script>
 
     function redirectToService(id) {
-        window.location.href = "/appointment?serviceId=" + ${id} +"&typeId=" + id;
+        window.location.href = "/booking?serviceId=" + ${id} +"&typeId=" + id;
     }
 
     const selectedDate = document.querySelector("#checkin-date");

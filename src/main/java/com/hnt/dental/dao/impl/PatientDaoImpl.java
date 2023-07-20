@@ -2,11 +2,15 @@ package com.hnt.dental.dao.impl;
 import com.hnt.dental.dao.AccountDao;
 
 import com.hnt.dental.dao.PatientDao;
+import com.hnt.dental.dto.response.BookingResultDto;
+import com.hnt.dental.dto.response.ServiceTypeDto;
 import com.hnt.dental.entities.Account;
 import com.hnt.dental.entities.Patient;
 import com.hnt.dental.util.ConnectionUtils;
 import com.hnt.dental.util.DateUtils;
 import org.apache.commons.lang3.StringUtils;
+import com.hnt.dental.dto.response.BookingDto;
+import com.hnt.dental.dto.response.ServiceResDto;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -153,4 +157,100 @@ public class PatientDaoImpl implements PatientDao {
     }
 
 
+
+
+    private static final String HISTORY_APPOINTMENT ="SELECT b.id, b.status ,b.date ,s.name,st.name as type\n" +
+            "                                             FROM booking b\n" +
+            "                                             INNER JOIN service s \n" +
+            "                                             INNER JOIN service_type st\n" +
+            "                                             ON b.service_id = s.id \n" +
+            "                                             AND b.service_type_id = st.id\n" +
+            "                                             ORDER BY b.service_id\n" +
+            "                                             LIMIT ?,?";
+    private static final String COUNT_APPOINTMENT ="SELECT COUNT(*) FROM booking b\n" +
+            "                        JOIN service s JOIN service_type st ON b.service_id = s.id AND b.service_type_id = st.id";
+    @Override
+    public List<BookingDto> getAppointment(Integer offset, Integer limit) throws SQLException {
+        List<BookingDto> list = new ArrayList<>();
+        ResultSet rs = ConnectionUtils.executeQuery(HISTORY_APPOINTMENT, offset,limit);
+        while (rs.next()) {
+            list.add(
+                    BookingDto
+                            .builder().serviceResDto(ServiceResDto.builder()
+                                    //.id(rs.getLong("id"))
+                                    .name(rs.getString("name"))
+                                    .build()).serviceTypeDto(ServiceTypeDto.builder()
+                                    .nameType(rs.getString("type"))
+                                    .build())
+                            .date(rs.getDate("date").toLocalDate())
+                            .status(String.valueOf(rs.getBoolean("status")))
+                            .id(rs.getLong("id"))
+                            .build()
+            );
+        }
+        ConnectionUtils.closeConnection();
+        return list;
+    }
+
+    @Override
+    public Integer countAppointment() throws Exception {
+        ResultSet rs = ConnectionUtils.executeQuery(COUNT_APPOINTMENT );
+        assert rs != null;
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        ConnectionUtils.closeConnection();
+        return null;
+    }
+
+    private static final String DETAIL_APPOINTMENT="SELECT b.id,b.date,b.name,b.status,b.time,b.account_id ,br.result FROM booking b inner join booking_result br on b.id = br.booking_id  where b.id =?";
+    @Override
+    public BookingDto detailAppointment(String id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(DETAIL_APPOINTMENT,id);
+        assert rs != null;
+        if (rs.next()) {
+            return (BookingDto.builder().bookingResultDto(BookingResultDto.builder()
+                            .result(rs.getString("result"))
+                            .build())
+                    .id(rs.getLong("id"))
+                    .status(String.valueOf(rs.getBoolean("status")))
+                    .name(rs.getString("name"))
+                    .time(rs.getTime("time").toLocalTime())
+                    .account_id(rs.getInt("account_id"))
+                    .date(rs.getDate("date").toLocalDate())
+                    .build());
+        }
+        return null;
+
+    }
+
+    private static final String SERVICE_APPOINTMENT="SELECT s.id, b.status  ,s.name,st.name as type " +
+            "                                                        FROM booking b " +
+            "                                                        INNER JOIN service s " +
+            "                                                        INNER JOIN service_type st " +
+            "                                                        ON b.service_id = s.id " +
+            "                                                        AND b.service_type_id = st.id " +
+            "                                                        ORDER BY b.service_id " +
+            "                                                        LIMIT ?,?";
+    @Override
+    public List<BookingDto> getAppointmentService(Integer offset, Integer limit) throws SQLException {
+        List<BookingDto> list = new ArrayList<>();
+        ResultSet rs = ConnectionUtils.executeQuery(SERVICE_APPOINTMENT, offset,limit);
+        while (rs.next()) {
+            list.add(
+                    BookingDto
+                            .builder().serviceResDto(ServiceResDto.builder()
+                                    .name(rs.getString("name"))
+                                    .id(rs.getLong("id"))
+                                    .build()).serviceTypeDto(ServiceTypeDto.builder()
+                                    .nameType(rs.getString("type"))
+                                    .build())
+                            .status(String.valueOf(rs.getBoolean("status")))
+                            //.service_id(rs.getInt("service_id"))
+                            .build()
+            );
+        }
+        ConnectionUtils.closeConnection();
+        return list;
+    }
 }

@@ -23,11 +23,12 @@ import java.sql.SQLException;
         "/auth/forgot",
         "/auth/forgot/confirm",
         "/auth/profile",
-        "/auth/booking-history",
+        "/auth/service-history",
         "/auth/my-appointment",
         "/auth/my-appointment/detail",
         "/auth/my-patient",
-        "/auth/patient-booking-history",
+        "/auth/patient-booking-history"
+        ,"/auth/my-appointment/detail1",
         "/auth/detail-history-booking"
 
 
@@ -67,10 +68,10 @@ public class AuthController extends HttpServlet {
                 ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/verification-result.jsp");
                 break;
             case "/auth/profile":
-//                ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/profile.jsp");
+               ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/profile.jsp");
                 break;
-            case "/auth/booking-history":
-                ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/booking-history.jsp");
+            case "/auth/service-history":
+                ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/service-history.jsp");
                 break;
             case "/auth/my-patient":
                 ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/my-patient.jsp");
@@ -78,7 +79,11 @@ public class AuthController extends HttpServlet {
             case "/auth/my-appointment":
                 ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/my-appointment.jsp");
                 break;
-            default:
+                case "/auth/my-appointment/detail":
+                ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/my-appointment-detail.jsp");
+                break;
+                default:
+
         }
     }
 
@@ -99,6 +104,7 @@ public class AuthController extends HttpServlet {
                 case "/auth/forgot/confirm":
                     service.forgotConfirm(req, resp);
                     break;
+
                 default:
             }
         } catch (SQLException e) {

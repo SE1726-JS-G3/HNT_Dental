@@ -10,19 +10,20 @@ import com.hnt.dental.dto.response.EmployeeResDto;
 import com.hnt.dental.entities.Account;
 import com.hnt.dental.entities.Employee;
 import com.hnt.dental.exception.SystemRuntimeException;
-import com.hnt.dental.util.AesUtils;
-import com.hnt.dental.util.CaptchaUtils;
-import com.hnt.dental.util.PagingUtils;
-import com.hnt.dental.util.ServletUtils;
+import com.hnt.dental.util.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 
@@ -68,12 +69,20 @@ public class EmployeeService {
         String phone = req.getParameter("phone");
         String salary = req.getParameter("salary");
         String address = req.getParameter("address");
-        String position = req.getParameter("position");
+        String position = req.getParameter("position") == null ? "marketing" : req.getParameter("position");
         String description = req.getParameter("description");
+        Part img = req.getPart("image"); // copy upload
 
         String password = AesUtils.encrypt(CaptchaUtils.getCaptcha(8));
 
         RoleEnum role = position.equals("marketing") ? RoleEnum.ROLE_MARKETING : RoleEnum.ROLE_STAFF;
+        String image = null;
+
+        // copy upload
+        if(img.getSize()>0) {
+          image = ImageUtils.upload(img);
+        }
+        // copy upload
 
         Long id = accountDao.save(
                 Account.builder()
@@ -81,6 +90,7 @@ public class EmployeeService {
                         .password(password)
                         .role(role.ordinal())
                         .isVerified(true)
+                        .image(image)
                         .build()
         );
 

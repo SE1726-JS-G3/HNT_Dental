@@ -239,7 +239,7 @@ public class AuthService {
             }
             final int PAGE_SIZE =8;
             req.setAttribute("list", list.subList((page-1)*PAGE_SIZE,page*PAGE_SIZE));
-            ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/booking-history.jsp");
+            ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/service-history.jsp");
         } catch (SQLException e) {
             throw new EOFException();
 

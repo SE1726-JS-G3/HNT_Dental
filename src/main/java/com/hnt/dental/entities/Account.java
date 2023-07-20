@@ -13,6 +13,6 @@ public class Account extends BaseEntity{
     private String password;
     private int role;
     private Boolean isVerified;
-    private Long image;
+    private String image;
     private Doctors doctors;
 }

@@ -38,18 +38,20 @@
         <div class="row mt-5 justify-content-center">
             <div class="col-12">
                 <div class="section-title text-center">
+
                     <h3 class="sub-title mb-4">${blogs.title}</h3>
                     <p class="para-desc mx-auto text-muted">${blogs.brief}</p>
 
                     <ul class="list-unstyled mt-4">
                         <li class="list-inline-item user text-muted me-2"><i class="mdi mdi-account"></i> ${blogs.employee.fullName}</li>
                         <li class="list-inline-item date text-muted"><i class="mdi mdi-calendar-check"></i> ${blogs.categoryBlog.name}</li>
-                    <h3 class="sub-title mb-4">Lockdowns lead to fewer people seeking medical care</h3>
-                    <p class="para-desc mx-auto text-muted">Great doctor if you need your family member to get effective immediate assistance, emergency treatment or a simple consultation.</p>
+                   
+                    <h3 class="sub-title mb-4">vì phải đến tận nơi để đặt lịch dẫn đến việc ít người tìm đến sự chăm sóc của y tế </h3>
+                    <p class="para-desc mx-auto text-muted">hỗ trợ hiệu quả ngay lập tức, điều trị khẩn cấp hoặc tư vấn đơn giản.</p>
 
                     <ul class="list-unstyled mt-4">
-                        <li class="list-inline-item user text-muted me-2"><i class="mdi mdi-account"></i> Calvin Carlo</li>
-                        <li class="list-inline-item date text-muted"><i class="mdi mdi-calendar-check"></i> 1st January, 2021</li>
+                        <li class="list-inline-item user text-muted me-2"><i class="mdi mdi-account"></i> Trịnh Tứ Bảo </li>
+                        <li class="list-inline-item date text-muted"><i class="mdi mdi-calendar-check"></i> 19 7 2023</li>
                     </ul>
                 </div>
             </div><!--end col-->
@@ -84,13 +86,16 @@
                     <li class="list-inline-item user text-muted me-2"><i class="mdi mdi-account"></i> Calvin Carlo</li>
                     <li class="list-inline-item date text-muted"><i class="mdi mdi-calendar-check"></i> 1st January, 2021</li>
                 </ul> -->
+
                 <p class="text-muted mt-4">${blogs.description}</p>
 <%--                <p class="text-muted">Due to its widespread use as filler text for layouts, non-readability is of great importance: human perception is tuned to recognize certain patterns and repetitions in texts.</p>--%>
 <%--                <p class="text-muted mb-0">For this reason, dummy text usually consists of a more or less random series of words or syllables.</p>--%>
                 <p class="text-muted mt-4">This is required when, for example, the final text is not yet available. Dummy text is also known as 'fill text'. It is said that song composers of the past used dummy texts as lyrics when writing melodies in order to have a 'ready-made' text to sing with the melody. Dummy texts have been in use by typesetters since the 16th century.</p>
                 <p class="text-muted">Due to its widespread use as filler text for layouts, non-readability is of great importance: human perception is tuned to recognize certain patterns and repetitions in texts.</p>
                 <p class="text-muted mb-0">For this reason, dummy text usually consists of a more or less random series of words or syllables.</p>
-
+                <p class="text-muted mt-4">Điều này là bắt buộc khi, ví dụ, văn bản cuối cùng chưa có sẵn. Văn bản giả còn được gọi là 'văn bản điền'. Người ta nói rằng các nhà soạn nhạc ngày xưa đã sử dụng các đoạn văn giả làm lời bài hát khi viết giai điệu để có một đoạn văn 'sẵn sàng' để hát theo giai điệu. Các văn bản giả đã được sử dụng bởi những người sắp chữ từ thế kỷ 16.</p>
+                <p class="text-muted">Do được sử dụng rộng rãi làm văn bản bổ sung cho bố cục, tính không đọc được có tầm quan trọng rất lớn: nhận thức của con người được điều chỉnh để nhận ra các mẫu và sự lặp lại nhất định trong văn bản.</p>
+                <p class="text-muted mb-0">Vì lý do này, văn bản giả thường bao gồm một loạt các từ hoặc âm tiết ít nhiều ngẫu nhiên.</p>
 
             </div><!--end col-->
 
@@ -99,11 +104,11 @@
                     <div class="card-body">
                         <!-- SEARCH -->
                         <div class="widget mb-4 pb-2">
-                            <h5 class="widget-title">Search</h5>
+                            <h5 class="widget-title">Tìm kiếm</h5>
                             <div id="search2" class="widget-search mt-4 mb-0">
                                 <form role="search" method="get" id="searchform" class="searchform">
                                     <div>
-                                        <input type="text" class="border rounded form-control" name="s" id="s" placeholder="Search Keywords...">
+                                        <input type="text" class="border rounded form-control" name="s" id="s" placeholder="Nhập từ khóa...">
                                         <input type="submit" id="searchsubmit" value="Search">
                                     </div>
                                 </form>
@@ -113,7 +118,7 @@
 
                         <!-- RECENT POST -->
                         <div class="widget mb-4 pb-2">
-                            <h5 class="widget-title">Recent Post</h5>
+                            <h5 class="widget-title">Bài viết mới nhất</h5>
                             <div class="mt-4">
                                 <c:forEach items="${recentPosts}" var="recentPosts">
                                 <div class="clearfix post-recent">
@@ -131,15 +136,15 @@
 <%--                                </div>--%>
                                 <div class="clearfix post-recent">
                                     <div class="post-recent-thumb float-start"> <a href="jvascript:void(0)"> <img alt="img" src="${pageContext.request.contextPath}/static/images/blog/07.jpg" class="img-fluid rounded"></a></div>
-                                    <div class="post-recent-content float-start"><a href="jvascript:void(0)">Consultant Business</a><span class="text-muted mt-2">15th June, 2019</span></div>
+                                    <div class="post-recent-content float-start"><a href="jvascript:void(0)">Consultant Business</a><span class="text-muted mt-2">19 7 2023</span></div>
                                 </div>
                                 <div class="clearfix post-recent">
                                     <div class="post-recent-thumb float-start"> <a href="jvascript:void(0)"> <img alt="img" src="${pageContext.request.contextPath}/static/images/blog/08.jpg" class="img-fluid rounded"></a></div>
-                                    <div class="post-recent-content float-start"><a href="jvascript:void(0)">Look On The Glorious Balance</a> <span class="text-muted mt-2">15th June, 2019</span></div>
+                                    <div class="post-recent-content float-start"><a href="jvascript:void(0)">Look On The Glorious Balance</a> <span class="text-muted mt-2">19 7 2023</span></div>
                                 </div>
                                 <div class="clearfix post-recent">
                                     <div class="post-recent-thumb float-start"> <a href="jvascript:void(0)"> <img alt="img" src="${pageContext.request.contextPath}/static/images/blog/01.jpg" class="img-fluid rounded"></a></div>
-                                    <div class="post-recent-content float-start"><a href="jvascript:void(0)">Research Financial.</a> <span class="text-muted mt-2">15th June, 2019</span></div>
+                                    <div class="post-recent-content float-start"><a href="jvascript:void(0)">Research Financial.</a> <span class="text-muted mt-2">19 7 2023</span></div>
                                 </div>
                             </div>
                         </div>
@@ -188,7 +193,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="section-title">
-                    <h4 class="title mb-0">Related Post:</h4>
+                    <h4 class="title mb-0">Bài viết liên quan:</h4>
                 </div>
             </div><!--end col-->
         </div><!--end row-->
@@ -202,6 +207,7 @@
                             <img src="${pageContext.request.contextPath}/static/images/blog/03.jpg" class="img-fluid" alt="">
                             <div class="card-body p-4">
                                 <ul class="list-unstyled mb-2">
+
                                     <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>27th July, 2024</li>
                                     <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
                                 </ul>
@@ -209,7 +215,7 @@
                                     <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020</li>
                                     <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
                                 </ul>
-                                <a href="blog-detail.html" class="text-dark title h5">medicine research course for doctors</a>
+                                <a href="blog-detail.html" class="text-dark title h5">khóa học nghiên cứu y học cho bác sĩ</a>
                                 <div class="post-meta d-flex justify-content-between mt-3">
                                     <ul class="list-unstyled mb-0">
                                         <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i class="mdi mdi-heart-outline me-1"></i>33</a></li>
@@ -227,16 +233,16 @@
                             <img src="${pageContext.request.contextPath}/static/images/blog/04.jpg" class="img-fluid" alt="">
                             <div class="card-body p-4">
                                 <ul class="list-unstyled mb-2">
-                                    <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020</li>
+                                    <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>19 7 2023</li>
                                     <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
                                 </ul>
-                                <a href="blog-detail.html" class="text-dark title h5">Comparing Nitrogen And Mechanical Freezers</a>
+                                <a href="blog-detail.html" class="text-dark title h5">So sánh</a>
                                 <div class="post-meta d-flex justify-content-between mt-3">
                                     <ul class="list-unstyled mb-0">
                                         <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i class="mdi mdi-heart-outline me-1"></i>33</a></li>
                                         <li class="list-inline-item"><a href="#" class="text-muted comments"><i class="mdi mdi-comment-outline me-1"></i>08</a></li>
                                     </ul>
-                                    <a href="blog-detail.html" class="link">Read More <i class="mdi mdi-chevron-right align-middle"></i></a>
+                                    <a href="blog-detail.html" class="link">xem thêm<i class="mdi mdi-chevron-right align-middle"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -247,16 +253,16 @@
                             <img src="${pageContext.request.contextPath}/static/images/blog/05.jpg" class="img-fluid" alt="">
                             <div class="card-body p-4">
                                 <ul class="list-unstyled mb-2">
-                                    <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020</li>
-                                    <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
+                                    <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>19 7 2023</li>
+                                    <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 Phút đoc</li>
                                 </ul>
-                                <a href="blog-detail.html" class="text-dark title h5">It Is Very Important To Wear Proper Clothing</a>
+                                <a href="blog-detail.html" class="text-dark title h5">Điều rất quan trọng là phải mặc quần áo phù hợp</a>
                                 <div class="post-meta d-flex justify-content-between mt-3">
                                     <ul class="list-unstyled mb-0">
                                         <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i class="mdi mdi-heart-outline me-1"></i>33</a></li>
                                         <li class="list-inline-item"><a href="#" class="text-muted comments"><i class="mdi mdi-comment-outline me-1"></i>08</a></li>
                                     </ul>
-                                    <a href="blog-detail.html" class="link">Read More <i class="mdi mdi-chevron-right align-middle"></i></a>
+                                    <a href="blog-detail.html" class="link">Xem thêm <i class="mdi mdi-chevron-right align-middle"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -267,10 +273,10 @@
                             <img src="${pageContext.request.contextPath}/static/images/blog/06.jpg" class="img-fluid" alt="">
                             <div class="card-body p-4">
                                 <ul class="list-unstyled mb-2">
-                                    <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020</li>
-                                    <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
+                                    <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>19 7 2023</li>
+                                    <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 phút đọc/li>
                                 </ul>
-                                <a href="blog-detail.html" class="text-dark title h5">Hollowed-Out Faces More Cuts Amid Virus</a>
+                                <a href="blog-detail.html" class="text-dark title h5">Những khuôn mặt rỗng tuếch Nhiều vết cắt hơn giữa lúc có virus</a>
                                 <div class="post-meta d-flex justify-content-between mt-3">
                                     <ul class="list-unstyled mb-0">
                                         <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i class="mdi mdi-heart-outline me-1"></i>33</a></li>
@@ -287,10 +293,10 @@
                             <img src="${pageContext.request.contextPath}/static/images/blog/07.jpg" class="img-fluid" alt="">
                             <div class="card-body p-4">
                                 <ul class="list-unstyled mb-2">
-                                    <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020</li>
-                                    <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
+                                    <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>19 7 2023</li>
+                                    <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 phút đo</li>
                                 </ul>
-                                <a href="blog-detail.html" class="text-dark title h5">A Researcher Is Research On Coronavirus In Lab</a>
+                                <a href="blog-detail.html" class="text-dark title h5">Một nhà nghiên cứu đang nghiên cứu về coronavirus trong phòng thí nghiệm</a>
                                 <div class="post-meta d-flex justify-content-between mt-3">
                                     <ul class="list-unstyled mb-0">
                                         <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i class="mdi mdi-heart-outline me-1"></i>33</a></li>

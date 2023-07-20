@@ -52,7 +52,7 @@
                                 <div class="text-center margin-nagative mt-n5 position-relative pb-4 border-bottom">
 
                                     <img src="${serviceDetail.image}"
-                                         class="img-fluid rounded" alt="">
+                                         class="img-fluid rounded w-50 h-50" alt="">
                                     <h5 class="mt-3 mb-1">${serviceDetail.name}</h5>
                                 </div>
 
@@ -64,10 +64,15 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-lg-12 col-md-12 mt-4">
                             <div class="bg-white rounded shadow overflow-hidden">
                                 <div class="p-4 border-bottom">
                                     <h5 class="mb-0">Danh sách loại dịch vụ</h5>
+                                    <button type="button" class="btn btn-soft-primary mt-2"
+                                            data-bs-toggle="modal" data-bs-target="#add_service_type">
+                                        Thêm
+                                    </button>
                                 </div>
                                 <table class="table p-4 mb-0 table-center">
                                     <thead>
@@ -140,7 +145,8 @@
                     <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit">
                         <div class="card border-0 shadow overflow-hidden">
                             <div class="tab-content p-4" id="pills-tabContent">
-                                <form action="${pageContext.request.contextPath}/management/service/update?id=${serviceDetail.id}" method="POST"
+                                <form action="${pageContext.request.contextPath}/management/service/update?id=${serviceDetail.id}"
+                                      method="POST"
                                       enctype="multipart/form-data"
                                       onSubmit="document.getElementById('submit').disabled = true;">
                                     <h5 class="mb-0">Chỉnh sửa thông tin :</h5>
@@ -169,7 +175,8 @@
                                     </div>
                                 </form>
 
-                                <form action="${pageContext.request.contextPath}/management/service/update" method="POST"
+                                <form action="${pageContext.request.contextPath}/management/service/update"
+                                      method="POST"
                                       class="mt-4" onSubmit="document.getElementById('submit').disabled = true;">
                                     <input value="${param.id}" name="id" hidden="hidden">
                                     <div class="row">
@@ -233,17 +240,52 @@
             <div class="modal fade" id="service_type${s.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog" role="document">
-                    <div class="modal-content">
+                    <form action="${pageContext.request.contextPath}/management/service/updateFee" method="post">
+                        <div class="modal-content">
+                            <div class="modal-body mx-3">
+                                <div class="md-form mb-2">
+                                    <i class="fas fa-envelope prefix grey-text"></i>
+                                    <label data-error="wrong" data-success="right">Loại dịch vụ</label>
+                                    <input value="${param.id}" name="id" hidden="">
+                                    <select name="idServiceType" class="form-control" hidden="">
+                                        <c:forEach items="${types}" var="t">
+                                            <option
+                                                    <c:if test="${s.type == t.nameType}">selected</c:if>
+                                                    value="${t.idType}">${t.nameType}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+
+                                <div class="md-form mb-2">
+                                    <label data-error="wrong" data-success="right">Giá</label>
+                                    <input type="text" name="fee" value="${s.fee}" class="form-control validate">
+                                </div>
+
+                            </div>
+                            <div class="modal-footer d-flex justify-content-center">
+                                <button class="btn btn-primary" type="submit">Lưu</button>
+                                <button class="btn btn-danger">Xóa</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </c:forEach>
+
+        <div class="modal fade" id="add_service_type" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form action="${pageContext.request.contextPath}/management/service/createFee" method="POST"
+                          class="mt-4">
+                        <input value="${param.id}" name="id" hidden="">
                         <div class="modal-body mx-3">
                             <div class="md-form mb-2">
                                 <i class="fas fa-envelope prefix grey-text"></i>
-                                <label data-error="wrong" data-success="right">Loại dịch vụ</label>
-
-                                <select name="types" class="form-control">
-                                    <c:forEach items="${types}" var="t">
-                                        <option
-                                                <c:if test="${s.type == t.nameType}">selected</c:if>
-                                                value="${t.idType}">${t.nameType}</option>
+                                <label data-error="wrong" data-success="right">Thêm loại của dịch vụ</label>
+                                <select name="idType" class="form-control">
+                                    <c:forEach items="${getTypeOfServiceAvailable}" var="g">
+                                        <option value="${g.idType}">${g.nameType}</option>
                                     </c:forEach>
                                 </select>
 
@@ -251,42 +293,44 @@
 
                             <div class="md-form mb-2">
                                 <label data-error="wrong" data-success="right">Giá</label>
-                                <input type="text" name="price" value="${s.fee}" class="form-control validate">
+                                <input type="text" name="fee"
+                                       class="form-control validate">
                             </div>
-
-                        </div>
-                        <div class="modal-footer d-flex justify-content-center">
-                            <button class="btn btn-primary">Lưu</button>
-                            <button class="btn btn-danger">Xóa</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </c:forEach>
-
-        <c:forEach items="${doctorOfService}" var="d">
-        <div class="modal fade" id="doctor_id${d.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-body mx-3">
-                        <div class="md-form mb-2">
-                            <i class="fas fa-envelope prefix grey-text"></i>
-                            <div class="md-form mb-2">
-                                <label data-error="wrong" data-success="right">Loại dịch vụ của bác sĩ : ${d.name}</label>
-                                <c:forEach items="${d.types}" var="t">
-                                    <div class="d-flex justify-content-between bg-light p-2 mb-2">
-                                        <p>${t.nameType}</p>
-                                        <button class="btn btn-danger">Xóa</button>
-                                    </div>
-                                </c:forEach>
+                            <div class="modal-footer d-flex justify-content-center">
+                                <button class="btn btn-primary" type="submit"
+                                        <c:if test="${getTypeOfServiceAvailable.size() == 0}">disabled</c:if>
+                                >Thêm
+                                </button>
                             </div>
-
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
+        <c:forEach items="${doctorOfService}" var="d">
+            <div class="modal fade" id="doctor_id${d.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body mx-3">
+                            <div class="md-form mb-2">
+                                <i class="fas fa-envelope prefix grey-text"></i>
+                                <div class="md-form mb-2">
+                                    <label data-error="wrong" data-success="right">Loại dịch vụ của bác sĩ
+                                        : ${d.name}</label>
+                                    <c:forEach items="${d.types}" var="t">
+                                        <div class="d-flex justify-content-between bg-light p-2 mb-2">
+                                            <p>${t.nameType}</p>
+                                            <button class="btn btn-danger">Xóa</button>
+                                        </div>
+                                    </c:forEach>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </c:forEach>
         <jsp:include page="../layout/footer.jsp"/>
     </main>

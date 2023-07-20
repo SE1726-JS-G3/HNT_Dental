@@ -33,29 +33,29 @@
             <div class="col-lg-5 col-md-8">
                 <div class="card login-page shadow mt-4 rounded border-0">
                     <div class="card-body">
-                        <h4 class="text-center">Recover Account</h4>
+                        <h4 class="text-center"> Khôi phục mật khẩu </h4>
                         <form class="forgot mt-4" id="forgot">
                             <p id="content" style="color: red; align-content: center;"></p>
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <p class="text-muted">Please enter your email address. You will receive a link to
-                                        create a new password via email.</p>
+                                    <p class="text-muted">Hãy điền địa chỉ email của bạn. Bạn sẽ nhận được một liên kết đến
+                                        tạo mật khẩu mới qua email.</p>
                                     <div class="mb-3">
-                                        <label class="form-label">Email address <span
+                                        <label class="form-label">Địa chỉ Email <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" placeholder="Enter Your Email Address"
+                                        <input type="text" class="form-control" placeholder="Nhập địa chỉ Email của bạn"
                                                name="email" required="">
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="d-grid">
-                                        <button class="btn btn-primary">Send</button>
+                                        <button class="btn btn-primary">Gửi</button>
                                     </div>
                                 </div>
                                 <div class="mx-auto">
-                                    <p class="mb-0 mt-3"><small class="text-dark me-2">Remember your password ?</small>
+                                    <p class="mb-0 mt-3"><small class="text-dark me-2">Nhớ mật khẩu ?</small>
                                         <a href="${pageContext.request.contextPath}/auth/login"
-                                           class="text-dark h6 mb-0">Sign in</a></p>
+                                           class="text-dark h6 mb-0">Đăng nhập</a></p>
                                 </div>
                             </div>
                         </form>

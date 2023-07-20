@@ -27,57 +27,167 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">ID cuộc hẹn</label>
-                                        <input readonly value="${details != null ? details.id : ''}" type="text" class="form-control">
+                                        <input readonly value="${d.id}" type="text" class="form-control">
                                     </div>
                                 </div>
-
+                                <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">ID bệnh nhân </label>
+                                    <input readonly value="${d.account_id}" type="text" class="form-control">
+                                </div>
+                            </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">Tên bệnh nhân</label>
-                                        <input readonly value="${details != null ? details.patient.fullName : ''}" type="text" class="form-control">
+                                        <label class="form-label">Tên bệnh Nhân</label>
+                                        <input readonly value="${d.name}" type="text" class="form-control">
+
                                     </div>
                                 </div>
-
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">ID bệnh nhân</label>
-                                        <input readonly value="${details != null ? details.patient.id : ''}" type="text" class="form-control">
+                                        <label class="form-label">Thời gian khám </label>
+                                        <input readonly value="${d.time}" type="text" class="form-control">
+
                                     </div>
                                 </div>
-
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Ngày đặt lịch</label>
-                                        <input readonly value="${details != null ? details.date : ''}" type="text" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Giờ đặt lịch</label>
-                                        <input readonly value="${details != null ? details.time : ''}" type="text" class="form-control">
+                                        <input readonly value="${d.date}" type="text" class="form-control">
+
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Trạng thái</label>
-                                        <input readonly value="${details != null ? details.status : ''}" type="text" class="form-control">
+                                        <input value="<c:if test="${d.status == true}">
+       Assigned
+                                         </c:if>
+                                         <c:if test="${d.status == false}">
+       Complete
+                                         </c:if>" type="text" class="form-control">
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <input type="hidden" name="id" value="${details.id}"> <!-- Fix: Added hidden input field for id -->
+                                    <input type="hidden" name="id" value="${a.id}"> <!-- Fix: Added hidden input field for id -->
                                     <input type="hidden" name="status" value="1"> <!-- Fix: Hard-coded status value as 1 for "Chấp nhận" -->
                                     <input type="submit" id="submit" name="send" class="btn btn-primary active" value="Hoàn thành lịch hẹn"> <!-- Added "active" class to the button -->
                                 </div>
                             </div>
                         </form>
+
+                        <div class="card border-0 shadow overflow-hidden mt-4">
+                            <div class="p-4 border-bottom">
+                                <h5 class="mb-0">Kết quả khám</h5>
+                            </div>
+                            <form action="${pageContext.request.contextPath}/management/booking/result"
+                                  method="POST">
+                                <div class="row tab-content p-4">
+                                    <div class="col-lg-12">
+                                        <input hidden="" name="id" value="${param.id}">
+                                        <div class="mb-3">
+                                            <label class="form-label">Kết quả khám bao gồm kết luần của bác sĩ + đơn thuốc + Phim XQ (nếu có)</label>
+                                            <readonly name="result" class="form-control attachments"
+                                                      rows="3">${d.bookingResultDto.result}</readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+<br> <br>
+                        <div class="col-md-6">
+
+                            <button class="btn btn-info active" type="button">
+                                Hủy đặt lịch
+                            </button>
+                            <button class="btn btn-primary active" type="button">
+                                Đánh giá
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<!-- Start Modal -->
+<div class="modal fade" id="newblogadd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-bottom p-3">
+                <h5 class="modal-title" id="exampleModalLabel">Đây là trang hiển thị kết quả khám</h5>
+                <button type="button" class="btn btn-icon btn-close" data-bs-dismiss="modal" id="close-modal"><i class="uil uil-times fs-4 text-dark"></i></button>
+            </div>
+
+            <div class="modal-body p-3 pt-4">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="ms-md-4">
+                            <form>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Tiêu đề bài viết <span class="text-danger">*</span></label>
+                                            <input name="name" id="name" type="text" class="form-control" placeholder="Tiêu đề :">
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label"> Ngày : </label>
+                                            <input name="date" type="text" class="form-control start" id="date" value="Chọn ngày :">
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label"> Thời gian đọc : </label>
+                                            <input name="time" type="text" class="form-control" id="time" value="5 phút">
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Tag</label>
+                                            <select class="form-select form-control">
+                                                <option value="EY">Eye Care</option>
+                                                <option value="GY">Gynecologist</option>
+                                                <option value="PS">Psychotherapist</option>
+                                                <option value="OR">Orthopedic</option>
+                                                <option value="DE">Dentist</option>
+                                                <option value="GA">Gastrologist</option>
+                                                <option value="UR">Urologist</option>
+                                                <option value="NE">Neurologist</option>
+                                            </select>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-lg-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Nội dung <span class="text-danger">*</span></label>
+                                            <textarea name="comments" id="comments" rows="4" class="form-control" placeholder="Nội dung BLog :"></textarea>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-lg-12 text-end">
+                                        <button type="submit" class="btn btn-primary">Thêm Blog</button>
+                                    </div><!--end col-->
+                                </div>
+                            </form>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+                    <div class="d-grid">
+                        <label class="btn-upload btn btn-primary mt-4">Tải xuống</label>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End modal -->
 
 <jsp:include page="layout/footer.jsp"/>
 <a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i

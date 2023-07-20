@@ -17,6 +17,7 @@
             <li><a href="${pageContext.request.contextPath}/management/service"><i class="uil uil-user me-2 d-inline-block"></i>Quản lý dịch vụ </a></li>
             <li><a href="${pageContext.request.contextPath}/management/booking"><i class="uil uil-user me-2 d-inline-block"></i>Quản lý lịch hẹn </a></li>
             <li><a href="${pageContext.request.contextPath}/management/blog"><i class="uil uil-user me-2 d-inline-block"></i>Quản lý bài đăng </a></li>
+            <li><a href="${pageContext.request.contextPath}/management/doctor/myPatientOfDoctor"><i class="uil uil-user me-2 d-inline-block"></i>Bệnh nhân của tôi</a></li>
         </ul>
     </div>
 </nav>

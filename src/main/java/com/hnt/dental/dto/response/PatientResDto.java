@@ -30,7 +30,7 @@ public class PatientResDto {
                             .name(patient.getFullName())
                             .dob(DateUtils.convertLocalDateToString(patient.getDob()))
                             .gender(patient.getGender() ? "Nam" : "Nữ")
-                            .status(patient.getStatus()? "active" : "nactive")
+                            .status(patient.getStatus()? "active" : "deactive")
                             .build()
             );
         }

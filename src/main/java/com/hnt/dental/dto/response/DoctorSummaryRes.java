@@ -1,10 +1,14 @@
 package com.hnt.dental.dto.response;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
+@SuperBuilder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class DoctorSummaryRes {
     private Long id;
     private String fullName;

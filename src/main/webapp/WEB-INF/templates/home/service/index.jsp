@@ -26,8 +26,8 @@
                         lập tức, điều trị khẩn cấp hãy đặt lịch hẹn.</p>
                     <nav aria-label="breadcrumb" class="d-inline-block mt-3">
                         <ul class="breadcrumb bg-transparent mb-0">
-                            <li class="breadcrumb-item"><a href="home">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#">Service</a></li>
+                            <li class="breadcrumb-item"><a href="home">Trang chủ</a></li>
+                            <li class="breadcrumb-item"><a href="#">Dịch vụ</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -44,7 +44,7 @@
                 <div class="col-lg-4">
                     <input type="text" class="form-select form-control" name="txt"
                            value="${search}"
-                           id="search" placeholder="Tìm kiếm bác sĩ...">
+                           id="search" placeholder="Tìm kiếm dịch vụ...">
                 </div>
                 <div class="col-lg-2">
                     <button class="btn btn-primary rounded-pill" id="btn-search-1">Tìm kiếm</button>

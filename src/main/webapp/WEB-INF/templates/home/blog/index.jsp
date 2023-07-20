@@ -65,6 +65,7 @@
                 <div class="col-lg-2">
                     <button class="btn btn-primary rounded-pill" id="btn-category">Lọc</button>
                 </div>
+
             </div>
             <br>
         </div>

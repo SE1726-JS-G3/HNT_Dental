@@ -28,7 +28,7 @@
                                     <div class="col-lg-8">
                                         <input type="text" class="form-control border rounded-pill" name="txt"
                                                value="${search}"
-                                               id="search" placeholder="Tìm kiếm nhân viên...">
+                                               id="search" placeholder="Tìm kiếm bệnh nhân...">
                                     </div>
                                     <div class="col-lg-4">
                                         <button class="btn btn-primary rounded-pill" id="btn-search">Tìm kiếm</button>
