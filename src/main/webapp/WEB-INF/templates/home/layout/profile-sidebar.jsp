@@ -12,9 +12,14 @@
         </div>
 
         <ul class="list-unstyled sidebar-nav mb-0">
+            <c:if test="${sessionScope.account.role == 0}">
             <li class="navbar-item"><a href=" /auth/profile" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i>Thông tin tài khoản</a></li>
             <li class="navbar-item"><a href=" /management/service-booking" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i> Lịch sử dịch vụ</a></li>
             <li class="navbar-item"><a href="/management/my-appointment" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i> Lịch sử lịch hẹn</a></li>
+            </c:if>
+            <c:if test="${sessionScope.account.role != 0}">
+                <li class="navbar-item"><a href="/auth/profile" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i>Thông tin tài khoản</a></li>
+            </c:if>
         </ul>
     </div>
 </div>

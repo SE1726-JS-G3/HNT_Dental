@@ -54,13 +54,19 @@
                                     <span class="d-block mb-1">${sessionScope.account.email}</span>
                                 </div>
                             </a>
-                        </c:if>
-                        <div class="dropdown-divider border-top"></div>
-                        <c:if test="${sessionScope.account != null}">
-                            <a class="dropdown-item text-" href="#"><span
+                            <a class="dropdown-item text-"
+                               href="${pageContext.request.contextPath}/auth/profile"><span
                                     class="mb-0 d-inline-block me-1"><i
                                     class="uil uil-sign-out-alt align-middle h6"></i></span> Tài khoản của tôi</a>
+                            <c:if test="${sessionScope.account.role != 0}">
+                                <a class="dropdown-item text-"
+                                   href="${pageContext.request.contextPath}/management-router"><span
+                                        class="mb-0 d-inline-block me-1"><i
+                                        class="uil uil-sign-out-alt align-middle h6"></i></span> Quản lý</a>
+                            </c:if>
                         </c:if>
+                        <div class="dropdown-divider border-top"></div>
+
                         <c:if test="${sessionScope.account != null}">
                             <a class="dropdown-item text-" href="${pageContext.request.contextPath}/auth/logout"><span
                                     class="mb-0 d-inline-block me-1"><i

@@ -84,7 +84,7 @@
                                 <div class="col-lg-12">
                                     <div class="mb-3">
                                         <label class="form-label" for="password">Mật khẩu <span class="text-danger">*</span></label>
-                                        <input type="password" class="form-control" placeholder="Mật khẩu" id="Mật khẩu"
+                                        <input type="password" class="form-control" placeholder="Mật khẩu" id="password"
                                                name="password">
                                     </div>
                                 </div>
@@ -92,7 +92,7 @@
                                 <div class="col-lg-12">
                                     <div class="mb-3">
                                         <label class="form-label" for="confirmPassword">Xác nhận mật khẩu <span class="text-danger">*</span></label>
-                                        <input type="password" class="form-control" placeholder="Xác nhận mật khẩu" id="Xác nhận mật khẩu"
+                                        <input type="password" class="form-control" placeholder="Xác nhận mật khẩu" id="confirmPassword"
                                                name="confirmPassword">
                                     </div>
                                 </div>
