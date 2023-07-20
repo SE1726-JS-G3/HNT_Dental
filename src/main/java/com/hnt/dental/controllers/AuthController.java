@@ -79,16 +79,11 @@ public class AuthController extends HttpServlet {
             case "/auth/my-appointment":
                 ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/my-appointment.jsp");
                 break;
-<<<<<<< HEAD
-            case "/auth/my-appointment/detail":
+                case "/auth/my-appointment/detail":
                 ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/my-appointment-detail.jsp");
                 break;
-
-
-=======
-
                 default:
->>>>>>> develop
+
         }
     }
 

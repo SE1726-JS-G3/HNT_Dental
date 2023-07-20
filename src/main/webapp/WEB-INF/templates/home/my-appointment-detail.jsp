@@ -27,62 +27,51 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">ID cuộc hẹn</label>
-                                        <input readonly value="${details != null ? details.id : ''}" type="text" class="form-control">
+                                        <input readonly value="${d.id}" type="text" class="form-control">
                                     </div>
                                 </div>
-
+                                <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">ID bệnh nhân </label>
+                                    <input readonly value="${d.account_id}" type="text" class="form-control">
+                                </div>
+                            </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Tên bệnh Nhân</label>
-                                        <input readonly value="" type="email"
-                                               class="form-control">
-                                    </div>
-                                </div>
+                                        <input readonly value="${d.name}" type="text" class="form-control">
 
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">ID bệnh nhân</label>
-                                        <input readonly value="${details != null ? details.patient.id : ''}" type="text" class="form-control">
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Thời gian khám </label>
+                                        <input readonly value="${d.time}" type="text" class="form-control">
 
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Ngày đặt lịch</label>
-                                        <input readonly value="${details != null ? details.date : ''}" type="text" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Giờ đặt lịch</label>
-                                        <input readonly value="${details != null ? details.time : ''}" type="text" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Ngày đặt lịch</label>
-                                        <input name="appointment_id" readonly value="" type="text"
-                                               class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Giờ đặt lịch</label>
-                                        <input name="appointment_id" readonly value="" type="text"
-                                               class="form-control">
-                                    </div>
-                                </div>
+                                        <input readonly value="${d.date}" type="text" class="form-control">
 
+                                    </div>
+                                </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Trạng thái</label>
-                                        <input readonly value="${details != null ? details.status : ''}" type="text" class="form-control">
+                                        <input value="<c:if test="${d.status == true}">
+       Assigned
+                                         </c:if>
+                                         <c:if test="${d.status == false}">
+       Complete
+                                         </c:if>" type="text" class="form-control">
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <input type="hidden" name="id" value="${details.id}"> <!-- Fix: Added hidden input field for id -->
+                                    <input type="hidden" name="id" value="${a.id}"> <!-- Fix: Added hidden input field for id -->
                                     <input type="hidden" name="status" value="1"> <!-- Fix: Hard-coded status value as 1 for "Chấp nhận" -->
                                     <input type="submit" id="submit" name="send" class="btn btn-primary active" value="Hoàn thành lịch hẹn"> <!-- Added "active" class to the button -->
                                 </div>
@@ -100,8 +89,8 @@
                                         <input hidden="" name="id" value="${param.id}">
                                         <div class="mb-3">
                                             <label class="form-label">Kết quả khám bao gồm kết luần của bác sĩ + đơn thuốc + Phim XQ (nếu có)</label>
-                                            <textarea name="result" class="form-control attachments"
-                                                      rows="3">${bookingResult.result}</textarea>
+                                            <readonly name="result" class="form-control attachments"
+                                                      rows="3">${d.bookingResultDto.result}</readonly>
                                         </div>
                                     </div>
                                 </div>

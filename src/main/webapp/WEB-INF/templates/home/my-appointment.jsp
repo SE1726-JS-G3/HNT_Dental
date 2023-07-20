@@ -24,50 +24,47 @@
               <table class="table mb-0 table-center">
                 <thead>
                 <tr>
-                  <th class="border-bottom p-3" style="min-width: 10px;">ID</th>
-                  <th class="border-bottom p-5" style="min-width: 190px;">Tên dịch vụ</th>
+                  <th class="border-bottom p-3" >ID</th>
+                  <th class="border-bottom p-5" >Tên dịch vụ</th>
                   <th class="border-bottom p-3">Loại dịch vụ</th>
                   <th class="border-bottom p-3">Ngày khám</th>
-                  <th class="border-bottom p-5">Trạng thái</th>
+                  <th class="border-bottom p-3">Trạng thái</th>
                   <th class="border-bottom p-5">Tác vụ</th>
                 </tr>
                 </thead>
                 <tbody>
+<c:forEach items="${list}" var="o">
                 <tr>
-                  <th class="p-3">1</th>
-                  <td class="p-5">
-                    <a href="#" class="text-dark">
-                      <div class="d-flex align-items-center">
-                        <img src="https://sendidau.com/wp-content/uploads/2021/01/meme-meo.jpg"
-                             class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                        <span class="ms-2">ccjfsfkasf</span>
-                      </div>
-                    </a>
-                  </td>
-                  <td class="p-3">1</td>
-                  <td class="p-5">03/06/2023</td>
-                  <td class="p-5">Reject</td>
+                    <td class="p-3">${o.id}</td>
+                    <td class="p-3">${o.serviceResDto.name}</td>
+                   <td class="p-3">${o.serviceTypeDto.nameType}</td>
+                   <td class="p-3">${o.date}</td>
+  <td class="p-3">
+    <c:if test="${o.status == true}">
+      Assigned
+    </c:if>
+    <c:if test="${o.status == false}">
+      Complete
+    </c:if>
+  </td>
                   <td class="p-3 text-center">
                     <a href="#">
-                      <button class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/auth/my-appointment/detail'">Chi tiết</button>
+                      <button class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/management/detail-appointment?id=${o.id}'">Chi tiết</button>
                     </a>
                   </td>
                 </tr>
+</c:forEach>
                 </tbody>
               </table>
             </div>
+              <c:set var="page" value="${currentPage}"/>
             <div class="row text-center">
               <div class="col-12 mt-4">
                 <div class="d-md-flex align-items-center text-center justify-content-between">
                   <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                    <li class="page-item active"><a class="page-link">1</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link">1</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link">1</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link">1</a>
-                    </li>
+                    <c:forEach begin="${1}" end="${totalPage}" var="i">
+                      <li class="page-item ${i==page?'active':''}"><a class="page-link" href="${url}?page=${i}">${i}</a></li>
+                    </c:forEach>
                   </ul>
                 </div>
               </div>
