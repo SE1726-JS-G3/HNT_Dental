@@ -229,7 +229,6 @@ public class BlogService {
         req.setAttribute("blog_id", id);
         req.setAttribute("error", error);
         ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/blogs/detail.jsp");
-
     }
 
 //    public void updateRender(HttpServletRequest req, HttpServletResponse resp) throws Exception {

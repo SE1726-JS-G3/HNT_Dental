@@ -49,7 +49,7 @@ public class BlogDaoImpl implements BlogDao {
     private static final String COUNT_BLOG = "SELECT COUNT(*) AS count FROM blogs";
 
     private static final String UPDATE_BLOG = "UPDATE blogs" +
-            "            SET category_id=?, title= ?,brief= ?, description=?,  update_at= ?, created_by= ?, status = ?\n" +
+            "            SET category_id=?, title= ?,brief= ?, description=?, create_at=?,  update_at= ?, created_by= ?, status = ?" +
             "            WHERE id = ?";
     private static final String CHANGE_status = "UPDATE blogs " +
             "SET " +
@@ -208,16 +208,10 @@ public class BlogDaoImpl implements BlogDao {
     @Override
     public void update(Blogs blog) throws SQLException {
         ConnectionUtils.executeUpdate(UPDATE_BLOG, blog.getCategoryBlog().getId(), blog.getTitle(),
-                blog.getBrief(), blog.getDescription(),
+                blog.getBrief(), blog.getDescription(),blog.getCreatedAt(),
                 blog.getUpdatedAt(), blog.getCreatedBy(), blog.getStatus(), blog.getId());
     }
 
-    //    public static void main(String[] args) {
-//        BlogDaoImpl blogDao = new BlogDaoImpl();
-//        blogDao.update(Blogs.builder()
-//                        .b
-//                .build());
-//    }
     @Override
     public void delete(Blogs blog) throws SQLException {
         categoryBlogDao.delete(CategoryBlog.builder().id(blog.getId()).build());
