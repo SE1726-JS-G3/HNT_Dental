@@ -68,7 +68,7 @@
                         <div class="col-lg-12 col-md-12 mt-4">
                             <div class="bg-white rounded shadow overflow-hidden">
                                 <div class="p-4 border-bottom">
-                                    <h5 class="mb-0">Danh sách rank cua loai dịch vụ</h5>
+                                    <h5 class="mb-0">Danh sách rank của các loại dịch vụ</h5>
                                     <button type="button" class="btn btn-soft-primary"
                                             data-bs-toggle="modal" data-bs-target="#rank_new">
                                         Thêm rank
@@ -112,7 +112,7 @@
                                 <form action="${pageContext.request.contextPath}/management/type/update"
                                       method="POST"
                                       class="mt-4" >
-                                    <input value="${param.id}" name="id" hidden="hidden">
+                                    <input value="${param.id}"name="id"hidden="hidden">
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="mb-3">

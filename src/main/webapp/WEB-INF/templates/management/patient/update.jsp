@@ -11,7 +11,7 @@
         <div class="container-fluid">
             <div class="layout-specing">
                 <div class="d-md-flex justify-content-between">
-                    <h5 class="mb-0">Đây là màn update bệnh nhân </h5>
+                    <h5 class="mb-0">Bệnh Nhân </h5>
                     <nav aria-label="breadcrumb" class="d-inline-block mt-4 mt-sm-0">
                         <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
                             <li class="breadcrumb-item"><a href="#">Quản lí</a></li>
@@ -32,9 +32,9 @@
                                          class="avatar avatar-md-md rounded-pill shadow mx-auto d-block" alt="">
                                 </div>
                                 <div class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
-                                    <h5 class="">Upload your picture</h5>
-                                    <p class="text-muted mb-0">For best results, use an image at least 600px by 600px in
-                                        either .jpg or .png format</p>
+                                    <h5 class="">Tải lên hình ảnh của bạn </h5>
+                                    <p class="text-muted mb-0"> Để có kết quả tốt nhất , vui lòng sử dụng một hình ảnh ít nhất 600px x 600px trong
+                                        định dạng .jpg hoặc .png</p>
                                 </div>
 
                                 <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">
@@ -95,14 +95,16 @@
                                         <div class="mb-3">
                                             <label class="form-label">Giới tính</label>
                                             <select name="gender" id="gender" class="form-select form-control">
-                                                <option value="nu">Nữ</option>
+                                                <option value="nu"
                                                 <c:if test="${detail.gender == false}">
                                                     selected
                                                 </c:if>
-                                                <option value="nam">Nam</option>
+                                                >Nữ</option>
+                                                <option value="nam"
                                                 <c:if test="${detail.gender == true}">
                                                     selected
                                                 </c:if>
+                                                >Nam</option>
                                             </select>
                                         </div>
                                     </div>
@@ -111,14 +113,16 @@
                                         <div class="mb-3">
                                             <label class="form-label">Trạng thái</label>
                                             <select name="status" class="form-select form-control">
-                                                <option value="notActive">nactive</option>
+                                                <option value="deactive"
                                                 <c:if test="${detail.status == false}">
                                                     selected
                                                 </c:if>
-                                                <option value="active">active</option>
+                                                >deactive</option>
+                                                <option value="active"
                                                 <c:if test="${detail.status == true}">
                                                     selected
-                                                </c:if>
+                                               </c:if>
+                                                >active</option>
                                             </select>
                                         </div>
                                     </div>
@@ -127,7 +131,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Mô tả</label>
                                             <textarea name="description" id="comments" rows="3" class="form-control"
-                                                      placeholder="Bio :">${detai.description}</textarea>
+                                                      placeholder="Bio :">${detail.description}</textarea>
                                         </div>
                                     </div>
                                 </div>

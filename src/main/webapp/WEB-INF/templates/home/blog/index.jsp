@@ -15,7 +15,7 @@
     <div class="row mt-5 justify-content-center">
       <div class="col-12">
         <div class="section-title text-center">
-          <h3 class="sub-title mb-4 text-white title-dark">Blogs & Tin Tức</h3>
+          <h3 class="sub-title mb-4 text-white title-dark">Tin Tức & Chủ đề</h3>
           <p class="para-desc mx-auto text-white-50">Bạn có thể trở thành một bác sĩ bất đắc dĩ trong gia đình với những kiến thức tại HNT Dental blog.
             Tại đây chúng tôi luôn cập nhập những thông tin bổ ích về sức khỏe, sinh lý, sơ cứu,...</p>
 
@@ -74,16 +74,16 @@
           <img src="https://shreethemes.in/doctris/layouts/assets/images/blog/01.jpg" class="img-fluid" alt="">
           <div class="card-body p-4">
             <ul class="list-unstyled mb-2">
-              <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>20th November, 2020</li>
-              <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
+              <li class="list-inline-item text-muted small me-3"><i class="uil uil-calendar-alt text-dark h6 me-1"></i>19 07 2023</li>
+              <li class="list-inline-item text-muted small"><i class="uil uil-clock text-dark h6 me-1"></i>5 phút đọc/li>
             </ul>
-            <a href="blog-detail.html" class="text-dark title h5">Easily connect to doctor and make a treatment</a>
+            <a href="blog-detail.html" class="text-dark title h5">Dễ dàng kết nối với bác sĩ và điều trị</a>
             <div class="post-meta d-flex justify-content-between mt-3">
               <ul class="list-unstyled mb-0">
                 <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i class="mdi mdi-heart-outline me-1"></i>33</a></li>
                 <li class="list-inline-item"><a href="#" class="text-muted comments"><i class="mdi mdi-comment-outline me-1"></i>08</a></li>
               </ul>
-              <a href="blog-detail.html" class="link">Read More <i class="mdi mdi-chevron-right align-middle"></i></a>
+              <a href="blog-detail.html" class="link">Xem thêm <i class="mdi mdi-chevron-right align-middle"></i></a>
             </div>
           </div>
         </div>

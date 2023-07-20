@@ -103,7 +103,7 @@
                                     <%-- Copy upload--%>
                                     <div class="col-lg-12">
                                         <div class="mb-3">
-                                            <label class="form-label">Image <span class="text-danger">*</span></label>
+                                            <label class="form-label">Ảnh <span class="text-danger">*</span></label>
                                             <div id="myfileupload">
                                                 <input type="file" name="image" class="img" id="uploadfile" name="ImageUpload"
                                                        onchange="readURL(this);"/>
