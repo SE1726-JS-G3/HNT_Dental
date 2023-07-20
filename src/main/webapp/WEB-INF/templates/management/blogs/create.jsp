@@ -22,7 +22,7 @@
                                 <div class="modal-body p-3 pt-4">
                                     <form
                                             action="${pageContext.request.contextPath}/management/blog/create"
-                                            method="POST" onSubmit="return validateForm()">
+                                            method="POST" onSubmit="return validateForm()"  enctype="multipart/form-data">
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="mb-3">
@@ -57,7 +57,7 @@
                                                     <div class="col-lg-offset-5 col-lg-15">
                                                         <div class="profile-pic">
                                                             <br><br>
-                                                            <input id="file" type="file" onchange="loadFile(event)"
+                                                            <input id="file" type="file"
                                                                    name="image"/>
                                                         </div>
                                                     </div>
@@ -122,61 +122,24 @@
         // Perform field validation
         if (title.trim() === '') {
             displayErrorMessage('Tiêu đề không được bỏ trống');
+            console.log(1)
             return false;
         }
         if (brief.trim() === '') {
             displayErrorMessage('Thông tin tóm tắt không được bỏ trống');
+            console.log(2)
             return false;
         }
         if (describe.trim() === '') {
             displayErrorMessage('Mô tả không được bỏ trống');
+            console.log(3)
             return false;
         }
-        // if (dob.trim() === '') {
-        //     displayErrorMessage('Ngày sinh không được bỏ trống');
-        //     return false;
-        // }
-        // if (!isValidDateFormat(dob)) {
-        //     displayErrorMessage('Ngày sinh phải có định dạng YYYY-MM-DD');
-        //     return false;
-        // }
-        // if (email.trim() === '') {
-        //     displayErrorMessage('Email không được bỏ trống');
-        //     return false;
-        // }
-        // if (!isValidEmailAddress(email)) {
-        //     displayErrorMessage('Email không hợp lệ');
-        //     return false;
-        // }
-        // if (address.trim() === '') {
-        //     displayErrorMessage('Địa chỉ không được bỏ trống');
-        //     return false;
-        // }
-        // if (phone.trim() === '') {
-        //     displayErrorMessage('Điện thoại không được bỏ trống');
-        //     return false;
-        // }
-        // if (!isValidPhoneNumber(phone)) {
-        //     displayErrorMessage('Số điện thoại chỉ được nhập 10 chữ số');
-        //     return false;
-        // }
-        // if (position.trim() === '') {
-        //     displayErrorMessage('Chuyên môn không được bỏ trống');
-        //     return false;
-        // }
-        // if (rankId.trim() === '') {
-        //     displayErrorMessage('xếp hạng không được bỏ trống');
-        //     return false;
-        // }
-        // if (!isValidRankId(rankId)) {
-        //     displayErrorMessage('Xếp hạng phải chỉ có từ 1 đến 10');
-        //     return false;
-        // }
 
-        // If all fields are valid, display success message
         displaySuccessMessage('Thông tin đã được cập nhật thành công');
         return true;
     }
+
 
     function isValidDateFormat(dateString) {
         // Kiểm tra định dạng ngày sinh theo dạng YYYY-MM-DD
