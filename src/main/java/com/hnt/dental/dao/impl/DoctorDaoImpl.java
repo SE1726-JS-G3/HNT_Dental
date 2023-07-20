@@ -591,30 +591,32 @@ public class DoctorDaoImpl implements DoctorDao {
 
 
 
-    private static final String GET_PROFILE_BY_EMAIL_SQL = "SELECT * FROM doctors " +
-            "INNER JOIN accounts a ON doctors.id = a.id " +
-            "WHERE doctors.id = ?";
+    private static final String GET_PROFILE_BY_ID_SQL = "SELECT * FROM doctors d " +
+            "INNER JOIN accounts a ON d.id = a.id " +
+            "WHERE d.id = ?";
     @Override
     public Account getProfile(Long id) throws SQLException {
-        ResultSet rs = ConnectionUtils.executeQuery(GET_PROFILE_BY_EMAIL_SQL,id);
+        ResultSet rs = ConnectionUtils.executeQuery(GET_PROFILE_BY_ID_SQL, id);
         assert rs != null;
         if (rs.next()) {
             return Account.builder()
                     .id(rs.getLong("id"))
                     .email(rs.getString("email"))
                     .password(rs.getString("password"))
-//                    .role(rs.getInt("role"))
-//                    .isVerified(rs.getBoolean("is_verified"))
+                    .role(rs.getInt("role"))
+                    .isVerified(rs.getBoolean("is_verified"))
 //                    .image(rs.getLong("image"))
                     .doctors(Doctors.builder()
+                            .gender(rs.getBoolean("gender"))
                             .fullName(rs.getString("full_name"))
-                            .phone (rs.getString("phone"))
+                            .phone(rs.getString("phone"))
+                            .dob(DateUtils.convertDateToLocalDate(rs.getDate("dob")))
+                            .address(rs.getString("address"))
+                            .description(rs.getString("description"))
                             .build())
-
                     .build();
         }
         return null;
     }
-
 
 }

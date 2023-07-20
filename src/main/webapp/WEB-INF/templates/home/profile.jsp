@@ -49,28 +49,22 @@
                 </div>
               </div>
             </form>
-            <form  action="${pageContext.request.contextPath}/doctor/profile" method="POST">
+            <form action="${pageContext.request.contextPath}/doctor/profile" method="POST"  id="profileForm">
               <div class="row">
                 <div class="col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Tên người dùng</label>
-                    <input name="id" readonly value="${doctorProfile != null ? doctorProfile.id : 2}" id="name" type="text" class="form-control">
+                    <label class="form-label">Họ tên</label>
+                    <input name="name" oninvalid="CheckFullName(this);" oninput="CheckFullName(this);" value="${doctorProfile != null ? doctorProfile.doctors.fullName : ''}" id="name2" type="text" class="form-control">
                   </div>
                 </div>
-
                 <div class="col-md-6">
                   <div class="mb-3">
                     <label class="form-label">Email</label>
-                    <input name="email" readonly value="${doctorProfile != null ? doctorProfile.email : ''}" id="email" type="email" class="form-control">
+                    <input name="email" value="${doctorProfile != null ? doctorProfile.email : ''}" id="email" type="email" class="form-control">
+                    <span id="emailValidationMessage" class="text-danger"></span> <!-- Thêm phần tử span để hiển thị thông báo -->
                   </div>
                 </div>
 
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">Họ tên</label>
-                    <input name="name" oninvalid="CheckFullName(this);" oninput="CheckFullName(this);"  value="${doctorProfile != null ? doctorProfile.doctors.fullName : ''}" id="name2" type="text" class="form-control" >
-                  </div>
-                </div>
 
                 <div class="col-md-6">
                   <div class="mb-3">
@@ -81,16 +75,35 @@
 
                 <div class="col-md-6">
                   <div class="mb-3">
+                    <label class="form-label">Ngày sinh</label>
+                    <input name="dob"  value="${doctorProfile != null ? doctorProfile.doctors.dob : ''}" id="dob" type="text" class="form-control">
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Địa chỉ</label>
+                    <input name="address"  value="${doctorProfile != null ? doctorProfile.doctors.address : ''}" id="address" type="text" class="form-control">
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Mô tả</label>
+                    <input name="description"  value="${doctorProfile != null ? doctorProfile.doctors.description : ''}" id="description" type="text" class="form-control">
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="mb-3">
                     <label class="form-label">Giới tính</label>
                     <div class="my-3">
                       <div class="form-check">
-                        <input id="credit" name="gender" ${doctorProfile != null && doctorProfile.doctors.gender == true ? "checked" : ""} value="true" type="radio" class="form-check-input"
-                               checked required >
+                        <input id="credit" name="gender" ${doctorProfile != null && doctorProfile.doctors.gender == true ? "checked" : ""} value="Nam" type="radio" class="form-check-input" checked required>
                         <label class="form-check-label">Nam</label>
                       </div>
                       <div class="form-check">
-                        <input id="debit" name="gender" ${doctorProfile != null && doctorProfile.doctors.gender == false ? "checked" : ""} value="false" type="radio" class="form-check-input"
-                               required>
+                        <input id="debit" name="gender" ${doctorProfile != null && doctorProfile.doctors.gender == false ? "checked" : ""} value="Nữ" type="radio" class="form-check-input" required>
                         <label class="form-check-label">Nữ</label>
                       </div>
                     </div>
@@ -153,9 +166,8 @@
   </div>
 </section>
 
-<jsp:include page="layout/footer.jsp"/>
-<a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i
-        data-feather="arrow-up" class="icons"></i></a>
+<jsp:include page="layout/footer.jsp" />
+<a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i data-feather="arrow-up" class="icons"></i></a>
 
 <div class="modal fade" id="watchvideomodal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -172,6 +184,98 @@
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  $(document).ready(function() {
+    // Lưu giá trị ban đầu của trường email
+    var originalEmail = $('#email').val();
+
+    // Gắn sự kiện focusout cho trường email
+    $('#email').focusout(function() {
+      var editedEmail = $(this).val();
+
+      // Kiểm tra nếu email đã được chỉnh sửa
+      if (editedEmail !== originalEmail) {
+        // Hiển thị thông báo không cho phép chỉnh sửa
+        $('#emailValidationMessage').text('Không được phép chỉnh sửa email.');
+      } else {
+        // Xóa thông báo nếu email không được chỉnh sửa
+        $('#emailValidationMessage').text('');
+      }
+    });
+
+    $('#profileForm').submit(function(event) {
+      event.preventDefault(); // Ngăn chặn gửi yêu cầu mặc định của form
+
+      // Lấy dữ liệu từ các trường nhập liệu
+      var formData = $(this).serialize();
+
+      // Kiểm tra các trường bắt buộc không được để trống
+      var fullName = $('#name2').val();
+      var phone = $('#number').val();
+      var dob = $('#dob').val();
+      var address = $('#address').val();
+      var description = $('#description').val();
+      var gender = $('input[name="gender"]:checked').val();
+
+      if (
+              fullName.trim() === '' ||
+              phone.trim() === '' ||
+              dob.trim() === '' ||
+              address.trim() === '' ||
+              description.trim() === '' ||
+              !gender
+      ) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi',
+          text: 'Vui lòng điền đầy đủ thông tin.'
+        });
+        return; // Dừng xử lý nếu có trường bị trống
+      }
+
+      // Kiểm tra định dạng ngày sinh (DOB)
+      var dobPattern = /^\d{4}-\d{2}-\d{2}$/;
+      if (!dobPattern.test(dob)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi',
+          html: 'Định dạng ngày sinh không hợp lệ.<br>Vui lòng nhập theo định dạng "YYYY-MM-DD".'
+        });
+        return; // Dừng xử lý nếu định dạng ngày sinh không hợp lệ
+      }
+
+      // Gửi yêu cầu AJAX để cập nhật thông tin
+      $.ajax({
+        type: 'POST',
+        url: '${pageContext.request.contextPath}/doctor/profile',
+        data: formData,
+        success: function(response) {
+          // Xử lý phản hồi từ server
+          console.log(response); // In ra response trong Console
+          Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: 'Cập nhật thông tin thành công.'
+          }).then(function() {
+            // Tải lại trang để hiển thị thông tin đã cập nhật
+            window.location.reload();
+          });
+        },
+        error: function() {
+          Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: 'Cập nhật thông tin thất bại.'
+          });
+        }
+      });
+    });
+  });
+
+</script>
 </body>
 
 </html>
