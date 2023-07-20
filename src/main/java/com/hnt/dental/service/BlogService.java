@@ -15,9 +15,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -39,6 +40,75 @@ public class BlogService {
 
     }
 
+//    private String getFileName(Part part) {
+//        String contentDisposition = part.getHeader("content-disposition");
+//        String[] tokens = contentDisposition.split(";");
+//        for (String token : tokens) {
+//            if (token.trim().startsWith("filename")) {
+//                return token.substring(token.indexOf("=") + 2, token.length() - 1);
+//            }
+//        }
+//        return "";
+//    }
+//    private static final String UPLOAD_DIR = "static\\images"; // Change this to your desired directory
+//    public void create(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+//        String title = req.getParameter("title");
+//        String brief = req.getParameter("brief");
+//        String description = req.getParameter("description");
+//        Long categoryId = Long.valueOf(req.getParameter("categoryId"));
+//        String name = req.getParameter("name");
+//        String status = req.getParameter("status");
+//        String error = null;
+//        Part filePart = req.getPart("image");
+//        String fileName = getFileName(filePart);
+//        // Get the absolute path of the "webapp" directory
+//        String appPath = req.getServletContext().getRealPath("");
+//        // Construct the relative path to the target directory
+//        String uploadPath = appPath + UPLOAD_DIR;
+//        try (InputStream fileContent = filePart.getInputStream()) {
+//            File targetFile = new File(uploadPath, fileName);
+//            Files.copy(fileContent, targetFile.toPath());
+//        } catch (IOException e) {
+//            System.out.println("Error uploading and saving file " + fileName + ": " + e.getMessage());
+//        }
+//
+//        try {
+//            Blogs blog = Blogs.builder()
+//                    .title(title)
+//                    .brief(brief)
+//                    .description(description)
+//                    .categoryID(categoryId)
+//                    .categoryBlog(CategoryBlog.builder().name(name).build())
+////                    .employee(Employee.builder().fullName(fullName).build())
+//                    .status(Objects.equals(status, "Hiện"))
+//                    .createdAt(LocalDateTime.now())
+//                    .image(fileName)
+////                    .createdBy(created_by)
+//                    .build();
+//
+//            Long id = blogDao.save(blog);
+//        } catch (Exception e) {
+//            error = e.getMessage();
+//        }
+//        if (StringUtils.isNotEmpty(error)) {
+//            ServletUtils.redirect(req, resp, "/management/blog/create?error=" + error);
+//        } else {
+//            ServletUtils.redirect(req, resp, "/management/blog");
+//        }
+//
+//    }
+
+    private String getFileName(Part part) {
+        String contentDisposition = part.getHeader("content-disposition");
+        String[] tokens = contentDisposition.split(";");
+        for (String token : tokens) {
+            if (token.trim().startsWith("filename")) {
+                return token.substring(token.indexOf("=") + 2, token.length() - 1);
+            }
+        }
+        return "";
+    }
+    private static final String UPLOAD_DIR = "static\\images"; // Change this to your desired directory
     public void create(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String title = req.getParameter("title");
         String brief = req.getParameter("brief");
@@ -49,14 +119,19 @@ public class BlogService {
         String status = req.getParameter("status");
 //        Long created_by = Long.valueOf(req.getParameter("created_by"));
         String error = null;
-        Part part = req.getPart("image");
-        String realpath = req.getServletContext().getRealPath("/images");
-        String filename = Paths.get(part.getSubmittedFileName()).getFileName().toString();
-        if (!Files.exists(Paths.get(realpath))) {
-            Files.createDirectories(Paths.get(realpath));
+        Part filePart = req.getPart("image");
+        String fileName = getFileName(filePart);
+        // Get the absolute path of the "webapp" directory
+        String appPath = req.getServletContext().getRealPath("");
+        // Construct the relative path to the target directory
+        String uploadPath = appPath + UPLOAD_DIR;
+        try (InputStream fileContent = filePart.getInputStream()) {
+            File targetFile = new File(uploadPath, fileName);
+            Files.copy(fileContent, targetFile.toPath());
+        } catch (IOException e) {
+            System.out.println("Error uploading and saving file " + fileName + ": " + e.getMessage());
         }
 
-        part.write(realpath + "/" + filename);
         try {
             Blogs blog = Blogs.builder()
                     .title(title)
@@ -67,8 +142,8 @@ public class BlogService {
 //                    .employee(Employee.builder().fullName(fullName).build())
                     .status(Objects.equals(status, "Hiện"))
                     .createdAt(LocalDateTime.now())
-                    .image(filename)
 //                    .createdBy(created_by)
+                    .image(fileName)
                     .build();
 
             Long id = blogDao.save(blog);

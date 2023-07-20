@@ -97,7 +97,7 @@
                             <c:forEach items="${blogs}" var="b">
                                 <div class="col-xl-3 col-lg-4 col-md-6 col-12 mt-4">
                                     <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-                                        <img src="@{${blogs.image}}"
+                                        <img src="/static/images/${b.image}"
                                              class="img-fluid" alt="">
                                         <div class="card-body p-4">
                                             <ul class="list-unstyled mb-2">

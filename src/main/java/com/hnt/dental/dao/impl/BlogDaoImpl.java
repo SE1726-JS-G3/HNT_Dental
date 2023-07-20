@@ -58,7 +58,7 @@ public class BlogDaoImpl implements BlogDao {
     private static final String DELETE_BLOG = "DELETE FROM blogs WHERE id=?";
     private static final String GET_CATEGORYBLOG = "SELECT distinct category_id FROM blogs";
 
-    private static final String GET_ALL_BLOGS = " SELECT b.id, b.category_id , b.title, b.brief, b.description, b.create_at, b.update_at, b.created_by, b.status, e.full_name, cb.name " +
+    private static final String GET_ALL_BLOGS = " SELECT b.id, b.image,  b.category_id , b.title, b.brief, b.description, b.create_at, b.update_at, b.created_by, b.status, e.full_name, cb.name " +
             "            FROM blogs b " +
             "            INNER JOIN category_blog cb ON b.category_id = cb.id " +
             "            LEFT JOIN employees e ON b.created_by = e.id " +
@@ -103,6 +103,7 @@ public class BlogDaoImpl implements BlogDao {
                             .status(rs.getBoolean("status"))
                             .createdAt(rs.getTimestamp("create_at").toLocalDateTime())
                             .createdBy(rs.getLong("created_by"))
+                            .image(rs.getString("image"))
                             .build()
             );
         }
@@ -184,7 +185,7 @@ public class BlogDaoImpl implements BlogDao {
                         .brief(rs.getString("brief"))
                         .description(rs.getString("description"))
                         .status(rs.getBoolean("status"))
-                        .image(rs.getString("image"))
+//                        .image(rs.getString("image"))
                         .build());
             }
             ConnectionUtils.closeConnection();
@@ -211,7 +212,7 @@ public class BlogDaoImpl implements BlogDao {
                 blog.getUpdatedAt(), blog.getCreatedBy(), blog.getStatus(), blog.getId());
     }
 
-//    public static void main(String[] args) {
+    //    public static void main(String[] args) {
 //        BlogDaoImpl blogDao = new BlogDaoImpl();
 //        blogDao.update(Blogs.builder()
 //                        .b
