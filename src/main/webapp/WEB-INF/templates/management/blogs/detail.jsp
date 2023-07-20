@@ -27,7 +27,7 @@ To change this template use File | Settings | File Templates.
                                             aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body p-3 pt-4">
-                                    <form  action="${pageContext.request.contextPath}/management/blog/update" method="POST" onsubmit="return submitForm() >
+                                    <form  action="${pageContext.request.contextPath}/management/blog/update" method="POST" onsubmit="return submitForm()" >
                                         <%--                                        <input value="${blog_id}" name="id" type="hidden">--%>
                                         <input value="${blog_id}" type="hidden" name="id">
                                         <%--                                        <input value="${blog_id}" name="id">--%>
