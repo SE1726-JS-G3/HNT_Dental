@@ -34,7 +34,7 @@
                                 <%--@elvariable id="list" type="java.util.List"--%>
                                 <c:forEach items="${list}" var="o">
                                     <tr>
-                                        <td class="p-3">${o.serviceResDto.id}</td>
+                                        <td class="p-3">${o.account_id}</td>
                                         <td class="p-3">${o.serviceResDto.name}</td>
                                         <td class="p-3">${o.serviceTypeDto.nameType}</td>
                                         <td class="p-3">

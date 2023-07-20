@@ -224,7 +224,7 @@ public class PatientDaoImpl implements PatientDao {
 
     }
 
-    private static final String SERVICE_APPOINTMENT="SELECT s.id, b.status  ,s.name,st.name as type " +
+    private static final String SERVICE_APPOINTMENT="SELECT s.id,b.account_id, b.status  ,s.name,st.name as type " +
             "                                                        FROM booking b " +
             "                                                        INNER JOIN service s " +
             "                                                        INNER JOIN service_type st " +
@@ -247,6 +247,7 @@ public class PatientDaoImpl implements PatientDao {
                                     .build())
                             .status(String.valueOf(rs.getBoolean("status")))
                             //.service_id(rs.getInt("service_id"))
+                            .account_id(rs.getInt("account_id"))
                             .build()
             );
         }

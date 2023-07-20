@@ -49,7 +49,7 @@
   </td>
                   <td class="p-3 text-center">
                     <a href="#">
-                      <button class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/management/detail-appointment?id=${o.id}'">Chi tiết</button>
+                      <button class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/auth/detail-appointment-history?id=${o.id}'">Chi tiết</button>
                     </a>
                   </td>
                 </tr>
