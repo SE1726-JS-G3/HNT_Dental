@@ -24,12 +24,20 @@ import com.hnt.dental.util.ServletUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.EOFException;
+
 import java.util.List;
+
+import com.hnt.dental.dto.response.BookingDto;
+
+
+
 
 public class PatientService {
     private static final PatientDao patientDao;
     private static final AccountDao accountDao;
+
+
+
 
     static {
 
@@ -168,5 +176,61 @@ public class PatientService {
         return search;
     }
 
+    public void historyAppointment(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String page = req.getParameter("page");
+        int pageNumber = 1;
+
+        if(StringUtils.isNotEmpty(page)){
+            pageNumber = Integer.parseInt(page);
+        }
+
+        Integer totalItem = patientDao.countAppointment();
+        Integer totalPage = PagingUtils.getTotalPage(totalItem);
+        try {
+            List<BookingDto> service = patientDao.getAppointment(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE);
+            req.setAttribute("list",service);
+            req.setAttribute("totalPage", totalPage);
+            req.setAttribute("currentPage", pageNumber);
+            req.setAttribute("url", "/auth/patient-booking-history");
+            req.getRequestDispatcher("/WEB-INF/templates/home/my-appointment.jsp").forward(req, resp);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+    }
+
+    public void detailAppointment(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException, ServletException {
+        resp.setContentType("text/html;charset=UTF-8");
+        String id = req.getParameter("id");
+        PatientDao dao = new PatientDaoImpl();
+        BookingDto detail = dao.detailAppointment(id);
+        req.setAttribute("d", detail);
+        ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/my-appointment-detail.jsp");
+
+    }
+
+
+    public void historyService(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String page = req.getParameter("page");
+        int pageNumber = 1;
+
+        if(StringUtils.isNotEmpty(page)){
+            pageNumber = Integer.parseInt(page);
+        }
+
+        Integer totalItem = patientDao.countAppointment();
+        Integer totalPage = PagingUtils.getTotalPage(totalItem);
+        try {
+            List<BookingDto> service = patientDao.getAppointmentService(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE);
+            req.setAttribute("list",service);
+            req.setAttribute("totalPage", totalPage);
+            req.setAttribute("currentPage", pageNumber);
+            req.setAttribute("url", "/auth/patient-booking-history");
+            req.getRequestDispatcher("/WEB-INF/templates/home/service-history.jsp").forward(req, resp);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+    }
 }
 

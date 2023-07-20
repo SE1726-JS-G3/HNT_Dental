@@ -79,11 +79,11 @@ public class AuthController extends HttpServlet {
             case "/auth/my-appointment":
                 ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/my-appointment.jsp");
                 break;
-            case "/auth/my-appointment/detail":
+                case "/auth/my-appointment/detail":
                 ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/my-appointment-detail.jsp");
                 break;
+                default:
 
-            default:
         }
     }
 
@@ -104,6 +104,7 @@ public class AuthController extends HttpServlet {
                 case "/auth/forgot/confirm":
                     service.forgotConfirm(req, resp);
                     break;
+
                 default:
             }
         } catch (SQLException e) {
