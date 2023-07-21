@@ -123,7 +123,6 @@
         </div>
     </div>
 </section>
-
 <script src="${pageContext.request.contextPath}/static/libs/feather-icons/feather.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>

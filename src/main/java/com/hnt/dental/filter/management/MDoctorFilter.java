@@ -16,13 +16,21 @@ public class MDoctorFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
-
+        String action = req.getServletPath();
         Account account = (Account) req.getSession().getAttribute("account");
         if (account != null) {
-            if (account.getRole() == RoleEnum.ROLE_ADMIN.ordinal() || account.getRole() == RoleEnum.ROLE_MARKETING.ordinal()) {
-                chain.doFilter(request, response);
+            if (action.contains("/management/doctor/myPatientOfDoctor")) {
+                if (account.getRole() == RoleEnum.ROLE_DOCTOR.ordinal()) {
+                    chain.doFilter(request, response);
+                } else {
+                    resp.sendRedirect(req.getContextPath() + "/403");
+                }
             } else {
-                resp.sendRedirect(req.getContextPath() + "/403");
+                if (account.getRole() == RoleEnum.ROLE_ADMIN.ordinal() || account.getRole() == RoleEnum.ROLE_MARKETING.ordinal()) {
+                    chain.doFilter(request, response);
+                } else {
+                    resp.sendRedirect(req.getContextPath() + "/403");
+                }
             }
         } else {
             resp.sendRedirect(req.getContextPath() + "/auth/login");

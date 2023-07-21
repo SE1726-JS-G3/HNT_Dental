@@ -146,6 +146,9 @@ public class DoctorDaoImpl implements DoctorDao {
     private static final String SQL_COUNT_DOCTOR_DASHBOARD = "select count(*) from doctors d " +
             "inner join accounts a on d.id = a.id " +
             "where a.is_verified = 1";
+    private static final String SQL_GET_PROFILE_DOCTOR = "select d.full_name, d.dob, d.gender, d.address,d.description,d.phone , a.email from doctors d " +
+            "inner join accounts a on a.id = d.id " +
+            "where d.id = ?";
 
     @Override
     public List<Doctors> getAllDoctor(int offset, int limit, String search, String status, String gender) throws SQLException {
@@ -278,6 +281,7 @@ public class DoctorDaoImpl implements DoctorDao {
     private static final String GET_PROFILE_BY_ID_SQL = "SELECT * FROM doctors d " +
             "INNER JOIN accounts a ON d.id = a.id " +
             "WHERE d.id = ?";
+
     @Override
     public List<DoctorSummaryRes> getListDoctorAvailable(LocalDate date, LocalTime time, Long typeId, Long serviceId, Long bookingId) throws SQLException {
         ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_LIST_DOCTOR_AVAILABLE, serviceId, typeId, date, time, bookingId);
@@ -299,6 +303,31 @@ public class DoctorDaoImpl implements DoctorDao {
         }
         ConnectionUtils.closeConnection();
         return 0;
+    }
+
+    @Override
+    public ProfileDto getProfileDoctor(Long id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_PROFILE_DOCTOR, id);
+        if (rs.next()) {
+            return ProfileDto.builder()
+                    .fullName(rs.getString("full_name"))
+                    .dob(rs.getDate("dob").toLocalDate())
+                    .gender(rs.getBoolean("gender"))
+                    .address(rs.getString("address"))
+                    .description(rs.getString("description"))
+                    .phone("0" + rs.getString("phone"))
+                    .email(rs.getString("email"))
+                    .build();
+        }
+        return new ProfileDto();
+    }
+
+    public static void main(String[] args) {
+        try {
+            System.out.println(new DoctorDaoImpl().getProfileDoctor(1L));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     @Override
@@ -380,7 +409,6 @@ public class DoctorDaoImpl implements DoctorDao {
     public void updateBookingStatus(BookingDto booking) throws SQLException {
         ConnectionUtils.executeUpdate(SQL_UPDATE_BOOKING_STATUS, booking.getStatus(), booking.getId());
     }
-
 
 
     @Override
@@ -607,8 +635,6 @@ public class DoctorDaoImpl implements DoctorDao {
         ConnectionUtils.closeConnection();
         return patients;
     }
-
-
 
 
     @Override

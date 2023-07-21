@@ -110,15 +110,7 @@
                             <div class="d-md-flex align-items-center text-center justify-content-between">
                                 <span class="text-muted me-3">Hiển thị 1 - 10 trên 50</span>
                                 <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                    <li class="page-item"><a class="page-link" href="javascript:void(0)"
-                                                             aria-label="Previous">Trước</a></li>
-                                    <li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="javascript:void(0)"
-                                                             aria-label="Next">Tiếp theo</a>
-                                    </li>
+
                                 </ul>
                             </div>
                         </div><!--end col-->
