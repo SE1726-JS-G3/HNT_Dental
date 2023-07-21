@@ -37,9 +37,9 @@ public class BlogDaoImpl implements BlogDao {
             "            inner join category_blog cb on b.category_id = cb.id;";
 
     private static final String GET_BLOG_BY_ID = "SELECT b.id,b.image, b.category_id, b.title, b.brief, b.description, b.create_at, " +
-            " b.update_at, b.created_by, b.status " +
-            ",e.full_name,cb.name FROM blogs b inner join employees e " +
-            "on e.id = b.created_by inner join category_blog cb on b.category_id = cb.id " +
+            " b.update_at, b.status " +
+            ",cb.name FROM blogs b inner join " +
+            "category_blog cb on b.category_id = cb.id " +
             "where (1=1) and b.id = ? ";
 
     private static final String SAVE_BLOG = "INSERT INTO blogs " +
@@ -49,7 +49,9 @@ public class BlogDaoImpl implements BlogDao {
     private static final String COUNT_BLOG = "SELECT COUNT(*) AS count FROM blogs";
 
     private static final String UPDATE_BLOG = "UPDATE blogs" +
-            "            SET category_id=?, title= ?,brief= ?, description=?, create_at=?,  update_at= ?, created_by= ?, status = ?" +
+            "            SET category_id=?, title= ?,brief= ?, description=?, create_at=?,  update_at= ?" +
+//            ", created_by= ?" +
+            ", status = ?" +
             "            WHERE id = ?";
     private static final String CHANGE_status = "UPDATE blogs " +
             "SET " +
@@ -177,10 +179,10 @@ public class BlogDaoImpl implements BlogDao {
                                         .name(rs.getString("name"))
                                         .build()
                         )
-                        .employee(Employee.builder().fullName(rs.getString("full_name"))
-                                .build())
+//                        .employee(Employee.builder().fullName(rs.getString("full_name"))
+//                                .build())
                         .createdAt(rs.getTimestamp("create_at").toLocalDateTime())
-                        .createdBy(rs.getLong("created_by"))
+//                        .createdBy(rs.getLong("created_by"))
                         .title(rs.getString("title"))
                         .brief(rs.getString("brief"))
                         .description(rs.getString("description"))
@@ -209,7 +211,9 @@ public class BlogDaoImpl implements BlogDao {
     public void update(Blogs blog) throws SQLException {
         ConnectionUtils.executeUpdate(UPDATE_BLOG, blog.getCategoryBlog().getId(), blog.getTitle(),
                 blog.getBrief(), blog.getDescription(),blog.getCreatedAt(),
-                blog.getUpdatedAt(), blog.getCreatedBy(), blog.getStatus(), blog.getId());
+                blog.getUpdatedAt()
+//                , blog.getCreatedBy()
+                , blog.getStatus(), blog.getId());
     }
 
     @Override

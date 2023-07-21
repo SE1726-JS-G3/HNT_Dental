@@ -166,12 +166,12 @@ public class BlogService {
         String description = req.getParameter("description");
         String create_at = req.getParameter("create_at");
         String update_at = req.getParameter("update_at");
-        String created_by = req.getParameter("create_by");
+//        String created_by = req.getParameter("create_by");
         String status = req.getParameter("status");
         String error = null;
         ArrayList<CategoryBlog> categoryBlog1 = (ArrayList<CategoryBlog>) categoryBlogDao.getAll();
         try {
-            Optional<Employee> employee = employeeDao.findByName(created_by);
+//            Optional<Employee> employee = employeeDao.findByName(created_by);
 
             CategoryBlog categoryBlog = categoryBlogDao.get(cate_id.intValue()).isPresent() ? categoryBlogDao.get(cate_id.intValue()).get() : null;
             categoryBlog.setUpdatedAt(LocalDateTime.now());
@@ -188,7 +188,7 @@ public class BlogService {
                             .description(description)
                             .createdAt(LocalDateTime.parse(create_at))
                             .updatedAt(LocalDateTime.now())
-                            .createdBy(employee.isPresent() ? employee.get().getId() : null)
+//                            .createdBy(employee.isPresent() ? employee.get().getId() : null)
                             .categoryID(categoryBlog.getId())
                             .build()
             );

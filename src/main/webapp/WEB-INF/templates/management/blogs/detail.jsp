@@ -85,34 +85,39 @@ To change this template use File | Settings | File Templates.
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="mb-3">
-                                                    <label class="form-label"> Ngày đăng: </label>
-                                                    <input name="create_at" type="text" class="form-control start" id="createdAt"
+                                                    <label class="form-label"> Ngày đăng:  ${blogs.createdAt}</label>
+                                                    <input name="create_at" type="hidden" class="form-control start" id="createdAt"
                                                            value="${blogs.createdAt}"
                                                            placeholder="Ngày đăng :">
-
-                                                </div>
-                                            </div><!--end col-->
-
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label"> Người đăng: </label>
-                                                    <input name="create_by" type="text" class="form-control start" id="created_by"
-                                                           value="${blogs.employee.fullName}"
-                                                           placeholder="Ngày đăng :">
-
-                                                </div>
-                                            </div><!--end col-->
-
-
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label"> Ngày cập nhật : </label>
-                                                    <input name="update_at" type="text" class="form-control start" id="updatedAt"
+<%--                                                    <input name="create_by" type="hidden" class="form-control start" id="created_by"--%>
+<%--                                                           value="${blogs.employee.fullName}"--%>
+<%--                                                           placeholder="Ngày đăng :">--%>
+                                                    <input name="update_at" type="hidden" class="form-control start" id="updatedAt"
                                                            value="${blogs.updatedAt}"
                                                            placeholder="Ngày đăng :">
-
                                                 </div>
                                             </div><!--end col-->
+
+<%--                                            <div class="col-md-6">--%>
+<%--                                                <div class="mb-3">--%>
+<%--                                                    <label class="form-label"> Người đăng: </label>--%>
+<%--                                                    <input name="create_by" type="text" class="form-control start" id="created_by"--%>
+<%--                                                           value="${blogs.employee.fullName}"--%>
+<%--                                                           placeholder="Ngày đăng :">--%>
+
+<%--                                                </div>--%>
+<%--                                            </div><!--end col-->--%>
+
+
+<%--                                            <div class="col-md-6">--%>
+<%--                                                <div class="mb-3">--%>
+<%--                                                    <label class="form-label"> Ngày cập nhật : </label>--%>
+<%--                                                    <input name="update_at" type="text" class="form-control start" id="updatedAt"--%>
+<%--                                                           value="${blogs.updatedAt}"--%>
+<%--                                                           placeholder="Ngày đăng :">--%>
+
+<%--                                                </div>--%>
+<%--                                            </div><!--end col-->--%>
 
 
 
