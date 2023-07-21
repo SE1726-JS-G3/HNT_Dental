@@ -118,19 +118,24 @@ public class BlogService {
 //        String fullName = req.getParameter("fullName");
         String status = req.getParameter("status");
 //        Long created_by = Long.valueOf(req.getParameter("created_by"));
+
         String error = null;
-        Part filePart = req.getPart("image");
-        String fileName = getFileName(filePart);
-        // Get the absolute path of the "webapp" directory
-        String appPath = req.getServletContext().getRealPath("");
-        // Construct the relative path to the target directory
-        String uploadPath = appPath + UPLOAD_DIR;
-        try (InputStream fileContent = filePart.getInputStream()) {
-            File targetFile = new File(uploadPath, fileName);
-            Files.copy(fileContent, targetFile.toPath());
-        } catch (IOException e) {
-            System.out.println("Error uploading and saving file " + fileName + ": " + e.getMessage());
-        }
+        Part raw_image = req.getPart("image");
+        String image = getFileName(raw_image);
+
+
+//        Part filePart = req.getPart("image");
+//        String fileName = getFileName(filePart);
+//        // Get the absolute path of the "webapp" directory
+//        String appPath = req.getServletContext().getRealPath("");
+//        // Construct the relative path to the target directory
+//        String uploadPath = appPath + UPLOAD_DIR;
+//        try (InputStream fileContent = filePart.getInputStream()) {
+//            File targetFile = new File(uploadPath, fileName);
+//            Files.copy(fileContent, targetFile.toPath());
+//        } catch (IOException e) {
+//            System.out.println("Error uploading and saving file " + fileName + ": " + e.getMessage());
+//        }
 
         try {
             Blogs blog = Blogs.builder()
@@ -143,7 +148,8 @@ public class BlogService {
                     .status(Objects.equals(status, "Hiện"))
                     .createdAt(LocalDateTime.now())
 //                    .createdBy(created_by)
-                    .image(fileName)
+//                    .image(fileName)
+                    .image(image)
                     .build();
 
             Long id = blogDao.save(blog);
@@ -169,6 +175,8 @@ public class BlogService {
 //        String created_by = req.getParameter("create_by");
         String status = req.getParameter("status");
         String error = null;
+        Part raw_image = req.getPart("image");
+        String image = getFileName(raw_image);
         ArrayList<CategoryBlog> categoryBlog1 = (ArrayList<CategoryBlog>) categoryBlogDao.getAll();
         try {
 //            Optional<Employee> employee = employeeDao.findByName(created_by);
@@ -190,6 +198,7 @@ public class BlogService {
                             .updatedAt(LocalDateTime.now())
 //                            .createdBy(employee.isPresent() ? employee.get().getId() : null)
                             .categoryID(categoryBlog.getId())
+                            .image(image)
                             .build()
             );
             System.out.println("runnable");

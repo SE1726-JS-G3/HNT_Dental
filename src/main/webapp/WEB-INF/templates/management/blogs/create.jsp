@@ -59,7 +59,7 @@
                                                     <div class="col-lg-offset-5 col-lg-15">
                                                         <div class="profile-pic">
                                                             <br><br>
-                                                            <input id="file" type="file" onchange="loadFile(event)"
+                                                            <input  id="file" type="file" onchange="loadFile(event)"
                                                                    name="image"/>
                                                         </div>
                                                     </div>
@@ -110,6 +110,8 @@
 
 
 <script>
+
+
     // function validateForm() {
     //     var title = document.getElementById('title').value;
     //     var brief = document.getElementById('brief').value;
