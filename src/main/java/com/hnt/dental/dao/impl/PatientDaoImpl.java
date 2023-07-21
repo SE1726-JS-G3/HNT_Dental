@@ -1,4 +1,5 @@
 package com.hnt.dental.dao.impl;
+
 import com.hnt.dental.dao.AccountDao;
 
 import com.hnt.dental.dao.PatientDao;
@@ -12,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.hnt.dental.dto.response.BookingDto;
 import com.hnt.dental.dto.response.ServiceResDto;
 
+import javax.management.MBeanAttributeInfo;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,9 +22,11 @@ import java.util.Optional;
 
 public class PatientDaoImpl implements PatientDao {
     private static AccountDao accountDao;
+
     static {
         accountDao = new AccountDaoImpl();
     }
+
     private static final String SAVE_PATIENT = "INSERT INTO patients" +
             "(id,dob, full_name, gender, phone, address) \n" +
             "VALUES(?, ?, ?, ?, ?, ?)";
@@ -31,7 +35,7 @@ public class PatientDaoImpl implements PatientDao {
             "                      where p.id = ?";
     private static final String DELETE_PATIENT = "DELETE FROM patients " +
             "WHERE id=?";
-    private static final String CREATE_PATIENT ="INSERT INTO patients " +
+    private static final String CREATE_PATIENT = "INSERT INTO patients " +
             "            ( id,full_name, dob, gender, phone, address,created_at) " +
             "            VALUES(?,?,?,?,?,?,?)  ";
 
@@ -51,6 +55,9 @@ public class PatientDaoImpl implements PatientDao {
             "WHERE LOWER(p.full_name) LIKE ? " +
             "OR LOWER(a.email) LIKE ? " +
             "OR LOWER(p.dob) LIKE ? ";
+    private static final String SQL_COUNT_PATIENT_DASHBOARD = "select count(*) from patients p " +
+            "inner join accounts a on p.id = a.id " +
+            "where a.is_verified = 1";
 
     @Override
     public Patient DetailPatients(String id) throws SQLException {
@@ -73,6 +80,7 @@ public class PatientDaoImpl implements PatientDao {
         return null;
 
     }
+
     @Override
     public List<Patient> getAll(Integer offset, Integer limit) throws SQLException {
         return null;
@@ -127,23 +135,25 @@ public class PatientDaoImpl implements PatientDao {
 
 
     @Override
-    public Long save(Patient patient) throws SQLException,ClassNotFoundException {
-        ConnectionUtils.executeUpdate(CREATE_PATIENT,patient.getAccount().getId(), patient.getFullName(), patient.getDob(),
-                patient.getGender(), patient.getPhone(), patient.getAddress(),patient.getCreatedAt());
+    public Long save(Patient patient) throws SQLException, ClassNotFoundException {
+        ConnectionUtils.executeUpdate(CREATE_PATIENT, patient.getAccount().getId(), patient.getFullName(), patient.getDob(),
+                patient.getGender(), patient.getPhone(), patient.getAddress(), patient.getCreatedAt());
         return null;
     }
 
     @Override
     public void update(Patient patient) throws SQLException {
         ConnectionUtils.executeUpdate(UPDATE_PATIENT, patient.getFullName(),
-                patient.getDob(), patient.getGender(), patient.getPhone(), patient.getAddress(),patient.getDescription(),patient.getStatus(),patient.getCreatedAt(),patient.getUpdatedAt(),
+                patient.getDob(), patient.getGender(), patient.getPhone(), patient.getAddress(), patient.getDescription(), patient.getStatus(), patient.getCreatedAt(), patient.getUpdatedAt(),
                 patient.getAccount().getId());
     }
+
     @Override
     public void delete(Patient patient) throws SQLException {
         accountDao.delete(Account.builder().id(patient.getId()).build());
         ConnectionUtils.executeUpdate(DELETE_PATIENT, patient.getId());
     }
+
     @Override
     public Integer count(String search) throws Exception {
         search = StringUtils.isNotEmpty(search) ? "%" + search.toLowerCase() + "%" : "%";
@@ -157,9 +167,7 @@ public class PatientDaoImpl implements PatientDao {
     }
 
 
-
-
-    private static final String HISTORY_APPOINTMENT ="SELECT b.id, b.status ,b.date ,s.name,st.name as type\n" +
+    private static final String HISTORY_APPOINTMENT = "SELECT b.id, b.status ,b.date ,s.name,st.name as type\n" +
             "                                             FROM booking b\n" +
             "                                             INNER JOIN service s \n" +
             "                                             INNER JOIN service_type st\n" +
@@ -167,12 +175,13 @@ public class PatientDaoImpl implements PatientDao {
             "                                             AND b.service_type_id = st.id\n" +
             "                                             ORDER BY b.service_id\n" +
             "                                             LIMIT ?,?";
-    private static final String COUNT_APPOINTMENT ="SELECT COUNT(*) FROM booking b\n" +
+    private static final String COUNT_APPOINTMENT = "SELECT COUNT(*) FROM booking b\n" +
             "                        JOIN service s JOIN service_type st ON b.service_id = s.id AND b.service_type_id = st.id";
+
     @Override
     public List<BookingDto> getAppointment(Integer offset, Integer limit) throws SQLException {
         List<BookingDto> list = new ArrayList<>();
-        ResultSet rs = ConnectionUtils.executeQuery(HISTORY_APPOINTMENT, offset,limit);
+        ResultSet rs = ConnectionUtils.executeQuery(HISTORY_APPOINTMENT, offset, limit);
         while (rs.next()) {
             list.add(
                     BookingDto
@@ -194,7 +203,7 @@ public class PatientDaoImpl implements PatientDao {
 
     @Override
     public Integer countAppointment() throws Exception {
-        ResultSet rs = ConnectionUtils.executeQuery(COUNT_APPOINTMENT );
+        ResultSet rs = ConnectionUtils.executeQuery(COUNT_APPOINTMENT);
         assert rs != null;
         if (rs.next()) {
             return rs.getInt(1);
@@ -203,10 +212,11 @@ public class PatientDaoImpl implements PatientDao {
         return null;
     }
 
-    private static final String DETAIL_APPOINTMENT="SELECT b.id,b.date,b.name,b.status,b.time,b.account_id ,br.result FROM booking b inner join booking_result br on b.id = br.booking_id  where b.id =?";
+    private static final String DETAIL_APPOINTMENT = "SELECT b.id,b.date,b.name,b.status,b.time,b.account_id ,br.result FROM booking b inner join booking_result br on b.id = br.booking_id  where b.id =?";
+
     @Override
     public BookingDto detailAppointment(String id) throws SQLException {
-        ResultSet rs = ConnectionUtils.executeQuery(DETAIL_APPOINTMENT,id);
+        ResultSet rs = ConnectionUtils.executeQuery(DETAIL_APPOINTMENT, id);
         assert rs != null;
         if (rs.next()) {
             return (BookingDto.builder().bookingResultDto(BookingResultDto.builder()
@@ -224,7 +234,7 @@ public class PatientDaoImpl implements PatientDao {
 
     }
 
-    private static final String SERVICE_APPOINTMENT="SELECT s.id, b.status  ,s.name,st.name as type " +
+    private static final String SERVICE_APPOINTMENT = "SELECT s.id, b.status  ,s.name,st.name as type " +
             "                                                        FROM booking b " +
             "                                                        INNER JOIN service s " +
             "                                                        INNER JOIN service_type st " +
@@ -232,10 +242,11 @@ public class PatientDaoImpl implements PatientDao {
             "                                                        AND b.service_type_id = st.id " +
             "                                                        ORDER BY b.service_id " +
             "                                                        LIMIT ?,?";
+
     @Override
     public List<BookingDto> getAppointmentService(Integer offset, Integer limit) throws SQLException {
         List<BookingDto> list = new ArrayList<>();
-        ResultSet rs = ConnectionUtils.executeQuery(SERVICE_APPOINTMENT, offset,limit);
+        ResultSet rs = ConnectionUtils.executeQuery(SERVICE_APPOINTMENT, offset, limit);
         while (rs.next()) {
             list.add(
                     BookingDto
@@ -252,5 +263,15 @@ public class PatientDaoImpl implements PatientDao {
         }
         ConnectionUtils.closeConnection();
         return list;
+    }
+    @Override
+    public Long countPatientDashboard() throws Exception {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_COUNT_PATIENT_DASHBOARD);
+        assert rs != null;
+        if (rs.next()) {
+            return rs.getLong(1);
+        }
+        ConnectionUtils.closeConnection();
+        return null;
     }
 }

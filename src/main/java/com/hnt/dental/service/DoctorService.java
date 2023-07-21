@@ -431,7 +431,6 @@ public class DoctorService {
         resp.sendRedirect(req.getContextPath() + "/auth/login");
     }
 
-
     public void updateProfileAndPassword(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException, ServletException {
         Account account = (Account) req.getSession().getAttribute("account");
         if (account != null) {

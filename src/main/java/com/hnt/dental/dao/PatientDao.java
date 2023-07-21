@@ -26,5 +26,6 @@ public interface PatientDao extends GenericDao<Patient>{
     BookingDto detailAppointment(String id) throws SQLException;
 
     List<BookingDto> getAppointmentService(Integer offset, Integer limit) throws SQLException;
+    Long countPatientDashboard() throws Exception;
 }
 

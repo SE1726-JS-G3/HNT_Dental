@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.hnt.dental.dto.response.BookingDto;
 import com.hnt.dental.dto.response.ServiceResDto;
 
+import javax.management.MBeanAttributeInfo;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -73,6 +74,8 @@ public class BookingDaoImpl implements BookingDao {
     private static final String SQL_GET_BOOKING_RESULT_BY_ID = "select * from booking_result " +
             "where booking_id = ? ";
 
+    private static final String SQL_COUNT_BOOKING_DASHBOARD = "SELECT count(*) FROM booking";
+
     @Override
     public void updateBookingDetail(Booking bookingDetailDto) throws SQLException {
         ConnectionUtils.executeUpdate(UPDATE_BOOKING_FOR_MARKETING, bookingDetailDto.getDoctors().getId(),
@@ -101,6 +104,16 @@ public class BookingDaoImpl implements BookingDao {
         }
         return null;
     }
+
+    @Override
+    public Long countBookingDashboard() throws Exception {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_COUNT_BOOKING_DASHBOARD);
+        while (rs.next()){
+            return rs.getLong(1);
+        }
+        return null;
+    }
+
     @Override
     public List<Booking> getAll(Integer offset, Integer limit, String search) throws SQLException {
         return null;
