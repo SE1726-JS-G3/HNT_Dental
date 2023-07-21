@@ -20,7 +20,7 @@ public interface BookingDao extends GenericDao<Booking> {
 
     List<BookingManagementDto> getServiceByServiceId() throws SQLException;
 
-   BookingDetailPatientDto getPatientByBookingId(Long id) throws SQLException;
+    BookingDetailPatientDto getPatientByBookingId(Long id) throws SQLException;
 
     BookingDetailDoctorDto getDoctorByBookingId(Long id) throws SQLException;
 
@@ -30,8 +30,11 @@ public interface BookingDao extends GenericDao<Booking> {
     BookingDetailDto getBookingDetailById(Long id) throws SQLException;
 
     List<BookingDto> getAllHistory() throws SQLException;
+
     BookingDto DetailHistory(String id) throws SQLException;
+
     void updateBookingDetail(Booking bookingDetailDto) throws SQLException;
+
     void updateBookingResult(BookingResult bookingResult) throws SQLException;
 
     Long insertBookingId(BookingResult bookingResult) throws SQLException;
@@ -39,4 +42,6 @@ public interface BookingDao extends GenericDao<Booking> {
     BookingResult getBookingResultById(Long id) throws SQLException;
 
     Long countBookingDashboard() throws Exception;
+
+    List<DashboardDto> getAllBookingToday() throws SQLException;
 }

@@ -25,13 +25,6 @@
         <ul class="dropdowns list-inline mb-0">
 
             <li class="list-inline-item mb-0 ms-1">
-                <a href="javascript:void(0)" class="btn btn-icon btn-pills btn-primary" data-bs-toggle="offcanvas"
-                   data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
-                    <i class="uil uil-search"></i>
-                </a>
-            </li>
-
-            <li class="list-inline-item mb-0 ms-1">
                 <div class="dropdown dropdown-primary">
                     <c:if test="${sessionScope.account != null}">
                         <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0"

@@ -3,15 +3,12 @@ package com.hnt.dental.dao.impl;
 import com.hnt.dental.dao.AccountDao;
 
 import com.hnt.dental.dao.PatientDao;
-import com.hnt.dental.dto.response.BookingResultDto;
-import com.hnt.dental.dto.response.ServiceTypeDto;
+import com.hnt.dental.dto.response.*;
 import com.hnt.dental.entities.Account;
 import com.hnt.dental.entities.Patient;
 import com.hnt.dental.util.ConnectionUtils;
 import com.hnt.dental.util.DateUtils;
 import org.apache.commons.lang3.StringUtils;
-import com.hnt.dental.dto.response.BookingDto;
-import com.hnt.dental.dto.response.ServiceResDto;
 
 import javax.management.MBeanAttributeInfo;
 import java.sql.ResultSet;
@@ -178,6 +175,10 @@ public class PatientDaoImpl implements PatientDao {
     private static final String COUNT_APPOINTMENT = "SELECT COUNT(*) FROM booking b\n" +
             "                        JOIN service s JOIN service_type st ON b.service_id = s.id AND b.service_type_id = st.id";
 
+    private static final String GET_PROFILE_PATIENT = "SELECT p.full_name, p.dob, p.gender,p.address,p.description, p.phone,a.email FROM hnt_dental.patients p " +
+            "inner join accounts a on a.id = p.id " +
+            "where p.id = ? ";
+
     @Override
     public List<BookingDto> getAppointment(Integer offset, Integer limit) throws SQLException {
         List<BookingDto> list = new ArrayList<>();
@@ -264,6 +265,7 @@ public class PatientDaoImpl implements PatientDao {
         ConnectionUtils.closeConnection();
         return list;
     }
+
     @Override
     public Long countPatientDashboard() throws Exception {
         ResultSet rs = ConnectionUtils.executeQuery(SQL_COUNT_PATIENT_DASHBOARD);
@@ -274,4 +276,21 @@ public class PatientDaoImpl implements PatientDao {
         ConnectionUtils.closeConnection();
         return null;
     }
+
+    @Override
+    public ProfileDto getProfile(Long id) throws SQLException {
+        ResultSet resultSet = ConnectionUtils.executeQuery(GET_PROFILE_PATIENT, id);
+        if (resultSet.next()) {
+            return ProfileDto.builder()
+                    .fullName(resultSet.getString("full_name"))
+                    .email(resultSet.getString("email"))
+                    .phone("0" + resultSet.getString("phone"))
+                    .dob(resultSet.getDate("dob").toLocalDate())
+                    .address(resultSet.getString("address"))
+                    .description(resultSet.getString("description"))
+                    .build();
+        }
+        return new ProfileDto();
+    }
+
 }

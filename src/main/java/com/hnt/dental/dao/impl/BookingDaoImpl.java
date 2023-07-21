@@ -76,6 +76,13 @@ public class BookingDaoImpl implements BookingDao {
 
     private static final String SQL_COUNT_BOOKING_DASHBOARD = "SELECT count(*) FROM booking";
 
+    private static final String SQL_GET_BOOKING_TODAY = "SELECT b.id, b.name, b.service_id, s.name as serviceName, " +
+            "b.service_type_id, st.name as serviceType, b.date ,b.status FROM booking b " +
+            "left join service s on s.id = b.service_id " +
+            "left join service_type st on st.id = b.service_type_id " +
+            "WHERE  date >= CURDATE() AND date < CURDATE() + INTERVAL 1 DAY ";
+
+
     @Override
     public void updateBookingDetail(Booking bookingDetailDto) throws SQLException {
         ConnectionUtils.executeUpdate(UPDATE_BOOKING_FOR_MARKETING, bookingDetailDto.getDoctors().getId(),
@@ -96,8 +103,8 @@ public class BookingDaoImpl implements BookingDao {
 
     @Override
     public BookingResult getBookingResultById(Long id) throws SQLException {
-        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_BOOKING_RESULT_BY_ID,id);
-        while (rs.next()){
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_BOOKING_RESULT_BY_ID, id);
+        while (rs.next()) {
             return BookingResult.builder()
                     .result(rs.getString("result"))
                     .build();
@@ -108,11 +115,30 @@ public class BookingDaoImpl implements BookingDao {
     @Override
     public Long countBookingDashboard() throws Exception {
         ResultSet rs = ConnectionUtils.executeQuery(SQL_COUNT_BOOKING_DASHBOARD);
-        while (rs.next()){
+        while (rs.next()) {
             return rs.getLong(1);
         }
         return null;
     }
+
+
+    @Override
+    public List<DashboardDto> getAllBookingToday() throws SQLException {
+        List<DashboardDto> dashboardDtoList = new ArrayList<>();
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_BOOKING_TODAY);
+        while (rs.next()) {
+            dashboardDtoList.add(DashboardDto.builder()
+                    .id(rs.getLong("id"))
+                    .name(rs.getString("name"))
+                    .service(Service.builder().id(rs.getLong("service_id")).name(rs.getString("serviceName")).build())
+                    .serviceType(ServiceType.builder().id(rs.getLong("service_type_id")).name(rs.getString("serviceType")).build())
+                    .time(rs.getDate("date").toLocalDate())
+                    .status(BookingStatusEnum.getBookingStatusString(rs.getInt("status")))
+                    .build());
+        }
+        return dashboardDtoList;
+    }
+
 
     @Override
     public List<Booking> getAll(Integer offset, Integer limit, String search) throws SQLException {

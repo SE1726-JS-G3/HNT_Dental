@@ -121,19 +121,21 @@
                 <tr>
                   <th class="border-bottom p-3" >Bệnh nhân</th>
                   <th class="border-bottom p-3" >Dịch vụ</th>
+                  <th class="border-bottom p-3" >Loại dịch vụ</th>
                   <th class="border-bottom p-3" >Thời gian</th>
                   <th class="border-bottom p-3" >Trạng thái</th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${reservationlist}" var="r">
+                <c:forEach items="${getBookingToday}" var="getBookingToday">
                   <tr>
-                    <td class="p-3">${r.patient.account.username}</td>
-                    <td class="p-3">${r.service.title}</td>
-                    <td class="p-3">${r.time}</td>
-                    <td class="p-3">${r.status}</td>
+                    <td class="border-bottom p-3">${getBookingToday.name}</td>
+                    <td class="border-bottom p-3">${getBookingToday.service.name}</td>
+                    <td class="border-bottom p-3">${getBookingToday.serviceType.name}</td>
+                    <td class="border-bottom p-3">${getBookingToday.time}</td>
+                    <td class="border-bottom p-3 align-content-center">${getBookingToday.status}</td>
                   </tr>
-                </c:forEach>
+                  </c:forEach>
                 </tbody>
               </table>
             </div>

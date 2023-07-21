@@ -54,10 +54,13 @@
                             </ul>
                             <c:if test="${sessionScope.account != null}">
                                 <c:if test="${sessionScope.account.role == 0}">
-                                    <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal">Đặt lịch khám</button>
+                                    <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal" onclick='window.location.href= "/booking?serviceId=${services.id}"'>
+                                        Đặt lịch khám
+                                    </button>
                                 </c:if>
                                 <c:if test="${sessionScope.account.role != 0}">
-                                    <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" disabled>Đặt lịch khám</button>
+                                    <button type="button" class="btn btn-primary mt-3 disabled" data-bs-toggle="modal" >Đặt lịch khám</button>
                                 </c:if>
                             </c:if>
 
@@ -141,15 +144,6 @@
                             <div class="d-md-flex align-items-center text-center justify-content-between">
                                 <span class="text-muted me-3">Hiển thị 1 - 10 trên 50</span>
                                 <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                    <li class="page-item"><a class="page-link" href="javascript:void(0)"
-                                                             aria-label="Previous">Trước</a></li>
-                                    <li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="javascript:void(0)"
-                                                             aria-label="Next">Tiếp theo</a>
-                                    </li>
                                 </ul>
                             </div>
                         </div><!--end col-->

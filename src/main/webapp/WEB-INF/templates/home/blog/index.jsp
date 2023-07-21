@@ -252,13 +252,7 @@
 
     <div class="row text-center">
       <div class="col-12">
-        <ul class="pagination justify-content-center mb-0 list-unstyled">
-          <li class="page-item"><a class="page-link" href="javascript:void(0)" aria-label="Previous">Prev</a></li>
-          <li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a></li>
-          <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>
-          <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
-          <li class="page-item"><a class="page-link" href="javascript:void(0)" aria-label="Next">Next</a></li>
-        </ul><!--end pagination-->
+
       </div><!--end col-->
     </div><!--end row-->
   </div><!--end container-->

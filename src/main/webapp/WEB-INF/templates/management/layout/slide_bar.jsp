@@ -21,15 +21,15 @@
                 <li><a href="${pageContext.request.contextPath}/management/patient"><i
                         class="uil uil-user me-2 d-inline-block"></i>Quản lý bệnh nhân </a></li>
                 <li><a href="${pageContext.request.contextPath}/management/service"><i
-                        class="uil uil-user me-2 d-inline-block"></i>Quản lý dịch vụ </a></li>
+                        class="ri-user-2-line h5 fw-normal mb-0"></i>Quản lý dịch vụ </a></li>
                 <li><a href="${pageContext.request.contextPath}/management/booking"><i
-                        class="uil uil-user me-2 d-inline-block"></i>Quản lý lịch hẹn </a></li>
+                        class="ri-user-2-line h5 fw-normal mb-0"></i>Quản lý lịch hẹn </a></li>
                 <li><a href="${pageContext.request.contextPath}/management/blog"><i
-                        class="uil uil-user me-2 d-inline-block"></i>Quản lý bài đăng </a></li>
+                        class="ri-user-2-line h5 fw-normal mb-0"></i>Quản lý bài đăng </a></li>
             </c:if>
             <c:if test="${sessionScope.account.role == 2}">
                 <li><a href="${pageContext.request.contextPath}/management/booking"><i
-                        class="uil uil-user me-2 d-inline-block"></i>Quản lý lịch hẹn </a></li>
+                        class="ri-user-2-line h5 fw-normal mb-0"></i>Quản lý lịch hẹn </a></li>
                 <li><a href="${pageContext.request.contextPath}/management/doctor/myPatientOfDoctor"><i
                         class="uil uil-user me-2 d-inline-block"></i>Bệnh nhân của tôi</a></li>
             </c:if>
@@ -39,15 +39,15 @@
                 <li><a href="${pageContext.request.contextPath}/management/patient"><i
                         class="uil uil-user me-2 d-inline-block"></i>Quản lý bệnh nhân </a></li>
                 <li><a href="${pageContext.request.contextPath}/management/service"><i
-                        class="uil uil-user me-2 d-inline-block"></i>Quản lý dịch vụ </a></li>
+                        class="ri-user-2-line h5 fw-normal mb-0"></i>Quản lý dịch vụ </a></li>
                 <li><a href="${pageContext.request.contextPath}/management/booking"><i
-                        class="uil uil-user me-2 d-inline-block"></i>Quản lý lịch hẹn </a></li>
+                        class="ri-user-2-line h5 fw-normal mb-0"></i>Quản lý lịch hẹn </a></li>
                 <li><a href="${pageContext.request.contextPath}/management/blog"><i
-                        class="uil uil-user me-2 d-inline-block"></i>Quản lý bài đăng </a></li>
+                        class="ri-user-2-line h5 fw-normal mb-0"></i>Quản lý bài đăng </a></li>
             </c:if>
             <c:if test="${sessionScope.account.role == 4}">
                 <li><a href="${pageContext.request.contextPath}/management/booking"><i
-                        class="uil uil-user me-2 d-inline-block"></i>Quản lý lịch hẹn </a></li>
+                        class="ri-user-2-line h5 fw-normal mb-0"></i>Quản lý lịch hẹn </a></li>
                 <li><a href="${pageContext.request.contextPath}/management/doctor/myPatientOfDoctor"><i
                         class="uil uil-user me-2 d-inline-block"></i>Bệnh nhân của tôi</a></li>
             </c:if>
