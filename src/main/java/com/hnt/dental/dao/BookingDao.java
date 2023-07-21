@@ -37,4 +37,6 @@ public interface BookingDao extends GenericDao<Booking> {
     Long insertBookingId(BookingResult bookingResult) throws SQLException;
 
     BookingResult getBookingResultById(Long id) throws SQLException;
+
+    Long countBookingDashboard() throws Exception;
 }

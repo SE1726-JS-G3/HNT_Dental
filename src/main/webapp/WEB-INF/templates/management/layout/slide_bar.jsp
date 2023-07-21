@@ -13,7 +13,7 @@
         <ul class="sidebar-menu pt-3">
 
             <c:if test="${sessionScope.account.role == 1}">
-                <li><a href="#"><i class="uil uil-dashboard me-2 d-inline-block"></i>Bảng điều khiển </a></li>
+                <li><a href="${pageContext.request.contextPath}/management/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Bảng điều khiển </a></li>
                 <li><a href="${pageContext.request.contextPath}/management/employee"><i
                         class="uil uil-user me-2 d-inline-block"></i>Quản lý nhân viên </a></li>
                 <li><a href="${pageContext.request.contextPath}/management/doctor"><i
