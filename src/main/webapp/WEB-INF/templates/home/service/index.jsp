@@ -42,27 +42,28 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-4">
-                    <input type="text" class="form-select form-control" name="txt"
-                           value="${search}"
-                           id="search" placeholder="Tìm kiếm dịch vụ...">
-                </div>
-                <div class="col-lg-2">
-                    <button class="btn btn-primary rounded-pill" id="btn-search-1">Tìm kiếm</button>
+                    <form action="${url}" method="get">
+                        <input type="text" class="form-select form-control" name="search"
+                               value="${search}"
+                               id="search" placeholder="Tìm kiếm dịch vụ...">
+                        <button type="submit" class="btn btn-primary rounded-pill mt-2" id="btn-search-1">Tìm kiếm</button>
+                    </form>
                 </div>
                 <div class="col-lg-4">
-                    <select class="form-select form-control">
-                        <option value="EY">Tất cả</option>
-                        <option value="EY">Thường</option>
-                        <option value="GY">VIP1</option>
-                        <option value="PS">VIP2</option>
-                    </select>
-                </div>
-                <div class="col-lg-2">
-                    <button class="btn btn-primary rounded-pill" id="btn-search-2">Lọc</button>
+                    <form action="${url}" method="get">
+                        <select class="form-select form-control" name="typeId">
+                            <option value="">Tất cả</option>
+                            <c:forEach items="${types}" var="type">
+                                <option value="${type.idType}" ${typeId == type.idType ? 'selected' : ''}>${type.nameType}</option>
+                            </c:forEach>
+                        </select>
+                        <button type="submit" class="btn btn-primary rounded-pill mt-2" id="btn-search-2">Lọc</button>
+                    </form>
                 </div>
             </div>
             <br>
         </div>
+
 
         <div class="row">
             <div class="col-lg-12 col-lg-12 row align-items-center">
@@ -136,7 +137,23 @@
 <script src="${pageContext.request.contextPath}/static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Handle the search button click
+        $("#btn-search-1").click(function () {
+            let search = $("#search").val();
+            let typeId = $("#typeId").val();
+            window.location.href = "${url}?search=" + search + "&typeId=" + typeId;
+        });
 
+        // Handle the filter button click
+        $("#btn-search-2").click(function () {
+            let typeId = $("#typeId").val();
+            window.location.href = "${url}?typeId=" + typeId;
+        });
+    });
+</script>
 </body>
 
 </html>

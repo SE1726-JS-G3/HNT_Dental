@@ -30,37 +30,6 @@ public class ServiceService {
         feedbackDao = new FeedbackDaoImpl();
     }
 
-    public void getAll(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        String page = req.getParameter("page");
-        String search = req.getParameter("search");
-        String typeID = req.getParameter("typeId");
-        int pageNumber = 1;
-
-        if (StringUtils.isNotEmpty(page)) {
-            pageNumber = Integer.parseInt(page);
-        }
-        if (StringUtils.isEmpty(search)) {
-            search = "";
-        }
-
-        if (StringUtils.isEmpty(typeID)) {
-            typeID = "";
-        }
-
-        Integer totalItem = dao.countListService(search.trim());
-        Integer totalPage = PagingUtils.getTotalPage(totalItem);
-        List<ServiceResDto> serviceResDtos = dao.getAllServiceDao(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE, search.trim(), typeID);
-        List<ServiceTypeDto> serviceTypeDtos = dao.getALlType();
-        req.setAttribute("services", serviceResDtos);
-        req.setAttribute("totalPage", totalPage);
-        req.setAttribute("currentPage", pageNumber);
-        req.setAttribute("search", search);
-        req.setAttribute("typeId", typeID);
-        req.setAttribute("types", serviceTypeDtos);
-        req.setAttribute("url", "/" +
-                "service");
-        ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/service/index.jsp");
-    }
 
     public void getAllServiceManagement(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String page = req.getParameter("page");
@@ -94,6 +63,37 @@ public class ServiceService {
         req.setAttribute("url", "/" +
                 "service");
         ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/service/index.jsp");
+    }
+    public void getAll(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String page = req.getParameter("page");
+        String search = req.getParameter("search");
+        String typeID = req.getParameter("typeId");
+        int pageNumber = 1;
+
+        if (StringUtils.isNotEmpty(page)) {
+            pageNumber = Integer.parseInt(page);
+        }
+        if (StringUtils.isEmpty(search)) {
+            search = "";
+        }
+
+        if (StringUtils.isEmpty(typeID)) {
+            typeID = "";
+        }
+
+        Integer totalItem = dao.countListService(search.trim());
+        Integer totalPage = PagingUtils.getTotalPage(totalItem);
+        List<ServiceResDto> serviceResDtos = dao.getAllServiceDao(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE, search.trim(), typeID);
+        List<ServiceTypeDto> serviceTypeDtos = dao.getALlType();
+        req.setAttribute("services", serviceResDtos);
+        req.setAttribute("totalPage", totalPage);
+        req.setAttribute("currentPage", pageNumber);
+        req.setAttribute("search", search);
+        req.setAttribute("typeId", typeID);
+        req.setAttribute("types", serviceTypeDtos);
+        req.setAttribute("url", "/" +
+                "service");
+        ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/service/index.jsp");
     }
 
     public void getServiceById(HttpServletRequest req, HttpServletResponse resp) throws Exception {
