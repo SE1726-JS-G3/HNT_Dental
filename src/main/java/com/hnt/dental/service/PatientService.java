@@ -176,28 +176,28 @@ public class PatientService {
         return search;
     }
 
-    public void historyAppointment(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        String page = req.getParameter("page");
-        int pageNumber = 1;
-
-        if(StringUtils.isNotEmpty(page)){
-            pageNumber = Integer.parseInt(page);
-        }
-
-        Integer totalItem = patientDao.countAppointment();
-        Integer totalPage = PagingUtils.getTotalPage(totalItem);
-        try {
-            List<BookingDto> service = patientDao.getAppointment(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE);
-            req.setAttribute("list",service);
-            req.setAttribute("totalPage", totalPage);
-            req.setAttribute("currentPage", pageNumber);
-            req.setAttribute("url", "/auth/patient-booking-history");
-            req.getRequestDispatcher("/WEB-INF/templates/home/my-appointment.jsp").forward(req, resp);
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
-    }
+//    public void historyAppointment(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+//        String page = req.getParameter("page");
+//        int pageNumber = 1;
+//
+//        if(StringUtils.isNotEmpty(page)){
+//            pageNumber = Integer.parseInt(page);
+//        }
+//
+//        Integer totalItem = patientDao.countAppointment();
+//        Integer totalPage = PagingUtils.getTotalPage(totalItem);
+//        try {
+//            List<BookingDto> service = patientDao.getAppointment(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE);
+//            req.setAttribute("list",service);
+//            req.setAttribute("totalPage", totalPage);
+//            req.setAttribute("currentPage", pageNumber);
+//            req.setAttribute("url", "/auth/patient-booking-history");
+//            req.getRequestDispatcher("/WEB-INF/templates/home/my-appointment.jsp").forward(req, resp);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//
+//        }
+//    }
 
     public void detailAppointment(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException, ServletException {
         resp.setContentType("text/html;charset=UTF-8");
@@ -210,27 +210,78 @@ public class PatientService {
     }
 
 
-    public void historyService(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        String page = req.getParameter("page");
-        int pageNumber = 1;
+//    public void historyService(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+//
+//            String page = req.getParameter("page");
+//            int pageNumber = 1;
+//
+//            if (StringUtils.isNotEmpty(page)) {
+//                pageNumber = Integer.parseInt(page);
+//            }
+//
+//            Integer totalItem = patientDao.countAppointment();
+//            Integer totalPage = PagingUtils.getTotalPage(totalItem);
+//            try {
+//
+//                List<BookingDto> service = patientDao.getAppointmentService(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE);
+//                req.setAttribute("list", service);
+//                req.setAttribute("totalPage", totalPage);
+//                req.setAttribute("currentPage", pageNumber);
+//                req.setAttribute("url", "/auth/patient-booking-history");
+//                req.getRequestDispatcher("/WEB-INF/templates/service-history.home/sp").forward(req, resp);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//
+//            }
+//        }
 
-        if(StringUtils.isNotEmpty(page)){
-            pageNumber = Integer.parseInt(page);
+    public void historyService(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException, ServletException {
+        Account account = (Account) req.getSession().getAttribute("account");
+        if (account != null) {
+            try {
+                Long patientId = account.getId();
+                if (patientId != null) {
+                    BookingDto service = patientDao.getService(patientId);
+                    if (service != null) {
+                        req.setAttribute("service", service);
+                        req.setAttribute("id", String.valueOf(patientId));
+                        req.setAttribute("url", "/auth/patient-booking-history");
+
+                        req.getRequestDispatcher("/WEB-INF/templates/home/service-history.jsp").forward(req, resp);
+                        return;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+               // throw new SystemRuntimeException();
+            }
         }
-
-        Integer totalItem = patientDao.countAppointment();
-        Integer totalPage = PagingUtils.getTotalPage(totalItem);
-        try {
-            List<BookingDto> service = patientDao.getAppointmentService(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE);
-            req.setAttribute("list",service);
-            req.setAttribute("totalPage", totalPage);
-            req.setAttribute("currentPage", pageNumber);
-            req.setAttribute("url", "/auth/patient-booking-history");
-            req.getRequestDispatcher("/WEB-INF/templates/home/service-history.jsp").forward(req, resp);
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
+        //resp.sendRedirect(req.getContextPath() + "/management/service-booking");
     }
-}
+
+    public void historyAppointment(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException, ServletException {
+        Account account = (Account) req.getSession().getAttribute("account");
+        if (account != null) {
+            try {
+                Long patientId = account.getId();
+                if (patientId != null) {
+                    BookingDto service = patientDao.getAppointment(patientId);
+                    if (service != null) {
+                        req.setAttribute("service", service);
+                        req.setAttribute("id", String.valueOf(patientId));
+                        req.setAttribute("url", "/management/my-appointment");
+
+                        req.getRequestDispatcher("/WEB-INF/templates/home/my-appointment.jsp").forward(req, resp);
+                        return;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                // throw new SystemRuntimeException();
+            }
+        }
+        //resp.sendRedirect(req.getContextPath() + "/management/service-booking");
+    }
+    }
+
 
