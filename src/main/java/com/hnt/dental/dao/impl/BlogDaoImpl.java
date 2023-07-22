@@ -34,6 +34,11 @@ public class BlogDaoImpl implements BlogDao {
             "                     AND b.category_id LIKE ?" +
             " order by b.id";
 
+
+    private static final String SQL_GET_CATEGORY_BY_CATEGORY_ID = "select DISTINCT cb.name, cb.id from blogs b " +
+            "            inner join category_blog cb on b.category_id = cb.id;";
+
+  
     private static final String GET_BLOG_BY_ID = "SELECT b.id, b.category_id, b.title, b.brief, b.description, b.create_at, " +
             " b.update_at, b.created_by, b.status, b.image " +
             ",e.full_name,cb.name FROM blogs b inner join employees e " +
@@ -41,13 +46,15 @@ public class BlogDaoImpl implements BlogDao {
             "where (1=1) and b.id = ? ";
 
     private static final String SAVE_BLOG = "INSERT INTO blogs " +
-            "(id, category_id, title, brief, description, create_at, status) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            "(id, category_id, title, brief, description, create_at, status,image) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 
-    private static final String UPDATE_BLOG = "UPDATE blogs " +
-            "SET category_id=?, title=?,brief=?, description=?, create_at=?, update_at=?, created_by=?, status = ? " +
-            "WHERE id=?";
+    private static final String UPDATE_BLOG = "UPDATE blogs" +
+            "            SET category_id=?, title= ?,brief= ?, description=?, create_at=?,  update_at= ?" +
+//            ", created_by= ?" +
+            ", status = ?" +
+            "            WHERE id = ?";
     private static final String CHANGE_status = "UPDATE blogs " +
             "SET " +
             "`status` = ? " +
@@ -55,7 +62,7 @@ public class BlogDaoImpl implements BlogDao {
     private static final String DELETE_BLOG = "DELETE FROM blogs WHERE id=?";
     private static final String GET_CATEGORYBLOG = "SELECT distinct category_id FROM blogs";
 
-    private static final String GET_ALL_BLOGS = " SELECT b.id, b.category_id , b.title, b.brief, b.description, b.create_at, b.update_at, b.created_by, b.status, e.full_name, cb.name " +
+    private static final String GET_ALL_BLOGS = " SELECT b.id, b.image,  b.category_id , b.title, b.brief, b.description, b.create_at, b.update_at, b.created_by, b.status, e.full_name, cb.name " +
             "            FROM blogs b " +
             "            INNER JOIN category_blog cb ON b.category_id = cb.id " +
             "            LEFT JOIN employees e ON b.created_by = e.id " +
@@ -130,6 +137,7 @@ public class BlogDaoImpl implements BlogDao {
                             .status(rs.getBoolean("status"))
                             .createdAt(rs.getTimestamp("create_at").toLocalDateTime())
                             .createdBy(rs.getLong("created_by"))
+                            .image(rs.getString("image"))
                             .build()
             );
         }
@@ -316,14 +324,15 @@ public class BlogDaoImpl implements BlogDao {
                                         .name(rs.getString("name"))
                                         .build()
                         )
-                        .employee(Employee.builder().fullName(rs.getString("full_name"))
-                                .build())
+//                        .employee(Employee.builder().fullName(rs.getString("full_name"))
+//                                .build())
                         .createdAt(rs.getTimestamp("create_at").toLocalDateTime())
-                        .createdBy(rs.getLong("created_by"))
+//                        .createdBy(rs.getLong("created_by"))
                         .title(rs.getString("title"))
                         .brief(rs.getString("brief"))
                         .description(rs.getString("description"))
                         .status(rs.getBoolean("status"))
+//                        .image(rs.getString("image"))
                         .build());
             }
             ConnectionUtils.closeConnection();
@@ -339,16 +348,17 @@ public class BlogDaoImpl implements BlogDao {
         ConnectionUtils.executeUpdate(SAVE_BLOG, blog.getId(), blog.getCategoryID(), blog.getTitle(), blog.getBrief(),
                 blog.getDescription(), blog.getCreatedAt()
 //                ,blog.getCreatedBy()
-                , blog.getStatus());
+                , blog.getStatus(), blog.getImage());
         return null;
-
     }
 
     @Override
     public void update(Blogs blog) throws SQLException {
         ConnectionUtils.executeUpdate(UPDATE_BLOG, blog.getCategoryBlog().getId(), blog.getTitle(),
-                blog.getBrief(), blog.getDescription(),
-                blog.getCreatedAt(), blog.getUpdatedAt(), blog.getCreatedBy(), blog.getStatus(), blog.getId());
+                blog.getBrief(), blog.getDescription(),blog.getCreatedAt(),
+                blog.getUpdatedAt()
+//                , blog.getCreatedBy()
+                , blog.getStatus(), blog.getId());
     }
 
     @Override

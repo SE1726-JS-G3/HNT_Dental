@@ -31,6 +31,7 @@ public class BlogResDto {
     private String description;
     private LocalDateTime create_at;
     private LocalDateTime update_at;
+    private String image;
     private String status;
     private long created_by;
     private String image;
@@ -51,7 +52,7 @@ public class BlogResDto {
                             .description(blog.getDescription())
                             .create_at(blog.getCreatedAt())
                             .status(blog.getStatus() ? "Hiện" : "Ẩn")
-
+                            .image(blog.getImage())
                             .build()
             );
         }
