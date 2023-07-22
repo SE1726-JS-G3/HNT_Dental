@@ -1,6 +1,7 @@
 package com.hnt.dental.dao;
 
 import com.hnt.dental.dto.response.BookingDto;
+import com.hnt.dental.dto.response.ProfileDto;
 import com.hnt.dental.entities.Patient;
 
 import java.sql.SQLException;
@@ -33,5 +34,7 @@ public interface PatientDao extends GenericDao<Patient>{
     BookingDto getService(Long id) throws SQLException;
 
     Long countPatientDashboard() throws Exception;
+
+    ProfileDto getProfile(Long id) throws SQLException;
 }
 

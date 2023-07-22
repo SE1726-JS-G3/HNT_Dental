@@ -16,8 +16,10 @@ import com.hnt.dental.dto.response.ServiceResDto;
 import javax.management.MBeanAttributeInfo;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -55,9 +57,9 @@ public class BookingDaoImpl implements BookingDao {
             "LEFT join employees e on e.id = b.staff_id " +
             "inner join payment p on p.booking_id = b.id " +
             "where b.id = ? ";
-    private static final String HISTORY_PATIENT = "SELECT  b.fee ,b.account_id, b.status ,b.time,b.date ,s.name  FROM booking b join service s \n" +
+    private static final String HISTORY_PATIENT = "SELECT  b.fee ,b.account_id, b.status ,b.time,b.date ,s.name  FROM booking b join service s " +
             " where b.service_id = s.id ";
-    private static final String HISTORY_DETAIL = "SELECT b.date,b.name, b.age, b.email,b.decription,b.status,b.phone,s.name as service FROM booking b join service_type s \n" +
+    private static final String HISTORY_DETAIL = "SELECT b.date,b.name, b.age, b.email,b.decription,b.status,b.phone,s.name as service FROM booking b join service_type s " +
             "                       on b.service_id = s.id where b.id =?";
 
     private static final String UPDATE_BOOKING_FOR_MARKETING = "UPDATE hnt_dental.booking " +
@@ -75,6 +77,89 @@ public class BookingDaoImpl implements BookingDao {
             "where booking_id = ? ";
 
     private static final String SQL_COUNT_BOOKING_DASHBOARD = "SELECT count(*) FROM booking";
+
+    private static final String SQL_GET_BOOKING_TODAY = "SELECT b.id, b.name, b.service_id, s.name as serviceName, " +
+            "b.service_type_id, st.name as serviceType, b.date ,b.status FROM booking b " +
+            "left join service s on s.id = b.service_id " +
+            "left join service_type st on st.id = b.service_type_id " +
+            "WHERE  date >= CURDATE() AND date < CURDATE() + INTERVAL 1 DAY ";
+
+    private static final String SQL_GET_STATISTIC_7Day =" Select p.day , coalesce(count(u.id), 0) as count from ( " +
+            "                   Select curdate() as day " +
+            "                          union " +
+            "                    Select date_sub(Curdate(),interval 1 day) " +
+            "                          union " +
+            "                    Select date_sub(Curdate(),interval 2 day) " +
+            "                          union " +
+            "                    Select date_sub(Curdate(),interval 3 day) " +
+            "                          union " +
+            "                    Select date_sub(Curdate(),interval 4 day) " +
+            "                         union " +
+            "                   Select date_sub(Curdate(),interval 5 day) " +
+            "                        union " +
+            "                Select date_sub(Curdate(),interval 6 day))as p " +
+            "                left join booking as u on p.day = u.date group by p.day order by p.day asc";
+    
+    private static final String SQL_GET_STATISTIC_14Day = "SELECT p.day, COALESCE(COUNT(u.id), 0) AS count" +
+            " FROM (" +
+            "    SELECT CURDATE() AS day" +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 1 DAY)" +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 2 DAY)" +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 3 DAY)" +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 4 DAY)" +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 5 DAY)" +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 6 DAY)" +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 7 DAY)" +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 8 DAY)" +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 9 DAY)" +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 10 DAY)" +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 11 DAY)" +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 12 DAY)" +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 13 DAY)" +
+            " ) AS p" +
+            " LEFT JOIN booking AS u ON p.day = u.date" +
+            " WHERE u.date BETWEEN DATE_SUB(CURDATE(), INTERVAL 13 DAY) AND CURDATE()" +
+            " GROUP BY p.day" +
+            " ORDER BY p.day ASC";
+    
+    private static final String SQL_GET_STATISTIC_30Day = "SELECT p.day, COALESCE(COUNT(u.id), 0) AS count " +
+            "FROM ( " +
+            "    SELECT CURDATE() AS day " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 1 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 2 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 3 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 4 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 5 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 6 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 7 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 8 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 9 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 10 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 11 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 12 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 13 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 14 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 15 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 16 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 17 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 18 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 19 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 20 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 21 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 22 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 23 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 24 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 25 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 26 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 27 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 28 DAY) " +
+            "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 29 DAY) " +
+            ") AS p " +
+            "LEFT JOIN booking AS u ON p.day = u.date " +
+            "WHERE u.date BETWEEN DATE_SUB(CURDATE(), INTERVAL 29 DAY) AND CURDATE() " +
+            "GROUP BY p.day " +
+            "ORDER BY p.day ASC ";
+
 
     @Override
     public void updateBookingDetail(Booking bookingDetailDto) throws SQLException {
@@ -96,8 +181,8 @@ public class BookingDaoImpl implements BookingDao {
 
     @Override
     public BookingResult getBookingResultById(Long id) throws SQLException {
-        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_BOOKING_RESULT_BY_ID,id);
-        while (rs.next()){
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_BOOKING_RESULT_BY_ID, id);
+        while (rs.next()) {
             return BookingResult.builder()
                     .result(rs.getString("result"))
                     .build();
@@ -108,11 +193,57 @@ public class BookingDaoImpl implements BookingDao {
     @Override
     public Long countBookingDashboard() throws Exception {
         ResultSet rs = ConnectionUtils.executeQuery(SQL_COUNT_BOOKING_DASHBOARD);
-        while (rs.next()){
+        while (rs.next()) {
             return rs.getLong(1);
         }
         return null;
     }
+
+
+    @Override
+    public List<DashboardDto> getAllBookingToday() throws SQLException {
+        List<DashboardDto> dashboardDtoList = new ArrayList<>();
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_BOOKING_TODAY);
+        while (rs.next()) {
+            dashboardDtoList.add(DashboardDto.builder()
+                    .id(rs.getLong("id"))
+                    .name(rs.getString("name"))
+                    .service(Service.builder().id(rs.getLong("service_id")).name(rs.getString("serviceName")).build())
+                    .serviceType(ServiceType.builder().id(rs.getLong("service_type_id")).name(rs.getString("serviceType")).build())
+                    .time(rs.getDate("date").toLocalDate())
+                    .status(BookingStatusEnum.getBookingStatusString(rs.getInt("status")))
+                    .build());
+        }
+        return dashboardDtoList;
+    }
+
+    @Override
+    public List<StatisticDto> getStatisticBookingTime(String type) throws SQLException {
+        List<StatisticDto> statisticDtoList = new ArrayList<>();
+        ResultSet rs = null;
+        switch (type) {
+            case "7":
+                rs = ConnectionUtils.executeQuery(SQL_GET_STATISTIC_7Day);
+                break;
+            case "14":
+                rs = ConnectionUtils.executeQuery(SQL_GET_STATISTIC_14Day);
+                break;
+            case "30":
+                rs = ConnectionUtils.executeQuery(SQL_GET_STATISTIC_30Day);
+                break;
+            default:
+                rs = ConnectionUtils.executeQuery(SQL_GET_STATISTIC_7Day);
+                break;
+        }
+        while (rs.next()){
+            statisticDtoList.add(StatisticDto.builder()
+                    .date(LocalDate.parse(rs.getString("day"), DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                    .count(rs.getInt("count"))
+                    .build());
+        }
+        return statisticDtoList;
+    }
+
 
     @Override
     public List<Booking> getAll(Integer offset, Integer limit, String search) throws SQLException {

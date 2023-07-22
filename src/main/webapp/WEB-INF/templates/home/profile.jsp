@@ -99,7 +99,7 @@
                     <label class="form-label">Giới tính</label>
                     <div class="my-3">
                       <div class="form-check">
-                        <input id="credit" name="gender" ${doctorProfile != null && doctorProfile.doctors.gender == true ? "checked" : "" } value="Nam" type="radio" class="form-check-input" checked required>
+                        <input id="credit" name="gender" ${doctorProfile != null && doctorProfile.doctors.gender == true ? "checked" : ""} value="Nam" type="radio" class="form-check-input" checked required>
                         <label class="form-check-label">Nam</label>
                       </div>
                       <div class="form-check">
