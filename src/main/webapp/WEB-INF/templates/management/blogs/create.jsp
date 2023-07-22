@@ -31,16 +31,12 @@
                                                     <label class="form-label">Danh Mục<span class="text-danger">*</span></label>
                                                     <select name="categoryId" class="form-select"
                                                             aria-label="Default select example">
-                                                        <%--                                                        <c:forEach items="${categories}" var="c">--%>
-                                                        <%--                                                            <option value="${c.id}">${c.name}</option>--%>
-                                                        <%--                                                        </c:forEach>--%>
 
                                                         <c:forEach var="c" items="${cate_list}">
                                                             <option value="${c.id}"
                                                                     <c:if test="${c.name eq categoryID}">selected=""</c:if>
                                                             >${c.name}</option>
                                                         </c:forEach>
-                                                        <%--    <option value="theloai1">Title 1</option>--%>
 
 
                                                     </select>

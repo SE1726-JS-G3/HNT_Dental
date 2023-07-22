@@ -155,7 +155,6 @@
 
                 <!-- Footer Start -->
 
-
             </div>
             <jsp:include page="../layout/footer.jsp"/>
     </main>

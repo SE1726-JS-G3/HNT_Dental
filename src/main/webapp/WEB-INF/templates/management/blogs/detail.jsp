@@ -32,10 +32,8 @@ To change this template use File | Settings | File Templates.
                                             aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body p-3 pt-4">
-                                    <form  action="${pageContext.request.contextPath}/management/blog/update" method="POST" enctype="multipart/form-data" onsubmit="return submitForm()" >
-                                        <%--                                        <input value="${blog_id}" name="id" type="hidden">--%>
+                                    <form  action="${pageContext.request.contextPath}/management/blog/update" method="POST" enctype="multipart/form-data" onSubmit="return validateForm()" >
                                         <input value="${blog_id}" type="hidden" name="id">
-                                        <%--                                        <input value="${blog_id}" name="id">--%>
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <p style="color: red; font-weight: bold; padding: 10px">${error}</p>
@@ -67,8 +65,6 @@ To change this template use File | Settings | File Templates.
                                                             <input id="myfileupload" type="file" onchange="readURL(this);"
                                                                    name="image"/>
 
-
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -78,17 +74,12 @@ To change this template use File | Settings | File Templates.
                                                         class="text-danger">*</span></label>
                                                 <textarea rows="3" cols="70" class="brief" name="brief" id="brief" placeholder="Thông tin tóm tắt">${blogs.brief}</textarea>
 
-
-
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Mô tả<span
                                                         class="text-danger">*</span></label>
 
                                                 <textarea rows="10" cols="70" class="describe" name="description" id="describe" placeholder="Mô tả:">${blogs.description}</textarea>
-
-
-
 
 
                                             </div>
@@ -98,40 +89,11 @@ To change this template use File | Settings | File Templates.
                                                     <input name="create_at" type="hidden" class="form-control start" id="createdAt"
                                                            value="${blogs.createdAt}"
                                                            placeholder="Ngày đăng :">
-                                                    <%--                                                    <input name="create_by" type="hidden" class="form-control start" id="created_by"--%>
-                                                    <%--                                                           value="${blogs.employee.fullName}"--%>
-                                                    <%--                                                           placeholder="Ngày đăng :">--%>
                                                     <input name="update_at" type="hidden" class="form-control start" id="updatedAt"
                                                            value="${blogs.updatedAt}"
                                                            placeholder="Ngày đăng :">
                                                 </div>
                                             </div><!--end col-->
-
-                                            <%--                                            <div class="col-md-6">--%>
-                                            <%--                                                <div class="mb-3">--%>
-                                            <%--                                                    <label class="form-label"> Người đăng: </label>--%>
-                                            <%--                                                    <input name="create_by" type="text" class="form-control start" id="created_by"--%>
-                                            <%--                                                           value="${blogs.employee.fullName}"--%>
-                                            <%--                                                           placeholder="Ngày đăng :">--%>
-
-                                            <%--                                                </div>--%>
-                                            <%--                                            </div><!--end col-->--%>
-
-
-                                            <%--                                            <div class="col-md-6">--%>
-                                            <%--                                                <div class="mb-3">--%>
-                                            <%--                                                    <label class="form-label"> Ngày cập nhật : </label>--%>
-                                            <%--                                                    <input name="update_at" type="text" class="form-control start" id="updatedAt"--%>
-                                            <%--                                                           value="${blogs.updatedAt}"--%>
-                                            <%--                                                           placeholder="Ngày đăng :">--%>
-
-                                            <%--                                                </div>--%>
-                                            <%--                                            </div><!--end col-->--%>
-
-
-
-
-
 
                                             <div class="mb-3">
                                                 <label class="form-label">Trạng thái <span
