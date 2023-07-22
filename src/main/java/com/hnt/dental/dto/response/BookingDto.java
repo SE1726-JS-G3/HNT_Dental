@@ -12,6 +12,7 @@ import java.time.LocalTime;
 @Getter
 @Builder
 public class BookingDto {
+    private ServiceFeeDto serviceFeeDto;
     private BookingResultDto bookingResultDto;
     private ServiceTypeDto serviceTypeDto;
     private ServiceResDto serviceResDto;
