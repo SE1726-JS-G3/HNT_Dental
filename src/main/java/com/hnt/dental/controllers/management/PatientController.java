@@ -28,7 +28,8 @@ import java.util.List;
         "/management/patient/update",
         "/auth/my-appointment-history",
         "/auth/detail-appointment-history",
-        "/auth/service-booking-history"
+        "/auth/service-booking-history",
+        "/management/my-patient-of-doctor"
 })
 public class PatientController extends HttpServlet {
 
@@ -99,6 +100,14 @@ public class PatientController extends HttpServlet {
                     throw new RuntimeException(e);
                 }
                 break;
+            case "/management/my-patient-of-doctor":
+                try {
+                    service.getAllMyPatient(req, resp);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                break;
+
             default:
         }
     }
