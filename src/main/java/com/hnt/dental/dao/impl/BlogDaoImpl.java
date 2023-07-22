@@ -89,7 +89,7 @@ public class BlogDaoImpl implements BlogDao {
             "where ( title like ? or brief like ? or description like ?) and b.status = '1'" +
             " ORDER BY ? LIMIT ? OFFSET ?";
 
-    private static final String SQL_LIST_CATEGORY = "select id, name from category_blog";
+    private static final String SQL_LIST_CATEGORY = "select c.id, c.name from category_blog c inner join blogs b on c.id = b.category_id";
     private static final String SQL_GET_BLOGS_BY_ID="select b.id, b.category_id, b.title,b.image, b.brief, " +
             "b.description, b.create_at, b.update_at, b.created_by,c.name, e.full_name from blogs b inner join category_blog c " +
             "on b.category_id = c.id inner join employees e on b.created_by = e.id " +

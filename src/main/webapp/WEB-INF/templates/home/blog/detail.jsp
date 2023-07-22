@@ -116,12 +116,6 @@
                         <!-- RECENT POST -->
 
                         <!-- TAG CLOUDS -->
-                        <div class="widget mb-4 pb-2">
-                            <h5 class="widget-title">Tags Cloud</h5>
-                            <div class="tagcloud mt-4">
-                                <c:forEach items="${categoryBlogList}" var="category">
-                                    <a href="jvascript:void(0)" class="rounded">${category.name}</a>
-                                </c:forEach>
 <%--                                <a href="jvascript:void(0)" class="rounded">Business</a>--%>
 <%--                                <a href="jvascript:void(0)" class="rounded">Finance</a>--%>
 <%--                                <a href="jvascript:void(0)" class="rounded">Marketing</a>--%>
