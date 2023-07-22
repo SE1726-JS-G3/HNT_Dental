@@ -102,6 +102,7 @@
       </div><!--end col-->
     <c:set var="page" value="${currentPage}"/>
     <div class="row text-center">
+
       <div class="col-12 mt-4">
         <div class="d-md-flex align-items-center text-center justify-content-between">
           <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
@@ -114,6 +115,10 @@
         </div>
       </div>
     </div>
+      <div class="col-12">
+
+      </div><!--end col-->
+    </div><!--end row-->
   </div><!--end container-->
 </section><!--end section-->
 <!-- End -->

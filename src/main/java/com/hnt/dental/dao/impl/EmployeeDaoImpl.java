@@ -2,12 +2,14 @@ package com.hnt.dental.dao.impl;
 
 import com.hnt.dental.dao.AccountDao;
 import com.hnt.dental.dao.EmployeeDao;
+import com.hnt.dental.dto.response.ProfileDto;
 import com.hnt.dental.entities.Account;
 import com.hnt.dental.entities.Employee;
 import com.hnt.dental.util.ConnectionUtils;
 import com.hnt.dental.util.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.management.MBeanAttributeInfo;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -61,6 +63,11 @@ public class EmployeeDaoImpl implements EmployeeDao {
             " AND b.time = ?" +
             " AND b.id <> ?" +
             ")";
+
+    private static final String SQL_GET_PROFILE_EMPLOYEE = "select e.full_name, e.dob, e.gender, e.address, e.description, e.phone , a.email from employees e " +
+            "inner join accounts a on a.id = e.id " +
+            "where e.id = ?";
+
     @Override
     public List<Employee> getEmployeeAvailable(LocalDate date, LocalTime time, Long bookingId) throws Exception {
         List<Employee> employees = new ArrayList<>();
@@ -81,10 +88,24 @@ public class EmployeeDaoImpl implements EmployeeDao {
         return employees;
     }
 
-//    public static void main(String[] args) throws Exception {
-//        EmployeeDaoImpl employeeDao = new EmployeeDaoImpl();
-//        System.out.println(employeeDao.getEmployeeAvailable("2021-05-05", "08:00:00"));
-//    }
+    @Override
+    public ProfileDto getProfileEmployee(Long id) throws Exception {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_PROFILE_EMPLOYEE, id);
+        if(rs.next()){
+            return ProfileDto.builder()
+                    .fullName(rs.getString("full_name"))
+                    .dob(rs.getDate("dob").toLocalDate())
+                    .gender(rs.getBoolean("gender"))
+                    .address(rs.getString("address"))
+                    .description(rs.getString("description"))
+                    .phone("0" + rs.getString("phone"))
+                    .email(rs.getString("email"))
+                    .build();
+        }
+        return new ProfileDto();
+    }
+
+
     @Override
     public List<Employee> getAll(Integer offset, Integer limit, String search) throws SQLException {
         List<Employee> employees = new ArrayList<>();
@@ -151,7 +172,6 @@ public class EmployeeDaoImpl implements EmployeeDao {
     }
 
 
-
     @Override
     public void delete(Employee employee) throws SQLException {
         accountDao.delete(Account.builder().id(employee.getId()).build());
@@ -170,7 +190,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
         return null;
     }
 
-        @Override
+    @Override
     public Optional<Employee> findByName(String name) throws Exception {
         ResultSet rs = ConnectionUtils.executeQuery(GET_EMPLOYEE_BY_NAME, name);
         assert rs != null;
@@ -192,7 +212,6 @@ public class EmployeeDaoImpl implements EmployeeDao {
         ConnectionUtils.closeConnection();
         return Optional.empty();
     }
-
 
 
 }

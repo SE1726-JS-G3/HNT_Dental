@@ -148,59 +148,6 @@
     </main>
 </div>
 <!--View Appoiment-->
-<div class="modal fade" id="viewappointment" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header border-bottom p-3">
-                <h5 class="modal-title" id="exampleModalLabel1">Chi tiết lịch hẹn</h5>
-                <button type="button" class="btn btn-icon btn-close" data-bs-dismiss="modal" id="close-modal"><i
-                        class="uil uil-times fs-4 text-dark"></i></button>
-            </div>
-            <div class="modal-body p-3 pt-4">
-                <div class="d-flex align-items-center">
-                    <img src="${pageContext.request.contextPath}/static/images/user.png"
-                         class="avatar avatar-small rounded-pill" alt="">
-                    <h5 class="mb-0 ms-3">Nguyễn Thị Huyền</h5>
-                </div>
-                <ul class="list-unstyled mb-0 d-md-flex justify-content-between mt-4">
-                    <li>
-                        <ul class="list-unstyled mb-0">
-                            <li class="d-flex">
-                                <h6>Tuổi:</h6>
-                                <p class="text-muted ms-2">18</p>
-                            </li>
-
-                            <li class="d-flex">
-                                <h6>Giới tính:</h6>
-                                <p class="text-muted ms-2">Bê đê</p>
-                            </li>
-                            <li class="d-flex">
-                                <h6>Loại dịch vụ:</h6>
-                                <p class="text-muted ms-2">Niềng răng(VIP1)</p>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <ul class="list-unstyled mb-0">
-                            <li class="d-flex">
-                                <h6>Ngày khám bệnh:</h6>
-                                <p class="text-muted ms-2">30/05/2023</p>
-                            </li>
-                            <li class="d-flex">
-                                <h6>Thời gian:</h6>
-                                <p class="text-muted ms-2">9AM</p>
-                            </li>
-                            <li class="d-flex">
-                                <h6 class="mb-0">Bác sĩ:</h6>
-                                <p class="text-muted ms-2 mb-0">Phạm Cao Đức Minh</p>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
 <script src="${pageContext.request.contextPath}/static/libs/simplebar/simplebar.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/libs/feather-icons/feather.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>

@@ -56,7 +56,7 @@
                                     <div class="mb-3">
                                         <label class="form-label">Mật khẩu <span class="text-danger">*</span></label>
                                         <input type="password" class="form-control" placeholder="Mật khẩu"
-                                               name="Mật khẩu">
+                                               name="password">
                                     </div>
                                 </div>
 

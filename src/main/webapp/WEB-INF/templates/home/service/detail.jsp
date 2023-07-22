@@ -52,11 +52,17 @@
                                 <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
                                 <li class="list-inline-item me-2 h6 text-muted">(100 Đánh giá)</li>
                             </ul>
-
-                            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" onclick='window.location.href= "/booking?serviceId=${services.id}"'>
-                                Đặt lịch khám
-                            </button>
+                            <c:if test="${sessionScope.account != null}">
+                                <c:if test="${sessionScope.account.role == 0}">
+                                    <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal" onclick='window.location.href= "/booking?serviceId=${services.id}"'>
+                                        Đặt lịch khám
+                                    </button>
+                                </c:if>
+                                <c:if test="${sessionScope.account.role != 0}">
+                                    <button type="button" class="btn btn-primary mt-3 disabled" data-bs-toggle="modal" >Đặt lịch khám</button>
+                                </c:if>
+                            </c:if>
 
                             <h5 class="mt-4 py-2">Mô tả :</h5>
                             <p class="text-muted">
@@ -75,7 +81,8 @@
 
                                 <c:forEach items="${doctors}" var="d">
                                     <div class="clearfix post-recent">
-                                        <div class="post-recent-thumb float-start"><a href="${pageContext.request.contextPath}/doctor/detail?id=${d.id}"> <img
+                                        <div class="post-recent-thumb float-start"><a
+                                                href="${pageContext.request.contextPath}/doctor/detail?id=${d.id}"> <img
                                                 alt="img"
                                                 src="${d.image}"
                                                 class="img-fluid rounded"></a>
@@ -109,11 +116,12 @@
                                                  class="img-fluid avatar avatar-md-sm rounded-circle shadow" alt="img">
                                         </a>
                                         <div class="commentor-detail">
-                                            <h6 class="mb-0"><a href="javascript:void(0)" class="text-dark media-heading">${f.fullName}</a></h6>
+                                            <h6 class="mb-0"><a href="javascript:void(0)"
+                                                                class="text-dark media-heading">${f.fullName}</a></h6>
                                             <small class="text-muted">${f.createdAt}</small>
 
                                             <ul class="list-unstyled text-warning h5 mb-0">
-                                                <c:forEach var = "i" begin = "1" end = "${f.star}">
+                                                <c:forEach var="i" begin="1" end="${f.star}">
                                                     <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
                                                 </c:forEach>
                                             </ul>
@@ -136,13 +144,6 @@
                             <div class="d-md-flex align-items-center text-center justify-content-between">
                                 <span class="text-muted me-3">Hiển thị 1 - 10 trên 50</span>
                                 <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                    <li class="page-item"><a class="page-link" href="javascript:void(0)"
-                                                             aria-label="Previous">Trước</a></li>
-                                    <li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="javascript:void(0)" aria-label="Next">Tiếp theo</a>
-                                    </li>
                                 </ul>
                             </div>
                         </div><!--end col-->
@@ -183,7 +184,7 @@
     });
 
     function redirectToService(id) {
-        window.location.href = "/service/detail?id=" + ${id} + "&typeId=" + id;
+        window.location.href = "/service/detail?id=" + ${id} +"&typeId=" + id;
     }
 </script>
 </body>

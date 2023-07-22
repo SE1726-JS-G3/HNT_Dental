@@ -153,8 +153,7 @@
                         </div>
                     </div>
                 </div>
-
-
+                <c:if test="${sessionScope.account.role != 2 && sessionScope.account.role != 4}">
                 <%--Admin Marketting--%>
                 <div class="card border-0 shadow overflow-hidden mt-4">
                     <div class="p-4 border-bottom">
@@ -285,6 +284,8 @@
                         </div>
                     </form>
                 </div>
+                </c:if>
+
                 <%--Staff & doctor--%>
                 <div class="card border-0 shadow overflow-hidden mt-4">
                     <div class="p-4 border-bottom">

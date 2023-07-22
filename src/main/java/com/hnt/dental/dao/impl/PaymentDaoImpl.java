@@ -27,7 +27,10 @@ public class PaymentDaoImpl implements PaymentDao {
     private static final String UPDATE_PAYMENT = "UPDATE payment " +
             "SET account_id=?, booking_id=?, fee=?, status=?, `type`=?, created_at=?, updated_at=? " +
             "WHERE id=? ";
-    private static final String UPDATE_PAYMENT_FOR_MARKETING = "UPDATE payment SET status = ?, type = ?, fee = ?  WHERE (booking_id = ?);";
+    private static final String UPDATE_PAYMENT_FOR_MARKETING = "UPDATE payment SET status = ?, type = ?, fee = ?  WHERE (booking_id = ?)";
+
+    private static final String COUNT_REVENUE = "select sum(fee) as revenue from payment p " +
+            "where p.status =1";
 
     @Override
     public void updatePaymentForMarketing(Payment payment) throws SQLException {
@@ -38,14 +41,18 @@ public class PaymentDaoImpl implements PaymentDao {
                 payment.getBooking().getId());
     }
 
+    @Override
+    public Double countRevenue() throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(COUNT_REVENUE);
+        if (rs.next()) {
+            return rs.getDouble("revenue");
+        }
+        return null;
+    }
+
     public static void main(String[] args) throws SQLException {
         PaymentDaoImpl paymentDao = new PaymentDaoImpl();
-        paymentDao.updatePaymentForMarketing(Payment.builder()
-                .status(true)
-                .type(1)
-                .serviceFee(ServiceFee.builder().fee(110000.0).build())
-                .booking(Booking.builder().id(1L).build())
-                .build());
+        System.out.println(paymentDao.countRevenue());
     }
 
     @Override

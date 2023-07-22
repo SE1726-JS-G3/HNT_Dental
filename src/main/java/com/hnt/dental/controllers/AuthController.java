@@ -29,7 +29,8 @@ import java.sql.SQLException;
         "/auth/my-patient",
         "/auth/patient-booking-history"
         ,"/auth/my-appointment/detail1",
-        "/auth/detail-history-booking"
+        "/auth/detail-history-booking",
+        "/auth/changePassword",
 
 
 })
@@ -68,7 +69,12 @@ public class AuthController extends HttpServlet {
                 ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/verification-result.jsp");
                 break;
             case "/auth/profile":
-               ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/profile.jsp");
+
+                try {
+                    service.getProfile(req, resp);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
                 break;
             case "/auth/service-history":
                 ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/service-history.jsp");
@@ -79,11 +85,10 @@ public class AuthController extends HttpServlet {
             case "/auth/my-appointment":
                 ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/my-appointment.jsp");
                 break;
-            case "/auth/my-appointment/detail":
+                case "/auth/my-appointment/detail":
                 ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/my-appointment-detail.jsp");
                 break;
-
-            default:
+                default:
         }
     }
 
@@ -103,6 +108,9 @@ public class AuthController extends HttpServlet {
                     break;
                 case "/auth/forgot/confirm":
                     service.forgotConfirm(req, resp);
+                    break;
+                case "/auth/changePassword":
+                    service.changePassword(req, resp);
                     break;
                 default:
             }

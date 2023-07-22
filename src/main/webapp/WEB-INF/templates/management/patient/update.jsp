@@ -95,14 +95,16 @@
                                         <div class="mb-3">
                                             <label class="form-label">Giới tính</label>
                                             <select name="gender" id="gender" class="form-select form-control">
-                                                <option value="nu">Nữ</option>
+                                                <option value="nu"
                                                 <c:if test="${detail.gender == false}">
                                                     selected
                                                 </c:if>
-                                                <option value="nam">Nam</option>
+                                                >Nữ</option>
+                                                <option value="nam"
                                                 <c:if test="${detail.gender == true}">
                                                     selected
                                                 </c:if>
+                                                >Nam</option>
                                             </select>
                                         </div>
                                     </div>
@@ -111,14 +113,16 @@
                                         <div class="mb-3">
                                             <label class="form-label">Trạng thái</label>
                                             <select name="status" class="form-select form-control">
-                                                <option value="notActive">Không hoạt động</option>
+                                                <option value="deactive"
                                                 <c:if test="${detail.status == false}">
                                                     selected
                                                 </c:if>
-                                                <option value="active">Hoạt động</option>
+                                                >deactive</option>
+                                                <option value="active"
                                                 <c:if test="${detail.status == true}">
                                                     selected
-                                                </c:if>
+                                               </c:if>
+                                                >active</option>
                                             </select>
                                         </div>
                                     </div>
@@ -127,7 +131,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Mô tả</label>
                                             <textarea name="description" id="comments" rows="3" class="form-control"
-                                                      placeholder="Bio :">${detai.description}</textarea>
+                                                      placeholder="Bio :">${detail.description}</textarea>
                                         </div>
                                     </div>
                                 </div>

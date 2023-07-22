@@ -27,40 +27,41 @@
                                     <th class="border-bottom p-3" style="min-width: 190px;">Tên dịch vụ </th>
                                     <th class="border-bottom p-3" style="min-width: 190px;">Loại dịch vụ </th>
                                     <th class="border-bottom p-3">Trạng thái</th>
-                                    <th class="border-bottom p-3">Tác vụ</th>
+                                    <th class="border-bottom p-5">Tác vụ</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <%--@elvariable id="list" type="java.util.List"--%>
+                                <c:forEach items="${list}" var="o">
                                     <tr>
-                                        <td class="p-3">1</td>
-                                        <td class="p-3">Nhổ răng</td>
-                                        <td class="p-3">VIP</td>
-                                        <td class="p-3">Hoàn thành</td>
+                                        <td class="p-3">${o.serviceResDto.id}</td>
+                                        <td class="p-3">${o.serviceResDto.name}</td>
+                                        <td class="p-3">${o.serviceTypeDto.nameType}</td>
                                         <td class="p-3">
-                                            <a href="detail-history-booking?id=${o.account_id}">
-                                                <button class="btn btn-primary">Xem dịch vụ</button>
+                                            <c:if test="${o.status == true}">
+                                                Assigned
+                                            </c:if>
+                                            <c:if test="${o.status == false}">
+                                                Complete
+                                            </c:if>
+                                        </td>
+                                        <td class="p-3 text-center">
+                                            <a href="#">
+                                                <button class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/service/detail?id=${o.serviceResDto.id}'">Chi tiết</button>
                                             </a>
                                         </td>
                                     </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>
+                        <c:set var="page" value="${currentPage}"/>
                         <div class="row text-center">
                             <div class="col-12 mt-4">
                                 <div class="d-md-flex align-items-center text-center justify-content-between">
                                     <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                        <li class="page-item active"><a class="page-link">1</a>
-                                        </li>
-                                        <li class="page-item active"><a class="page-link">1</a>
-                                        </li>
-                                        <li class="page-item active"><a class="page-link">1</a>
-                                        </li>
-                                        <li class="page-item active"><a class="page-link">1</a>
-                                        <li class="page-item active"><a class="page-link" href="patient-booking-history?page=1">1</a>
-                                        </li>
-                                        <li class="page-item active"><a class="page-link" href="patient-booking-history?page=2">2</a>
-                                        </li>
+                                        <c:forEach begin="${1}" end="${totalPage}" var="i">
+                                            <li class="page-item ${i==page?'active':''}"><a class="page-link" href="${url}?page=${i}">${i}</a></li>
+                                        </c:forEach>
                                     </ul>
                                 </div>
                             </div>
@@ -79,5 +80,6 @@
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
 
 </body>
+
 
 </html>
