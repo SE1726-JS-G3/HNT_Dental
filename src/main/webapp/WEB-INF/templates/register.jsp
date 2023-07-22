@@ -39,36 +39,36 @@
             <div class="col-lg-5 col-md-8">
                 <div class="card login-page shadow mt-4 rounded border-0">
                     <div class="card-body">
-                        <h4 class="text-center">Create your account</h4>
+                        <h4 class="text-center">Tạo tài khoản</h4>
                         <p id="content" style="color: red; align-content: center;"></p>
                         <form class="register-form mt-4" id="register">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="mb-3">
-                                        <label class="form-label" for="fullName">Full name <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="fullName" placeholder="Full Name"
-                                               name="fullName">
+                                        <label class="form-label" for="fullName">Tên đầy đủ <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="Tên đầy đủ" placeholder="Tên đầy đủ"
+                                               name="Tên đầy đủ">
                                     </div>
                                 </div>
 
                                 <div class="col-lg-12">
                                     <div class="mb-3">
-                                        <label class="form-label" for="phone">Phone <span class="text-danger">*</span></label>
-                                        <input type="number" class="form-control" id="phone" placeholder="Phone"
+                                        <label class="form-label" for="phone">Số điện thoại <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" id="Số điện thoại" placeholder="Số điện thoại"
                                                name="phone">
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="mb-3">
-                                        <label class="form-label" for="dob">Date of birth <span class="text-danger">*</span></label>
-                                        <input type="date" class="form-control" placeholder="DateOfBirth" id="dob"
+                                        <label class="form-label" for="dob">Ngày sinh <span class="text-danger">*</span></label>
+                                        <input type="date" class="form-control" placeholder="Ngày sinh" id="dob"
                                                name="dob">
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="mb-3">
-                                        <label class="form-label" for="address">Address </label>
-                                        <input type="text" class="form-control" placeholder="Address" id="address"
+                                        <label class="form-label" for="address">Địa chỉ </label>
+                                        <input type="text" class="form-control" placeholder="Địa chỉ" id="Địa chỉ"
                                                name="address">
                                     </div>
                                 </div>
@@ -84,7 +84,7 @@
                                 <div class="col-lg-12">
                                     <div class="mb-3">
                                         <label class="form-label" for="password">Mật khẩu <span class="text-danger">*</span></label>
-                                        <input type="password" class="form-control" placeholder="Password" id="password"
+                                        <input type="password" class="form-control" placeholder="Mật khẩu" id="password"
                                                name="password">
                                     </div>
                                 </div>
@@ -92,7 +92,7 @@
                                 <div class="col-lg-12">
                                     <div class="mb-3">
                                         <label class="form-label" for="confirmPassword">Xác nhận mật khẩu <span class="text-danger">*</span></label>
-                                        <input type="password" class="form-control" placeholder="Password" id="confirmPassword"
+                                        <input type="password" class="form-control" placeholder="Xác nhận mật khẩu" id="confirmPassword"
                                                name="confirmPassword">
                                     </div>
                                 </div>
@@ -107,13 +107,13 @@
                                 </div>
                                 <div class="col-lg-12 mb-0">
                                     <div class="d-grid">
-                                        <button class="btn btn-primary" id="btn-register">Create Account</button>
+                                        <button class="btn btn-primary" id="btn-register">Tạo tài khoản</button>
                                     </div>
                                 </div>
 
                                 <div class="col-12 text-center">
-                                    <p class="mb-0 mt-3"><small class="text-dark me-2">Already have an account ?</small> <a
-                                            href="/auth/login" class="text-dark fw-bold">Sign in</a></p>
+                                    <p class="mb-0 mt-3"><small class="text-dark me-2">Bạn đã có tài khoản ?</small> <a
+                                            href="/auth/login" class="text-dark fw-bold">Đăng nhập </a></p>
                                 </div>
                             </div>
                         </form>
@@ -123,7 +123,6 @@
         </div>
     </div>
 </section>
-
 <script src="${pageContext.request.contextPath}/static/libs/feather-icons/feather.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>

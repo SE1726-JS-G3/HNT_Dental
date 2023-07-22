@@ -16,6 +16,9 @@ import java.io.IOException;
         "/management/service/update",
         "/management/service/detail",
         "/management/service/type",
+        "/management/service/createFee",
+        "/management/service/updateFee",
+        "/management/service/type/detail",
         "/management/service/delete"
 })
 public class ServiceController extends HttpServlet {
@@ -46,7 +49,13 @@ public class ServiceController extends HttpServlet {
                 }
                 break;
             case "/management/service/create":
-                req.getRequestDispatcher("/WEB-INF/templates/management/service/create.jsp").forward(req, resp);
+                try {
+                    req.getRequestDispatcher("/WEB-INF/templates/management/service/create.jsp").forward(req, resp);
+
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                //req.getRequestDispatcher("/WEB-INF/templates/management/service/create.jsp").forward(req, resp);
                 break;
             case "/management/service/delete":
                 req.getRequestDispatcher("/WEB-INF/templates/management/service/delete.jsp").forward(req, resp);
@@ -54,6 +63,7 @@ public class ServiceController extends HttpServlet {
             case "/management/service/type":
                 req.getRequestDispatcher("/WEB-INF/templates/management/service/serviceType.jsp").forward(req, resp);
                 break;
+
             default:
         }
     }
@@ -65,6 +75,24 @@ public class ServiceController extends HttpServlet {
         if (action.equals("/management/service/update")) {
             try {
                 service.updateServiceDetailManagement(req, resp);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } else if (action.equals("/management/service/create")) {
+            try {
+                service.createServiceDetailManagement(req, resp);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } else if (action.equals("/management/service/createFee")) {
+            try {
+                service.updateFeeByServiceId(req, resp);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } else if (action.equals("/management/service/updateFee")) {
+            try {
+                service.updateFee(req, resp);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

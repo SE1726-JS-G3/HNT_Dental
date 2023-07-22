@@ -76,7 +76,7 @@
                                             <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
                                             <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
                                         </ul>
-                                        <p class="text-muted mb-0">5 Star</p>
+                                        <p class="text-muted mb-0">5 sao</p>
                                     </div>
                                     <div class="pt-2">
                                         <button class="btn btn-soft-primary" onclick="window.location.href = '/doctor/detail?id=${d.id}'">Chi tiết

@@ -14,6 +14,7 @@ import com.hnt.dental.util.AesUtils;
 import com.hnt.dental.util.CaptchaUtils;
 import com.hnt.dental.util.PagingUtils;
 import com.hnt.dental.util.ServletUtils;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +24,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -405,35 +407,83 @@ public class DoctorService {
         ServletUtils.redirect(req, resp, "/management/doctor");
     }
 
-    public void profile(HttpServletRequest req, HttpServletResponse resp) {
-        String id = req.getParameter("id");
+    public void profile(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException, ServletException {
+        Account account = (Account) req.getSession().getAttribute("account");
+        if (account != null) {
+            try {
+                Long doctorId = account.getId();
+                if (doctorId != null) {
+                    Account doctorProfile = dao.getProfile(doctorId);
+                    if (doctorProfile != null) {
+                        req.setAttribute("doctorProfile", doctorProfile);
+                        req.setAttribute("id", String.valueOf(doctorId));
+                        req.setAttribute("url", "/doctor/profile");
 
-        try {
-            Long doctorId = null;
-            if (id != null && !id.isEmpty()) {
-                doctorId = Long.valueOf(id);
-            } else {
-                // Set a default value for 'doctorId' (e.g., 2)
-                doctorId = 2L;
+                        req.getRequestDispatcher("/WEB-INF/templates/home/profile.jsp").forward(req, resp);
+                        return;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new SystemRuntimeException();
             }
-
-            Account doctorProfile = dao.getProfile(doctorId);
-
-            if (doctorProfile != null) {
-                req.setAttribute("doctorProfile", doctorProfile);
-                req.setAttribute("id", id);
-                req.setAttribute("url", "/doctor/profile");
-                req.getRequestDispatcher("/WEB-INF/templates/home/profile.jsp").forward(req, resp);
-            } else {
-                resp.sendRedirect("/error-page.jsp");
-            }
-        } catch (NumberFormatException e) {
-            // Handle the case where the 'id' parameter is not a valid Long
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-            // Handle the exception appropriately
         }
+        resp.sendRedirect(req.getContextPath() + "/auth/login");
     }
+
+    public void updateProfileAndPassword(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException, ServletException {
+        Account account = (Account) req.getSession().getAttribute("account");
+        if (account != null) {
+            Long doctorId = account.getId();
+            if (doctorId != null) {
+                Account doctorProfile = dao.getProfile(doctorId);
+                if (doctorProfile != null) {
+                    String email = req.getParameter("email");
+                    if (email != null && !email.isEmpty()) {
+                        String fullName = req.getParameter("name");
+                        String phone = req.getParameter("phone");
+                        String dob = req.getParameter("dob");
+                        String address = req.getParameter("address");
+                        String description = req.getParameter("description");
+                        String gender = req.getParameter("gender");
+
+                        try {
+                            Doctors updatedDoctor = Doctors.builder()
+                                    .id(doctorId)
+                                    .fullName(fullName)
+                                    .phone(phone)
+                                    .dob(LocalDate.parse(dob))
+                                    .address(address)
+                                    .description(description)
+                                    .gender(Objects.equals(gender, "Nam"))
+                                    .account(account)
+                                    .build();
+
+                            dao.update(updatedDoctor);
+
+                            Account updatedAccount = Account.builder()
+                                    .id(doctorProfile.getId())
+                                    .email(doctorProfile.getEmail())
+                                    .password(doctorProfile.getPassword()) // Keep the existing password
+                                    .role(doctorProfile.getRole())
+                                    .isVerified(doctorProfile.getIsVerified())
+                                    .doctors(doctorProfile.getDoctors())
+                                    .build();
+
+                            accountDao.update(updatedAccount);
+                            req.setAttribute("url", "/doctor/profile");
+                            req.getRequestDispatcher("/WEB-INF/templates/home/profile.jsp").forward(req, resp);
+                            return;
+                        } catch (DateTimeParseException e) {
+                            e.printStackTrace();
+                            // Handle date format error
+                        }
+                    }
+                }
+            }
+        }
+        resp.sendRedirect(req.getContextPath() + "/auth/login");
+    }
+
 
 }

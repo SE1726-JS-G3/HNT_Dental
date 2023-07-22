@@ -25,13 +25,6 @@
         <ul class="dropdowns list-inline mb-0">
 
             <li class="list-inline-item mb-0 ms-1">
-                <a href="javascript:void(0)" class="btn btn-icon btn-pills btn-primary" data-bs-toggle="offcanvas"
-                   data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
-                    <i class="uil uil-search"></i>
-                </a>
-            </li>
-
-            <li class="list-inline-item mb-0 ms-1">
                 <div class="dropdown dropdown-primary">
                     <c:if test="${sessionScope.account != null}">
                         <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0"
@@ -41,7 +34,7 @@
                     </c:if>
 
                     <c:if test="${sessionScope.account == null}">
-                        <button class="btn btn-primary p-1" onclick="window.location.href = '/auth/login'">Login
+                        <button class="btn btn-primary p-1" onclick="window.location.href = '/auth/login'">Đăng nhập
                         </button>
                     </c:if>
                     <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3"
@@ -54,20 +47,27 @@
                                     <span class="d-block mb-1">${sessionScope.account.email}</span>
                                 </div>
                             </a>
-                        </c:if>
-                        <div class="dropdown-divider border-top"></div>
-                        <c:if test="${sessionScope.account != null}">
-                            <a class="dropdown-item text-" href="#"><span
+                            <a class="dropdown-item text-"
+                               href="${pageContext.request.contextPath}/auth/profile"><span
                                     class="mb-0 d-inline-block me-1"><i
                                     class="uil uil-sign-out-alt align-middle h6"></i></span> Tài khoản của tôi</a>
+                            <c:if test="${sessionScope.account.role != 0}">
+
+                                <a class="dropdown-item text-"
+                                   href="${pageContext.request.contextPath}/management-router"><span
+                                        class="mb-0 d-inline-block me-1"><i
+                                        class="uil uil-sign-out-alt align-middle h6"></i></span> Quản lý</a>
+                            </c:if>
                         </c:if>
+                        <div class="dropdown-divider border-top"></div>
+
                         <c:if test="${sessionScope.account != null}">
-                            <a class="dropdown-item text-" href="#"><span
+                            <a class="dropdown-item text-" href="${pageContext.request.contextPath}/auth/logout"><span
                                     class="mb-0 d-inline-block me-1"><i
                                     class="uil uil-sign-out-alt align-middle h6"></i></span> Đăng xuất</a>
                         </c:if>
                         <c:if test="${sessionScope.account == null}">
-                            <a class="dropdown-item text-" href="${pageContext.request.contextPath}/auth/logout"><span
+                            <a class="dropdown-item text-" href="#"><span
                                     class="mb-0 d-inline-block me-1"><i
                                     class="uil uil-sign-out-alt align-middle h6"></i></span> Đăng Nhập</a>
                         </c:if>

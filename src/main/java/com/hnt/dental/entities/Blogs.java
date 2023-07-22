@@ -8,7 +8,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @SuperBuilder
-public class Blogs extends BaseEntity{
+public class  Blogs extends BaseEntity{
     private CategoryBlog categoryBlog;
     private Employee employee;
     private String title;

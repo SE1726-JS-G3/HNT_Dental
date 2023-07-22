@@ -19,8 +19,7 @@
                     <img src="#" height="50" alt="">
                     <h4 class="heading fw-bold text-white title-dark mt-3 mb-4">Hệ thống đặt lịch trực tuyến</h4>
                     <p class="para-desc mx-auto text-white-50 mb-0">Chúng tôi luôn đồng hành cùng bạn trên con đường
-                        chăm sóc
-                        răng miệng</p>
+                        chăm sóc răng miệng</p>
 
                     <div class="mt-4 pt-2">
                         <form class="rounded text-start shadow p-4 bg-white-50">
@@ -110,7 +109,7 @@
                             <img src="https://th.bing.com/th/id/OIP.1Kgp-3ykxQUzsKXgie0N3AHaE8?pid=ImgDet&w=1920&h=1281&rs=1"
                                  class="img-fluid" alt="">
                             <div class="play-icon">
-                                <a href="#" data-type="youtube" data-id="yba7hPeTSjk"
+                                <a href="" data-type="youtube" data-id="yba7hPeTSjk"
                                    class="play-btn lightbox video-play-icon">
                                     <i class="mdi mdi-play text-primary rounded-circle shadow"></i>
                                 </a>
@@ -124,7 +123,7 @@
                                 <p class="text-muted para-desc">Chúng tôi quy tụ đội ngũ chuyên gia, bác sĩ, dược sĩ và
                                     điều
                                     dưỡng có trình độ chuyên môn cao, tay nghề giỏi, tận tâm và chuyên nghiệp</p>
-                                <p class="text-muted para-desc mb-0">Luôn đặt người bệnh làm trung tâm, Doctris cam kết
+                                <p class="text-muted para-desc mb-0">Luôn đặt người bệnh làm trung tâm, HNT DENTAL cam kết
                                     đem đến
                                     dịch vụ chăm sóc sức khỏe tốt nhất cho khách hàng.</p>
                             </div>
@@ -148,7 +147,7 @@
                 <div class="section-title text-center mb-4 pb-2">
                     <span class="badge badge-pill badge-soft-primary mb-3">Dịch vụ chăm sóc sức khỏe</span>
                     <h4 class="title mb-4">Những dịch vụ nổi bật của chúng tôi</h4>
-                    <p class="text-muted mx-auto para-desc mb-0">Đội ngũ Doctris luôn đem đến cho bạn những dịch vụ chăm
+                    <p class="text-muted mx-auto para-desc mb-0">Đội ngũ Bác sĩ luôn đem đến cho bạn những dịch vụ chăm
                         sóc sức khỏe hiện đại và tốt nhất trên thị trường với những bác sĩ chuyên sâu trong các lĩnh vực
                         .</p>
                 </div>
@@ -191,10 +190,10 @@
                 <div class="section-title text-center mb-4 pb-2">
                     <span class="badge badge-pill badge-soft-primary mb-3">Dịch vụ bác sĩ</span>
                     <h4 class="title mb-4">Đội ngũ chuyên gia</h4>
-                    <p class="text-muted mx-auto para-desc mb-0">Doctris quy tụ đội ngũ chuyên gia, bác sĩ, dược sĩ và
+                    <p class="text-muted mx-auto para-desc mb-0">HNT DENTAL quy tụ đội ngũ chuyên gia, bác sĩ, dược sĩ và
                         điều dưỡng được đào tạo bài bản đến chuyên sâu tại Việt nam và nhiều nước có nên y học phát
                         triển như Mỹ, Anh, Pháp...
-                        Luôn lấy người bệnh là trung tâm, Vinmec cam kết mang lại dịch vụ chăm sóc sức khỏe toàn diện và
+                        Luôn lấy người bệnh là trung tâm, HNT DENTAL cam kết mang lại dịch vụ chăm sóc sức khỏe toàn diện và
                         chất lượng cao cho khách hàng.</p>
                 </div>
             </div>

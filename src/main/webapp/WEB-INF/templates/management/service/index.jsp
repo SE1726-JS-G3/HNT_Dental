@@ -36,7 +36,7 @@
                             <a href="${pageContext.request.contextPath}/management/service/create">
                                 <button class="btn btn-primary">Thêm dịch vụ</button>
                             </a>
-                            <a href="${pageContext.request.contextPath}/management/service/serviceType">
+                            <a href="${pageContext.request.contextPath}/management/type">
                                 <button class="btn btn-primary">Loại dịch vụ</button>
                             </a>
                         </div>
@@ -53,15 +53,10 @@
                                     </div>
                                     <div class="col-md-9">
                                         <select name="gender" class="form-select">
-                                            <option <c:if test="${gender == 'all'}"> selected </c:if> value="all">Tất
-                                                cả
-                                            </option>
-                                            <option <c:if test="${gender == 'true'}"> selected </c:if> value="true">
-                                                VIP
-                                            </option>
-                                            <option <c:if test="${gender == 'false'}"> selected </c:if> value="false">
-                                                THƯỜNG
-                                            </option>
+                                            <option value="0">Tất cả</option>
+                                            <c:forEach items="${getALlType}" var="g">
+                                                <option value="${g.idType}">${g.nameType}</option>
+                                            </c:forEach>
                                         </select>
                                     </div>
                                 </div>
@@ -96,42 +91,6 @@
                 <div class="row">
                     <div class="col-12 mt-4">
                         <div class="table-responsive bg-white shadow rounded">
-                            <table class="table mb-0 table-center">
-                                <thead>
-                                <tr>
-                                    <th class="border-bottom p-3">ID</th>
-                                    <th class="border-bottom p-3">Tên dịch vụ</th>
-                                    <th class="border-bottom p-3">Gói dich vụ</th>
-                                    <th class="border-bottom p-3">Phí</th>
-                                    <th class="border-bottom p-3">Trạng thái</th>
-                                    <th class="border-bottom p-3 text-center">Tác vụ</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach items="${serviceManagementDtos}" var="s">
-                                    <tr>
-                                        <td class="border-bottom p-3 text-center">${s.id}</td>
-                                        <td class="border-bottom p-3 ">${s.name}</td>
-                                        <td class="border-bottom p-3 text-center">${s.type}</td>
-                                        <td class="border-bottom p-3 text-center">${s.fee}</td>
-                                        <c:if test="${s.status == 1}">
-                                            <td class="border-bottom p-3 text-center">Active</td>
-                                        </c:if>
-                                        <c:if test="${s.status == 0}">
-                                            <td class="border-bottom p-3 text-center">Deactive</td>
-                                        </c:if>
-                                        <td class="text-center">
-                                            <a href="#">
-                                                <button class="btn btn-primary"
-                                                        onclick="window.location.href='${pageContext.request.contextPath}/management/service/detail?id=${s.id}'"
-                                                >Chi tiết
-                                                </button>
-                                            </a>
-                                        <td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
                             <div class="row">
                                 <div class="col-12 mt-4">
                                     <div class="table-responsive bg-white shadow rounded">
@@ -174,34 +133,20 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row text-center">
-                                <div class="col-12 mt-4">
-                                    <div class="d-md-flex align-items-center text-center justify-content-between">
-                                        <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                            <li class="page-item active pl-1"><a class="page-link"
-                                                                                 href="#">1</a>
-                                            </li>
-                                            <li class="page-item pl-1"><a class="page-link"
-                                                                          href="#">2</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
-                    <div class="row text-center">
-                        <div class="col-12 mt-4">
-                            <div class="d-md-flex align-items-center text-center justify-content-between">
-                                <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                    <li class="page-item status pl-1"><a class="page-link"
-                                                                         href="#">1</a>
+                </div>
+                <c:set var="page" value="${currentPage}"/>
+                <div class="row text-center">
+                    <div class="col-12 mt-4">
+                        <div class="d-md-flex align-items-center text-center justify-content-between">
+                            <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
+                                <c:forEach begin="${1}" end="${totalPage}" var="i">
+                                    <li class="page-item ${i==page?"active":""}"><a class="page-link"
+                                                                                    href="/management/service?page=${i}">${i}</a>
                                     </li>
-                                    <li class="page-item pl-1"><a class="page-link"
-                                                                  href="#">2</a>
-                                    </li>
-                                </ul>
-                            </div>
+                                </c:forEach>
+                            </ul>
                         </div>
                     </div>
                 </div>

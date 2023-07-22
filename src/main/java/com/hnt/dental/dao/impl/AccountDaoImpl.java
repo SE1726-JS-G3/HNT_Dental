@@ -67,6 +67,7 @@ public class AccountDaoImpl implements AccountDao {
                     .id(rs.getLong("id"))
                     .email(rs.getString("email"))
                     .role(rs.getInt("role"))
+                    .image(rs.getString("image"))
                     .isVerified(rs.getBoolean("is_verified"))
                     .build());
 
@@ -89,7 +90,7 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public void delete(Account account) throws SQLException {
-        ConnectionUtils.executeUpdate(DELETE_ACCOUNT,account.getId());
+        ConnectionUtils.executeUpdate(DELETE_ACCOUNT, account.getId());
 
     }
 }

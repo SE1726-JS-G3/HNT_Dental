@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -18,4 +20,6 @@ public class ServiceManagementDto {
     private String fee;
     private String image;
     private String status;
+    private String description;
+    private LocalDateTime createdAt;
 }

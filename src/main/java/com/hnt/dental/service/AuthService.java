@@ -2,21 +2,17 @@ package com.hnt.dental.service;
 
 import com.google.gson.Gson;
 import com.hnt.dental.constant.RoleEnum;
-import com.hnt.dental.dao.AccountDao;
-import com.hnt.dental.dao.BookingDao;
-import com.hnt.dental.dao.PatientDao;
-import com.hnt.dental.dao.VerificationDao;
-import com.hnt.dental.dao.impl.AccountDaoImpl;
-import com.hnt.dental.dao.impl.BookingDaoImpl;
-import com.hnt.dental.dao.impl.PatientDaoImpl;
-import com.hnt.dental.dao.impl.VerificationDaoImpl;
+import com.hnt.dental.dao.*;
+import com.hnt.dental.dao.impl.*;
 import com.hnt.dental.dto.response.ApiResponse;
 import com.hnt.dental.dto.response.BookingDto;
+import com.hnt.dental.dto.response.ProfileDto;
 import com.hnt.dental.entities.Account;
 import com.hnt.dental.entities.Patient;
 import com.hnt.dental.entities.Verification;
 import com.hnt.dental.exception.SystemRuntimeException;
 import com.hnt.dental.util.AesUtils;
+
 import com.hnt.dental.util.CaptchaUtils;
 import com.hnt.dental.util.ServletUtils;
 import jakarta.servlet.ServletException;
@@ -33,16 +29,22 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
 
+
 public class AuthService {
     private static final AccountDao accountDao;
     private static final PatientDao patientDao;
+private static final DoctorDao doctorDao;
+private static final EmployeeDao employeeDao;
     private static final VerificationDao verificationDao;
 
     private static final ResourceBundle bundle = ResourceBundle.getBundle("application");
+    private static final ResourceBundle bundleMessage = ResourceBundle.getBundle("message");
 
     static {
         accountDao = new AccountDaoImpl();
         patientDao = new PatientDaoImpl();
+        doctorDao = new DoctorDaoImpl();
+        employeeDao = new EmployeeDaoImpl();
         verificationDao = new VerificationDaoImpl();
     }
 
@@ -58,6 +60,7 @@ public class AuthService {
                 String passwordEncrypt = AesUtils.encrypt(password);
                 if (StringUtils.equals(passwordEncrypt, account.getPassword())) {
                     if (Boolean.TRUE.equals(account.getIsVerified())) {
+                        account.setPassword(null);
                         req.getSession().setAttribute("account", account);
                         message = "success";
                     } else {
@@ -77,7 +80,6 @@ public class AuthService {
         response.setMessage(message);
         ServletUtils.apiResponse(resp, new Gson().toJson(response));
     }
-
     public void register(HttpServletRequest req, HttpServletResponse resp) {
         String fullName = req.getParameter("fullName");
         String dob = req.getParameter("dob");
@@ -239,7 +241,7 @@ public class AuthService {
             }
             final int PAGE_SIZE =8;
             req.setAttribute("list", list.subList((page-1)*PAGE_SIZE,page*PAGE_SIZE));
-            ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/booking-history.jsp");
+            ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/service-history.jsp");
         } catch (SQLException e) {
             throw new EOFException();
 
@@ -254,5 +256,62 @@ public class AuthService {
         req.setAttribute("d", detail);
         ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/my-appointment-detail.jsp");
 
+    }
+
+    public void getProfile(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        req.setCharacterEncoding("UTF-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html; charset=UTF-8");
+        Account account = (Account) req.getSession().getAttribute("account");
+        String error = req.getParameter("error");
+        String success = req.getParameter("success");
+        ProfileDto profileDto = null;
+
+        switch (account.getRole()){
+            case 0://patient
+                profileDto = patientDao.getProfile(account.getId());
+                break;
+            case 1:// admin
+                profileDto = employeeDao.getProfileEmployee(account.getId());
+                break;
+            case 2://doctor
+                profileDto = doctorDao.getProfileDoctor(account.getId());
+                break;
+            case 3://marketing
+                profileDto = employeeDao.getProfileEmployee(account.getId());
+                break;
+            case 4://staff
+                profileDto = employeeDao.getProfileEmployee(account.getId());
+                break;
+        }
+
+        req.setAttribute("profile", profileDto);
+        req.setAttribute("error", error != null ? bundleMessage.getString(error) : null);
+        req.setAttribute("success", success != null ? bundleMessage.getString(success) : null);
+        ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/profile.jsp");
+    }
+
+    public void changePassword(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Account account = (Account) req.getSession().getAttribute("account");
+        String oldPassword = req.getParameter("oldPassword");
+        String newPassword = req.getParameter("newPassword");
+        String confirmPassword = req.getParameter("confirmPassword");
+
+        if (StringUtils.equals(newPassword, confirmPassword)) {
+            try {
+                Account accountMain = accountDao.findByEmail(account.getEmail());
+                if (StringUtils.equals(AesUtils.encrypt(oldPassword), accountMain.getPassword())) {
+                    accountMain.setPassword(AesUtils.encrypt(newPassword));
+                    accountDao.update(accountMain);
+                    ServletUtils.redirect(req, resp, "/auth/profile?success=change_password_success");
+                } else {
+                    ServletUtils.redirect(req, resp, "/auth/profile?error=old_password_invalid");
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } else {
+            ServletUtils.redirect(req, resp, "/auth/profile?error=confirm_password_invalid");
+        }
     }
 }

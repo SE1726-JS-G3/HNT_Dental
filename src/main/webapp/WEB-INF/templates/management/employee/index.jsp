@@ -21,7 +21,7 @@
                                     <div class="col-lg-8">
                                         <input type="text" class="form-control border rounded-pill" name="txt"
                                                value="${search}"
-                                               id="search" placeholder="Tìm kiếm nhân viên...">
+                                               id="search" placeholder="Tìm kiếm bệnh nhân...">
                                     </div>
 
                                     <div class="col-lg-4">
@@ -51,7 +51,7 @@
                                     <th class="border-bottom p-3">Giới tính</th>
                                     <th class="border-bottom p-3">Email</th>
                                     <th class="border-bottom p-3">Trạng thái</th>
-                                    <th class="border-bottom p-3 text-center">Action</th>
+                                    <th class="border-bottom p-3 text-center">Tác vụ</th>
                                 </tr>
                                 </thead>
                                 <tbody>
