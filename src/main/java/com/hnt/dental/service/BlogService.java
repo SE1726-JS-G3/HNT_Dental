@@ -12,9 +12,13 @@ import com.hnt.dental.util.PagingUtils;
 import com.hnt.dental.util.ServletUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import org.apache.commons.lang3.StringUtils;
+import java.io.File;
 import com.hnt.dental.entities.Blogs;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -34,6 +38,75 @@ public class BlogService {
 
 
 
+//    private String getFileName(Part part) {
+//        String contentDisposition = part.getHeader("content-disposition");
+//        String[] tokens = contentDisposition.split(";");
+//        for (String token : tokens) {
+//            if (token.trim().startsWith("filename")) {
+//                return token.substring(token.indexOf("=") + 2, token.length() - 1);
+//            }
+//        }
+//        return "";
+//    }
+//    private static final String UPLOAD_DIR = "static\\images"; // Change this to your desired directory
+//    public void create(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+//        String title = req.getParameter("title");
+//        String brief = req.getParameter("brief");
+//        String description = req.getParameter("description");
+//        Long categoryId = Long.valueOf(req.getParameter("categoryId"));
+//        String name = req.getParameter("name");
+//        String status = req.getParameter("status");
+//        String error = null;
+//        Part filePart = req.getPart("image");
+//        String fileName = getFileName(filePart);
+//        // Get the absolute path of the "webapp" directory
+//        String appPath = req.getServletContext().getRealPath("");
+//        // Construct the relative path to the target directory
+//        String uploadPath = appPath + UPLOAD_DIR;
+//        try (InputStream fileContent = filePart.getInputStream()) {
+//            File targetFile = new File(uploadPath, fileName);
+//            Files.copy(fileContent, targetFile.toPath());
+//        } catch (IOException e) {
+//            System.out.println("Error uploading and saving file " + fileName + ": " + e.getMessage());
+//        }
+//
+//        try {
+//            Blogs blog = Blogs.builder()
+//                    .title(title)
+//                    .brief(brief)
+//                    .description(description)
+//                    .categoryID(categoryId)
+//                    .categoryBlog(CategoryBlog.builder().name(name).build())
+////                    .employee(Employee.builder().fullName(fullName).build())
+//                    .status(Objects.equals(status, "Hiện"))
+//                    .createdAt(LocalDateTime.now())
+//                    .image(fileName)
+////                    .createdBy(created_by)
+//                    .build();
+//
+//            Long id = blogDao.save(blog);
+//        } catch (Exception e) {
+//            error = e.getMessage();
+//        }
+//        if (StringUtils.isNotEmpty(error)) {
+//            ServletUtils.redirect(req, resp, "/management/blog/create?error=" + error);
+//        } else {
+//            ServletUtils.redirect(req, resp, "/management/blog");
+//        }
+//
+//    }
+
+    private String getFileName(Part part) {
+        String contentDisposition = part.getHeader("content-disposition");
+        String[] tokens = contentDisposition.split(";");
+        for (String token : tokens) {
+            if (token.trim().startsWith("filename")) {
+                return token.substring(token.indexOf("=") + 2, token.length() - 1);
+            }
+        }
+        return "";
+    }
+    private static final String UPLOAD_DIR = "static\\images"; // Change this to your desired directory
     public void create(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String title = req.getParameter("title");
         String brief = req.getParameter("brief");
@@ -43,7 +116,24 @@ public class BlogService {
 //        String fullName = req.getParameter("fullName");
         String status = req.getParameter("status");
 //        Long created_by = Long.valueOf(req.getParameter("created_by"));
+
         String error = null;
+        Part raw_image = req.getPart("image");
+        String image = getFileName(raw_image);
+
+
+//        Part filePart = req.getPart("image");
+//        String fileName = getFileName(filePart);
+//        // Get the absolute path of the "webapp" directory
+//        String appPath = req.getServletContext().getRealPath("");
+//        // Construct the relative path to the target directory
+//        String uploadPath = appPath + UPLOAD_DIR;
+//        try (InputStream fileContent = filePart.getInputStream()) {
+//            File targetFile = new File(uploadPath, fileName);
+//            Files.copy(fileContent, targetFile.toPath());
+//        } catch (IOException e) {
+//            System.out.println("Error uploading and saving file " + fileName + ": " + e.getMessage());
+//        }
 
         try {
             Blogs blog = Blogs.builder()
@@ -56,6 +146,8 @@ public class BlogService {
                     .status(Objects.equals(status, "Hiện"))
                     .createdAt(LocalDateTime.now())
 //                    .createdBy(created_by)
+//                    .image(fileName)
+                    .image(image)
                     .build();
 
             Long id = blogDao.save(blog);
@@ -78,12 +170,14 @@ public class BlogService {
         String description = req.getParameter("description");
         String create_at = req.getParameter("create_at");
         String update_at = req.getParameter("update_at");
-        String created_by = req.getParameter("create_by");
+//        String created_by = req.getParameter("create_by");
         String status = req.getParameter("status");
         String error = null;
+        Part raw_image = req.getPart("image");
+        String image = getFileName(raw_image);
         ArrayList<CategoryBlog> categoryBlog1 = (ArrayList<CategoryBlog>) categoryBlogDao.getAll();
         try {
-            Optional<Employee> employee = employeeDao.findByName(created_by);
+//            Optional<Employee> employee = employeeDao.findByName(created_by);
 
             CategoryBlog categoryBlog = categoryBlogDao.get(cate_id.intValue()).isPresent() ? categoryBlogDao.get(cate_id.intValue()).get() : null;
             categoryBlog.setUpdatedAt(LocalDateTime.now());
@@ -100,8 +194,9 @@ public class BlogService {
                             .description(description)
                             .createdAt(LocalDateTime.parse(create_at))
                             .updatedAt(LocalDateTime.now())
-                            .createdBy(employee.isPresent() ? employee.get().getId() : null)
+//                            .createdBy(employee.isPresent() ? employee.get().getId() : null)
                             .categoryID(categoryBlog.getId())
+                            .image(image)
                             .build()
             );
             System.out.println("runnable");
@@ -125,6 +220,8 @@ public class BlogService {
             return;
         }
         String error = req.getParameter("error");
+
+
         Blogs blogs = blogDao.get(id).isPresent()
                 ? blogDao.get(Integer.parseInt(req.getParameter("id"))).get() : null;
 
@@ -140,6 +237,40 @@ public class BlogService {
         req.setAttribute("error", error);
         ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/blogs/detail.jsp");
     }
+
+//    public void updateRender(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+//        String error = req.getParameter("error");
+//
+//        String idParam = req.getParameter("id");
+//        if (idParam == null) {
+//            System.out.println("id is null");
+//            return;
+//        }
+//
+//        int id = Integer.parseInt(idParam);
+//        Optional<Blogs> blogsOptional = blogDao.get(id);
+//        if (blogsOptional.isEmpty()) {
+//            System.out.println("blogs is null");
+//            return;
+//        }
+//        Blogs blogs = blogsOptional.get();
+//
+//        Optional<CategoryBlog> categoryBlogOptional = categoryBlogDao.get(id);
+//        if (categoryBlogOptional.isEmpty()) {
+//            System.out.println("categoryBlog is null");
+//            return;
+//        }
+//        CategoryBlog categoryBlog = categoryBlogOptional.get();
+//
+//        ArrayList<CategoryBlog> categoryBlog1 = (ArrayList<CategoryBlog>) categoryBlogDao.getAll();
+//
+//        blogs.setCategoryBlog(categoryBlog);
+//        req.setAttribute("blogs", blogs);
+//        req.getSession().setAttribute("category_lst", categoryBlog1);
+//        req.setAttribute("blog_id", id);
+//        req.setAttribute("error", error);
+//        ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/blogs/detail.jsp");
+//    }
 
 
     public void getAllManagement(HttpServletRequest req, HttpServletResponse resp) throws Exception {

@@ -1,4 +1,5 @@
 package com.hnt.dental.dao.impl;
+
 import com.hnt.dental.dao.AccountDao;
 import com.hnt.dental.dao.DoctorDao;
 import com.hnt.dental.dto.response.*;
@@ -22,6 +23,7 @@ public class DoctorDaoImpl implements DoctorDao {
     static {
         accountDao = new AccountDaoImpl();
     }
+
     private static final String SQL_GET_ALL_SERVICE_BY_ID_DOCTOR = "select s.id, s.name, GROUP_CONCAT(st.name SEPARATOR ',')" +
             " as type, CONCAT(MIN(sf.fee), ' ~ ', MAX(sf.fee)) as fee, s.image from service s " +
             "inner join service_doctor sd on sd.id_service = s.id " +
@@ -92,7 +94,6 @@ public class DoctorDaoImpl implements DoctorDao {
             "LIMIT ?, ?";
 
 
-
     private static final String GET_DOCTORS_BY_ID = "SELECT * FROM hnt_dental.doctors where id=?";
     private static final String SAVE_DOCTOR = "INSERT INTO hnt_dental.doctors " +
             "(id, full_name, phone, dob, rank_id, position, description, gender, address, status , created_at, updated_at) " +
@@ -133,6 +134,21 @@ public class DoctorDaoImpl implements DoctorDao {
             "INNER JOIN service s ON b.service_id = s.id " +
             "JOIN accounts a ON a.id = p.id " +
             "LEFT JOIN doctors d ON b.staff_id = d.id ";
+    private static final String MY_PATIENT_DOCTOR_QUERY =
+            "SELECT p.id, p.full_name, b.date, b.time,b.status, p.gender, p.dob, b.created_at,b.name, a.email, p.phone " +
+                    "FROM patients p " +
+                    "JOIN booking b ON b.account_id = p.id " +
+                    "JOIN doctors d ON d.id = b.staff_id " +
+                    "JOIN accounts a ON a.id = p.id " +
+                    "ORDER BY p.id ASC " +
+                    "LIMIT ?, ?";
+
+    private static final String SQL_COUNT_DOCTOR_DASHBOARD = "select count(*) from doctors d " +
+            "inner join accounts a on d.id = a.id " +
+            "where a.is_verified = 1";
+    private static final String SQL_GET_PROFILE_DOCTOR = "select d.full_name, d.dob, d.gender, d.address,d.description,d.phone , a.email from doctors d " +
+            "inner join accounts a on a.id = d.id " +
+            "where d.id = ?";
 
     @Override
     public List<Doctors> getAllDoctor(int offset, int limit, String search, String status, String gender) throws SQLException {
@@ -242,8 +258,6 @@ public class DoctorDaoImpl implements DoctorDao {
     }
 
 
-
-
     private static final String SQL_GET_LIST_DOCTOR_AVAILABLE = "SELECT DISTINCT d.full_name, d.id " +
             "FROM doctors d " +
             "INNER JOIN service_doctor sd ON d.id = sd.id_doctor " +
@@ -264,6 +278,9 @@ public class DoctorDaoImpl implements DoctorDao {
             "      AND b.time = ? " +
             "      AND b.id <> ? " +
             "  )";
+    private static final String GET_PROFILE_BY_ID_SQL = "SELECT * FROM doctors d " +
+            "INNER JOIN accounts a ON d.id = a.id " +
+            "WHERE d.id = ?";
 
     @Override
     public List<DoctorSummaryRes> getListDoctorAvailable(LocalDate date, LocalTime time, Long typeId, Long serviceId, Long bookingId) throws SQLException {
@@ -278,7 +295,40 @@ public class DoctorDaoImpl implements DoctorDao {
         return result;
     }
 
+    @Override
+    public int countDoctorDashboard() throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_COUNT_DOCTOR_DASHBOARD);
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        ConnectionUtils.closeConnection();
+        return 0;
+    }
 
+    @Override
+    public ProfileDto getProfileDoctor(Long id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_PROFILE_DOCTOR, id);
+        if (rs.next()) {
+            return ProfileDto.builder()
+                    .fullName(rs.getString("full_name"))
+                    .dob(rs.getDate("dob").toLocalDate())
+                    .gender(rs.getBoolean("gender"))
+                    .address(rs.getString("address"))
+                    .description(rs.getString("description"))
+                    .phone("0" + rs.getString("phone"))
+                    .email(rs.getString("email"))
+                    .build();
+        }
+        return new ProfileDto();
+    }
+
+    public static void main(String[] args) {
+        try {
+            System.out.println(new DoctorDaoImpl().getProfileDoctor(1L));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 
     @Override
     public List<Doctors> getAll(Integer offset, Integer limit, String search) throws SQLException {
@@ -350,7 +400,7 @@ public class DoctorDaoImpl implements DoctorDao {
     public Long save(Doctors doctors) throws SQLException, ClassNotFoundException {
         ConnectionUtils.executeUpdate(SAVE_DOCTOR, doctors.getAccount().getId(), doctors.getFullName(), doctors.getPhone(),
                 (doctors.getDob()), doctors.getRankId(), doctors.getPosition(), doctors.getDescription(), doctors.getGender(),
-                doctors.getAddress(),doctors.getStatus(), doctors.getCreatedAt(), doctors.getUpdatedAt());
+                doctors.getAddress(), doctors.getStatus(), doctors.getCreatedAt(), doctors.getUpdatedAt());
 
         return doctors.getAccount().getId();
     }
@@ -359,14 +409,8 @@ public class DoctorDaoImpl implements DoctorDao {
     public void updateBookingStatus(BookingDto booking) throws SQLException {
         ConnectionUtils.executeUpdate(SQL_UPDATE_BOOKING_STATUS, booking.getStatus(), booking.getId());
     }
-    private static final String MY_PATIENT_DOCTOR_QUERY =
-            "SELECT p.id, p.full_name, b.date, b.time,b.status, p.gender, p.dob, b.created_at,b.name, a.email, p.phone " +
-                    "FROM patients p " +
-                    "JOIN booking b ON b.account_id = p.id " +
-                    "JOIN doctors d ON d.id = b.staff_id " +
-                    "JOIN accounts a ON a.id = p.id " +
-                    "ORDER BY p.id ASC " +
-                    "LIMIT ?, ?";
+
+
     @Override
     public List<PatitentsDto> MyPatientDoctor(Integer offset, Integer limit) throws SQLException {
         List<PatitentsDto> patients = new ArrayList<>();
@@ -403,6 +447,7 @@ public class DoctorDaoImpl implements DoctorDao {
         ConnectionUtils.closeConnection();
         return patients;
     }
+
     private static final String MY_PATIENTS_DETAIL_QUERY = "SELECT DISTINCT p.id, p.full_name, b.name, a.email, p.phone, p.gender, p.dob, b.date, b.time, b.status " +
             "FROM patients p " +
             "INNER JOIN booking b ON b.account_id = p.id " +
@@ -411,10 +456,11 @@ public class DoctorDaoImpl implements DoctorDao {
             "WHERE p.id = ? " +
             "ORDER BY p.id ASC " +
             "LIMIT ?, ?";
+
     @Override
     public List<PatitentsDto> getPatientDetails(Long id, Integer offset, Integer limit) throws SQLException {
         List<PatitentsDto> patient = new ArrayList<>();
-        ResultSet rs = ConnectionUtils.executeQuery(MY_PATIENTS_DETAIL_QUERY, Long.valueOf(id),offset,limit);
+        ResultSet rs = ConnectionUtils.executeQuery(MY_PATIENTS_DETAIL_QUERY, Long.valueOf(id), offset, limit);
         while (rs.next()) {
             patient.add(
                     PatitentsDto.builder()
@@ -449,16 +495,16 @@ public class DoctorDaoImpl implements DoctorDao {
 
     @Override
     public void update(Doctors doctors) throws SQLException {
-        ConnectionUtils.executeUpdate(UPDATE_DOCTOR, doctors.getFullName(), doctors.getGender(), doctors.getPhone(),doctors.getDob(),
-                doctors.getPosition(), doctors.getAddress(),doctors.getDescription(), doctors.getRankId(),doctors.getStatus(),
-                doctors.getUpdatedAt(),doctors.getAccount().getId());
+        ConnectionUtils.executeUpdate(UPDATE_DOCTOR, doctors.getFullName(), doctors.getGender(), doctors.getPhone(), doctors.getDob(),
+                doctors.getPosition(), doctors.getAddress(), doctors.getDescription(), doctors.getRankId(), doctors.getStatus(),
+                doctors.getUpdatedAt(), doctors.getAccount().getId());
 
     }
 
     @Override
     public void delete(Doctors doctors) throws SQLException {
         accountDao.delete(Account.builder().id(doctors.getId()).build());
-        ConnectionUtils.executeUpdate(DELETE_DOCTOR,doctors.getId());
+        ConnectionUtils.executeUpdate(DELETE_DOCTOR, doctors.getId());
     }
 
     @Override
@@ -521,6 +567,7 @@ public class DoctorDaoImpl implements DoctorDao {
         ConnectionUtils.closeConnection();
         return null;
     }
+
     private static final String COUNT_PATIENT_DETAILS = "SELECT COUNT(*) FROM (" +
             "SELECT DISTINCT p.id " +
             "FROM patients p " +
@@ -590,31 +637,29 @@ public class DoctorDaoImpl implements DoctorDao {
     }
 
 
-
-    private static final String GET_PROFILE_BY_EMAIL_SQL = "SELECT * FROM doctors " +
-            "INNER JOIN accounts a ON doctors.id = a.id " +
-            "WHERE doctors.id = ?";
     @Override
     public Account getProfile(Long id) throws SQLException {
-        ResultSet rs = ConnectionUtils.executeQuery(GET_PROFILE_BY_EMAIL_SQL,id);
+        ResultSet rs = ConnectionUtils.executeQuery(GET_PROFILE_BY_ID_SQL, id);
         assert rs != null;
         if (rs.next()) {
             return Account.builder()
                     .id(rs.getLong("id"))
                     .email(rs.getString("email"))
                     .password(rs.getString("password"))
-//                    .role(rs.getInt("role"))
-//                    .isVerified(rs.getBoolean("is_verified"))
+                    .role(rs.getInt("role"))
+                    .isVerified(rs.getBoolean("is_verified"))
 //                    .image(rs.getLong("image"))
                     .doctors(Doctors.builder()
+                            .gender(rs.getBoolean("gender"))
                             .fullName(rs.getString("full_name"))
-                            .phone (rs.getString("phone"))
+                            .phone(rs.getString("phone"))
+                            .dob(DateUtils.convertDateToLocalDate(rs.getDate("dob")))
+                            .address(rs.getString("address"))
+                            .description(rs.getString("description"))
                             .build())
-
                     .build();
         }
         return null;
     }
-
 
 }

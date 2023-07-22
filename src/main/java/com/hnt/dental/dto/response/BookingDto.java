@@ -12,7 +12,7 @@ import java.time.LocalTime;
 @Getter
 @Builder
 public class BookingDto {
-
+    private BookingResultDto bookingResultDto;
     private ServiceTypeDto serviceTypeDto;
     private ServiceResDto serviceResDto;
     private Long id;
@@ -30,7 +30,7 @@ public class BookingDto {
     private String description;
     private Patient patient;
 
-
+    private int service_id;
     private String payment;
     private String status;
     private double fee;

@@ -10,4 +10,5 @@ public interface PaymentDao  extends GenericDao<Payment>{
     Optional<Payment> getPaymentByAppointmentId(Long id) throws SQLException;
 
     void updatePaymentForMarketing(Payment payment) throws SQLException;
+    Double countRevenue() throws SQLException;
 }
