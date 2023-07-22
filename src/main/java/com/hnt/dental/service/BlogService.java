@@ -13,7 +13,7 @@ import com.hnt.dental.util.ServletUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
-
+import com.hnt.dental.entities.Blogs;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -32,9 +32,7 @@ public class BlogService {
     }
 
 
-    public void getAll(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 
-    }
 
     public void create(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String title = req.getParameter("title");
@@ -207,8 +205,59 @@ public class BlogService {
         blogDao.delete(Blogs.builder().id((long) id).build());
         ServletUtils.redirect(req, resp, "/management/blog");
     }
+    public void getBlogById(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String id = req.getParameter("id");
+
+        Blogs blogs = blogDao.getBlogID(Integer.parseInt(id));
+        List<CategoryBlog> categoryBlogList = blogDao.getListCategoryBlog();
+        List<BlogResDto> blogRelated = blogDao.getListBlogRelated(blogs.getId(), blogs.getCategoryBlog().getId() );
+        List<Blogs> recentPosts = blogDao.RecentPosts();
+        req.setAttribute("blogs", blogs);
+        req.setAttribute("blogRelated", blogRelated);
+        req.setAttribute("recentPosts", recentPosts);
+        req.setAttribute("categoryBlogList", categoryBlogList);
+        req.getRequestDispatcher("/WEB-INF/templates/home/blog/detail.jsp").forward(req, resp);
+//        ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/blog/detail.jsp");
+    }
+    public void getAll(HttpServletRequest req, HttpServletResponse resp) {
+        String page = req.getParameter("page");
+        String search = req.getParameter("search");
+        String categoryId = req.getParameter("categoryId");
+        String oder = req.getParameter("oder");
+        int pageNumber = 1;
+        Integer category = null;
 
 
+        if (StringUtils.isNotEmpty(page) ) {
+            pageNumber = Integer.parseInt(page);
+        }
+        if (StringUtils.isNotEmpty(categoryId)) {
+            category = Integer.parseInt(categoryId);
+        }
+        if (StringUtils.isEmpty(search)) {
+            search = "";
+        }
+        if (StringUtils.isEmpty(oder)) {
+            oder = "id";
+        }
+
+        try {
+            Integer totalItem = blogDao.countListBlogs(search.trim());
+            Integer totalPage = PagingUtils.getTotalPage(totalItem);
+            List<BlogResDto> BlogResDto = blogDao.getListBlogsFilter(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE, search.trim(), oder, category);
+            List<CategoryBlog> categoryBlogList = blogDao.getListCategoryBlog();
+            req.setAttribute("blogs", BlogResDto);
+            req.setAttribute("categoryBlogList", categoryBlogList);
+            req.setAttribute("totalPage", totalPage);
+            req.setAttribute("currentPage", pageNumber);
+            req.setAttribute("search", search);
+            req.setAttribute("categoryId", categoryId);
+            req.setAttribute("url", "/blog");
+            req.getRequestDispatcher("/WEB-INF/templates/home/blog/index.jsp").forward(req, resp);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
 
 
