@@ -43,7 +43,7 @@
                                     </div>
                                     <div class="col-md-9">
                                         <select class="form-select" onchange="changeStatus(this.value)">
-                                            <option value="all" ${date == 'all' ? 'selected' : ''}>Tất cả</option>
+                                            <option value="all" ${status == 'all' ? 'selected' : ''}>Tất cả</option>
                                             <option value="0" ${status == '0' ? 'selected' : ''}>hôm nay</option>
                                             <option value="1" ${status == '1' ? 'selected' : ''}>7 ngày gần đây</option>
                                         </select>
@@ -72,24 +72,15 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach items="${list}" var="o">
-                                        <tr>
-                                            <td class="border-bottom p-3">${o.id}</td>
-                                            <td class="border-bottom p-3">${o.name}</td>
-                                            <td class="border-bottom p-3">
-                                                <c:if test="${o.gender == true}">
-                                                    Nữ
-                                                </c:if>
-                                                <c:if test="${o.gender == false}">
-                                                    Nam
-                                                </c:if>
-                                            </td>
-                                            <td class="border-bottom p-3">${o.age}</td>
-                                            <td class="border-bottom p-3">${o.serviceResDto.name}</td>
-                                            <td class="border-bottom p-3">${o.serviceTypeDto.nameType}</td>
-                                            <td class="border-bottom p-3">${o.date}</td>
-                                        </tr>
-                                    </c:forEach>
+                                    <tr>
+                                        <td class="border-bottom p-3">1</td>
+                                        <td class="border-bottom p-3">Nguyen Thi Huyen</td>
+                                        <td class="border-bottom p-3">Nu</td>
+                                        <td class="border-bottom p-3">18</td>
+                                        <td class="border-bottom p-3">Niềng răng</td>
+                                        <td class="border-bottom p-3">Vip</td>
+                                        <td class="border-bottom p-3">10/07/2023</td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -134,15 +125,15 @@
         });
     });
 
-    function changeGender(date) {
+    function changeGender(gender) {
         var url = "${url}";
         var search = "${search}";
-        var name = "${name}";
+        var status = "${status}";
 
-        if (date == 'all') {
-            window.location.href = url + "?search=" + search + "&status=" + name;
+        if (gender == 'all') {
+            window.location.href = url + "?search=" + search + "&status=" + status;
         } else {
-            window.location.href = url + "?search=" + search + "&name=" + name + "&name=" + name;
+            window.location.href = url + "?search=" + search + "&status=" + status + "&gender=" + gender;
         }
     }
 

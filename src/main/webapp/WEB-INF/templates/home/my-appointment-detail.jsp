@@ -59,8 +59,15 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Trạng thái </label>
-                                    <input readonly value="${d.status}" type="text" class="form-control">
+                                    <div class="mb-3">
+                                        <label class="form-label">Trạng thái</label>
+                                        <input value="<c:if test="${d.status == true}">
+       Assigned
+                                         </c:if>
+                                         <c:if test="${d.status == false}">
+       Complete
+                                         </c:if>" type="text" class="form-control">
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">

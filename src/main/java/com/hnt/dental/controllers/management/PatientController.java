@@ -26,10 +26,9 @@ import java.util.List;
         "/management/patient/delete",
         "/management/patient/create",
         "/management/patient/update",
-        "/auth/my-appointment-history",
-        "/auth/detail-appointment-history",
-        "/auth/service-booking-history",
-        "/management/my-patient-of-doctor"
+        "/management/my-appointment",
+        "/management/detail-appointment",
+        "/management/service-booking"
 })
 public class PatientController extends HttpServlet {
 
@@ -79,35 +78,25 @@ public class PatientController extends HttpServlet {
                     throw new RuntimeException(e);
                 }
                 break;
-            case "/auth/my-appointment-history":
+            case "/management/my-appointment":
                 try {
                     service.historyAppointment(req, resp);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-                break;
-            case "/auth/detail-appointment-history":
+            case "/management/detail-appointment":
                 try {
                     service.detailAppointment(req, resp);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
-                break;
-            case "/auth/service-booking-history":
+
+            case "/management/service-booking":
                 try {
                     service.historyService(req, resp);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-                break;
-            case "/management/my-patient-of-doctor":
-                try {
-                    service.getAllMyPatient(req, resp);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-                break;
-
             default:
         }
     }
