@@ -46,13 +46,10 @@
                             <a href="${pageContext.request.contextPath}/management/blog/create" class="btn btn-primary"
                                onclick="window.location.href='/management/blog/create'">Thêm mới</a>
                         </div>
-
                     </div>
-
                 </div>
                 <br>
                 <br>
-
                 <div class="row">
                     <form action="${pageContext.request.contextPath}/management/blog" method="get">
                         <div class="row">
@@ -89,10 +86,8 @@
                         </div>
                     </form>
                 </div>
-
                 <div class="container-fluid">
                     <div class="layout-specing">
-
                         <div class="row">
                             <c:forEach items="${blogs}" var="b">
                                 <div class="col-xl-3 col-lg-4 col-md-6 col-12 mt-4">
@@ -136,8 +131,6 @@
                                 <!--end col-->
                             </c:forEach>
                         </div><!--end row-->
-
-
                         <c:set var="page" value="${currentPage}"/>
                         <div class="row">
                             <div class="col-12 mt-4">
@@ -152,20 +145,15 @@
                         </div><!--end row-->
                     </div>
                 </div><!--end container-->
-
                 <!-- Footer Start -->
-
             </div>
             <jsp:include page="../layout/footer.jsp"/>
     </main>
 </div>
-
-
 <script>
     function Sort(type) {
         window.location.href = "blogmanage?action=sort&type=" + type;
     }
-
     function onClickDelete(id) {
         Swal.fire({
             title: 'Bạn có chắc chắn muốn xóa?',
@@ -174,7 +162,6 @@
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-
             confirmButtonText: 'Xóa',
             cancelButtonText: 'Hủy'
         }).then((result) => {
@@ -183,7 +170,6 @@
             }
         })
     }
-
 </script>
 <script src="${pageContext.request.contextPath}/static/libs/tobii/js/tobii.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/libs/feather-icons/feather.min.js"></script>

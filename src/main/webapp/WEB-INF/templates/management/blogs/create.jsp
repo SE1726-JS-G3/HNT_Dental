@@ -31,14 +31,11 @@
                                                     <label class="form-label">Danh Mục<span class="text-danger">*</span></label>
                                                     <select name="categoryId" class="form-select"
                                                             aria-label="Default select example">
-
                                                         <c:forEach var="c" items="${cate_list}">
                                                             <option value="${c.id}"
                                                                     <c:if test="${c.name eq categoryID}">selected=""</c:if>
                                                             >${c.name}</option>
                                                         </c:forEach>
-
-
                                                     </select>
                                                 </div>
                                             </div>
@@ -48,7 +45,6 @@
                                                 <input name="title" id="title" type="text" class="form-control"
                                                        placeholder="Tiêu đề :">
                                             </div>
-
                                             <div class="mb-3">
                                                 <label class="form-label">Ảnh <span class="text-danger">*</span></label>
                                                 <div class="form-group">
@@ -67,7 +63,6 @@
                                                 <textarea class="brief" name="brief" id="brief"
                                                           placeholder="Thông Tin Tóm Tắt:"></textarea>
                                             </div>
-
                                             <div class="mb-3">
                                                 <label class="form-label">Mô tả<span
                                                         class="text-danger">*</span></label>
@@ -76,7 +71,6 @@
                                                           name="description" id="describe"
                                                           placeholder="Mô tả:"></textarea>
                                             </div>
-
                                             <div class="mb-3">
                                                 <label class="form-label">Trạng thái <span
                                                         class="text-danger"></span></label>
@@ -96,7 +90,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

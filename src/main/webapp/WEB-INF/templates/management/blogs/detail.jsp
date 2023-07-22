@@ -32,11 +32,10 @@ To change this template use File | Settings | File Templates.
                                             aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body p-3 pt-4">
-                                    <form  action="${pageContext.request.contextPath}/management/blog/update" method="POST" enctype="multipart/form-data" onSubmit="return validateForm()" >
+                                    <form  action="${pageContext.request.contextPath}/management/blog/update" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()" >
                                         <input value="${blog_id}" type="hidden" name="id">
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <p style="color: red; font-weight: bold; padding: 10px">${error}</p>
                                                 <div class="mb-3">
                                                     <label class="form-label">Danh Mục<span class="text-danger">*</span></label>
                                                     <select name="category_id" class="form-select"
@@ -60,11 +59,9 @@ To change this template use File | Settings | File Templates.
                                                 <label class="form-label">Ảnh <span class="text-danger">*</span></label>
                                                 <div class="form-group">
                                                     <div class="col-lg-offset-5 col-lg-15">
-
                                                         <div class="profile-pic">
                                                             <input id="myfileupload" type="file" onchange="readURL(this);"
                                                                    name="image"/>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -73,15 +70,11 @@ To change this template use File | Settings | File Templates.
                                                 <label class="form-label">Thông Tin Tóm Tắt<span
                                                         class="text-danger">*</span></label>
                                                 <textarea rows="3" cols="70" class="brief" name="brief" id="brief" placeholder="Thông tin tóm tắt">${blogs.brief}</textarea>
-
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Mô tả<span
                                                         class="text-danger">*</span></label>
-
                                                 <textarea rows="10" cols="70" class="describe" name="description" id="describe" placeholder="Mô tả:">${blogs.description}</textarea>
-
-
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="mb-3">
@@ -94,7 +87,6 @@ To change this template use File | Settings | File Templates.
                                                            placeholder="Ngày đăng :">
                                                 </div>
                                             </div><!--end col-->
-
                                             <div class="mb-3">
                                                 <label class="form-label">Trạng thái <span
                                                         class="text-danger"></span></label>
@@ -125,22 +117,17 @@ To change this template use File | Settings | File Templates.
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
         <jsp:include page="../layout/footer.jsp"/>
     </main>
 </div>
-
-
 <script>
-
     function validateForm() {
         var title = document.getElementById('title').value;
         var brief = document.getElementById('brief').value;
         var describe = document.getElementById('describe').value;
-
         // Perform field validation
         if (title.trim() === '') {
             displayErrorMessage('Tiêu đề không được bỏ trống');
@@ -157,12 +144,9 @@ To change this template use File | Settings | File Templates.
             console.log(3)
             return false;
         }
-
         displaySuccessMessage('Thông tin đã được cập nhật thành công');
         return true;
     }
-
-
     // Các hàm hiển thị thông báo lỗi và thành công không thay đổi.
     function displayErrorMessage(message) {
         Swal.fire({
@@ -173,7 +157,6 @@ To change this template use File | Settings | File Templates.
             showConfirmButton: false // Ẩn nút xác nhận
         });
     }
-
     function displaySuccessMessage(message) {
         Swal.fire({
             icon: 'success',
@@ -210,7 +193,6 @@ To change this template use File | Settings | File Templates.
     }).then((editor) => {
         window.editor = editor;
     })
-
     ClassicEditor.create(document.querySelector(".brief"), {
         toolbar: {
             items: [
@@ -238,10 +220,6 @@ To change this template use File | Settings | File Templates.
     }).then((editor) => {
         window.editor = editor;
     })
-
-
-
-
     function readURL(input, thumbimage) {
         if (input.files && input.files[0]) { //Sử dụng  cho Firefox - chrome
             var reader = new FileReader();
@@ -258,7 +236,6 @@ To change this template use File | Settings | File Templates.
         $(".Update").show();
         $(".removeimg").show();
     }
-
     var editor = '';
     $(document).ready(function () {
         editor = CKEDITOR.replace('brief');
@@ -275,7 +252,6 @@ To change this template use File | Settings | File Templates.
             $(".filename").text("");
         });
     })
-
     function readURL(input, thumbimage) {
         if (input.files && input.files[0]) { //Sử dụng  cho Firefox - chrome
             var reader = new FileReader();
@@ -285,7 +261,6 @@ To change this template use File | Settings | File Templates.
             reader.readAsDataURL(input.files[0]);
         } else { // Sử dụng cho IE
             $("#thumbimage").attr('src', input.value);
-
         }
         $("#thumbimage").show();
         $('.filename').text($("#uploadfile").val());
@@ -299,7 +274,6 @@ To change this template use File | Settings | File Templates.
         editor = CKEDITOR.replace('describe');
         $(".Choicefile").bind('click', function () {
             $("#uploadfile").click();
-
         });
         $(".removeimg").click(function () {
             $("#thumbimage").attr('src', '').hide();
@@ -309,7 +283,6 @@ To change this template use File | Settings | File Templates.
             $(".Update").hide();
             $(".filename").text("");
         });
-
     })
 </script>
 <script src="${pageContext.request.contextPath}/static/libs/tobii/js/tobii.min.js"></script>
@@ -323,9 +296,7 @@ To change this template use File | Settings | File Templates.
 <script src="${pageContext.request.contextPath}/static/libs/date/jquery.timepicker.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/libs/date/timepicker.init.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 </body>
-
 <style>
 
     .Choicefile {
