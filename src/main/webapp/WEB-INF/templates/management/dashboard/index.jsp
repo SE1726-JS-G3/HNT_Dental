@@ -75,36 +75,19 @@
         </div>
 
         <div class="row">
-          <div class="col-xl-8 col-lg-7 mt-4">
+          <div class="col-12 mt-4">
             <div class="card shadow border-0 p-4">
               <div class="d-flex justify-content-between align-items-center mb-3">
                 <h6 class="align-items-center mb-0">Thống kê số lịch hẹn</h6>
                 <div class="mb-0 position-relative">
-                  <select onchange="Astatistic(this.value)" class="form-select form-control" id="yearchart">
-                    <option <c:if test="${sessionScope.atype == '3day'}"> selected </c:if> value="3day">3 ngày gần đây</option>
-                    <option <c:if test="${sessionScope.atype == '7day'}"> selected </c:if> value="7day">7 Ngày gần đây</option>
-                    <option <c:if test="${sessionScope.atype == '14day'}"> selected </c:if> value="14day">14 ngày gần đây</option>
+                  <select onchange="window.location.href = '/management/dashboard?type=' + this.value" class="form-select form-control" id="yearchart">
+                    <option <c:if test="${sessionScope.atype == '3day'}"> selected </c:if> value="7">7 ngày gần đây</option>
+                    <option <c:if test="${sessionScope.atype == '7day'}"> selected </c:if> value="14">14 Ngày gần đây</option>
+                    <option <c:if test="${sessionScope.atype == '14day'}"> selected </c:if> value="30">30 ngày gần đây</option>
                   </select>
                 </div>
               </div>
               <div id="dashboard" class="apex-chart"></div>
-            </div>
-          </div>
-
-          <div class="col-xl-4 col-lg-5 mt-4">
-            <div class="card shadow border-0 p-4">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 class="align-items-center mb-0">Doanh thu</h6>
-                <div class="mb-0 position-relative">
-                  <select onchange="Rstatistic(this.value)" class="form-select form-control" id="dailychart">
-                    <option <c:if test="${sessionScope.rtype == 'today'}"> selected </c:if> value="today" >Hôm nay</option>
-                    <option <c:if test="${sessionScope.rtype == '7day'}"> selected </c:if> value="7day">7 ngày gần đây</option>
-                    <option <c:if test="${sessionScope.rtype == '14day'}"> selected </c:if> value="14day">14 ngày gần đây</option>
-                    <option <c:if test="${sessionScope.rtype == 'month'}"> selected </c:if> value="month">Tháng này</option>
-                  </select>
-                </div>
-              </div>
-              <div id="department" class="apex-chart"></div>
             </div>
           </div>
         </div>
@@ -155,7 +138,55 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+<script>
+  var options1 = {
+    series: [{
+      name: 'Booking',
+      data: [<c:forEach items="${getStatisticBookingTime}" var="a">${a.count},</c:forEach>]
+    }],
+    chart: {
+      type: 'bar',
+      height: 350,
+      stacked: true,
+      toolbar: {
+        show: true
+      },
+      zoom: {
+        enabled: true
+      }
+    },
+    responsive: [{
+      breakpoint: 480,
+      options: {
+        legend: {
+          position: 'bottom',
+          offsetX: -10,
+          offsetY: 0
+        }
+      }
+    }],
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        borderRadius: 10
+      },
+    },
+    xaxis: {
+      type: 'text',
+      categories: [<c:forEach items="${getStatisticBookingTime}" var="a">'${a.date}',</c:forEach>
+      ],
+    },
+    legend: {
+      position: 'right',
+      offsetY: 40
+    },
+    fill: {
+      opacity: 1
+    }
+  };
+  var chart1 = new ApexCharts(document.querySelector("#dashboard"), options1);
+  chart1.render();
+</script>
 </body>
 </html>
 
