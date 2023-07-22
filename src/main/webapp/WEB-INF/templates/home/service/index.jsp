@@ -41,28 +41,36 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-lg-4">
+                <div class="col-lg-6">
                     <form action="${url}" method="get">
-                        <input type="text" class="form-select form-control" name="search"
-                               value="${search}"
-                               id="search" placeholder="Tìm kiếm dịch vụ...">
-                        <button type="submit" class="btn btn-primary rounded-pill mt-2" id="btn-search-1">Tìm kiếm</button>
+                        <div class="input-group">
+                            <input type="text" class="form-select form-control" name="search" value="${search}" id="search" placeholder="Tìm kiếm dịch vụ...">
+                        </div>
                     </form>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <form action="${url}" method="get">
-                        <select class="form-select form-control" name="typeId">
-                            <option value="">Tất cả</option>
-                            <c:forEach items="${types}" var="type">
-                                <option value="${type.idType}" ${typeId == type.idType ? 'selected' : ''}>${type.nameType}</option>
-                            </c:forEach>
-                        </select>
-                        <button type="submit" class="btn btn-primary rounded-pill mt-2" id="btn-search-2">Lọc</button>
+                        <div class="input-group">
+                            <select class="form-select form-control" name="typeId" id="typeId">
+                                <option value="all">Tất cả</option>
+                                <c:forEach items="${types}" var="type">
+                                    <option value="${type.idType}" ${typeId == type.idType ? 'selected' : ''}>${type.nameType}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
                     </form>
+                </div>
+                <div class="col-lg-3">
+                    <!-- Use the same form for search and filter -->
+                    <div class="input-group">
+                        <button type="submit" class="btn btn-primary rounded-pill mt-2" id="btn-search">Tìm kiếm & Lọc</button>
+                    </div>
                 </div>
             </div>
             <br>
         </div>
+
+
 
 
         <div class="row">
@@ -107,9 +115,9 @@
             <div class="col-12 mt-4">
                 <div class="d-md-flex align-items-center text-center justify-content-between">
                     <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                        <c:forEach begin="${1}" end="${totalPage}" var="i">
-                            <li class="page-item ${i==page?"status":""}"><a class="page-link"
-                                                                            href="${url}?page=${i}&search=${search}">${i}</a>
+                        <c:forEach begin="1" end="${totalPage}" var="i">
+                            <li class="page-item ${i == page ? 'active' : ''}">
+                                <a class="page-link" href="${url}?page=${i}&search=${search}&typeId=${typeId}">${i}</a>
                             </li>
                         </c:forEach>
                     </ul>
@@ -138,22 +146,87 @@
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+    /* Custom CSS to adjust the width of the label */
+    .search-label {
+        width: 100px; /* You can adjust the width as needed */
+    }
+</style>
+
+
 <script>
     $(document).ready(function () {
-        // Handle the search button click
-        $("#btn-search-1").click(function () {
+        let selectedTypeId = "${typeId}";
+
+        // Handle the search and filter form submission
+        $("#btn-search").click(function (event) {
+            // Prevent default form submission
+            event.preventDefault();
+
+            // Get the search and filter values
             let search = $("#search").val();
             let typeId = $("#typeId").val();
-            window.location.href = "${url}?search=" + search + "&typeId=" + typeId;
-        });
 
-        // Handle the filter button click
-        $("#btn-search-2").click(function () {
-            let typeId = $("#typeId").val();
-            window.location.href = "${url}?typeId=" + typeId;
+            // Determine the URL parameters based on the input values
+            let urlParams = "";
+            if (search.trim() !== "" && typeId === "all") {
+                // Search only (typeId is empty)
+                urlParams = "search=" + encodeURIComponent(search);
+            } else if (search.trim() === "" && typeId !== "all") {
+                // Filter only (search is empty)
+                urlParams = "typeId=" + encodeURIComponent(typeId);
+            } else if (search.trim() !== "" && typeId !== "all") {
+                // Search and Filter both
+                urlParams = "search=" + encodeURIComponent(search) + "&typeId=" + encodeURIComponent(typeId);
+            }
+
+            // Combine the base URL and URL parameters
+            let url = "${url}" + "?" + urlParams;
+
+            // Redirect to the new URL with appropriate search and filter criteria
+            window.location.href = url;
         });
     });
+    $(document).ready(function () {
+        let selectedTypeId = "${typeId}";
+
+        // Handle the search and filter form submission
+        $("#btn-search").click(function (event) {
+            // Prevent default form submission
+            event.preventDefault();
+
+            // Get the search and filter values
+            let search = $("#search").val();
+            let typeId = $("#typeId").val();
+
+            // Determine the URL parameters based on the input values
+            let urlParams = "";
+            if (search.trim() !== "" && typeId === "all") {
+                // Search only (typeId is empty)
+                urlParams = "search=" + encodeURIComponent(search);
+            } else if (search.trim() === "" && typeId !== "all") {
+                // Filter only (search is empty)
+                urlParams = "typeId=" + encodeURIComponent(typeId);
+            } else if (search.trim() !== "" && typeId !== "all") {
+                // Search and Filter both
+                urlParams = "search=" + encodeURIComponent(search) + "&typeId=" + encodeURIComponent(typeId);
+            }
+
+            // Combine the base URL and URL parameters
+            let url = "${url}" + "?" + urlParams;
+
+            // Redirect to the new URL with appropriate search and filter criteria
+            window.location.href = url;
+        });
+    });
+
 </script>
+
+
+
+
 </body>
 
 </html>
