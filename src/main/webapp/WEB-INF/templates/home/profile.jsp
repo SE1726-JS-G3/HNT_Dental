@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
-<html lang="vi">
+<html lang="en">
 
 <jsp:include page="layout/header.jsp"/>
 
@@ -16,197 +16,167 @@
 <jsp:include page="layout/menu-header-white.jsp"/>
 
 <section class="bg-dashboard">
-    <div>
-        <div class="row justify-content-center">
-            <jsp:include page="layout/profile-sidebar.jsp"/>
-            <div class="col-xl-8 col-lg-8 col-md-7 mt-4 pt-2 mt-sm-0 pt-sm-0">
-                <h3 class="mb-0"></h3>
-                <div class="rounded shadow mt-4">
-                    <div class="p-4 border-bottom">
-                        <h5 class="mb-0">Thông tin tài khoản</h5>
-                        <p class="text-bg-danger p-1 w-50 rounded-3"
-                                <c:if test="${empty error}">
-                                    style="display: none"
-                                </c:if>
-                        >${error}</p>
-                        <p class="text-bg-success p-1 w-50 rounded-3"
-                                <c:if test="${empty success}">
-                                    style="display: none"
-                                </c:if>
-                        >${success}</p>
-                        <p style="color: blue; align-content: center;">
-                            ${requestScope.updatesuccess}
-                        </p>
-                    </div>
-                    <div class="p-4">
-                        <form action="user?action=update_image" method="POST" enctype="multipart/form-data">
-                            <h5 class="mb-0">Chỉnh sửa thông tin :</h5>
-                            <div>
-                                <p class="text-muted">Cập nhật ảnh đại diện.</p>
-                                <div id="myfileupload">
-                                    <input type="file" name="image" id="uploadfile" name="ImageUpload"
-                                           onchange="readURL(this);"/>
-                                </div>
-                                <div id="thumbbox">
-                                    <img class="rounded" height="20%" width="30%" alt="Thumb image" id="thumbimage"
-                                         style="display: none"/>
-                                    <a class="removeimg" href="javascript:"></a>
-                                </div>
-                                <div id="boxchoice">
-                                    <a href="javascript:" class="Choicefile"><i class="fas fa-cloud-upload-alt"></i>
-                                        Chọn ảnh</a>
-                                    <p style="clear:both"></p>
-                                    <input type="submit" style="display: none" name="send"
-                                           class="Update btn btn-primary"
-                                           value="Cập nhật">
-                                    <p style="clear:both"></p>
-                                </div>
-                            </div>
-                        </form>
-                        <form action="${pageContext.request.contextPath}/doctor/profile" method="POST" id="profileForm">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Họ tên</label>
-                                        <input name="name" value="${profile.fullName}" id="name2" type="text"
-                                               class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Email</label>
-                                        <input name="email" value="${profile.email}" id="email" type="email"
-                                               class="form-control">
-                                        <span id="emailValidationMessage" class="text-danger"></span>
-                                        <!-- Thêm phần tử span để hiển thị thông báo -->
-                                    </div>
-                                </div>
-
-
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Số điện thoại</label>
-                                        <input name="phone" value="${profile.phone}" id="number" type="text"
-                                               class="form-control">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Ngày sinh</label>
-                                        <input name="dob" value="${profile.dob}" id="dob" type="text"
-                                               class="form-control">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Địa chỉ</label>
-                                        <input name="address" value="${profile.address}" id="address" type="text"
-                                               class="form-control">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Mô tả</label>
-                                        <input name="description" value="${profile.description}" id="description"
-                                               type="text" class="form-control">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Giới tính</label>
-                                        <div class="my-3">
-                                            <div class="form-check">
-                                                <input id="credit"
-                                                       name="gender" ${profile.gender == true ? "checked" : ""}
-                                                       value="Nam" type="radio" class="form-check-input" checked
-                                                       required>
-                                                <label class="form-check-label">Nam</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input id="debit"
-                                                       name="gender" ${profile.gender == false ? "checked" : ""}
-                                                       value="Nữ" type="radio" class="form-check-input" required>
-                                                <label class="form-check-label">Nữ</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <input type="submit" id="submit" name="send" class="btn btn-primary" value="Lưu">
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+  <div>
+    <div class="row justify-content-center">
+      <jsp:include page="layout/profile-sidebar.jsp"/>
+      <div class="col-xl-8 col-lg-8 col-md-7 mt-4 pt-2 mt-sm-0 pt-sm-0">
+        <h3 class="mb-0"></h3>
+        <div class="rounded shadow mt-4">
+          <div class="p-4 border-bottom">
+            <h5 class="mb-0">Thông tin tài khoản</h5>
+            <p style="color: blue; align-content: center;">
+              ${requestScope.updatesuccess}
+            </p>
+          </div>
+          <div class="p-4">
+            <form action="user?action=update_image" method="POST" enctype="multipart/form-data">
+              <h5 class="mb-0">Chỉnh sửa thông tin :</h5>
+              <div>
+                <p class="text-muted">Cập nhật ảnh đại diện.</p>
+                <div id="myfileupload">
+                  <input type="file" name="image" id="uploadfile" name="ImageUpload" onchange="readURL(this);" />
+                </div>
+                <div id="thumbbox">
+                  <img class="rounded" height="20%" width="30%" alt="Thumb image" id="thumbimage" style="display: none" />
+                  <a class="removeimg" href="javascript:"></a>
+                </div>
+                <div id="boxchoice">
+                  <a href="javascript:" class="Choicefile"><i class="fas fa-cloud-upload-alt"></i> Chọn ảnh</a>
+                  <p style="clear:both"></p>
+                  <input type="submit" style="display: none" name="send" class="Update btn btn-primary"
+                         value="Cập nhật">
+                  <p style="clear:both"></p>
+                </div>
+              </div>
+            </form>
+            <form action="${pageContext.request.contextPath}/doctor/profile" method="POST"  id="profileForm">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Họ tên</label>
+                    <input name="name" oninvalid="CheckFullName(this);" oninput="CheckFullName(this);" value="${doctorProfile != null ? doctorProfile.doctors.fullName : ''}" id="name2" type="text" class="form-control">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input name="email" value="${doctorProfile != null ? doctorProfile.email : ''}" id="email" type="email" class="form-control">
+                    <span id="emailValidationMessage" class="text-danger"></span> <!-- Thêm phần tử span để hiển thị thông báo -->
+                  </div>
                 </div>
 
-                <div class="rounded shadow mt-4">
-                    <div class="p-4 border-bottom">
-                        <h5 class="mb-0">Đổi mật khẩu :</h5>
-                        <p style="color: red; align-content: center;">
-                            ${requestScope.passerror}
-                        </p>
-                        <p style="color: blue; align-content: center;">
-                            ${requestScope.passsuccess}
-                        </p>
-                    </div>
 
-                    <div class="p-4">
-                        <form action="/auth/changePassword" method="POST">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
-                                        <label class="form-label">Mật khẩu cũ :</label>
-                                        <input value="${oldpassword}" type="password" name="oldPassword"
-                                               class="form-control" required="">
-                                    </div>
-                                </div><!--end col-->
-
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
-                                        <label class="form-label">Mật khẩu mới :</label>
-                                        <input value="${newpassword}" id="password" type="password" name="newPassword"
-                                               class="form-control" required="">
-                                    </div>
-                                </div><!--end col-->
-
-                                <div class="col-lg-12">
-                                    <div class="mb-3">
-                                        <label class="form-label">Nhập lại mật khẩu :</label>
-                                        <input value="${renewpassword}" type="password" name="confirmPassword"
-                                               class="form-control" required="">
-                                    </div>
-                                </div><!--end col-->
-
-                                <div class="col-lg-12 mt-2 mb-0">
-                                    <button class="btn btn-primary">Thay đổi</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Số điện thoại</label>
+                    <input name="phone" oninvalid="CheckPhone(this);" oninput="CheckPhone(this);" value="0${doctorProfile != null ? doctorProfile.doctors.phone : ''}" id="number" type="text" class="form-control">
+                  </div>
                 </div>
-            </div>
+
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Ngày sinh</label>
+                    <input name="dob"  value="${doctorProfile != null ? doctorProfile.doctors.dob : ''}" id="dob" type="text" class="form-control">
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Địa chỉ</label>
+                    <input name="address"  value="${doctorProfile != null ? doctorProfile.doctors.address : ''}" id="address" type="text" class="form-control">
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Mô tả</label>
+                    <input name="description"  value="${doctorProfile != null ? doctorProfile.doctors.description : ''}" id="description" type="text" class="form-control">
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Giới tính</label>
+                    <div class="my-3">
+                      <div class="form-check">
+                        <input id="credit" name="gender" ${doctorProfile != null && doctorProfile.doctors.gender == true ? "checked" : ""} value="Nam" type="radio" class="form-check-input" checked required>
+                        <label class="form-check-label">Nam</label>
+                      </div>
+                      <div class="form-check">
+                        <input id="debit" name="gender" ${doctorProfile != null && doctorProfile.doctors.gender == false ? "checked" : ""} value="Nữ" type="radio" class="form-check-input" required>
+                        <label class="form-check-label">Nữ</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <input type="submit" id="submit" name="send" class="btn btn-primary" value="Lưu">
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
+
+        <div class="rounded shadow mt-4">
+          <div class="p-4 border-bottom">
+            <h5 class="mb-0">Đổi mật khẩu :</h5>
+            <p style="color: red; align-content: center;">
+              ${requestScope.passerror}
+            </p>
+            <p style="color: blue; align-content: center;">
+              ${requestScope.passsuccess}
+            </p>
+          </div>
+
+          <div class="p-4">
+            <form action="user?action=changepassword" method="POST">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="mb-3">
+                    <label class="form-label">Mật khẩu cũ :</label>
+                    <input value="${oldpassword}" oninvalid="CheckPassword(this);" oninput="CheckPassword(this);" type="password"  name="oldpassword" class="form-control" required="">
+                  </div>
+                </div><!--end col-->
+
+                <div class="col-lg-12">
+                  <div class="mb-3">
+                    <label class="form-label">Mật khẩu mới :</label>
+                    <input value="${newpassword}" oninvalid="CheckPassword(this);" oninput="CheckPassword(this);" id="password" type="password" name="newpassword" class="form-control" required="">
+                  </div>
+                </div><!--end col-->
+
+                <div class="col-lg-12">
+                  <div class="mb-3">
+                    <label class="form-label">Nhập lại mật khẩu :</label>
+                    <input value="${renewpassword}" oninvalid="CheckRePassword(this);" oninput="CheckRePassword(this);"type="password" name="renewpassword" class="form-control" required="">
+                  </div>
+                </div><!--end col-->
+
+                <div class="col-lg-12 mt-2 mb-0">
+                  <button class="btn btn-primary">Thay đổi</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </section>
 
-<jsp:include page="layout/footer.jsp"/>
-<a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i
-        data-feather="arrow-up" class="icons"></i></a>
+<jsp:include page="layout/footer.jsp" />
+<a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i data-feather="arrow-up" class="icons"></i></a>
 
 <div class="modal fade" id="watchvideomodal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content video-modal rounded overflow-hidden">
-            <div class="ratio ratio-16x9">
-                <iframe src="https://www.youtube.com/embed/QIvIN8M91x4" title="YouTube video" allowfullscreen></iframe>
-            </div>
-        </div>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content video-modal rounded overflow-hidden">
+      <div class="ratio ratio-16x9">
+        <iframe src="https://www.youtube.com/embed/QIvIN8M91x4" title="YouTube video" allowfullscreen></iframe>
+      </div>
     </div>
+  </div>
 </div>
 <script src="${pageContext.request.contextPath}/static/libs/tobii/js/tobii.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/libs/feather-icons/feather.min.js"></script>
@@ -218,92 +188,92 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    $(document).ready(function () {
-        // Lưu giá trị ban đầu của trường email
-        var originalEmail = $('#email').val();
+  $(document).ready(function() {
+    // Lưu giá trị ban đầu của trường email
+    var originalEmail = $('#email').val();
 
-        // Gắn sự kiện focusout cho trường email
-        $('#email').focusout(function () {
-            var editedEmail = $(this).val();
+    // Gắn sự kiện focusout cho trường email
+    $('#email').focusout(function() {
+      var editedEmail = $(this).val();
 
-            // Kiểm tra nếu email đã được chỉnh sửa
-            if (editedEmail !== originalEmail) {
-                // Hiển thị thông báo không cho phép chỉnh sửa
-                $('#emailValidationMessage').text('Không được phép chỉnh sửa email.');
-            } else {
-                // Xóa thông báo nếu email không được chỉnh sửa
-                $('#emailValidationMessage').text('');
-            }
-        });
-
-        $('#profileForm').submit(function (event) {
-            event.preventDefault(); // Ngăn chặn gửi yêu cầu mặc định của form
-
-            // Lấy dữ liệu từ các trường nhập liệu
-            var formData = $(this).serialize();
-
-            // Kiểm tra các trường bắt buộc không được để trống
-            var fullName = $('#name2').val();
-            var phone = $('#number').val();
-            var dob = $('#dob').val();
-            var address = $('#address').val();
-            var description = $('#description').val();
-            var gender = $('input[name="gender"]:checked').val();
-
-            if (
-                fullName.trim() === '' ||
-                phone.trim() === '' ||
-                dob.trim() === '' ||
-                address.trim() === '' ||
-                description.trim() === '' ||
-                !gender
-            ) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Lỗi',
-                    text: 'Vui lòng điền đầy đủ thông tin.'
-                });
-                return; // Dừng xử lý nếu có trường bị trống
-            }
-
-            // Kiểm tra định dạng ngày sinh (DOB)
-            var dobPattern = /^\d{4}-\d{2}-\d{2}$/;
-            if (!dobPattern.test(dob)) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Lỗi',
-                    html: 'Định dạng ngày sinh không hợp lệ.<br>Vui lòng nhập theo định dạng "YYYY-MM-DD".'
-                });
-                return; // Dừng xử lý nếu định dạng ngày sinh không hợp lệ
-            }
-
-            // Gửi yêu cầu AJAX để cập nhật thông tin
-            $.ajax({
-                type: 'POST',
-                url: '${pageContext.request.contextPath}/doctor/profile',
-                data: formData,
-                success: function (response) {
-                    // Xử lý phản hồi từ server
-                    console.log(response); // In ra response trong Console
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Thành công',
-                        text: 'Cập nhật thông tin thành công.'
-                    }).then(function () {
-                        // Tải lại trang để hiển thị thông tin đã cập nhật
-                        window.location.reload();
-                    });
-                },
-                error: function () {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Lỗi',
-                        text: 'Cập nhật thông tin thất bại.'
-                    });
-                }
-            });
-        });
+      // Kiểm tra nếu email đã được chỉnh sửa
+      if (editedEmail !== originalEmail) {
+        // Hiển thị thông báo không cho phép chỉnh sửa
+        $('#emailValidationMessage').text('Không được phép chỉnh sửa email.');
+      } else {
+        // Xóa thông báo nếu email không được chỉnh sửa
+        $('#emailValidationMessage').text('');
+      }
     });
+
+    $('#profileForm').submit(function(event) {
+      event.preventDefault(); // Ngăn chặn gửi yêu cầu mặc định của form
+
+      // Lấy dữ liệu từ các trường nhập liệu
+      var formData = $(this).serialize();
+
+      // Kiểm tra các trường bắt buộc không được để trống
+      var fullName = $('#name2').val();
+      var phone = $('#number').val();
+      var dob = $('#dob').val();
+      var address = $('#address').val();
+      var description = $('#description').val();
+      var gender = $('input[name="gender"]:checked').val();
+
+      if (
+              fullName.trim() === '' ||
+              phone.trim() === '' ||
+              dob.trim() === '' ||
+              address.trim() === '' ||
+              description.trim() === '' ||
+              !gender
+      ) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi',
+          text: 'Vui lòng điền đầy đủ thông tin.'
+        });
+        return; // Dừng xử lý nếu có trường bị trống
+      }
+
+      // Kiểm tra định dạng ngày sinh (DOB)
+      var dobPattern = /^\d{4}-\d{2}-\d{2}$/;
+      if (!dobPattern.test(dob)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi',
+          html: 'Định dạng ngày sinh không hợp lệ.<br>Vui lòng nhập theo định dạng "YYYY-MM-DD".'
+        });
+        return; // Dừng xử lý nếu định dạng ngày sinh không hợp lệ
+      }
+
+      // Gửi yêu cầu AJAX để cập nhật thông tin
+      $.ajax({
+        type: 'POST',
+        url: '${pageContext.request.contextPath}/doctor/profile',
+        data: formData,
+        success: function(response) {
+          // Xử lý phản hồi từ server
+          console.log(response); // In ra response trong Console
+          Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: 'Cập nhật thông tin thành công.'
+          }).then(function() {
+            // Tải lại trang để hiển thị thông tin đã cập nhật
+            window.location.reload();
+          });
+        },
+        error: function() {
+          Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: 'Cập nhật thông tin thất bại.'
+          });
+        }
+      });
+    });
+  });
 
 </script>
 </body>
