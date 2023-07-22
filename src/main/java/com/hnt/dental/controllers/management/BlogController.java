@@ -5,6 +5,7 @@ import com.hnt.dental.dao.impl.CategoryBlogDaoImpl;
 import com.hnt.dental.entities.CategoryBlog;
 import com.hnt.dental.service.BlogService;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import java.io.IOException;
         "/management/blog/update",
         "/management/blog/delete"
 })
+@MultipartConfig
 public class BlogController extends HttpServlet {
 
     private static final BlogService blogService;

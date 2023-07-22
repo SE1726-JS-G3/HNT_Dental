@@ -20,9 +20,11 @@
                                             aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body p-3 pt-4">
-                                    <form
+                                    <form id="myForm"
                                             action="${pageContext.request.contextPath}/management/blog/create"
-                                            method="POST">
+                                            method="POST"
+                                          onSubmit="return validateForm()"  enctype="multipart/form-data"
+                                    >
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="mb-3">
@@ -57,7 +59,7 @@
                                                     <div class="col-lg-offset-5 col-lg-15">
                                                         <div class="profile-pic">
                                                             <br><br>
-                                                            <input id="file" type="file" onchange="loadFile(event)"
+                                                            <input  id="file" type="file" onchange="loadFile(event)"
                                                                    name="image"/>
                                                         </div>
                                                     </div>
@@ -66,7 +68,7 @@
                                             <div class="mb-3">
                                                 <label class="form-label">Thông Tin Tóm Tắt<span
                                                         class="text-danger">*</span></label>
-                                                <textarea class="brief" name="brief"
+                                                <textarea class="brief" name="brief" id="brief"
                                                           placeholder="Thông Tin Tóm Tắt:"></textarea>
                                             </div>
 
@@ -75,7 +77,7 @@
                                                         class="text-danger">*</span></label>
 
                                                 <textarea rows="10" cols="70" class="describe"
-                                                          name="description"
+                                                          name="description" id="describe"
                                                           placeholder="Mô tả:"></textarea>
                                             </div>
 
@@ -83,8 +85,8 @@
                                                 <label class="form-label">Trạng thái <span
                                                         class="text-danger"></span></label>
                                                 <select name="status" class="form-select form-control">
-                                                    <option value="Đang làm việc">Hiện</option>
-                                                    <option value="Đã nghỉ việc">Ẩn</option>
+                                                    <option >Hiện</option>
+                                                    <option >Ẩn</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -108,6 +110,86 @@
 
 
 <script>
+
+
+    // function validateForm() {
+    //     var title = document.getElementById('title').value;
+    //     var brief = document.getElementById('brief').value;
+    //     var describe = document.getElementById('describe').value;
+    //     // var dob = document.getElementById('dob').value;
+    //     // var email = document.getElementById('email').value;
+    //     // var address = document.getElementById('address').value;
+    //     // var phone = document.getElementById('phone').value;
+    //     // var position = document.getElementById('position').value;
+    //     // var rankId = document.getElementById('rankId').value;
+    //
+    //     // Perform field validation
+    //     if (title.trim() === '') {
+    //         displayErrorMessage('Tiêu đề không được bỏ trống');
+    //         console.log(1)
+    //         return false;
+    //     }
+    //     if (brief.trim() === '') {
+    //         displayErrorMessage('Thông tin tóm tắt không được bỏ trống');
+    //         console.log(2)
+    //         return false;
+    //     }
+    //     if (describe.trim() === '') {
+    //         displayErrorMessage('Mô tả không được bỏ trống');
+    //         console.log(3)
+    //         return false;
+    //     }
+    //
+    //     displaySuccessMessage('Thông tin đã được cập nhật thành công');
+    //     return true;
+    // }
+    //
+    //
+    // function isValidDateFormat(dateString) {
+    //     // Kiểm tra định dạng ngày sinh theo dạng YYYY-MM-DD
+    //     var pattern = /^\d{4}-\d{2}-\d{2}$/;
+    //     return pattern.test(dateString);
+    // }
+    //
+    // function isValidEmailAddress(email) {
+    //     // Kiểm tra định dạng email hợp lệ
+    //     var pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    //     return pattern.test(email);
+    // }
+    //
+    // function isValidRankId(rankId) {
+    //     // Kiểm tra xếp hạng chỉ từ 1 đến 10
+    //     var rankNumber = parseInt(rankId, 10);
+    //     return rankNumber >= 1 && rankNumber <= 10;
+    // }
+    //
+    // function isValidPhoneNumber(phone) {
+    //     // Kiểm tra số điện thoại có 10 chữ số
+    //     var pattern = /^\d{10}$/;
+    //     return pattern.test(phone);
+    // }
+    // // Các hàm hiển thị thông báo lỗi và thành công không thay đổi.
+    // function displayErrorMessage(message) {
+    //     Swal.fire({
+    //         icon: 'error',
+    //         title: 'Lỗi',
+    //         text: message,
+    //         timer: 50000, // Hiển thị thông báo trong 30 giây
+    //         showConfirmButton: false // Ẩn nút xác nhận
+    //     });
+    // }
+    //
+    // function displaySuccessMessage(message) {
+    //     Swal.fire({
+    //         icon: 'success',
+    //         title: 'Thành công',
+    //         text: message,
+    //         timer: 50000, // Hiển thị thông báo trong 30 giây
+    //         showConfirmButton: false // Ẩn nút xác nhận
+    //     });
+    // }
+
+
     function Sort(type) {
         window.location.href = "blogmanage?action=sort&type=" + type;
     }

@@ -28,32 +28,39 @@
                   <th class="border-bottom p-5" >Tên dịch vụ</th>
                   <th class="border-bottom p-3">Loại dịch vụ</th>
                   <th class="border-bottom p-3">Ngày khám</th>
+                    <th class="border-bottom p-3">Giờ khám</th>
                   <th class="border-bottom p-3">Trạng thái</th>
                   <th class="border-bottom p-5">Tác vụ</th>
                 </tr>
                 </thead>
                 <tbody>
-<c:forEach items="${list}" var="o">
+<%--<c:forEach items="${list}" var="o">--%>
                 <tr>
-                    <td class="p-3">${o.id}</td>
-                    <td class="p-3">${o.serviceResDto.name}</td>
-                   <td class="p-3">${o.serviceTypeDto.nameType}</td>
-                   <td class="p-3">${o.date}</td>
-  <td class="p-3">
-    <c:if test="${o.status == true}">
-      Assigned
-    </c:if>
-    <c:if test="${o.status == false}">
-      Complete
-    </c:if>
-  </td>
+                    <td class="p-3">${service != null ? service.id : ''}</td>
+                    <td class="p-3">${service != null ? service.serviceResDto.name : ''}</td>
+                    <td class="p-3">${service != null ? service.serviceTypeDto.nameType : ''}</td>
+                    <td class="p-3">${service != null ? service.date : ''}</td>
+                    <td class="p-3">${service != null ? service.time : ''}</td>
+                    <td class="p-3">${service != null ? service.status : ''}</td>
+<%--                    <td class="p-3">${o.id}</td>--%>
+<%--                    <td class="p-3">${o.serviceResDto.name}</td>--%>
+<%--                   <td class="p-3">${o.serviceTypeDto.nameType}</td>--%>
+<%--                   <td class="p-3">${o.date}</td>--%>
+<%--  <td class="p-3">--%>
+<%--    <c:if test="${o.status == true}">--%>
+<%--      Assigned--%>
+<%--    </c:if>--%>
+<%--    <c:if test="${o.status == false}">--%>
+<%--      Complete--%>
+<%--    </c:if>--%>
+<%--  </td>--%>
                   <td class="p-3 text-center">
                     <a href="#">
-                      <button class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/management/detail-appointment?id=${o.id}'">Chi tiết</button>
+                      <button class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/auth/detail-appointment-history?id=${service.id}'">Chi tiết</button>
                     </a>
                   </td>
                 </tr>
-</c:forEach>
+<%--</c:forEach>--%>
                 </tbody>
               </table>
             </div>

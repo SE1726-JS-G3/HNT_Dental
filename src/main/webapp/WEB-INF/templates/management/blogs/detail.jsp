@@ -27,7 +27,7 @@ To change this template use File | Settings | File Templates.
                                             aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body p-3 pt-4">
-                                    <form  action="${pageContext.request.contextPath}/management/blog/update" method="POST" onsubmit="return submitForm() >
+                                    <form  action="${pageContext.request.contextPath}/management/blog/update" method="POST" enctype="multipart/form-data" onsubmit="return submitForm()" >
                                         <%--                                        <input value="${blog_id}" name="id" type="hidden">--%>
                                         <input value="${blog_id}" type="hidden" name="id">
                                         <%--                                        <input value="${blog_id}" name="id">--%>
@@ -56,10 +56,17 @@ To change this template use File | Settings | File Templates.
                                                 <label class="form-label">Ảnh <span class="text-danger">*</span></label>
                                                 <div class="form-group">
                                                     <div class="col-lg-offset-5 col-lg-15">
+
+                                                        //phan` nay` moi'
+
                                                         <div class="profile-pic">
-                                                            <br><br>
-                                                            <input id="file" type="file" onchange="loadFile(event)"
+<%--                                                            <br><img src="/static/images/${blogs.image}"--%>
+<%--                                                                     class="img-fluid" alt=""><br>--%>
+                                                            <input id="myfileupload" type="file" onchange="readURL(this);"
                                                                    name="image"/>
+
+
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -85,34 +92,39 @@ To change this template use File | Settings | File Templates.
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="mb-3">
-                                                    <label class="form-label"> Ngày đăng: </label>
-                                                    <input name="create_at" type="text" class="form-control start" id="createdAt"
+                                                    <label class="form-label"> Ngày đăng:  ${blogs.createdAt}</label>
+                                                    <input name="create_at" type="hidden" class="form-control start" id="createdAt"
                                                            value="${blogs.createdAt}"
                                                            placeholder="Ngày đăng :">
-
-                                                </div>
-                                            </div><!--end col-->
-
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label"> Người đăng: </label>
-                                                    <input name="create_by" type="text" class="form-control start" id="created_by"
-                                                           value="${blogs.employee.fullName}"
-                                                           placeholder="Ngày đăng :">
-
-                                                </div>
-                                            </div><!--end col-->
-
-
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label"> Ngày cập nhật : </label>
-                                                    <input name="update_at" type="text" class="form-control start" id="updatedAt"
+<%--                                                    <input name="create_by" type="hidden" class="form-control start" id="created_by"--%>
+<%--                                                           value="${blogs.employee.fullName}"--%>
+<%--                                                           placeholder="Ngày đăng :">--%>
+                                                    <input name="update_at" type="hidden" class="form-control start" id="updatedAt"
                                                            value="${blogs.updatedAt}"
                                                            placeholder="Ngày đăng :">
-
                                                 </div>
                                             </div><!--end col-->
+
+<%--                                            <div class="col-md-6">--%>
+<%--                                                <div class="mb-3">--%>
+<%--                                                    <label class="form-label"> Người đăng: </label>--%>
+<%--                                                    <input name="create_by" type="text" class="form-control start" id="created_by"--%>
+<%--                                                           value="${blogs.employee.fullName}"--%>
+<%--                                                           placeholder="Ngày đăng :">--%>
+
+<%--                                                </div>--%>
+<%--                                            </div><!--end col-->--%>
+
+
+<%--                                            <div class="col-md-6">--%>
+<%--                                                <div class="mb-3">--%>
+<%--                                                    <label class="form-label"> Ngày cập nhật : </label>--%>
+<%--                                                    <input name="update_at" type="text" class="form-control start" id="updatedAt"--%>
+<%--                                                           value="${blogs.updatedAt}"--%>
+<%--                                                           placeholder="Ngày đăng :">--%>
+
+<%--                                                </div>--%>
+<%--                                            </div><!--end col-->--%>
 
 
 
@@ -286,7 +298,41 @@ To change this template use File | Settings | File Templates.
         });
     })
 
+    function readURL(input, thumbimage) {
+        if (input.files && input.files[0]) { //Sử dụng  cho Firefox - chrome
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#thumbimage").attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        } else { // Sử dụng cho IE
+            $("#thumbimage").attr('src', input.value);
 
+        }
+        $("#thumbimage").show();
+        $('.filename').text($("#uploadfile").val());
+        $(".Choicefile").hide();
+        $(".Update").show();
+        $(".removeimg").show();
+    }
+    var editor = '';
+    $(document).ready(function () {
+        editor = CKEDITOR.replace('brief');
+        editor = CKEDITOR.replace('describe');
+        $(".Choicefile").bind('click', function () {
+            $("#uploadfile").click();
+
+        });
+        $(".removeimg").click(function () {
+            $("#thumbimage").attr('src', '').hide();
+            $("#myfileupload").html('<input type="file" id="uploadfile"  onchange="readURL(this);" />');
+            $(".removeimg").hide();
+            $(".Choicefile").show();
+            $(".Update").hide();
+            $(".filename").text("");
+        });
+
+    })
 </script>
 <script src="${pageContext.request.contextPath}/static/libs/tobii/js/tobii.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/libs/feather-icons/feather.min.js"></script>
