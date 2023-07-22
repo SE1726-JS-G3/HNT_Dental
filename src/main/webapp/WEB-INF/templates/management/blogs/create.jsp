@@ -21,8 +21,8 @@
                                 </div>
                                 <div class="modal-body p-3 pt-4">
                                     <form id="myForm"
-                                            action="${pageContext.request.contextPath}/management/blog/create"
-                                            method="POST"
+                                          action="${pageContext.request.contextPath}/management/blog/create"
+                                          method="POST"
                                           onSubmit="return validateForm()"  enctype="multipart/form-data"
                                     >
                                         <div class="row">
@@ -60,7 +60,7 @@
                                                         <div class="profile-pic">
                                                             <br><br>
                                                             <input  id="file" type="file" onchange="loadFile(event)"
-                                                                   name="image"/>
+                                                                    name="image"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -112,89 +112,62 @@
 <script>
 
 
-    // function validateForm() {
-    //     var title = document.getElementById('title').value;
-    //     var brief = document.getElementById('brief').value;
-    //     var describe = document.getElementById('describe').value;
-    //     // var dob = document.getElementById('dob').value;
-    //     // var email = document.getElementById('email').value;
-    //     // var address = document.getElementById('address').value;
-    //     // var phone = document.getElementById('phone').value;
-    //     // var position = document.getElementById('position').value;
-    //     // var rankId = document.getElementById('rankId').value;
-    //
-    //     // Perform field validation
-    //     if (title.trim() === '') {
-    //         displayErrorMessage('Tiêu đề không được bỏ trống');
-    //         console.log(1)
-    //         return false;
-    //     }
-    //     if (brief.trim() === '') {
-    //         displayErrorMessage('Thông tin tóm tắt không được bỏ trống');
-    //         console.log(2)
-    //         return false;
-    //     }
-    //     if (describe.trim() === '') {
-    //         displayErrorMessage('Mô tả không được bỏ trống');
-    //         console.log(3)
-    //         return false;
-    //     }
-    //
-    //     displaySuccessMessage('Thông tin đã được cập nhật thành công');
-    //     return true;
-    // }
-    //
-    //
-    // function isValidDateFormat(dateString) {
-    //     // Kiểm tra định dạng ngày sinh theo dạng YYYY-MM-DD
-    //     var pattern = /^\d{4}-\d{2}-\d{2}$/;
-    //     return pattern.test(dateString);
-    // }
-    //
-    // function isValidEmailAddress(email) {
-    //     // Kiểm tra định dạng email hợp lệ
-    //     var pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    //     return pattern.test(email);
-    // }
-    //
-    // function isValidRankId(rankId) {
-    //     // Kiểm tra xếp hạng chỉ từ 1 đến 10
-    //     var rankNumber = parseInt(rankId, 10);
-    //     return rankNumber >= 1 && rankNumber <= 10;
-    // }
-    //
-    // function isValidPhoneNumber(phone) {
-    //     // Kiểm tra số điện thoại có 10 chữ số
-    //     var pattern = /^\d{10}$/;
-    //     return pattern.test(phone);
-    // }
-    // // Các hàm hiển thị thông báo lỗi và thành công không thay đổi.
-    // function displayErrorMessage(message) {
-    //     Swal.fire({
-    //         icon: 'error',
-    //         title: 'Lỗi',
-    //         text: message,
-    //         timer: 50000, // Hiển thị thông báo trong 30 giây
-    //         showConfirmButton: false // Ẩn nút xác nhận
-    //     });
-    // }
-    //
-    // function displaySuccessMessage(message) {
-    //     Swal.fire({
-    //         icon: 'success',
-    //         title: 'Thành công',
-    //         text: message,
-    //         timer: 50000, // Hiển thị thông báo trong 30 giây
-    //         showConfirmButton: false // Ẩn nút xác nhận
-    //     });
-    // }
+    function validateForm() {
+        var title = document.getElementById('title').value;
+        // var brief = document.getElementsByClassName('brief').value;
+        // var describe = document.getElementsByClassName('brief').value;
+        var brief = document.getElementById('brief').value;
+        var describe = document.getElementById('describe').value;
+
+        // Perform field validation
+        if (title.trim() === '') {
+            displayErrorMessage('Tiêu đề không được bỏ trống');
+            console.log(1)
+            return false;
+        }
+        if (brief.trim() === '') {
+            displayErrorMessage('Thông tin tóm tắt không được bỏ trống');
+            console.log(2)
+            return false;
+        }
+        if (describe.trim() === '') {
+            displayErrorMessage('Mô tả không được bỏ trống');
+            console.log(3)
+            return false;
+        }
+
+        displaySuccessMessage('Thông tin đã được cập nhật thành công');
+        return true;
+    }
+
+
+    // Các hàm hiển thị thông báo lỗi và thành công không thay đổi.
+    function displayErrorMessage(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: message,
+            timer: 50000, // Hiển thị thông báo trong 30 giây
+            showConfirmButton: false // Ẩn nút xác nhận
+        });
+    }
+
+    function displaySuccessMessage(message) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: message,
+            timer: 50000, // Hiển thị thông báo trong 30 giây
+            showConfirmButton: false // Ẩn nút xác nhận
+        });
+    }
 
 
     function Sort(type) {
         window.location.href = "blogmanage?action=sort&type=" + type;
     }
 
-
+    // ClassicEditor.create(document.querySelector("describe"),{
     ClassicEditor.create(document.querySelector(".describe"), {
         toolbar: {
             items: [

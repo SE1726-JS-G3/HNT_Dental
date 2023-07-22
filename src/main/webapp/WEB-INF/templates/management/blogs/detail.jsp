@@ -10,6 +10,11 @@ To change this template use File | Settings | File Templates.
 <!doctype html>
 <html lang="en">
 <jsp:include page="../layout/head.jsp"/>
+<!-- Thêm thư viện SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+
+
 <body>
 <div class="page-wrapper doctris-theme toggled">
     <jsp:include page="../layout/slide_bar.jsp"/>
@@ -33,6 +38,7 @@ To change this template use File | Settings | File Templates.
                                         <%--                                        <input value="${blog_id}" name="id">--%>
                                         <div class="row">
                                             <div class="col-lg-12">
+                                                <p style="color: red; font-weight: bold; padding: 10px">${error}</p>
                                                 <div class="mb-3">
                                                     <label class="form-label">Danh Mục<span class="text-danger">*</span></label>
                                                     <select name="category_id" class="form-select"
@@ -57,11 +63,7 @@ To change this template use File | Settings | File Templates.
                                                 <div class="form-group">
                                                     <div class="col-lg-offset-5 col-lg-15">
 
-                                                        //phan` nay` moi'
-
                                                         <div class="profile-pic">
-<%--                                                            <br><img src="/static/images/${blogs.image}"--%>
-<%--                                                                     class="img-fluid" alt=""><br>--%>
                                                             <input id="myfileupload" type="file" onchange="readURL(this);"
                                                                    name="image"/>
 
@@ -96,35 +98,35 @@ To change this template use File | Settings | File Templates.
                                                     <input name="create_at" type="hidden" class="form-control start" id="createdAt"
                                                            value="${blogs.createdAt}"
                                                            placeholder="Ngày đăng :">
-<%--                                                    <input name="create_by" type="hidden" class="form-control start" id="created_by"--%>
-<%--                                                           value="${blogs.employee.fullName}"--%>
-<%--                                                           placeholder="Ngày đăng :">--%>
+                                                    <%--                                                    <input name="create_by" type="hidden" class="form-control start" id="created_by"--%>
+                                                    <%--                                                           value="${blogs.employee.fullName}"--%>
+                                                    <%--                                                           placeholder="Ngày đăng :">--%>
                                                     <input name="update_at" type="hidden" class="form-control start" id="updatedAt"
                                                            value="${blogs.updatedAt}"
                                                            placeholder="Ngày đăng :">
                                                 </div>
                                             </div><!--end col-->
 
-<%--                                            <div class="col-md-6">--%>
-<%--                                                <div class="mb-3">--%>
-<%--                                                    <label class="form-label"> Người đăng: </label>--%>
-<%--                                                    <input name="create_by" type="text" class="form-control start" id="created_by"--%>
-<%--                                                           value="${blogs.employee.fullName}"--%>
-<%--                                                           placeholder="Ngày đăng :">--%>
+                                            <%--                                            <div class="col-md-6">--%>
+                                            <%--                                                <div class="mb-3">--%>
+                                            <%--                                                    <label class="form-label"> Người đăng: </label>--%>
+                                            <%--                                                    <input name="create_by" type="text" class="form-control start" id="created_by"--%>
+                                            <%--                                                           value="${blogs.employee.fullName}"--%>
+                                            <%--                                                           placeholder="Ngày đăng :">--%>
 
-<%--                                                </div>--%>
-<%--                                            </div><!--end col-->--%>
+                                            <%--                                                </div>--%>
+                                            <%--                                            </div><!--end col-->--%>
 
 
-<%--                                            <div class="col-md-6">--%>
-<%--                                                <div class="mb-3">--%>
-<%--                                                    <label class="form-label"> Ngày cập nhật : </label>--%>
-<%--                                                    <input name="update_at" type="text" class="form-control start" id="updatedAt"--%>
-<%--                                                           value="${blogs.updatedAt}"--%>
-<%--                                                           placeholder="Ngày đăng :">--%>
+                                            <%--                                            <div class="col-md-6">--%>
+                                            <%--                                                <div class="mb-3">--%>
+                                            <%--                                                    <label class="form-label"> Ngày cập nhật : </label>--%>
+                                            <%--                                                    <input name="update_at" type="text" class="form-control start" id="updatedAt"--%>
+                                            <%--                                                           value="${blogs.updatedAt}"--%>
+                                            <%--                                                           placeholder="Ngày đăng :">--%>
 
-<%--                                                </div>--%>
-<%--                                            </div><!--end col-->--%>
+                                            <%--                                                </div>--%>
+                                            <%--                                            </div><!--end col-->--%>
 
 
 
@@ -172,42 +174,53 @@ To change this template use File | Settings | File Templates.
 
 <script>
 
-
-    // Hàm hiển thị thông báo swal
-    function showAlert(message) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Thông báo',
-            text: message,
-            confirmButtonText: 'Đồng ý'
-        });
-    }
-
-    // Hàm kiểm tra và submit form
-    function submitForm() {
+    function validateForm() {
         var title = document.getElementById('title').value;
         var brief = document.getElementById('brief').value;
+        var describe = document.getElementById('describe').value;
 
+        // Perform field validation
         if (title.trim() === '') {
-            showAlert('Vui lòng không để trống trường Tiêu đề');
+            displayErrorMessage('Tiêu đề không được bỏ trống');
+            console.log(1)
             return false;
         }
-
         if (brief.trim() === '') {
-            showAlert('Vui lòng không để trống trường Thông Tin Tóm Tắt');
+            displayErrorMessage('Thông tin tóm tắt không được bỏ trống');
+            console.log(2)
+            return false;
+        }
+        if (describe.trim() === '') {
+            displayErrorMessage('Mô tả không được bỏ trống');
+            console.log(3)
             return false;
         }
 
-        // Nếu không có lỗi, cho phép submit form
+        displaySuccessMessage('Thông tin đã được cập nhật thành công');
         return true;
     }
 
 
-    // function Sort(type) {
-    //     window.location.href = "blogmanage?action=sort&type=" + type;
-    // }
+    // Các hàm hiển thị thông báo lỗi và thành công không thay đổi.
+    function displayErrorMessage(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: message,
+            timer: 50000, // Hiển thị thông báo trong 30 giây
+            showConfirmButton: false // Ẩn nút xác nhận
+        });
+    }
 
-
+    function displaySuccessMessage(message) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: message,
+            timer: 50000, // Hiển thị thông báo trong 30 giây
+            showConfirmButton: false // Ẩn nút xác nhận
+        });
+    }
     ClassicEditor.create(document.querySelector(".describe"), {
         toolbar: {
             items: [
@@ -263,6 +276,9 @@ To change this template use File | Settings | File Templates.
     }).then((editor) => {
         window.editor = editor;
     })
+
+
+
 
     function readURL(input, thumbimage) {
         if (input.files && input.files[0]) { //Sử dụng  cho Firefox - chrome
@@ -349,6 +365,7 @@ To change this template use File | Settings | File Templates.
 </body>
 
 <style>
+
     .Choicefile {
         display: block;
         background: #396CF0;

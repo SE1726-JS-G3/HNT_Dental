@@ -38,11 +38,11 @@ public class BlogDaoImpl implements BlogDao {
     private static final String SQL_GET_CATEGORY_BY_CATEGORY_ID = "select DISTINCT cb.name, cb.id from blogs b " +
             "            inner join category_blog cb on b.category_id = cb.id;";
 
-  
-    private static final String GET_BLOG_BY_ID = "SELECT b.id, b.category_id, b.title, b.brief, b.description, b.create_at, " +
-            " b.update_at, b.created_by, b.status, b.image " +
-            ",e.full_name,cb.name FROM blogs b inner join employees e " +
-            "on e.id = b.created_by inner join category_blog cb on b.category_id = cb.id " +
+
+    private static final String GET_BLOG_BY_ID = "SELECT b.id,b.image, b.category_id, b.title, b.brief, b.description, b.create_at, " +
+            " b.update_at, b.status " +
+            ",cb.name FROM blogs b inner join " +
+            "category_blog cb on b.category_id = cb.id " +
             "where (1=1) and b.id = ? ";
 
     private static final String SAVE_BLOG = "INSERT INTO blogs " +
