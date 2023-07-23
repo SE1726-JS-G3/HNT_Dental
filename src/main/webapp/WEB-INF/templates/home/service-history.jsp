@@ -26,42 +26,31 @@
                                     <th class="border-bottom p-3" style="min-width: 10px;">ID</th>
                                     <th class="border-bottom p-3" style="min-width: 190px;">Tên dịch vụ </th>
                                     <th class="border-bottom p-3" style="min-width: 190px;">Loại dịch vụ </th>
-                                    <th class="border-bottom p-3" style="min-width: 190px;">Phí dịch vụ </th>
                                     <th class="border-bottom p-3">Trạng thái</th>
                                     <th class="border-bottom p-5">Tác vụ</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-<%--                                <c:forEach items="${service}" >--%>
+                                <c:forEach items="${list}" var="o">
                                     <tr>
-                                        <td class="p-3">${service != null ? service.serviceResDto.id : ''}</td>
-                                        <td class="p-3">${service != null ? service.serviceResDto.name : ''}</td>
-                                        <td class="p-3">${service != null ? service.serviceTypeDto.nameType : ''}</td>
-                                        <td class="p-3">${service != null ? service.serviceFeeDto.fee : ''}</td>
-                                        <td class="p-3">${service != null ? service.status : ''}</td>
-
-
-
-
-
-<%--                                        <td class="p-3">${o.serviceResDto.id}</td>--%>
-<%--                                        <td class="p-3">${o.serviceResDto.name}</td>--%>
-<%--                                        <td class="p-3">${o.serviceTypeDto.nameType}</td>--%>
-<%--                                        <td class="p-3">--%>
-<%--                                            <c:if test="${o.status == true}">--%>
-<%--                                                Assigned--%>
-<%--                                            </c:if>--%>
-<%--                                            <c:if test="${o.status == false}">--%>
-<%--                                                Complete--%>
-<%--                                            </c:if>--%>
-<%--                                        </td>--%>
+                                        <td class="p-3">${o.serviceResDto.id}</td>
+                                        <td class="p-3">${o.serviceResDto.name}</td>
+                                        <td class="p-3">${o.serviceTypeDto.nameType}</td>
+                                        <td class="p-3">
+                                            <c:if test="${o.status == true}">
+                                                Assigned
+                                            </c:if>
+                                            <c:if test="${o.status == false}">
+                                                Complete
+                                            </c:if>
+                                        </td>
                                         <td class="p-3 text-center">
                                             <a href="#">
-                                                <button class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/service/detail?id=${service.serviceResDto.id}'">Chi tiết</button>
+                                                <button class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/service/detail?id=${o.serviceResDto.id}'">Chi tiết</button>
                                             </a>
                                         </td>
                                     </tr>
-<%--                                </c:forEach>--%>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>
