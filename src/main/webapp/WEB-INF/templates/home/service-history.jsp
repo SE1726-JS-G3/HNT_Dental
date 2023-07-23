@@ -34,7 +34,7 @@
                                 <tbody>
                                 <%--                                <c:forEach items="${service}" >--%>
                                 <tr>
-                                    <td class="p-3">${service != null ? service.serviceResDto.id : ''}</td>
+                                    <td class="p-3">${service != null ? service.service_id : ''}</td>
                                     <td class="p-3">${service != null ? service.serviceResDto.name : ''}</td>
                                     <td class="p-3">${service != null ? service.serviceTypeDto.nameType : ''}</td>
                                     <td class="p-3">${service != null ? service.serviceFeeDto.fee : ''}</td>
@@ -57,7 +57,7 @@
                                     <%--                                        </td>--%>
                                     <td class="p-3 text-center">
                                         <a href="#">
-                                            <button class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/service/detail?id=${service.serviceResDto.id}'">Chi tiết</button>
+                                            <button class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/service/detail?id=${service.service_id}'">Chi tiết</button>
                                         </a>
                                     </td>
                                 </tr>

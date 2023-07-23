@@ -231,7 +231,7 @@ public class PatientDaoImpl implements PatientDao {
 
     }
 
-    private static final String SERVICE_APPOINTMENT = "SELECT f.fee,b.id, b.status  ,s.name,st.name as type\n" +
+    private static final String SERVICE_APPOINTMENT = "SELECT f.fee,b.service_id, b.status  ,s.name,st.name as type\n" +
             "                                                                      FROM booking b\n" +
             "                                                                          INNER JOIN service s \n" +
             "                                                                        INNER JOIN service_type st\n" +
@@ -249,14 +249,14 @@ public class PatientDaoImpl implements PatientDao {
             return BookingDto.builder()
                     .serviceResDto(ServiceResDto.builder()
                             .name(rs.getString("name"))
-                            .id(rs.getLong("id"))
+                            //.id(rs.getLong("id"))
                             .build()).serviceTypeDto(ServiceTypeDto.builder()
                             .nameType(rs.getString("type"))
                             .build()).serviceFeeDto(ServiceFeeDto.builder()
                             .fee(rs.getDouble("fee"))
                             .build())
                     .status(BookingStatusEnum.getBookingStatusString(rs.getInt("status")))
-                    //.service_id(rs.getInt("service_id"))
+                    .service_id(rs.getInt("service_id"))
                     .build();
         }
         return null;
