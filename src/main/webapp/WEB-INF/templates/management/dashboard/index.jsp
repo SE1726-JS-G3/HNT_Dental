@@ -81,9 +81,9 @@
                 <h6 class="align-items-center mb-0">Thống kê số lịch hẹn</h6>
                 <div class="mb-0 position-relative">
                   <select onchange="window.location.href = '/management/dashboard?type=' + this.value" class="form-select form-control" id="yearchart">
-                    <option <c:if test="${sessionScope.atype == '3day'}"> selected </c:if> value="7">7 ngày gần đây</option>
-                    <option <c:if test="${sessionScope.atype == '7day'}"> selected </c:if> value="14">14 Ngày gần đây</option>
-                    <option <c:if test="${sessionScope.atype == '14day'}"> selected </c:if> value="30">30 ngày gần đây</option>
+                    <option <c:if test="${param.type == '7'}"> selected </c:if> value="7">7 ngày gần đây</option>
+                    <option <c:if test="${param.type == '14'}"> selected </c:if> value="14">14 Ngày gần đây</option>
+                    <option <c:if test="${param.type == '30'}"> selected </c:if> value="30">30 ngày gần đây</option>
                   </select>
                 </div>
               </div>
