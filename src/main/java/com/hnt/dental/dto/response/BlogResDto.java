@@ -34,7 +34,6 @@ public class BlogResDto {
     private String image;
     private String status;
     private long created_by;
-    private String image;
 
 
     public static List<BlogResDto> convert(List<Blogs> blogs) {
