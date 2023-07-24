@@ -395,6 +395,21 @@ public class DoctorDaoImpl implements DoctorDao {
         }
         return result;
     }
+    @Override
+    public List<RankDto> getAllRanks() throws SQLException {
+        List<RankDto> ranks = new ArrayList<>();
+        String sql = "SELECT id, name FROM doctor_rank WHERE id IN (SELECT DISTINCT rank_id FROM doctors)";
+
+        ResultSet rs = ConnectionUtils.executeQuery(sql);
+
+        while (rs.next()) {
+            long id = rs.getLong("id");
+            String name = rs.getString("name");
+            ranks.add(new RankDto(id, name));
+        }
+
+        return ranks;
+    }
 
     @Override
     public Long save(Doctors doctors) throws SQLException, ClassNotFoundException {

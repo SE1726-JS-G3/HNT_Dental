@@ -281,12 +281,23 @@
                                                 </select>
                                             </div>
                                         </div>
+<%--                                        <div class="col-md-6">--%>
+<%--                                            <div class="mb-3">--%>
+<%--                                                <label class="form-label">Xếp hạng</label>--%>
+<%--                                                <input name="rankId" id="rankId" type="text" class="form-control"--%>
+<%--                                                       value="${doctor.rankId}"--%>
+<%--                                                       placeholder="Xếp hạng">--%>
+<%--                                            </div>--%>
+<%--                                        </div>--%>
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Xếp hạng</label>
-                                                <input name="rankId" id="rankId" type="text" class="form-control"
-                                                       value="${doctor.rankId}"
-                                                       placeholder="Xếp hạng">
+                                                <select name="rankId" id="rankId" class="form-select form-control">
+                                                    <option value="">Chọn xếp hạng</option>
+                                                    <c:forEach var="rank" items="${ranks}">
+                                                        <option value="${rank.id}" ${rank.id == doctor.rankId ? "selected" : ""}>${rank.name}</option>
+                                                    </c:forEach>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -424,6 +435,30 @@
             displayErrorMessage('Ngày sinh phải có định dạng YYYY-MM-DD');
             return false;
         }
+        var dobDate = new Date(dob);
+        if (isNaN(dobDate.getTime())) {
+            displayErrorMessage('Ngày sinh không hợp lệ');
+            return false;
+        }
+
+        // Calculate age based on the provided date of birth
+        var age = calculateAge(dobDate);
+
+        // Minimum and maximum age requirements (adjust as needed)
+        var minimumAge = 18; // Minimum age requirement (e.g., 13 years old)
+        var maximumAge = 100; // Maximum age allowed (e.g., 100 years old)
+
+        // Check if age meets the minimum age requirement
+        if (age < minimumAge) {
+            displayErrorMessage('Bạn phải đủ ' + minimumAge + ' tuổi trở lên để sử dụng ứng dụng');
+            return false;
+        }
+
+        // Check if age exceeds the maximum allowed age
+        if (age > maximumAge) {
+            displayErrorMessage('Ngày sinh không hợp lệ');
+            return false;
+        }
         if (email.trim() === '') {
             displayErrorMessage('Email không được bỏ trống');
             return false;
@@ -472,6 +507,11 @@
         var pattern = /^\d+$/;
         return pattern.test(phone);
     }
+    function calculateAge(dobDate) {
+        var now = new Date();
+        var ageDate = new Date(now - dobDate);
+        return Math.abs(ageDate.getUTCFullYear() - 1970);
+    }
 
     // Các hàm hiển thị thông báo lỗi và thành công không thay đổi.
     function displayErrorMessage(message) {
@@ -483,6 +523,7 @@
             showConfirmButton: false // Ẩn nút xác nhận
         });
     }
+
 
     function displaySuccessMessage(message) {
         Swal.fire({
