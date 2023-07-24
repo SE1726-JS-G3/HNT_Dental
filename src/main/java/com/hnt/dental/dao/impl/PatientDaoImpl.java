@@ -210,7 +210,11 @@ public class PatientDaoImpl implements PatientDao {
         return null;
     }
 
-    private static final String DETAIL_APPOINTMENT = "SELECT b.id,b.date,b.name,b.status,b.time,b.account_id ,br.result FROM booking b inner join booking_result br on b.id = br.booking_id  where b.id =?";
+
+    private static final String DETAIL_APPOINTMENT = "SELECT b.id, b.date, b.name, b.status, b.time, b.account_id, br.result, b.doctor_id, b.service_id " +
+            "FROM booking b " +
+            "INNER JOIN booking_result br ON b.id = br.booking_id " +
+            "WHERE b.id = ?";
 
     @Override
     public BookingDto detailAppointment(String id) throws SQLException {
@@ -227,18 +231,21 @@ public class PatientDaoImpl implements PatientDao {
                     .account_id(rs.getInt("account_id"))
                     .date(rs.getDate("date").toLocalDate())
                     .status(BookingStatusEnum.getBookingStatusString(rs.getInt("status")))
+                    .doctor_id(rs.getInt("doctor_id"))  // Set the doctor_id
+                    .service_id(rs.getInt("service_id")) // Set the service_id
                     .build());
         }
         return null;
-
     }
-    private static final String SAVE_SERVICE_FEEDBACK = "INSERT INTO service_feedback " +
-            "(id, booking_id, service_id, star, description, created_at, updated_at, is_show) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SAVE_SERVICE_FEEDBACK = "INSERT INTO feedback " +
+            "( booking_id, service_id, star, description, created_at, updated_at, is_show) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-    private static final String SAVE_DOCTOR_FEEDBACK = "INSERT INTO doctor_feedback " +
-            "(id, booking_id, doctor_id, star, description, created_at, updated_at, is_show) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SAVE_DOCTOR_FEEDBACK = "INSERT INTO feedback " +
+            "( booking_id, doctor_id, star, description, created_at, updated_at, is_show) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+
 
     @Override
     public void saveServiceReview(Long id, Integer service_id, int star, String description) throws SQLException {
@@ -255,7 +262,9 @@ public class PatientDaoImpl implements PatientDao {
                     true
             );
         } catch (SQLException e) {
-            // Handle the exception
+            // Handle the exception appropriately, e.g., log the error or throw a custom exception
+            e.printStackTrace();
+            throw new SQLException("Failed to save service feedback: " + e.getMessage());
         }
     }
 
@@ -274,9 +283,12 @@ public class PatientDaoImpl implements PatientDao {
                     true
             );
         } catch (SQLException e) {
-            // Handle the exception
+            // Handle the exception appropriately, e.g., log the error or throw a custom exception
+            e.printStackTrace();
+            throw new SQLException("Failed to save service feedback: " + e.getMessage());
         }
     }
+
 
 
 

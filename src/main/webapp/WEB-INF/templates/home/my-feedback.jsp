@@ -46,6 +46,9 @@
 
               <!-- Hidden fields for feedback data -->
               <input type="hidden" name="id" value="${param.id}">
+              <input type="hidden" name="booking_id" value="${param.booking_id}">
+              <input type="hidden" name="doctor_id" value="${param.doctor_id}">
+              <input type="hidden" name="service_id" value="${param.service_id}">
               <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
             </form>
           </div>

@@ -25,6 +25,7 @@ public class BookingDto {
     private Account account;
     private Doctors doctors;
     private Employee employee;
+    private Feedback feedback;
     private Booking booking;
     private LocalDate date;
     private LocalTime time;
