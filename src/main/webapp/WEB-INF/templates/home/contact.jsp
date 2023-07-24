@@ -73,7 +73,7 @@
             <div class="col-lg-4 col-md-6 mt-4 mt-lg-0 pt-2 pt-lg-0">
                 <div class="card features feature-primary text-center border-0">
                     <div class="icon text-center rounded-md mx-auto">
-                        <i class="uil uil-map-marker h3 mb-0"></i>
+                        <i class="ri-user-2-line text-primary h5 fw-normal mb-0"></i>
                     </div>
                     <div class="card-body p-0 mt-3">
                         <h5>Địa chỉ</h5>
@@ -92,49 +92,6 @@
                 </div>
             </div>
 
-            <div class="col-lg-7 col-md-6 mt-4 pt-2 mt-sm-0 pt-sm-0">
-                <div class="custom-form rounded shadow p-4">
-                    <h5 class="mb-4">Gửi thông tin liên hệ</h5>
-                    <form method="post" name="myForm" onsubmit="return validateForm()">
-                        <p id="error-msg"></p>
-                        <div id="simple-msg"></div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Họ Tên <span class="text-danger">*</span></label>
-                                    <input name="name" id="name" type="text" class="form-control border rounded">
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Email <span class="text-danger">*</span></label>
-                                    <input name="email" id="email" type="email" class="form-control border rounded" >
-                                </div>
-                            </div>
-
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label class="form-label">Tiêu đề</label>
-                                    <input name="subject" id="subject" class="form-control border rounded" >
-                                </div>
-                            </div>
-
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label class="form-label">Nội dung <span class="text-danger">*</span></label>
-                                    <textarea name="comments" id="comments" rows="4" class="form-control border rounded"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <button type="submit" id="submit" name="send" class="btn btn-primary">Gửi tin nhắn</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
         </div>
     </div>
 

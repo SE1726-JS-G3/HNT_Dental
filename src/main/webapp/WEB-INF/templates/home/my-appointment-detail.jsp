@@ -31,11 +31,11 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">ID bệnh nhân </label>
-                                    <input readonly value="${d.account_id}" type="text" class="form-control">
+                                    <div class="mb-3">
+                                        <label class="form-label">ID bệnh nhân </label>
+                                        <input readonly value="${d.account_id}" type="text" class="form-control">
+                                    </div>
                                 </div>
-                            </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Tên bệnh Nhân</label>
@@ -58,15 +58,8 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Trạng thái</label>
-                                        <input value="<c:if test="${d.status == true}">
-       Assigned
-                                         </c:if>
-                                         <c:if test="${d.status == false}">
-       Complete
-                                         </c:if>" type="text" class="form-control">
-                                    </div>
+                                    <label class="form-label">Trạng thái </label>
+                                    <input readonly value="${d.status}" type="text" class="form-control">
                                 </div>
                             </div>
                             <div class="row">
@@ -96,7 +89,7 @@
                                 </div>
                             </form>
                         </div>
-<br> <br>
+                        <br> <br>
                         <div class="col-md-6">
 
                             <button class="btn btn-info active" type="button">
@@ -180,9 +173,9 @@
                         </div>
                     </div><!--end col-->
                 </div><!--end row-->
-                    <div class="d-grid">
-                        <label class="btn-upload btn btn-primary mt-4">Tải xuống</label>
-                    </div>
+                <div class="d-grid">
+                    <label class="btn-upload btn btn-primary mt-4">Tải xuống</label>
+                </div>
             </div>
         </div>
     </div>

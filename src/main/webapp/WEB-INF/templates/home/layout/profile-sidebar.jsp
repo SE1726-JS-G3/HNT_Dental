@@ -7,15 +7,15 @@
             <br><br><br><br>
                 <img src="${pageContext.request.contextPath}/static/images/user.png" class="rounded-circle shadow-md avatar avatar-md-md" alt="">
 
-            <h5 class="mt-3 mb-1">Huyennt</h5>
-            <p class="text-muted mb-0">Huyen</p>
+            <h5 class="mt-3 mb-1">${profile.fullName}</h5>
+            <p class="text-muted mb-0">${profile.email}</p>
         </div>
 
         <ul class="list-unstyled sidebar-nav mb-0">
             <c:if test="${sessionScope.account.role == 0}">
             <li class="navbar-item"><a href=" /auth/profile" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i>Thông tin tài khoản</a></li>
-            <li class="navbar-item"><a href=" /management/service-booking" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i> Lịch sử dịch vụ</a></li>
-            <li class="navbar-item"><a href="/management/my-appointment" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i> Lịch sử lịch hẹn</a></li>
+            <li class="navbar-item"><a href="/auth/service-booking-history" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i> Lịch sử dịch vụ</a></li>
+            <li class="navbar-item"><a href="/auth/my-appointment-history" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i> Lịch sử lịch hẹn</a></li>
             </c:if>
             <c:if test="${sessionScope.account.role != 0}">
                 <li class="navbar-item"><a href="/auth/profile" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i>Thông tin tài khoản</a></li>

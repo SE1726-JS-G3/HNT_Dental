@@ -10,6 +10,11 @@ To change this template use File | Settings | File Templates.
 <!doctype html>
 <html lang="en">
 <jsp:include page="../layout/head.jsp"/>
+<!-- Thêm thư viện SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+
+
 <body>
 <div class="page-wrapper doctris-theme toggled">
     <jsp:include page="../layout/slide_bar.jsp"/>
@@ -27,10 +32,8 @@ To change this template use File | Settings | File Templates.
                                             aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body p-3 pt-4">
-                                    <form  action="${pageContext.request.contextPath}/management/blog/update" method="POST" onsubmit="return submitForm() >
-                                        <%--                                        <input value="${blog_id}" name="id" type="hidden">--%>
+                                    <form  action="${pageContext.request.contextPath}/management/blog/update" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()" >
                                         <input value="${blog_id}" type="hidden" name="id">
-                                        <%--                                        <input value="${blog_id}" name="id">--%>
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="mb-3">
@@ -57,8 +60,7 @@ To change this template use File | Settings | File Templates.
                                                 <div class="form-group">
                                                     <div class="col-lg-offset-5 col-lg-15">
                                                         <div class="profile-pic">
-                                                            <br><br>
-                                                            <input id="file" type="file" onchange="loadFile(event)"
+                                                            <input id="myfileupload" type="file" onchange="readURL(this);"
                                                                    name="image"/>
                                                         </div>
                                                     </div>
@@ -68,57 +70,23 @@ To change this template use File | Settings | File Templates.
                                                 <label class="form-label">Thông Tin Tóm Tắt<span
                                                         class="text-danger">*</span></label>
                                                 <textarea rows="3" cols="70" class="brief" name="brief" id="brief" placeholder="Thông tin tóm tắt">${blogs.brief}</textarea>
-
-
-
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Mô tả<span
                                                         class="text-danger">*</span></label>
-
                                                 <textarea rows="10" cols="70" class="describe" name="description" id="describe" placeholder="Mô tả:">${blogs.description}</textarea>
-
-
-
-
-
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="mb-3">
-                                                    <label class="form-label"> Ngày đăng: </label>
-                                                    <input name="create_at" type="text" class="form-control start" id="createdAt"
+                                                    <label class="form-label"> Ngày đăng:  ${blogs.createdAt}</label>
+                                                    <input name="create_at" type="hidden" class="form-control start" id="createdAt"
                                                            value="${blogs.createdAt}"
                                                            placeholder="Ngày đăng :">
-
-                                                </div>
-                                            </div><!--end col-->
-
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label"> Người đăng: </label>
-                                                    <input name="create_by" type="text" class="form-control start" id="created_by"
-                                                           value="${blogs.employee.fullName}"
-                                                           placeholder="Ngày đăng :">
-
-                                                </div>
-                                            </div><!--end col-->
-
-
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label"> Ngày cập nhật : </label>
-                                                    <input name="update_at" type="text" class="form-control start" id="updatedAt"
+                                                    <input name="update_at" type="hidden" class="form-control start" id="updatedAt"
                                                            value="${blogs.updatedAt}"
                                                            placeholder="Ngày đăng :">
-
                                                 </div>
                                             </div><!--end col-->
-
-
-
-
-
-
                                             <div class="mb-3">
                                                 <label class="form-label">Trạng thái <span
                                                         class="text-danger"></span></label>
@@ -149,53 +117,55 @@ To change this template use File | Settings | File Templates.
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
         <jsp:include page="../layout/footer.jsp"/>
     </main>
 </div>
-
-
 <script>
-
-
-    // Hàm hiển thị thông báo swal
-    function showAlert(message) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Thông báo',
-            text: message,
-            confirmButtonText: 'Đồng ý'
-        });
-    }
-
-    // Hàm kiểm tra và submit form
-    function submitForm() {
+    function validateForm() {
         var title = document.getElementById('title').value;
         var brief = document.getElementById('brief').value;
-
+        var describe = document.getElementById('describe').value;
+        // Perform field validation
         if (title.trim() === '') {
-            showAlert('Vui lòng không để trống trường Tiêu đề');
+            displayErrorMessage('Tiêu đề không được bỏ trống');
+            console.log(1)
             return false;
         }
-
         if (brief.trim() === '') {
-            showAlert('Vui lòng không để trống trường Thông Tin Tóm Tắt');
+            displayErrorMessage('Thông tin tóm tắt không được bỏ trống');
+            console.log(2)
             return false;
         }
-
-        // Nếu không có lỗi, cho phép submit form
+        if (describe.trim() === '') {
+            displayErrorMessage('Mô tả không được bỏ trống');
+            console.log(3)
+            return false;
+        }
+        displaySuccessMessage('Thông tin đã được cập nhật thành công');
         return true;
     }
-
-
-    // function Sort(type) {
-    //     window.location.href = "blogmanage?action=sort&type=" + type;
-    // }
-
-
+    // Các hàm hiển thị thông báo lỗi và thành công không thay đổi.
+    function displayErrorMessage(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: message,
+            timer: 50000, // Hiển thị thông báo trong 30 giây
+            showConfirmButton: false // Ẩn nút xác nhận
+        });
+    }
+    function displaySuccessMessage(message) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: message,
+            timer: 50000, // Hiển thị thông báo trong 30 giây
+            showConfirmButton: false // Ẩn nút xác nhận
+        });
+    }
     ClassicEditor.create(document.querySelector(".describe"), {
         toolbar: {
             items: [
@@ -223,7 +193,6 @@ To change this template use File | Settings | File Templates.
     }).then((editor) => {
         window.editor = editor;
     })
-
     ClassicEditor.create(document.querySelector(".brief"), {
         toolbar: {
             items: [
@@ -251,7 +220,6 @@ To change this template use File | Settings | File Templates.
     }).then((editor) => {
         window.editor = editor;
     })
-
     function readURL(input, thumbimage) {
         if (input.files && input.files[0]) { //Sử dụng  cho Firefox - chrome
             var reader = new FileReader();
@@ -268,7 +236,6 @@ To change this template use File | Settings | File Templates.
         $(".Update").show();
         $(".removeimg").show();
     }
-
     var editor = '';
     $(document).ready(function () {
         editor = CKEDITOR.replace('brief');
@@ -285,8 +252,38 @@ To change this template use File | Settings | File Templates.
             $(".filename").text("");
         });
     })
-
-
+    function readURL(input, thumbimage) {
+        if (input.files && input.files[0]) { //Sử dụng  cho Firefox - chrome
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#thumbimage").attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        } else { // Sử dụng cho IE
+            $("#thumbimage").attr('src', input.value);
+        }
+        $("#thumbimage").show();
+        $('.filename').text($("#uploadfile").val());
+        $(".Choicefile").hide();
+        $(".Update").show();
+        $(".removeimg").show();
+    }
+    var editor = '';
+    $(document).ready(function () {
+        editor = CKEDITOR.replace('brief');
+        editor = CKEDITOR.replace('describe');
+        $(".Choicefile").bind('click', function () {
+            $("#uploadfile").click();
+        });
+        $(".removeimg").click(function () {
+            $("#thumbimage").attr('src', '').hide();
+            $("#myfileupload").html('<input type="file" id="uploadfile"  onchange="readURL(this);" />');
+            $(".removeimg").hide();
+            $(".Choicefile").show();
+            $(".Update").hide();
+            $(".filename").text("");
+        });
+    })
 </script>
 <script src="${pageContext.request.contextPath}/static/libs/tobii/js/tobii.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/libs/feather-icons/feather.min.js"></script>
@@ -299,10 +296,9 @@ To change this template use File | Settings | File Templates.
 <script src="${pageContext.request.contextPath}/static/libs/date/jquery.timepicker.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/libs/date/timepicker.init.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 </body>
-
 <style>
+
     .Choicefile {
         display: block;
         background: #396CF0;

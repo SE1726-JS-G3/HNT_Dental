@@ -12,9 +12,13 @@ import com.hnt.dental.util.PagingUtils;
 import com.hnt.dental.util.ServletUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import org.apache.commons.lang3.StringUtils;
-
+import java.io.File;
+import com.hnt.dental.entities.Blogs;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -28,25 +32,28 @@ public class BlogService {
         blogDao = new BlogDaoImpl();
         categoryBlogDao = new CategoryBlogDaoImpl();
         employeeDao = new EmployeeDaoImpl();
-
     }
-
-
-    public void getAll(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-
+    private String getFileName(Part part) {
+        String contentDisposition = part.getHeader("content-disposition");
+        String[] tokens = contentDisposition.split(";");
+        for (String token : tokens) {
+            if (token.trim().startsWith("filename")) {
+                return token.substring(token.indexOf("=") + 2, token.length() - 1);
+            }
+        }
+        return "";
     }
-
+    private static final String UPLOAD_DIR = "static\\images"; // Change this to your desired directory
     public void create(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String title = req.getParameter("title");
         String brief = req.getParameter("brief");
         String description = req.getParameter("description");
         Long categoryId = Long.valueOf(req.getParameter("categoryId"));
         String name = req.getParameter("name");
-//        String fullName = req.getParameter("fullName");
         String status = req.getParameter("status");
-//        Long created_by = Long.valueOf(req.getParameter("created_by"));
         String error = null;
-
+        Part raw_image = req.getPart("image");
+        String image = getFileName(raw_image);
         try {
             Blogs blog = Blogs.builder()
                     .title(title)
@@ -54,12 +61,10 @@ public class BlogService {
                     .description(description)
                     .categoryID(categoryId)
                     .categoryBlog(CategoryBlog.builder().name(name).build())
-//                    .employee(Employee.builder().fullName(fullName).build())
                     .status(Objects.equals(status, "Hiện"))
                     .createdAt(LocalDateTime.now())
-//                    .createdBy(created_by)
+                    .image(image)
                     .build();
-
             Long id = blogDao.save(blog);
         } catch (Exception e) {
             error = e.getMessage();
@@ -69,9 +74,7 @@ public class BlogService {
         } else {
             ServletUtils.redirect(req, resp, "/management/blog");
         }
-
     }
-
     public void update(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         Long id = Long.valueOf(req.getParameter("id"));
         Long cate_id = Long.valueOf(req.getParameter("category_id"));
@@ -80,18 +83,16 @@ public class BlogService {
         String description = req.getParameter("description");
         String create_at = req.getParameter("create_at");
         String update_at = req.getParameter("update_at");
-        String created_by = req.getParameter("create_by");
         String status = req.getParameter("status");
         String error = null;
+        Part raw_image = req.getPart("image");
+        String image = getFileName(raw_image);
         ArrayList<CategoryBlog> categoryBlog1 = (ArrayList<CategoryBlog>) categoryBlogDao.getAll();
         try {
-            Optional<Employee> employee = employeeDao.findByName(created_by);
-
             CategoryBlog categoryBlog = categoryBlogDao.get(cate_id.intValue()).isPresent() ? categoryBlogDao.get(cate_id.intValue()).get() : null;
             categoryBlog.setUpdatedAt(LocalDateTime.now());
             categoryBlog.setCreatedAt(LocalDateTime.parse(create_at));
             categoryBlogDao.update(categoryBlog);
-
             blogDao.update(
                     Blogs.builder()
                             .categoryBlog(CategoryBlog.builder().id(cate_id).build())
@@ -102,15 +103,14 @@ public class BlogService {
                             .description(description)
                             .createdAt(LocalDateTime.parse(create_at))
                             .updatedAt(LocalDateTime.now())
-                            .createdBy(employee.isPresent() ? employee.get().getId() : null)
                             .categoryID(categoryBlog.getId())
+                            .image(image)
                             .build()
             );
             System.out.println("runnable");
         } catch (Exception e) {
             error = e.getMessage();
         }
-
         if (StringUtils.isNotEmpty(error)) {
             ServletUtils.redirect(req, resp, "/management/blog/update?id=" + id + "&error=" + error);
         } else {
@@ -118,7 +118,6 @@ public class BlogService {
             ServletUtils.redirect(req, resp, "/management/blog/update?id=" + id);
         }
     }
-
     public void updateRender(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         int id = Integer.parseInt(req.getParameter("id"));
         if(req.getParameter("id")==null)
@@ -129,10 +128,8 @@ public class BlogService {
         String error = req.getParameter("error");
         Blogs blogs = blogDao.get(id).isPresent()
                 ? blogDao.get(Integer.parseInt(req.getParameter("id"))).get() : null;
-
         CategoryBlog categoryBlog = categoryBlogDao.get(id).isPresent()
                 ? categoryBlogDao.get(Integer.parseInt(req.getParameter("id"))).get() : null;
-
         ArrayList<CategoryBlog> categoryBlog1 = (ArrayList<CategoryBlog>) categoryBlogDao.getAll();
         assert blogs != null;
         blogs.setCategoryBlog(categoryBlog);
@@ -142,15 +139,12 @@ public class BlogService {
         req.setAttribute("error", error);
         ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/blogs/detail.jsp");
     }
-
-
     public void getAllManagement(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String page = req.getParameter("page");
         String search = req.getParameter("search");
         String status = req.getParameter("status");
         String category = req.getParameter("category");
         int pageNumber = 1;
-
         if (StringUtils.isNotEmpty(page)) {
             pageNumber = Integer.parseInt(page);
         }
@@ -163,7 +157,6 @@ public class BlogService {
         if (StringUtils.isEmpty(category)) {
             category = "all";
         }
-
         try {
             String renderedSearch = renderSearch(search.trim());
             Integer totalItem = blogDao.countListBlogSummary(renderedSearch,status,category);
@@ -196,19 +189,62 @@ public class BlogService {
         }
         return search;
     }
-
     public void status(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
-//        blogDao.status(Blogs.builder().id());
     }
-
         public void delete(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
         blogDao.delete(Blogs.builder().id((long) id).build());
         ServletUtils.redirect(req, resp, "/management/blog");
     }
-
-
+    public void getBlogById(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String id = req.getParameter("id");
+        Blogs blogs = blogDao.getBlogID(Integer.parseInt(id));
+        List<CategoryBlog> categoryBlogList = blogDao.getListCategoryBlog();
+        List<BlogResDto> blogRelated = blogDao.getListBlogRelated(blogs.getId(), blogs.getCategoryBlog().getId() );
+        List<Blogs> recentPosts = blogDao.RecentPosts();
+        req.setAttribute("blogs", blogs);
+        req.setAttribute("blogRelated", blogRelated);
+        req.setAttribute("recentPosts", recentPosts);
+        req.setAttribute("categoryBlogList", categoryBlogList);
+        req.getRequestDispatcher("/WEB-INF/templates/home/blog/detail.jsp").forward(req, resp);
+    }
+    public void getAll(HttpServletRequest req, HttpServletResponse resp) {
+        String page = req.getParameter("page");
+        String search = req.getParameter("search");
+        String categoryId = req.getParameter("categoryId");
+        String oder = req.getParameter("oder");
+        int pageNumber = 1;
+        Integer category = null;
+        if (StringUtils.isNotEmpty(page) ) {
+            pageNumber = Integer.parseInt(page);
+        }
+        if (StringUtils.isNotEmpty(categoryId)) {
+            category = Integer.parseInt(categoryId);
+        }
+        if (StringUtils.isEmpty(search)) {
+            search = "";
+        }
+        if (StringUtils.isEmpty(oder)) {
+            oder = "id";
+        }
+        try {
+            Integer totalItem = blogDao.countListBlogs(search.trim());
+            Integer totalPage = PagingUtils.getTotalPage(totalItem);
+            List<BlogResDto> BlogResDto = blogDao.getListBlogsFilter(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE, search.trim(), oder, category);
+            List<CategoryBlog> categoryBlogList = blogDao.getListCategoryBlog();
+            req.setAttribute("blogs", BlogResDto);
+            req.setAttribute("categoryBlogList", categoryBlogList);
+            req.setAttribute("totalPage", totalPage);
+            req.setAttribute("currentPage", pageNumber);
+            req.setAttribute("search", search);
+            req.setAttribute("categoryId", categoryId);
+            req.setAttribute("url", "/blog");
+            req.getRequestDispatcher("/WEB-INF/templates/home/blog/index.jsp").forward(req, resp);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
 
 

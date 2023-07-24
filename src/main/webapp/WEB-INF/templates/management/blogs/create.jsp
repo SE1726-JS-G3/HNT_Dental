@@ -20,27 +20,22 @@
                                             aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body p-3 pt-4">
-                                    <form
-                                            action="${pageContext.request.contextPath}/management/blog/create"
-                                            method="POST">
+                                    <form id="myForm"
+                                          action="${pageContext.request.contextPath}/management/blog/create"
+                                          method="POST"
+                                          onSubmit="return validateForm()"  enctype="multipart/form-data"
+                                    >
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="mb-3">
                                                     <label class="form-label">Danh Mục<span class="text-danger">*</span></label>
                                                     <select name="categoryId" class="form-select"
                                                             aria-label="Default select example">
-                                                        <%--                                                        <c:forEach items="${categories}" var="c">--%>
-                                                        <%--                                                            <option value="${c.id}">${c.name}</option>--%>
-                                                        <%--                                                        </c:forEach>--%>
-
                                                         <c:forEach var="c" items="${cate_list}">
                                                             <option value="${c.id}"
                                                                     <c:if test="${c.name eq categoryID}">selected=""</c:if>
                                                             >${c.name}</option>
                                                         </c:forEach>
-                                                        <%--    <option value="theloai1">Title 1</option>--%>
-
-
                                                     </select>
                                                 </div>
                                             </div>
@@ -50,15 +45,14 @@
                                                 <input name="title" id="title" type="text" class="form-control"
                                                        placeholder="Tiêu đề :">
                                             </div>
-
                                             <div class="mb-3">
                                                 <label class="form-label">Ảnh <span class="text-danger">*</span></label>
                                                 <div class="form-group">
                                                     <div class="col-lg-offset-5 col-lg-15">
                                                         <div class="profile-pic">
                                                             <br><br>
-                                                            <input id="file" type="file" onchange="loadFile(event)"
-                                                                   name="image"/>
+                                                            <input  id="file" type="file" onchange="loadFile(event)"
+                                                                    name="image"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -66,25 +60,23 @@
                                             <div class="mb-3">
                                                 <label class="form-label">Thông Tin Tóm Tắt<span
                                                         class="text-danger">*</span></label>
-                                                <textarea class="brief" name="brief"
+                                                <textarea class="brief" name="brief" id="brief"
                                                           placeholder="Thông Tin Tóm Tắt:"></textarea>
                                             </div>
-
                                             <div class="mb-3">
                                                 <label class="form-label">Mô tả<span
                                                         class="text-danger">*</span></label>
 
                                                 <textarea rows="10" cols="70" class="describe"
-                                                          name="description"
+                                                          name="description" id="describe"
                                                           placeholder="Mô tả:"></textarea>
                                             </div>
-
                                             <div class="mb-3">
                                                 <label class="form-label">Trạng thái <span
                                                         class="text-danger"></span></label>
                                                 <select name="status" class="form-select form-control">
-                                                    <option value="Đang làm việc">Hiện</option>
-                                                    <option value="Đã nghỉ việc">Ẩn</option>
+                                                    <option >Hiện</option>
+                                                    <option >Ẩn</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -98,7 +90,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -108,11 +99,64 @@
 
 
 <script>
+
+
+    function validateForm() {
+        var title = document.getElementById('title').value;
+        // var brief = document.getElementsByClassName('brief').value;
+        // var describe = document.getElementsByClassName('brief').value;
+        var brief = document.getElementById('brief').value;
+        var describe = document.getElementById('describe').value;
+
+        // Perform field validation
+        if (title.trim() === '') {
+            displayErrorMessage('Tiêu đề không được bỏ trống');
+            console.log(1)
+            return false;
+        }
+        if (brief.trim() === '') {
+            displayErrorMessage('Thông tin tóm tắt không được bỏ trống');
+            console.log(2)
+            return false;
+        }
+        if (describe.trim() === '') {
+            displayErrorMessage('Mô tả không được bỏ trống');
+            console.log(3)
+            return false;
+        }
+
+        displaySuccessMessage('Thông tin đã được cập nhật thành công');
+        return true;
+    }
+
+
+    // Các hàm hiển thị thông báo lỗi và thành công không thay đổi.
+    function displayErrorMessage(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: message,
+            timer: 50000, // Hiển thị thông báo trong 30 giây
+            showConfirmButton: false // Ẩn nút xác nhận
+        });
+    }
+
+    function displaySuccessMessage(message) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            text: message,
+            timer: 50000, // Hiển thị thông báo trong 30 giây
+            showConfirmButton: false // Ẩn nút xác nhận
+        });
+    }
+
+
     function Sort(type) {
         window.location.href = "blogmanage?action=sort&type=" + type;
     }
 
-
+    // ClassicEditor.create(document.querySelector("describe"),{
     ClassicEditor.create(document.querySelector(".describe"), {
         toolbar: {
             items: [

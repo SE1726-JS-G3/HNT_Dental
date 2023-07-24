@@ -31,13 +31,13 @@ public class BlogResDto {
     private String description;
     private LocalDateTime create_at;
     private LocalDateTime update_at;
+    private String image;
     private String status;
     private long created_by;
 
 
     public static List<BlogResDto> convert(List<Blogs> blogs) {
         List<BlogResDto> blogResDtos = new ArrayList<>();
-
         for (Blogs blog : blogs) {
             blogResDtos.add(
                     BlogResDto.builder()
@@ -50,7 +50,7 @@ public class BlogResDto {
                             .description(blog.getDescription())
                             .create_at(blog.getCreatedAt())
                             .status(blog.getStatus() ? "Hiện" : "Ẩn")
-
+                            .image(blog.getImage())
                             .build()
             );
         }

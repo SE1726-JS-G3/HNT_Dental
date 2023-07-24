@@ -1,3 +1,17 @@
+$.validator.addMethod('dob', function(value, element) {
+    // Parse the date string into a Date object
+    const dob = new Date(value)
+
+    // Calculate the age in milliseconds
+    const ageInMs = Date.now() - dob.getTime()
+
+    // Calculate the age in years
+    const ageInYears = ageInMs / (1000 * 60 * 60 * 24 * 365.25)
+
+    // Check if the age is greater than or equal to 18
+    return ageInYears >= 18
+}, 'Bạn phải đủ 18 tuổi để đăng ký tài khoản');
+
 $(document).ready(function () {
         const register = $('#register');
         register.validate({
@@ -20,7 +34,9 @@ $(document).ready(function () {
                     maxlength: 10
                 },
                 dob: {
-                    required: true
+                    required: true,
+                    date: true,
+                    dob: true
                 },
 
                 address: {
@@ -30,6 +46,9 @@ $(document).ready(function () {
                 confirmPassword: {
                     required: true,
                     equalTo: "#password"
+                },
+                acceptTncCheck: {
+                    required: true
                 }
 
             },
@@ -61,6 +80,9 @@ $(document).ready(function () {
                 confirmPassword: {
                     required: 'Vui lòng nhập lại mật khẩu',
                     equalTo: 'Mật khẩu không trùng khớp',
+                },
+                acceptTncCheck: {
+                    required: 'Vui lòng đồng ý với điều khoản sử dụng dịch vụ',
                 }
             },
             submitHandler: function () {
@@ -110,21 +132,40 @@ function getRegister() {
 function showTerms() {
     Swal.fire({
         confirmButtonColor: '#396cf0',
-        html:
-            '1.Quy định về việc sử dụng dịch vụ:\n' +
-
-            '- Người dùng cần phải tuân thủ các quy định và hướng dẫn được đưa ra trên trang web.\n' +
-            '- Việc sử dụng dịch vụ phải tuân thủ các quy định pháp luật hiện hành.\n' +
-            '2.Quy định về bảo mật thông tin:\n' +
-            '- Các thông tin liên quan đến người dùng sẽ được bảo mật tuyệt đối và không được tiết lộ cho bất kỳ bên thứ ba nào mà không có sự đồng ý của người dùng.\n' +
-            '- Trong trường hợp có sự cố liên quan đến bảo mật thông tin, phòng khám nha khoa sẽ thông báo ngay cho người dùng để có biện pháp xử lý kịp thời.\n' +
-            '3.Quy định về thanh toán và hoàn tiền:\n' +
-            '- Người dùng sẽ phải thanh toán đầy đủ số tiền theo quy định sau khi sử dụng dịch vụ.\n' +
-            '- Trường hợp người dùng muốn hủy bỏ dịch vụ đã đăng ký, phòng khám nha khoa sẽ xử lý và hoàn tiền cho người dùng theo quy định.\n' +
-            '4.Quy định về giải quyết tranh chấp:\n' +
-            '- Trong trường hợp có tranh chấp liên quan đến việc sử dụng dịch vụ, các bên sẽ cố gắng giải quyết bằng thỏa thuận hòa giải.\n' +
-            '- Nếu không thể giải quyết được, tranh chấp sẽ được chuyển đến cơ quan có thẩm quyền để giải quyết.',
-
+        title: 'Điều khoản sử dụng dịch vụ',
+        html: `
+      <ol class="list-terms">
+        <li class="list-terms-item align-content-start">
+          <strong>Quy định về việc sử dụng dịch vụ:</strong>
+          <ul>
+            <li>Người dùng cần phải tuân thủ các quy định và hướng dẫn được đưa ra trên trang web.</li>
+            <li>Việc sử dụng dịch vụ phải tuân thủ các quy định pháp luật hiện hành.</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Quy định về bảo mật thông tin:</strong>
+          <ul>
+            <li>Các thông tin liên quan đến người dùng sẽ được bảo mật tuyệt đối và không được tiết lộ cho bất kỳ bên thứ ba nào mà không có sự đồng ý của người dùng.</li>
+            <li>Trong trường hợp có sự cố liên quan đến bảo mật thông tin, phòng khám nha khoa sẽ thông báo ngay cho người dùng để có biện pháp xử lý kịp thời.</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Quy định về thanh toán và hoàn tiền:</strong>
+          <ul>
+            <li>Người dùng sẽ phải thanh toán đầy đủ số tiền theo quy định sau khi sử dụng dịch vụ.</li>
+            <li>Trường hợp người dùng muốn hủy bỏ dịch vụ đã đăng ký, phòng khám nha khoa sẽ xử lý và hoàn tiền cho người dùng theo quy định.</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Quy định về giải quyết tranh chấp:</strong>
+          <ul>
+            <li>Trong trường hợp có tranh chấp liên quan đến việc sử dụng dịch vụ, các bên sẽ cố gắng giải quyết bằng thỏa thuận hòa giải.</li>
+            <li>Nếu không thể giải quyết được, tranh chấp sẽ được chuyển đến cơ quan có thẩm quyền để giải quyết.</li>
+          </ul>
+        </li>
+      </ol>
+    `,
         showCloseButton: true,
-    })
+        width: '600px',
+    });
 }
