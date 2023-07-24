@@ -16,7 +16,7 @@
           <div class="card-header">Đánh giá dịch vụ và bác sĩ</div>
           <div class="card-body">
             <!-- Feedback Form -->
-            <form action="${pageContext.request.contextPath}/auth/my-feedback" method="post">
+            <form id="feedbackForm" action="${pageContext.request.contextPath}/auth/my-feedback" method="post">
               <div class="form-group mb-3">
                 <label for="feedbackType">Loại đánh giá:</label>
                 <select name="feedbackType" id="feedbackType" class="form-control" required>
@@ -95,5 +95,44 @@
     color: #f39c12;
   }
 </style>
+
+<!-- Script for handling form submission with AJAX -->
+<script>
+  $(document).ready(function() {
+    $("#feedbackForm").submit(function(e) {
+      e.preventDefault();
+      $.ajax({
+        type: "POST",
+        url: $(this).attr("action"),
+        data: $(this).serialize(),
+        success: function(data) {
+          // Handle successful feedback submission with Swal notification
+          Swal.fire({
+            icon: "success",
+            title: "Đánh giá thành công",
+            text: "Cám ơn bạn đã đánh giá!",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          // Redirect to the detail-appointment-history page
+          setTimeout(function() {
+            window.location.href = "${pageContext.request.contextPath}/auth/detail-appointment-history?id=${param.id}";
+          }, 1500); // Redirect after 1.5 seconds
+        },
+        error: function(xhr, status, error) {
+          // Handle failed feedback submission with Swal notification
+          Swal.fire({
+            icon: "error",
+            title: "Đánh giá thất bại",
+            text: "Đã xảy ra lỗi khi đánh giá. Vui lòng thử lại sau.",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+      });
+    });
+  });
+</script>
+
 </body>
 </html>
