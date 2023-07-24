@@ -154,136 +154,145 @@
                     </div>
                 </div>
                 <c:if test="${sessionScope.account.role != 2 && sessionScope.account.role != 4}">
-                <%--Admin Marketting--%>
-                <div class="card border-0 shadow overflow-hidden mt-4">
-                    <div class="p-4 border-bottom">
-                        <h5 class="mb-0">Cập nhật thông tin</h5>
-                    </div>
-                    <form action="${pageContext.request.contextPath}/management/booking/update"
-                          method="POST">
-                        <input name="id" value="${param.id}" hidden>
-                        <div class="tab-content p-4">
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <label class="form-label">Phí tư vấn</label>
-                                    <input name="fee"
-                                           id="number" type="number" class="form-control" value="${serviceBooking.fee}">
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <label class="form-label">Bác sĩ</label>
-                                    <select name="doctor" class="form-select">
-                                        <option class="form-control" value="">Chọn bác sĩ</option>
-                                        <c:forEach items="${doctors}" var="doctor">
-                                            <option
-                                                    <c:if test="${doctor.id == booking.doctors.id}">
-                                                        selected
-                                                    </c:if>
-
-                                                    class="form-control"
-                                                    value="${doctor.id}">${doctor.fullName}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <label class="form-label">Nhân viên hỗ trợ</label>
-                                    <select name="staff" class="form-select">
-                                        <option class="form-control" value="">Chọn nhân viên</option>
-                                        <c:forEach items="${employee}" var="e">
-                                            <option
-                                                    <c:if test="${e.id == booking.employee.id}">
-                                                        selected
-                                                    </c:if>
-                                                    class="form-control" value="${e.id}">${e.fullName}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <label class="form-label">Trạng thái lịch hẹn</label>
-                                    <select name="status" class="form-select" aria-label="Default select example">
-                                        <option
-                                                <c:if test="${booking.status == 'PENDING'}">
-                                                    selected
-                                                </c:if>
-                                                value="PENDING">Pending
-                                        </option>
-                                        <option
-                                                <c:if test="${booking.status == 'CANCEL'}">
-                                                    selected
-                                                </c:if>
-                                                value="CANCEL">Cancel
-                                        </option>
-                                        <option
-                                                <c:if test="${booking.status == 'CONFIRM'}">
-                                                    selected
-                                                </c:if>
-                                                value="CONFIRM">Confirm
-                                        </option>
-                                        <option
-                                                <c:if test="${booking.status == 'ASSIGNED'}">
-                                                    selected
-                                                </c:if>
-                                                value="ASSIGNED">Assigned
-                                        </option>
-                                        <option
-                                                <c:if test="${booking.status == 'REJECT'}">
-                                                    selected
-                                                </c:if>
-                                                value="REJECT">Reject
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="row">
-                                    <div class="mb-3 col-lg-6">
-                                        <label class="form-label">Loại thanh toán</label>
-                                        <select name="payment_type" class="form-select"
-                                                aria-label="Default select example">
-                                            <option
-                                                    <c:if test="${booking.paymentType == 'VNPAY'}">
-                                                        selected
-                                                    </c:if>
-                                                    value="VNPAY">VNPay
-                                            </option>
-                                            <option
-                                                    <c:if test="${booking.paymentType == 'CASH'}">
-                                                        selected
-                                                    </c:if>
-                                                    value="CASH">Thanh toán tại phòng khám
-                                            </option>
-                                        </select>
-                                    </div>
-
-                                    <div class="mb-3 col-lg-6">
-                                        <label class="form-label">Trạng thái thanh toán</label>
-                                        <select name="payment_status" class="form-select"
-                                                aria-label="Default select example">
-                                            <option
-                                                    <c:if test="${booking.payment.status == true}">
-                                                        selected
-                                                    </c:if>
-                                                    value="1">Đã thanh toán
-                                            </option>
-                                            <option
-                                                    <c:if test="${booking.payment.status == false}">
-                                                        selected
-                                                    </c:if>
-                                                    value="0">Chưa thanh toán
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="tab-content p-0">
-                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
-                                </div>
-                            </div>
+                    <%--Admin Marketting--%>
+                    <div class="card border-0 shadow overflow-hidden mt-4">
+                        <div class="p-4 border-bottom">
+                            <h5 class="mb-0">Cập nhật thông tin</h5>
                         </div>
-                    </form>
-                </div>
+                        <form action="${pageContext.request.contextPath}/management/booking/update"
+                              method="POST">
+                            <input name="id" value="${param.id}" hidden>
+                            <div class="tab-content p-4">
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Phí tư vấn</label>
+                                        <input name="fee"
+                                               id="number" type="number" class="form-control"
+                                               value="${serviceBooking.fee}">
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Bác sĩ</label>
+                                        <select name="doctor" class="form-select">
+                                            <option class="form-control" value="">Chọn bác sĩ</option>
+                                            <c:forEach items="${doctors}" var="doctor">
+                                                <option
+                                                        <c:if test="${doctor.id == booking.doctors.id}">
+                                                            selected
+                                                        </c:if>
+
+                                                        class="form-control"
+                                                        value="${doctor.id}">${doctor.fullName}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Nhân viên hỗ trợ</label>
+                                        <select name="staff" class="form-select">
+                                            <option class="form-control" value="">Chọn nhân viên</option>
+                                            <c:forEach items="${employee}" var="e">
+                                                <option
+                                                        <c:if test="${e.id == booking.employee.id}">
+                                                            selected
+                                                        </c:if>
+                                                        class="form-control" value="${e.id}">${e.fullName}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Trạng thái lịch hẹn</label>
+                                        <select name="status" class="form-select" aria-label="Default select example">
+                                            <option
+                                                    <c:if test="${booking.status == 'PENDING'}">
+                                                        selected
+                                                    </c:if>
+                                                    value="PENDING">Pending
+                                            </option>
+                                            <option
+                                                    <c:if test="${booking.status == 'CANCEL'}">
+                                                        selected
+                                                    </c:if>
+                                                    value="CANCEL">Cancel
+                                            </option>
+                                            <option
+                                                    <c:if test="${booking.status == 'CONFIRM'}">
+                                                        selected
+                                                    </c:if>
+                                                    value="CONFIRM">Confirm
+                                            </option>
+                                            <c:if test="${sessionScope.account.role == 1}">
+                                                <option
+                                                        <c:if test="${booking.status == 'ASSIGNED'}">
+                                                            selected
+                                                        </c:if>
+                                                        value="ASSIGNED">Assigned
+                                                </option>
+                                                <option
+                                                        <c:if test="${booking.status == 'REJECT'}">
+                                                            selected
+                                                        </c:if>
+                                                        value="REJECT">Reject
+                                                </option>
+                                                <option
+                                                        <c:if test="${booking.status == 'DONE'}">
+                                                            selected
+                                                        </c:if>
+                                                        value="DONE">DONE
+                                                </option>
+                                            </c:if>
+                                        </select>
+                                    </div>
+                                    <div class="row">
+                                        <div class="mb-3 col-lg-6">
+                                            <label class="form-label">Loại thanh toán</label>
+                                            <select name="payment_type" class="form-select"
+                                                    aria-label="Default select example">
+                                                <option
+                                                        <c:if test="${booking.paymentType == 'VNPAY'}">
+                                                            selected
+                                                        </c:if>
+                                                        value="VNPAY">VNPay
+                                                </option>
+                                                <option
+                                                        <c:if test="${booking.paymentType == 'CASH'}">
+                                                            selected
+                                                        </c:if>
+                                                        value="CASH">Thanh toán tại phòng khám
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-3 col-lg-6">
+                                            <label class="form-label">Trạng thái thanh toán</label>
+                                            <select name="payment_status" class="form-select"
+                                                    aria-label="Default select example">
+                                                <option
+                                                        <c:if test="${booking.payment.status == true}">
+                                                            selected
+                                                        </c:if>
+                                                        value="1">Đã thanh toán
+                                                </option>
+                                                <option
+                                                        <c:if test="${booking.payment.status == false}">
+                                                            selected
+                                                        </c:if>
+                                                        value="0">Chưa thanh toán
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="tab-content p-0">
+                                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </c:if>
 
                 <%--Staff & doctor--%>
@@ -297,7 +306,8 @@
                             <div class="col-lg-12">
                                 <input hidden="" name="id" value="${param.id}">
                                 <div class="mb-3">
-                                    <label class="form-label">Kết quả khám bao gồm kết luần của bác sĩ + đơn thuốc + Phim XQ (nếu có)</label>
+                                    <label class="form-label">Kết quả khám bao gồm kết luần của bác sĩ + đơn thuốc +
+                                        Phim XQ (nếu có)</label>
                                     <textarea name="result" class="form-control attachments"
                                               rows="3">${bookingResult.result}</textarea>
                                 </div>
