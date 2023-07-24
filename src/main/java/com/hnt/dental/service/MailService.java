@@ -72,9 +72,27 @@ public class MailService {
         new MailService().sendEmail(emailDto);
     }
 
+    public static void sendMailAccount(String username, String pass, String email) throws IOException, UnirestException {
+        String mailBody = FileUtils.readFile("email/account.html");
+        Map<String, String> mailAttributes = new HashMap<>();
+        mailAttributes.put("name",username);
+        mailAttributes.put("pass",pass);
+        StringSubstitutor stringSubstitutor = new StringSubstitutor(mailAttributes);
+        mailBody = stringSubstitutor.replace(mailBody);
+        EmailDto emailDto = EmailDto.builder()
+                .to(List.of(MailerDto.builder()
+                        .email(email)
+                        .name(username)
+                        .build()))
+                .subject("Cấp Tài khoản")
+                .htmlPart(mailBody)
+                .build();
+        new MailService().sendEmail(emailDto);
+    }
+
     public static void main(String[] args) {
         try {
-            sendMailConfirm("Huy","https://google.com","huy@gmail");
+            sendMailAccount("Huy","24356grybewfj","khuonghung1423@gmail.com");
         } catch (IOException | UnirestException e) {
             e.printStackTrace();
         }

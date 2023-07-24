@@ -121,7 +121,7 @@
                                                     <td class="text-center">
                                                         <a href="#">
                                                             <button class="btn btn-primary"
-                                                                    onclick="window.location.href='${pageContext.request.contextPath}/management/employee/update?id=${e.id}'"
+                                                                    onclick="window.location.href='${pageContext.request.contextPath}/management/service/detail?id=${s.id}'"
                                                             >Chi tiết
                                                             </button>
                                                         </a>

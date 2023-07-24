@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -200,6 +201,14 @@ public class ServiceService {
 
         dao.updateServiceFee(Long.valueOf(idService),Long.valueOf(idServiceType), Double.valueOf(fee));
         ServletUtils.redirect(req, resp, "/management/service/detail?id=" + idService);
+    }
+
+    public void deleteDoctor(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        String id = req.getParameter("id");
+        String doctorId = req.getParameter("did");
+
+        dao.deleteDoctor(Long.valueOf(id), Long.valueOf(doctorId));
+        ServletUtils.redirect(req, resp, "/management/service/detail?id=" + id);
     }
 }
 
