@@ -95,7 +95,7 @@
                             <button class="btn btn-info active" type="button">
                                 Hủy đặt lịch
                             </button>
-                            <button class="btn btn-primary active" type="button">
+                            <button class="btn btn-primary active" type="button" onclick="window.location.href='${pageContext.request.contextPath}/auth/my-feedback?id=${d.id}'">
                                 Đánh giá
                             </button>
                         </div>

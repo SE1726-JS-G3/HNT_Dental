@@ -11,6 +11,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -230,6 +232,54 @@ public class PatientDaoImpl implements PatientDao {
         return null;
 
     }
+    private static final String SAVE_SERVICE_FEEDBACK = "INSERT INTO service_feedback " +
+            "(id, booking_id, service_id, star, description, created_at, updated_at, is_show) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+    private static final String SAVE_DOCTOR_FEEDBACK = "INSERT INTO doctor_feedback " +
+            "(id, booking_id, doctor_id, star, description, created_at, updated_at, is_show) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+    @Override
+    public void saveServiceReview(Long id, Integer service_id, int star, String description) throws SQLException {
+        LocalDateTime now = LocalDateTime.now();
+        try {
+            ConnectionUtils.executeUpdate(
+                    SAVE_SERVICE_FEEDBACK,
+                    id,
+                    service_id,
+                    star,
+                    description,
+                    Timestamp.valueOf(now),
+                    Timestamp.valueOf(now),
+                    true
+            );
+        } catch (SQLException e) {
+            // Handle the exception
+        }
+    }
+
+    @Override
+    public void saveDoctorReview(Long id, Integer doctor_id, int star, String description) throws SQLException {
+        LocalDateTime now = LocalDateTime.now();
+        try {
+            ConnectionUtils.executeUpdate(
+                    SAVE_DOCTOR_FEEDBACK,
+                    id,
+                    doctor_id,
+                    star,
+                    description,
+                    Timestamp.valueOf(now),
+                    Timestamp.valueOf(now),
+                    true
+            );
+        } catch (SQLException e) {
+            // Handle the exception
+        }
+    }
+
+
+
 
     private static final String SERVICE_APPOINTMENT = "SELECT f.fee,b.service_id, b.status  ,s.name,st.name as type\n" +
             "                                                                      FROM booking b\n" +
