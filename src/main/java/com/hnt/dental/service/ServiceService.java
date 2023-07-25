@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -51,17 +52,16 @@ public class ServiceService {
         Integer totalPage = PagingUtils.getTotalPage(totalItem);
         List<ServiceResDto> serviceResDtos = dao.getAllServiceDao(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE, search.trim(), typeID);
         List<ServiceTypeDto> serviceTypeDtos = dao.getALlType();
-        req.setAttribute("services", serviceResDtos);
-        req.setAttribute("totalPage", totalPage);
-        req.setAttribute("currentPage", pageNumber);
         req.setAttribute("search", search);
         req.setAttribute("typeId", typeID);
         req.setAttribute("types", serviceTypeDtos);
+        req.setAttribute("services", serviceResDtos);
+        req.setAttribute("totalPage", totalPage);
+        req.setAttribute("currentPage", pageNumber);
         req.setAttribute("url", "/" +
                 "service");
         ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/service/index.jsp");
     }
-
     public void getAllServiceManagement(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String page = req.getParameter("page");
         String search = req.getParameter("search");
@@ -95,7 +95,6 @@ public class ServiceService {
                 "service");
         ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/service/index.jsp");
     }
-
     public void getServiceById(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String id = req.getParameter("id");
         String typeId = req.getParameter("typeId");
@@ -201,5 +200,15 @@ public class ServiceService {
         dao.updateServiceFee(Long.valueOf(idService),Long.valueOf(idServiceType), Double.valueOf(fee));
         ServletUtils.redirect(req, resp, "/management/service/detail?id=" + idService);
     }
+
+    public void deleteDoctor(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        String id = req.getParameter("id");
+        String doctorId = req.getParameter("did");
+
+        dao.deleteDoctor(Long.valueOf(id), Long.valueOf(doctorId));
+        ServletUtils.redirect(req, resp, "/management/service/detail?id=" + id);
+    }
 }
+
+
 

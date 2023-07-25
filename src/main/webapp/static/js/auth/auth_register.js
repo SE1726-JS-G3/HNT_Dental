@@ -110,7 +110,12 @@ function getRegister() {
                     break;
                 case 'success':
                     document.getElementById("content").style.color = "green";
-                    document.getElementById("content").innerHTML = "Đăng ký thành công! Vui lòng kiểm tra email để xác thực tài khoản!";
+                    Swal.fire({
+                        confirmButtonColor: '#396cf0',
+                        title: 'Đăng ký thành công',
+                        icon: 'success',
+                        text: 'Vui lòng kiểm tra email để xác nhận'
+                    })
                     break;
                 default:
                     document.getElementById("content").style.color = "red";

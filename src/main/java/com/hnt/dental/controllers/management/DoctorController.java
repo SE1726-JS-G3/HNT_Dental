@@ -36,7 +36,7 @@ public class DoctorController extends HttpServlet {
                     doctorService.getAllManagement(req, resp);
                     break;
                 case "/management/doctor/create":
-                    req.getRequestDispatcher("/WEB-INF/templates/management/doctor/create.jsp").forward(req, resp);
+                    doctorService.createRender(req, resp);
                     break;
                 case "/management/doctor/detail":
                     doctorService.updateRender(req, resp);

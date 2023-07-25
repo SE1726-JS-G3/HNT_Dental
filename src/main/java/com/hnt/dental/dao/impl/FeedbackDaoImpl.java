@@ -7,6 +7,8 @@ import com.hnt.dental.util.ConnectionUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -40,10 +42,13 @@ public class FeedbackDaoImpl implements FeedbackDao {
         ResultSet rs = ConnectionUtils.executeQuery(sqlQuery, id);
         List<FeedbackDto> list = new ArrayList<>();
         while (rs.next()) {
+            Timestamp createdAtTimestamp = rs.getTimestamp("created_at");
+            LocalDateTime createdAt = createdAtTimestamp != null ? createdAtTimestamp.toLocalDateTime() : null;
+
             list.add(FeedbackDto.builder()
                     .id(rs.getLong("id"))
                     .fullName(rs.getString("full_name"))
-                    .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
+                    .createdAt(createdAt) // Use the LocalDateTime after null check
                     .image(rs.getString("image"))
                     .description(rs.getString("description"))
                     .star(rs.getInt("star"))
@@ -51,6 +56,7 @@ public class FeedbackDaoImpl implements FeedbackDao {
         }
         return list;
     }
+
 
     public static void main(String[] args) throws Exception {
         FeedbackDaoImpl dao = new FeedbackDaoImpl();

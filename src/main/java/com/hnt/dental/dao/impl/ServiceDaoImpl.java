@@ -129,6 +129,8 @@ public class ServiceDaoImpl implements ServiceDao {
             "SET fee= ?" +
             "WHERE service_id= ? AND service_type= ?";
 
+    private static final String DELETE_DOCTOR = "DELETE FROM service_doctor WHERE (id_doctor = ?) and (id_service = ?)";
+
     @Override
     public List<Service> getAll(Integer offset, Integer limit, String search) throws SQLException {
         return null;
@@ -176,6 +178,17 @@ public class ServiceDaoImpl implements ServiceDao {
         ConnectionUtils.closeConnection();
         return result;
     }
+    @Override
+    public Integer countListService(String search) throws SQLException {
+        search = "%" + search + "%";
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_COUNT_SERVICE, search, search);
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        ConnectionUtils.closeConnection();
+        return null;
+    }
+
 
     @Override
     public List<ServiceManagementDto> getAllServiceManagement(Integer offset, Integer limit, String search) throws SQLException {
@@ -295,14 +308,8 @@ public class ServiceDaoImpl implements ServiceDao {
     }
 
     @Override
-    public Integer countListService(String search) throws SQLException {
-        search = "%" + search + "%";
-        ResultSet rs = ConnectionUtils.executeQuery(SQL_COUNT_SERVICE, search, search);
-        if (rs.next()) {
-            return rs.getInt(1);
-        }
-        ConnectionUtils.closeConnection();
-        return null;
+    public void deleteDoctor(Long id, Long doctorId) throws SQLException {
+        ConnectionUtils.executeUpdate(DELETE_DOCTOR, doctorId, id);
     }
 
     @Override
@@ -367,6 +374,20 @@ public class ServiceDaoImpl implements ServiceDao {
     }
 
     @Override
+    public List<ServiceTypeDto> getALlType() throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_ALL_TYPE);
+        List<ServiceTypeDto> result = new ArrayList<>();
+        while (rs.next()) {
+            result.add(
+                    ServiceTypeDto.builder()
+                            .idType(rs.getLong("id"))
+                            .nameType(rs.getString("name"))
+                            .build());
+        }
+        ConnectionUtils.closeConnection();
+        return result;
+    }
+    @Override
     public List<ServiceDetailDto> getTopService() throws SQLException {
         ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_TOP_SERVICE);
         List<ServiceDetailDto> result = new ArrayList<>();
@@ -384,19 +405,6 @@ public class ServiceDaoImpl implements ServiceDao {
         return result;
     }
 
-    @Override
-    public List<ServiceTypeDto> getALlType() throws SQLException {
-        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_ALL_TYPE);
-        List<ServiceTypeDto> result = new ArrayList<>();
-        while (rs.next()) {
-            result.add(
-                    ServiceTypeDto.builder()
-                            .idType(rs.getLong("id"))
-                            .nameType(rs.getString("name"))
-                            .build());
-        }
-        ConnectionUtils.closeConnection();
-        return result;
-    }
+
 
 }

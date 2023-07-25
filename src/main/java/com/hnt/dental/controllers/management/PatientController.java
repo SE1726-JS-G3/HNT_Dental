@@ -28,6 +28,7 @@ import java.util.List;
         "/management/patient/update",
         "/auth/my-appointment-history",
         "/auth/detail-appointment-history",
+        "/auth/my-feedback",
         "/auth/service-booking-history",
         "/management/myPatientOfDoctor"
 
@@ -109,6 +110,9 @@ public class PatientController extends HttpServlet {
                     throw new RuntimeException(e);
                 }
                 break;
+            case "/auth/my-feedback":
+                req.getRequestDispatcher("/WEB-INF/templates/home/my-feedback.jsp").forward(req, resp);
+                break;
 
             default:
         }
@@ -129,6 +133,13 @@ public class PatientController extends HttpServlet {
             case "/management/patient/update":
                 try {
                     service.update(req, resp);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                break;
+            case "/auth/my-feedback":
+                try {
+                    service.createFeedback(req, resp);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
