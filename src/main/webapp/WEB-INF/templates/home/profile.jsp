@@ -140,7 +140,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Email</label>
-                                        <input name="email" value="${profile.email}" id="email" type="email"
+                                        <input name="email" readonly value="${profile.email}" id="email" type="email"
                                                class="form-control">
                                         <span id="emailValidationMessage" class="text-danger"></span>
                                         <!-- Thêm phần tử span để hiển thị thông báo -->
@@ -159,7 +159,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Ngày sinh</label>
-                                        <input name="dob" value="${profile.dob}" id="dob" type="text"
+                                        <input name="dob" value="${profile.dob}" id="dob" type="date"
                                                class="form-control">
                                     </div>
                                 </div>

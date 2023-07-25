@@ -313,13 +313,11 @@ public class AuthService {
 
         Account account = (Account) req.getSession().getAttribute("account");
         account = accountDao.findByEmail(account.getEmail());
-        String image = null;
-        // copy upload
         if (img.getSize() > 0) {
-            image = ImageUtils.upload(img);
+            account.setImage(ImageUtils.upload(img));
+            accountDao.update(account);
         }
-        account.setImage(image);
-        accountDao.update(account);
+
         switch (account.getRole()) {
             case 0://patient
                 patientDao.update(Patient.builder()
