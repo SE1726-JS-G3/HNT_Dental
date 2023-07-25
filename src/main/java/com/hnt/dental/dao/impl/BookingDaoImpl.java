@@ -84,7 +84,7 @@ public class BookingDaoImpl implements BookingDao {
             "left join service_type st on st.id = b.service_type_id " +
             "WHERE  date >= CURDATE() AND date < CURDATE() + INTERVAL 1 DAY ";
 
-    private static final String SQL_GET_STATISTIC_7Day =" Select p.day , coalesce(count(u.id), 0) as count from ( " +
+    private static final String SQL_GET_STATISTIC_7Day = " Select p.day , coalesce(count(u.id), 0) as count from ( " +
             "                   Select curdate() as day " +
             "                          union " +
             "                    Select date_sub(Curdate(),interval 1 day) " +
@@ -99,7 +99,7 @@ public class BookingDaoImpl implements BookingDao {
             "                        union " +
             "                Select date_sub(Curdate(),interval 6 day))as p " +
             "                left join booking as u on p.day = u.date group by p.day order by p.day asc";
-    
+
     private static final String SQL_GET_STATISTIC_14Day = "SELECT p.day, COALESCE(COUNT(u.id), 0) AS count" +
             " FROM (" +
             "    SELECT CURDATE() AS day" +
@@ -120,7 +120,7 @@ public class BookingDaoImpl implements BookingDao {
             " LEFT JOIN booking AS u ON p.day = u.date" +
             " GROUP BY p.day" +
             " ORDER BY p.day ASC";
-    
+
     private static final String SQL_GET_STATISTIC_30Day = "SELECT p.day, COALESCE(COUNT(u.id), 0) AS count " +
             "FROM ( " +
             "    SELECT CURDATE() AS day " +
@@ -157,6 +157,51 @@ public class BookingDaoImpl implements BookingDao {
             "LEFT JOIN booking AS u ON p.day = u.date " +
             "GROUP BY p.day " +
             "ORDER BY p.day ASC ";
+
+
+    private static String SQL_GET_BOOKING_FOR_DOCTOR = "SELECT b.id, b.name,s.name as serviceName, b.date,b.time,b.status FROM hnt_dental.booking b " +
+            "left join service s on s.id = b.service_id " +
+            "where doctor_id = ?";
+
+    private static String SQL_GET_BOOKING_FOR_STAFF = "SELECT b.id, b.name,s.name as serviceName, b.date,b.time,b.status FROM hnt_dental.booking b " +
+            "left join service s on s.id = b.service_id " +
+            "where b.staff_id = ?";
+
+    @Override
+    public List<BookingManagementDto> getAllBookingForDoctor(Long id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_BOOKING_FOR_DOCTOR, id);
+        List<BookingManagementDto> bookingDtoList = new ArrayList<>();
+        while (rs.next()) {
+            bookingDtoList.add(BookingManagementDto.builder()
+                    .id(rs.getLong("id"))
+                    .name(rs.getString("name"))
+                    .service(Service.builder().name(rs.getString("serviceName")).build())
+                    .date(rs.getDate("date").toLocalDate())
+                    .time(rs.getTime("time").toLocalTime())
+                    .status(BookingStatusEnum.getBookingStatusString(rs.getInt("status")))
+                    .build());
+        }
+        ConnectionUtils.closeConnection();
+        return bookingDtoList;
+    }
+
+    @Override
+    public List<BookingManagementDto> getAllBookingForStaff(Long id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_BOOKING_FOR_STAFF, id);
+        List<BookingManagementDto> bookingDtoList = new ArrayList<>();
+        while (rs.next()) {
+            bookingDtoList.add(BookingManagementDto.builder()
+                    .id(rs.getLong("id"))
+                    .name(rs.getString("name"))
+                    .service(Service.builder().name(rs.getString("serviceName")).build())
+                    .date(rs.getDate("date").toLocalDate())
+                    .time(rs.getTime("time").toLocalTime())
+                    .status(BookingStatusEnum.getBookingStatusString(rs.getInt("status")))
+                    .build());
+        }
+        ConnectionUtils.closeConnection();
+        return bookingDtoList;
+    }
 
 
     @Override
@@ -230,7 +275,7 @@ public class BookingDaoImpl implements BookingDao {
                 rs = ConnectionUtils.executeQuery(SQL_GET_STATISTIC_7Day);
                 break;
         }
-        while (rs.next()){
+        while (rs.next()) {
             statisticDtoList.add(StatisticDto.builder()
                     .date(LocalDate.parse(rs.getString("day"), DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                     .count(rs.getInt("count"))

@@ -141,7 +141,7 @@
                                     <div class="mb-3">
                                         <label class="form-label">Email</label>
                                         <input name="email" value="${profile.email}" id="email" type="email"
-                                               class="form-control">
+                                               class="form-control" disabled>
                                         <span id="emailValidationMessage" class="text-danger"></span>
                                         <!-- Thêm phần tử span để hiển thị thông báo -->
                                     </div>

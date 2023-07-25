@@ -264,6 +264,17 @@ public class BookingService {
                     getBookingDetailById.getTime(), getDetailServiceBooking.getTypeId(), getDetailServiceBooking.getId(), Long.valueOf(id));
             List<Employee> getEmployeeAvailable = edao.getEmployeeAvailable(getBookingDetailById.getDate(), getBookingDetailById.getTime(), Long.valueOf(id));
             BookingResult getBookingResultById = adao.getBookingResultById(Long.valueOf(id));
+
+
+            // booking cua doctor
+            Account account = (Account) req.getSession().getAttribute("account");
+            List<BookingManagementDto> getAllBookingForDoctor = adao.getAllBookingForDoctor(account.getId());
+            req.setAttribute("bookingForDoctor", getAllBookingForDoctor);
+
+            //booking cua staff
+            List<BookingManagementDto> getAllBookingForStaff = adao.getAllBookingForStaff(account.getId());
+            req.setAttribute("bookingForStaff", getAllBookingForStaff);
+
             req.setAttribute("patientBooking", getDetailPatientBooking);
             req.setAttribute("doctorBooking", getDetailDoctorBooking);
             req.setAttribute("serviceBooking", getDetailServiceBooking);
