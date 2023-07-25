@@ -216,7 +216,7 @@ public class PatientDaoImpl implements PatientDao {
 
     private static final String DETAIL_APPOINTMENT = "SELECT b.id, b.date, b.name, b.status, b.time, b.account_id, br.result, b.doctor_id, b.service_id " +
             "FROM booking b " +
-            "INNER JOIN booking_result br ON b.id = br.booking_id " +
+            "LEFT JOIN booking_result br ON b.id = br.booking_id " +
             "WHERE b.id = ?";
 
     @Override
