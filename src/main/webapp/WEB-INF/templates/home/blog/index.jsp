@@ -72,26 +72,20 @@
       <c:forEach items="${blogs}" var="b">
         <div class="col-lg-4 col-md-6 col-12 mb-4 pb-2">
           <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-            <img src="${pageContext.request.contextPath}/static/images/blogs/${b.image}" class="img-fluid"
+            <img src="${b.image}" class="img-fluid" style="height: 250px; width: 500px"
                  alt="">
             <div class="card-body p-4">
               <ul class="list-unstyled mb-2">
-                <li class="list-inline-item text-muted small me-3"><i
-                        class="uil uil-calendar-alt text-dark h6 me-1"></i>${b.create_at}
-                </li>
                 <li class="list-inline-item text-muted small"><i
                         class="uil uil-clock text-dark h6 me-1"></i>
                 </li>
+                <li class="list-inline-item text-muted small me-3">${b.create_at}
+                </li>
+
               </ul>
-              <a href="/blog/detail?id=${b.id}" class="text-dark title h5">${b.title}</a>
+              <a href="${pageContext.request.contextPath}/blog/detail?id=${b.id}" class="text-dark title h5">${b.title}</a>
               <div class="post-meta d-flex justify-content-between mt-3">
-                <ul class="list-unstyled mb-0">
-                  <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i
-                          class="mdi mdi-heart-outline me-1"></i>33</a></li>
-                  <li class="list-inline-item"><a href="#" class="text-muted comments"><i
-                          class="mdi mdi-comment-outline me-1"></i>08</a></li>
-                </ul>
-                <a href="/blog/detail?id=${b.id}" class="link">Read More <i
+                <a href="${pageContext.request.contextPath}/blog/detail?id=${b.id}" class="link">Đọc thêm <i
                         class="mdi mdi-chevron-right align-middle"></i></a>
               </div>
             </div>
