@@ -313,17 +313,6 @@ public class ServiceDaoImpl implements ServiceDao {
     }
 
     @Override
-    public Integer countListService(String search) throws SQLException {
-        search = "%" + search + "%";
-        ResultSet rs = ConnectionUtils.executeQuery(SQL_COUNT_SERVICE, search, search);
-        if (rs.next()) {
-            return rs.getInt(1);
-        }
-        ConnectionUtils.closeConnection();
-        return null;
-    }
-
-    @Override
     public ServiceDetailDto getServiceDetailByServiceId(Long id, Long typeId) throws SQLException {
         ResultSet rs = ConnectionUtils.executeQuery(SQL_GET_SERVICE_DETAIL_BY_SERVICE_ID, id, typeId);
         if (rs.next()) {
