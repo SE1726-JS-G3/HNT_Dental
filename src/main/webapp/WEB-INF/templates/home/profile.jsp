@@ -48,7 +48,7 @@
                                            onchange="readURL(this);"/>
                                 </div>
                                 <div id="thumbbox">
-                                    <img class="rounded" height="20%" width="30%" alt="Thumb image" id="thumbimage"
+                                    <img class="rounded" height="20%" width="30%" src="${profile.image}" alt="Thumb image" id="thumbimage"
                                          style="display: none"/>
                                     <a class="removeimg" href="javascript:"></a>
                                 </div>
