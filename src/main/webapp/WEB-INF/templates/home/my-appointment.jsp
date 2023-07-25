@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
@@ -24,8 +23,8 @@
                             <table class="table mb-0 table-center">
                                 <thead>
                                 <tr>
-                                    <th class="border-bottom p-3" >ID</th>
-                                    <th class="border-bottom p-5" >Tên dịch vụ</th>
+                                    <th class="border-bottom p-3">ID</th>
+                                    <th class="border-bottom p-5">Tên dịch vụ</th>
                                     <th class="border-bottom p-3">Loại dịch vụ</th>
                                     <th class="border-bottom p-3">Ngày khám</th>
                                     <th class="border-bottom p-3">Giờ khám</th>
@@ -34,33 +33,24 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <%--<c:forEach items="${list}" var="o">--%>
-                                <tr>
-                                    <td class="p-3">${service != null ? service.id : ''}</td>
-                                    <td class="p-3">${service != null ? service.serviceResDto.name : ''}</td>
-                                    <td class="p-3">${service != null ? service.serviceTypeDto.nameType : ''}</td>
-                                    <td class="p-3">${service != null ? service.date : ''}</td>
-                                    <td class="p-3">${service != null ? service.time : ''}</td>
-                                    <td class="p-3">${service != null ? service.status : ''}</td>
-                                    <%--                    <td class="p-3">${o.id}</td>--%>
-                                    <%--                    <td class="p-3">${o.serviceResDto.name}</td>--%>
-                                    <%--                   <td class="p-3">${o.serviceTypeDto.nameType}</td>--%>
-                                    <%--                   <td class="p-3">${o.date}</td>--%>
-                                    <%--  <td class="p-3">--%>
-                                    <%--    <c:if test="${o.status == true}">--%>
-                                    <%--      Assigned--%>
-                                    <%--    </c:if>--%>
-                                    <%--    <c:if test="${o.status == false}">--%>
-                                    <%--      Complete--%>
-                                    <%--    </c:if>--%>
-                                    <%--  </td>--%>
-                                    <td class="p-3 text-center">
-                                        <a href="#">
-                                            <button class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/auth/detail-appointment-history?id=${service.id}'">Chi tiết</button>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <%--</c:forEach>--%>
+                                <c:forEach items="${service}" var="o">
+                                    <tr>
+                                        <td class="p-3">${o.id}</td>
+                                        <td class="p-3">${o.serviceResDto.name}</td>
+                                        <td class="p-3">${o.serviceTypeDto.nameType}</td>
+                                        <td class="p-3">${o.date}</td>
+                                        <td class="p-3">${o.time}</td>
+                                        <td class="p-3">${o.status}</td>
+                                        <td class="p-3 text-center">
+                                            <a href="#">
+                                                <button class="btn btn-primary"
+                                                        onclick="window.location.href='${pageContext.request.contextPath}/auth/detail-appointment-history?id=${o.id}'">
+                                                    Chi tiết
+                                                </button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>
@@ -70,7 +60,9 @@
                                 <div class="d-md-flex align-items-center text-center justify-content-between">
                                     <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
                                         <c:forEach begin="${1}" end="${totalPage}" var="i">
-                                            <li class="page-item ${i==page?'active':''}"><a class="page-link" href="${url}?page=${i}">${i}</a></li>
+                                            <li class="page-item ${i==page?'active':''}"><a class="page-link"
+                                                                                            href="${url}?page=${i}">${i}</a>
+                                            </li>
                                         </c:forEach>
                                     </ul>
                                 </div>

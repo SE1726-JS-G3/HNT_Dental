@@ -214,7 +214,7 @@ public class PatientService {
             try {
                 Long patientId = account.getId();
                 if (patientId != null) {
-                    BookingDto service = patientDao.getAppointment(patientId);
+                    List<BookingDto> service = patientDao.getAppointment(patientId);
                     if (service != null) {
                         req.setAttribute("service", service);
                         req.setAttribute("id", String.valueOf(patientId));

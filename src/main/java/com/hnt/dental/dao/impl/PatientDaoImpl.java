@@ -182,11 +182,12 @@ public class PatientDaoImpl implements PatientDao {
 
 
     @Override
-    public BookingDto getAppointment(Long id) throws SQLException {
+    public List<BookingDto> getAppointment(Long id) throws SQLException {
         ResultSet rs = ConnectionUtils.executeQuery(HISTORY_APPOINTMENT, id);
         assert rs != null;
-        if (rs.next()) {
-            return BookingDto.builder().serviceResDto(ServiceResDto.builder()
+        List<BookingDto> list = new ArrayList<>();
+        while (rs.next()) {
+            list.add(BookingDto.builder().serviceResDto(ServiceResDto.builder()
                             .id(rs.getLong("id"))
                             .name(rs.getString("name"))
                             .build()).serviceTypeDto(ServiceTypeDto.builder()
@@ -196,9 +197,9 @@ public class PatientDaoImpl implements PatientDao {
                     .status(BookingStatusEnum.getBookingStatusString(rs.getInt("status")))
                     .id(rs.getLong("id"))
                     .time(rs.getTime("time").toLocalTime())
-                    .build();
+                    .build());
         }
-        return null;
+        return list;
     }
 
     @Override
