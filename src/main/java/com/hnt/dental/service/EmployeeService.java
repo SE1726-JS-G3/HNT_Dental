@@ -75,7 +75,7 @@ public class EmployeeService {
         String error = null;
         try {
             Account account = accountDao.findByEmail(email);
-            String password = AesUtils.encrypt(CaptchaUtils.getCaptcha(8));
+            String password = CaptchaUtils.getCaptcha(8);
             if (account != null) {
                 throw new SystemRuntimeException(StringUtils.join("Email ", email, " already exists"));
             }
@@ -91,7 +91,7 @@ public class EmployeeService {
             Long id = accountDao.save(
                     Account.builder()
                             .email(email)
-                            .password(password)
+                            .password(AesUtils.encrypt(password))
                             .role(role.ordinal())
                             .isVerified(true)
                             .image(image)
@@ -136,17 +136,24 @@ public class EmployeeService {
         String position = req.getParameter("position");
         String description = req.getParameter("description");
         RoleEnum role = position.equals("marketing") ? RoleEnum.ROLE_MARKETING : RoleEnum.ROLE_STAFF;
+        Part img = req.getPart("image");
         String error = null;
+
         try {
             Account account = accountDao.findByEmail(email);
 
             if (account != null && !Objects.equals(account.getId(), id)) {
                 throw new SystemRuntimeException(StringUtils.join("Email ", email, " already exists"));
             }
-
+            String image = null;
+            if (img != null && img.getSize() > 0) {
+                image = ImageUtils.upload(img);
+            }
             account = accountDao.get(id.intValue()).isPresent() ? accountDao.get(id.intValue()).get() : null;
+            assert account != null;
             account.setEmail(email);
             account.setRole(role.ordinal());
+            account.setImage(image);
             account.setUpdatedAt(LocalDateTime.now());
             accountDao.update(account);
 

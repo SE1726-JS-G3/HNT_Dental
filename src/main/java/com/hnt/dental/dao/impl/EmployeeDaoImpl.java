@@ -47,7 +47,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
             "SET full_name=?, dob=?, gender=?, phone=?, address=?, salary=?, status=?, created_at=?, updated_at=? " +
             "WHERE id=?";
 
-    private static final String GET_EMPLOYEE_BY_ID = "SELECT * FROM hnt_dental.employees where id=?";
+    private static final String GET_EMPLOYEE_BY_ID = "SELECT employees.*, accounts.image FROM employees inner join accounts on employees.id = accounts.id where employees.id = ?";
 
     private static final String GET_EMPLOYEE_BY_NAME = "SELECT * FROM hnt_dental.employees where full_name like ?";
 
@@ -141,6 +141,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
                     .account(
                             Account.builder()
                                     .email("email")
+                                    .image(rs.getString("image"))
                                     .build())
                     .phone(rs.getString("phone"))
                     .address(rs.getString("address"))
