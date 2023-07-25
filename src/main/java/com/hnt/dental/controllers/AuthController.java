@@ -120,7 +120,7 @@ public class AuthController extends HttpServlet {
                 default:
             }
         } catch (SQLException e) {
-            throw new SystemRuntimeException("Server error");
+            throw new SystemRuntimeException("Server error: " + e.getMessage());
         } catch (ServletException e) {
             throw new RuntimeException(e);
         }

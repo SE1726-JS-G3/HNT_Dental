@@ -32,9 +32,25 @@ public class BookingDaoImpl implements BookingDao {
             "            inner join service s on b.service_id = s.id " +
             "            where (LOWER(b.name) like ? OR LOWER(s.name) like ?) AND s.id LIKE ? AND b.status LIKE ? order by b.created_at desc " +
             "LIMIT ?, ?";
+    private static final String GET_ALL_BOOKING_STAFF = "SELECT b.id, b.name, s.name as service, b.date, b.time, b.status FROM booking b " +
+            "            inner join service s on b.service_id = s.id " +
+            "            where b.staff_id = ? AND  (LOWER(b.name) like ? OR LOWER(s.name) like ?) AND s.id LIKE ? AND b.status LIKE ? order by b.created_at desc " +
+            "LIMIT ?, ?";
+    private static final String GET_ALL_BOOKING_DOCTOR = "SELECT b.id, b.name, s.name as service, b.date, b.time, b.status FROM booking b " +
+            "            inner join service s on b.service_id = s.id " +
+            "            where b.doctor_id = ? AND  (LOWER(b.name) like ? OR LOWER(s.name) like ?) AND s.id LIKE ? AND b.status LIKE ? order by b.created_at desc " +
+            "LIMIT ?, ?";
     private static final String SQL_COUNT_BOOKING = "SELECT count(*) FROM booking b " +
             "                       inner join service s on b.service_id = s.id " +
             "                      where LOWER(b.name) like ? OR LOWER(s.name) like ? order by b.id";
+
+    private static final String SQL_COUNT_BOOKING_STAFF = "SELECT count(*) FROM booking b " +
+            "                       inner join service s on b.service_id = s.id " +
+            "                      where b.staff_id = ? AND (LOWER(b.name) like ? OR LOWER(s.name) like ?) order by b.id";
+
+    private static final String SQL_COUNT_BOOKING_DOCTOR = "SELECT count(*) FROM booking b " +
+            "                       inner join service s on b.service_id = s.id " +
+            "                      where b.doctor_id = ? AND (LOWER(b.name) like ? OR LOWER(s.name) like ?) order by b.id";
     private static final String SQL_GET_SERVICE_BY_SERVICE_ID = "select DISTINCT s.name, s.id from booking b " +
             "inner join service s on b.service_id = s.id";
 
@@ -84,7 +100,7 @@ public class BookingDaoImpl implements BookingDao {
             "left join service_type st on st.id = b.service_type_id " +
             "WHERE  date >= CURDATE() AND date < CURDATE() + INTERVAL 1 DAY ";
 
-    private static final String SQL_GET_STATISTIC_7Day =" Select p.day , coalesce(count(u.id), 0) as count from ( " +
+    private static final String SQL_GET_STATISTIC_7Day = " Select p.day , coalesce(count(u.id), 0) as count from ( " +
             "                   Select curdate() as day " +
             "                          union " +
             "                    Select date_sub(Curdate(),interval 1 day) " +
@@ -99,7 +115,7 @@ public class BookingDaoImpl implements BookingDao {
             "                        union " +
             "                Select date_sub(Curdate(),interval 6 day))as p " +
             "                left join booking as u on p.day = u.date group by p.day order by p.day asc";
-    
+
     private static final String SQL_GET_STATISTIC_14Day = "SELECT p.day, COALESCE(COUNT(u.id), 0) AS count" +
             " FROM (" +
             "    SELECT CURDATE() AS day" +
@@ -120,7 +136,7 @@ public class BookingDaoImpl implements BookingDao {
             " LEFT JOIN booking AS u ON p.day = u.date" +
             " GROUP BY p.day" +
             " ORDER BY p.day ASC";
-    
+
     private static final String SQL_GET_STATISTIC_30Day = "SELECT p.day, COALESCE(COUNT(u.id), 0) AS count " +
             "FROM ( " +
             "    SELECT CURDATE() AS day " +
@@ -230,7 +246,7 @@ public class BookingDaoImpl implements BookingDao {
                 rs = ConnectionUtils.executeQuery(SQL_GET_STATISTIC_7Day);
                 break;
         }
-        while (rs.next()){
+        while (rs.next()) {
             statisticDtoList.add(StatisticDto.builder()
                     .date(LocalDate.parse(rs.getString("day"), DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                     .count(rs.getInt("count"))
@@ -268,11 +284,20 @@ public class BookingDaoImpl implements BookingDao {
     }
 
     @Override
-    public List<BookingManagementDto> getAllBookingSummary(int offset, int limit, String search, String serviceId, String status) throws SQLException {
+    public List<BookingManagementDto> getAllBookingSummary(int offset, int limit, String search, String serviceId, String status, Long staff, Long doctor) throws SQLException {
         search = StringUtils.isNotEmpty(search) ? "%" + search.toLowerCase() + "%" : "%";
         serviceId = StringUtils.isNotEmpty(serviceId) ? serviceId : "%";
         status = StringUtils.isNotEmpty(status) ? status : "%";
-        ResultSet rs = ConnectionUtils.executeQuery(GET_ALL_BOOKING, search, search, serviceId, status, offset, limit);
+        ResultSet rs = null;
+        if (staff == null && doctor == null) {
+            rs = ConnectionUtils.executeQuery(GET_ALL_BOOKING, search, search, serviceId, status, offset, limit);
+        }
+        if (staff != null) {
+            rs = ConnectionUtils.executeQuery(GET_ALL_BOOKING_STAFF, staff, search, search, serviceId, status, offset, limit);
+        }
+        if (doctor != null) {
+            rs = ConnectionUtils.executeQuery(GET_ALL_BOOKING_DOCTOR, doctor, search, search, serviceId, status, offset, limit);
+        }
         List<BookingManagementDto> list = new ArrayList<>();
         while (rs.next()) {
             list.add(BookingManagementDto.builder()
@@ -289,9 +314,18 @@ public class BookingDaoImpl implements BookingDao {
     }
 
     @Override
-    public Integer countListBookingSummary(String search) throws SQLException {
+    public Integer countListBookingSummary(String search, Long staff, Long doctor) throws SQLException {
         search = "%" + search + "%";
-        ResultSet rs = ConnectionUtils.executeQuery(SQL_COUNT_BOOKING, search, search);
+        ResultSet rs = null;
+        if (staff == null && doctor == null) {
+            rs = ConnectionUtils.executeQuery(SQL_COUNT_BOOKING, search, search);
+        }
+        if (staff != null) {
+            rs = ConnectionUtils.executeQuery(SQL_COUNT_BOOKING_STAFF, staff, search, search);
+        }
+        if (doctor != null) {
+            rs = ConnectionUtils.executeQuery(SQL_COUNT_BOOKING_DOCTOR, doctor, search, search);
+        }
         if (rs.next()) {
             return rs.getInt(1);
         }

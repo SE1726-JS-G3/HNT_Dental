@@ -26,11 +26,11 @@ public class PatientDaoImpl implements PatientDao {
     }
 
     private static final String SAVE_PATIENT = "INSERT INTO patients" +
-            "(id,dob, full_name, gender, phone, address) \n" +
+            "(id,dob, full_name, gender, phone, address)  " +
             "VALUES(?, ?, ?, ?, ?, ?)";
 
-    private static final String DETAIL_PATIENT = "SELECT p.id, p.full_name, p.dob, p.gender,p.address,p.description ,p.phone,p.status,a.email \n" +
-            "                       FROM patients p inner join  accounts a on p.id = a.id\n" +
+    private static final String DETAIL_PATIENT = "SELECT p.id, p.full_name, p.dob, p.gender,p.address,p.description ,p.phone,p.status,a.email  " +
+            "                       FROM patients p inner join  accounts a on p.id = a.id " +
             "                      where p.id = ?";
     private static final String DELETE_PATIENT = "DELETE FROM patients " +
             "WHERE id=?";
@@ -42,7 +42,7 @@ public class PatientDaoImpl implements PatientDao {
             "           SET full_name=?, dob=?, gender=?, phone=?, address=?, description=?,status=?,created_at=?, updated_at=? " +
             "                      WHERE id=?";
     private static final String GET_PATIENT_BY_ID = "SELECT * FROM patients where id =?";
-    private static final String GET_ALL_PATIENTS = "SELECT a.id, p.full_name, p.dob,p.gender,p.status\n" +
+    private static final String GET_ALL_PATIENTS = "SELECT a.id, p.full_name, p.dob,p.gender,p.status " +
             "FROM patients p " +
             "INNER JOIN accounts a ON p.id = a.id " +
             "WHERE LOWER(p.full_name) LIKE ? " +
@@ -165,19 +165,19 @@ public class PatientDaoImpl implements PatientDao {
         return null;
     }
 
-    private static final String COUNT_APPOINTMENT = "SELECT COUNT(*) FROM booking b\n" +
+    private static final String COUNT_APPOINTMENT = "SELECT COUNT(*) FROM booking b " +
             "                        JOIN service s JOIN service_type st ON b.service_id = s.id AND b.service_type_id = st.id";
 
     private static final String GET_PROFILE_PATIENT = "SELECT p.full_name, p.dob, p.gender,p.address,p.description, p.phone,a.email, a.image FROM hnt_dental.patients p " +
             "inner join accounts a on a.id = p.id " +
             "where p.id = ? ";
 
-    private static final String HISTORY_APPOINTMENT = "SELECT b.time,b.id, b.status ,b.date ,s.name,st.name as type\n" +
-            "                                                        FROM booking b\n" +
-            "                                                         INNER JOIN service s \n" +
-            "                                                         INNER JOIN service_type st\n" +
-            "                                                         ON b.service_id = s.id \n" +
-            "                                                         AND b.service_type_id = st.id\n" +
+    private static final String HISTORY_APPOINTMENT = "SELECT b.time,b.id, b.status ,b.date ,s.name,st.name as type " +
+            "                                                        FROM booking b " +
+            "                                                         INNER JOIN service s  " +
+            "                                                         INNER JOIN service_type st " +
+            "                                                         ON b.service_id = s.id  " +
+            "                                                         AND b.service_type_id = st.id " +
             "                                                     where b.account_id=?";
 
 
@@ -187,7 +187,7 @@ public class PatientDaoImpl implements PatientDao {
         assert rs != null;
         if (rs.next()) {
             return BookingDto.builder().serviceResDto(ServiceResDto.builder()
-                            //.id(rs.getLong("id"))
+                            .id(rs.getLong("id"))
                             .name(rs.getString("name"))
                             .build()).serviceTypeDto(ServiceTypeDto.builder()
                             .nameType(rs.getString("type"))
@@ -292,14 +292,14 @@ public class PatientDaoImpl implements PatientDao {
     }
 
 
-    private static final String SERVICE_APPOINTMENT = "SELECT f.fee,b.service_id, b.status  ,s.name,st.name as type\n" +
-            "                                                                      FROM booking b\n" +
-            "                                                                          INNER JOIN service s \n" +
-            "                                                                        INNER JOIN service_type st\n" +
-            "                                                                        INNER JOIN service_fee f\n" +
-            "                                                                         ON b.service_id = s.id \n" +
-            "                                                                         AND b.service_type_id = st.id \n" +
-            "                                                                         AND b.service_type_id = f.service_id\n" +
+    private static final String SERVICE_APPOINTMENT = "SELECT f.fee,b.service_id, b.status  ,s.name,st.name as type " +
+            "                                                                      FROM booking b " +
+            "                                                                          INNER JOIN service s  " +
+            "                                                                        INNER JOIN service_type st " +
+            "                                                                        INNER JOIN service_fee f " +
+            "                                                                         ON b.service_id = s.id  " +
+            "                                                                         AND b.service_type_id = st.id  " +
+            "                                                                         AND b.service_type_id = f.service_id " +
             "                                                                          where b.account_id=?";
 
     @Override
@@ -324,15 +324,15 @@ public class PatientDaoImpl implements PatientDao {
     }
 
 
-    private static final String MY_PATIENT_OF_DOCTOR = "SELECT b.name ,b.gender ,b.id, b.date,b.age,s.name ,st.name as type\n" +
-            "                                                              FROM booking b\n" +
-            "                                                               INNER JOIN service s \n" +
-            "                                                                 INNER JOIN service_type st\n" +
-            "                                                                ON b.service_id = s.id \n" +
-            "                                                              AND b.service_type_id = st.id\n" +
-            "                                                             WHERE LOWER(b.name) LIKE ? \n" +
-            "                                                             OR LOWER(b.age) LIKE ?\n" +
-            "                                                            OR LOWER(b.date) LIKE ?\n" +
+    private static final String MY_PATIENT_OF_DOCTOR = "SELECT b.name ,b.gender ,b.id, b.date,b.age,s.name ,st.name as type " +
+            "                                                              FROM booking b " +
+            "                                                               INNER JOIN service s  " +
+            "                                                                 INNER JOIN service_type st " +
+            "                                                                ON b.service_id = s.id  " +
+            "                                                              AND b.service_type_id = st.id " +
+            "                                                             WHERE LOWER(b.name) LIKE ?  " +
+            "                                                             OR LOWER(b.age) LIKE ? " +
+            "                                                            OR LOWER(b.date) LIKE ? " +
             "     LIMIT ?,?";
 
     @Override
