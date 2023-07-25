@@ -46,15 +46,16 @@
                                 <div class="col-lg-12">
                                     <div class="mb-3">
                                         <label class="form-label" for="fullName">Tên đầy đủ <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="Tên đầy đủ" placeholder="Tên đầy đủ"
-                                               name="Tên đầy đủ">
+
+                                        <input type="text" class="form-control" id="fullName" placeholder="Tên đầy đủ"
+                                               name="fullName">
                                     </div>
                                 </div>
 
                                 <div class="col-lg-12">
                                     <div class="mb-3">
                                         <label class="form-label" for="phone">Số điện thoại <span class="text-danger">*</span></label>
-                                        <input type="number" class="form-control" id="Số điện thoại" placeholder="Số điện thoại"
+                                        <input type="number" class="form-control" id="phone" placeholder="Số điện thoại"
                                                name="phone">
                                     </div>
                                 </div>
@@ -99,7 +100,7 @@
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <div class="form-check">
-                                            <input class="form-check-input align-middle" type="checkbox" value="" id="accept-tnc-check">
+                                            <input class="form-check-input align-middle" type="checkbox" value="" id="acceptTncCheck" name="acceptTncCheck">
                                             <label class="form-check-label" for="accept-tnc-check">Đồng ý điều khoản </label>
                                             <a onclick="showTerms()" class="text-primary">Xem điều khoản</a>
                                         </div>
