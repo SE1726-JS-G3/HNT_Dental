@@ -146,7 +146,7 @@ public class DoctorDaoImpl implements DoctorDao {
     private static final String SQL_COUNT_DOCTOR_DASHBOARD = "select count(*) from doctors d " +
             "inner join accounts a on d.id = a.id " +
             "where a.is_verified = 1";
-    private static final String SQL_GET_PROFILE_DOCTOR = "select d.full_name, d.dob, d.gender, d.address,d.description,d.phone , a.email from doctors d " +
+    private static final String SQL_GET_PROFILE_DOCTOR = "select d.full_name, d.dob, d.gender, d.address,d.description,d.phone , a.email, a.image from doctors d " +
             "inner join accounts a on a.id = d.id " +
             "where d.id = ?";
 
@@ -317,6 +317,7 @@ public class DoctorDaoImpl implements DoctorDao {
                     .description(rs.getString("description"))
                     .phone("0" + rs.getString("phone"))
                     .email(rs.getString("email"))
+                    .image(rs.getString("image"))
                     .build();
         }
         return new ProfileDto();

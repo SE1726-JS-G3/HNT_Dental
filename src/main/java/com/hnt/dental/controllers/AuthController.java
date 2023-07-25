@@ -6,6 +6,7 @@ import com.hnt.dental.service.AuthService;
 import com.hnt.dental.service.BookingService;
 import com.hnt.dental.util.ServletUtils;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,6 +35,7 @@ import java.sql.SQLException;
 
 
 })
+@MultipartConfig(maxFileSize = 16177216)
 public class AuthController extends HttpServlet {
 
     private static final AuthService service;
@@ -112,10 +114,15 @@ public class AuthController extends HttpServlet {
                 case "/auth/changePassword":
                     service.changePassword(req, resp);
                     break;
+                case "/auth/profile":
+                    service.updateProfile(req, resp);
+                    break;
                 default:
             }
         } catch (SQLException e) {
             throw new SystemRuntimeException("Server error");
+        } catch (ServletException e) {
+            throw new RuntimeException(e);
         }
     }
 }

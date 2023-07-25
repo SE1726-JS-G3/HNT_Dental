@@ -64,7 +64,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
             " AND b.id <> ?" +
             ")";
 
-    private static final String SQL_GET_PROFILE_EMPLOYEE = "select e.full_name, e.dob, e.gender, e.address, e.description, e.phone , a.email from employees e " +
+    private static final String SQL_GET_PROFILE_EMPLOYEE = "select e.full_name, e.dob, e.gender, e.address, e.description, e.phone , a.email, a.image from employees e " +
             "inner join accounts a on a.id = e.id " +
             "where e.id = ?";
 
@@ -100,6 +100,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
                     .description(rs.getString("description"))
                     .phone("0" + rs.getString("phone"))
                     .email(rs.getString("email"))
+                    .image(rs.getString("image"))
                     .build();
         }
         return new ProfileDto();

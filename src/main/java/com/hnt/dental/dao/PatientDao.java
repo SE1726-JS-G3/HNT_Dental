@@ -38,5 +38,7 @@ public interface PatientDao extends GenericDao<Patient>{
     Long countPatientDashboard() throws Exception;
 
     ProfileDto getProfile(Long id) throws SQLException;
+
+    Patient updatePatient(Patient patient) throws SQLException;
 }
 
