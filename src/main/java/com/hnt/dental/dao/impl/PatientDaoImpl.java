@@ -11,6 +11,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -208,7 +210,11 @@ public class PatientDaoImpl implements PatientDao {
         return null;
     }
 
-    private static final String DETAIL_APPOINTMENT = "SELECT b.id,b.date,b.name,b.status,b.time,b.account_id ,br.result FROM booking b inner join booking_result br on b.id = br.booking_id  where b.id =?";
+
+    private static final String DETAIL_APPOINTMENT = "SELECT b.id, b.date, b.name, b.status, b.time, b.account_id, br.result, b.doctor_id, b.service_id " +
+            "FROM booking b " +
+            "INNER JOIN booking_result br ON b.id = br.booking_id " +
+            "WHERE b.id = ?";
 
     @Override
     public BookingDto detailAppointment(String id) throws SQLException {
@@ -225,11 +231,67 @@ public class PatientDaoImpl implements PatientDao {
                     .account_id(rs.getInt("account_id"))
                     .date(rs.getDate("date").toLocalDate())
                     .status(BookingStatusEnum.getBookingStatusString(rs.getInt("status")))
+                    .doctor_id(rs.getInt("doctor_id"))  // Set the doctor_id
+                    .service_id(rs.getInt("service_id")) // Set the service_id
                     .build());
         }
         return null;
-
     }
+    private static final String SAVE_SERVICE_FEEDBACK = "INSERT INTO feedback " +
+            "( booking_id, service_id, star, description, created_at, updated_at, is_show) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+    private static final String SAVE_DOCTOR_FEEDBACK = "INSERT INTO feedback " +
+            "( booking_id, doctor_id, star, description, created_at, updated_at, is_show) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+
+
+    @Override
+    public void saveServiceReview(Long id, Integer service_id, int star, String description) throws SQLException {
+        LocalDateTime now = LocalDateTime.now();
+        try {
+            ConnectionUtils.executeUpdate(
+                    SAVE_SERVICE_FEEDBACK,
+                    id,
+                    service_id,
+                    star,
+                    description,
+                    Timestamp.valueOf(now),
+                    Timestamp.valueOf(now),
+                    true
+            );
+        } catch (SQLException e) {
+            // Handle the exception appropriately, e.g., log the error or throw a custom exception
+            e.printStackTrace();
+            throw new SQLException("Failed to save service feedback: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void saveDoctorReview(Long id, Integer doctor_id, int star, String description) throws SQLException {
+        LocalDateTime now = LocalDateTime.now();
+        try {
+            ConnectionUtils.executeUpdate(
+                    SAVE_DOCTOR_FEEDBACK,
+                    id,
+                    doctor_id,
+                    star,
+                    description,
+                    Timestamp.valueOf(now),
+                    Timestamp.valueOf(now),
+                    true
+            );
+        } catch (SQLException e) {
+            // Handle the exception appropriately, e.g., log the error or throw a custom exception
+            e.printStackTrace();
+            throw new SQLException("Failed to save service feedback: " + e.getMessage());
+        }
+    }
+
+
+
+
 
     private static final String SERVICE_APPOINTMENT = "SELECT f.fee,b.service_id, b.status  ,s.name,st.name as type\n" +
             "                                                                      FROM booking b\n" +

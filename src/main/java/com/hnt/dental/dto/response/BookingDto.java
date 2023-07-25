@@ -25,12 +25,13 @@ public class BookingDto {
     private Account account;
     private Doctors doctors;
     private Employee employee;
+    private Feedback feedback;
     private Booking booking;
     private LocalDate date;
     private LocalTime time;
     private String description;
     private Patient patient;
-
+    private int doctor_id;
     private int service_id;
     private String payment;
     private String status;

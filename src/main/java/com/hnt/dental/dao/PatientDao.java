@@ -28,8 +28,9 @@ public interface PatientDao extends GenericDao<Patient>{
 
     BookingDto detailAppointment(String id) throws SQLException;
 
+    void saveServiceReview(Long booking_id, Integer service_id, int star, String description) throws SQLException;
 
-
+    void saveDoctorReview(Long booking_id, Integer doctor_id, int star, String description)throws SQLException;
     List<BookingDto> getMyPatient(Integer offset, Integer limit, String search) throws SQLException;
 
     BookingDto getService(Long id) throws SQLException;

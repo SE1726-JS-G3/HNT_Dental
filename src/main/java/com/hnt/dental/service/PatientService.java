@@ -1,6 +1,7 @@
 package com.hnt.dental.service;
 import com.hnt.dental.dto.response.PatientResDto;
 import com.hnt.dental.entities.Employee;
+import com.hnt.dental.entities.Feedback;
 import com.hnt.dental.util.AesUtils;
 import com.hnt.dental.util.CaptchaUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -178,15 +179,7 @@ public class PatientService {
 
 
 
-    public void detailAppointment(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException, ServletException {
-        resp.setContentType("text/html;charset=UTF-8");
-        String id = req.getParameter("id");
-        PatientDao dao = new PatientDaoImpl();
-        BookingDto detail = dao.detailAppointment(id);
-        req.setAttribute("d", detail);
-        ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/my-appointment-detail.jsp");
 
-    }
 
 
 
@@ -237,6 +230,38 @@ public class PatientService {
             }
         }
         //resp.sendRedirect(req.getContextPath() + "/management/service-booking");
+    }
+
+    public void detailAppointment(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException, ServletException {
+        resp.setContentType("text/html;charset=UTF-8");
+        String id = req.getParameter("id");
+        PatientDao dao = new PatientDaoImpl();
+        BookingDto detail = dao.detailAppointment(id);
+        req.setAttribute("d", detail);
+        ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/my-appointment-detail.jsp");
+
+    }
+    public void createFeedback(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException, ServletException {
+        resp.setContentType("text/html;charset=UTF-8");
+        String feedbackType = req.getParameter("feedbackType"); // Added this line
+        String id = req.getParameter("id");
+        PatientDao dao = new PatientDaoImpl();
+        BookingDto detail = dao.detailAppointment(id);
+        req.setAttribute("d", detail);
+
+        // Get the star rating and description from the user
+        int star = Integer.parseInt(req.getParameter("star"));
+        String description = req.getParameter("description");
+
+        // Save the feedback to the database based on the feedbackType
+        if ("service".equals(feedbackType)) {
+            dao.saveServiceReview(detail.getId(), detail.getService_id(), star, description);
+        } else if ("doctor".equals(feedbackType)) {
+            dao.saveDoctorReview(detail.getId(), detail.getDoctor_id(), star, description);
+        }
+
+        // Redirect the user to the appointment detail page
+        resp.sendRedirect(req.getContextPath() + "/auth/detail-appointment-history?id=" + id);
     }
 
 

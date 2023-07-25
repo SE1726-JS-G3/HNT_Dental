@@ -1,5 +1,6 @@
 package com.hnt.dental.service;
 
+import com.google.gson.Gson;
 import com.hnt.dental.constant.RoleEnum;
 import com.hnt.dental.dao.AccountDao;
 import com.hnt.dental.dao.DoctorDao;
@@ -266,14 +267,30 @@ public class DoctorService {
         } catch (Exception e) {
             error = e.getMessage();
         }
+
         if (StringUtils.isNotEmpty(error)) {
             // Redirect to the create page with the error message
             ServletUtils.redirect(req, resp, "/management/doctor/create?error=" + error);
         } else {
+
             // Redirect to the doctor management page
             ServletUtils.redirect(req, resp, "/management/doctor");
         }
     }
+    public void createRender(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String error = req.getParameter("error");
+
+        // Create a new Doctors object with an empty Account
+        Doctors doctor = new Doctors();
+        doctor.setAccount(Account.builder().role(RoleEnum.ROLE_DOCTOR.ordinal()).build());
+
+        List<RankDto> ranks = dao.getAllRanks();
+        req.setAttribute("ranks", ranks);
+        req.setAttribute("error", error);
+        req.setAttribute("doctor", doctor); // Set the doctor object as an attribute
+        ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/doctor/create.jsp");
+    }
+
     public void update(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         Long id = Long.valueOf(req.getParameter("id"));
         String fullname = req.getParameter("full_name");
@@ -284,6 +301,7 @@ public class DoctorService {
         String address = req.getParameter("address");
         String position = req.getParameter("position");
         String description = req.getParameter("description");
+
         Long rankId = null;
         if (req.getParameter("rankId") != null) {
             rankId = Long.valueOf(req.getParameter("rankId"));
@@ -331,6 +349,8 @@ public class DoctorService {
     }
 
 
+
+
     public void updateRender(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         int id = Integer.parseInt(req.getParameter("id"));
         String error = req.getParameter("error");
@@ -348,8 +368,10 @@ public class DoctorService {
         doctor.setAccount(account);
         List<FeedbackDto> getAllFeedbackByIdDoctor = feedbackDao.getFeedbackDoctor(Long.valueOf(id));
         List<MypatientResDto> myPatientDoctor = dao.getPatientDetail(Long.valueOf(id));
+        List<RankDto> ranks = dao.getAllRanks();
         req.setAttribute("doctor", doctor);
         req.setAttribute("error", error);
+        req.setAttribute("ranks", dao.getAllRanks());
         req.setAttribute("patients", myPatientDoctor);
         req.setAttribute("feedbacks", getAllFeedbackByIdDoctor);
         ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/doctor/detail.jsp");
