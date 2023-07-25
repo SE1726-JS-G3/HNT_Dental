@@ -12,6 +12,14 @@
 <html lang="en">
 
 <jsp:include page="../layout/header.jsp"/>
+
+<style>
+    .error {
+        color: red;
+        font-weight: normal;
+        display: block;
+    }
+</style>
 <body>
 <jsp:include page="../layout/menu-header-white.jsp"/>
 <section class="bg-half-170 d-table w-100 bg-light">
@@ -20,7 +28,8 @@
             <div class="col-12">
                 <div class="section-title text-center">
                     <h3 class="sub-title mb-4">Đặt lịch</h3>
-                    <p class="para-desc mx-auto text-muted">hỗ trợ ngay lập tức, điều trị khẩn cấp hoặc tư vấn đơn giản.</p>
+                    <p class="para-desc mx-auto text-muted">hỗ trợ ngay lập tức, điều trị khẩn cấp hoặc tư vấn đơn
+                        giản.</p>
 
                     <nav aria-label="breadcrumb" class="d-inline-block mt-3">
                         <ul class="breadcrumb bg-transparent mb-0 py-1">
@@ -52,7 +61,7 @@
                                     ${error}
                             </p>
                         </c:if>
-                        <form action="${pageContext.request.contextPath}/booking" method="POST" id="bookingForm">
+                        <form id="bookingForm" action="${pageContext.request.contextPath}/booking" method="POST">
                             <input name="id" value="${id}" hidden>
                             <input name="typeId" value="${typeId}" hidden>
                             <div class="row">
@@ -63,15 +72,15 @@
                                 <div class="col-lg-6">
                                     <div class="mb-3">
                                         <label class="form-label">Tên<span class="text-danger">*</span></label>
-                                        <input class="form-control" required="" name="name" value="${appointment.name}">
+                                        <input class="form-control" name="name" id="name">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="mb-3">
                                         <label class="form-label">Số điện thoại<span
                                                 class="text-danger">*</span></label>
-                                        <input type="number" class="form-control" name="phone"
-                                               value="0${appointment.phone}" required="">
+                                        <input type="number" class="form-control" name="phone" id="phone"
+                                               required="">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
@@ -80,15 +89,9 @@
                                         <div>
                                             <select name="gender" class="form-control">
                                                 <option
-                                                        <c:if test="${appointment.gender == true}">
-                                                            selected
-                                                        </c:if>
                                                         value="true">Nam
                                                 </option>
                                                 <option
-                                                        <c:if test="${appointment.gender == false}">
-                                                            selected
-                                                        </c:if>
                                                         value="false">Nữ
                                                 </option>
                                             </select>
@@ -98,7 +101,7 @@
                                 <div class="col-lg-6">
                                     <div class="mb-3">
                                         <label class="form-label">Tuổi<span class="text-danger">*</span></label>
-                                        <input type="number" class="form-control" name="age" value="${appointment.age}"
+                                        <input type="number" id="age" class="form-control" name="age"
                                                required="">
                                     </div>
                                 </div>
@@ -112,7 +115,7 @@
                                         <label class="form-label"> Ngày : <span class="text-danger">*</span></label>
                                         <input required="" name="date" type="text"
                                                class="flatpickr flatpickr-input form-control"
-                                               value="${appointment.date}" id="checkin-date">
+                                               id="checkinDate">
                                     </div>
                                 </div>
 
@@ -122,57 +125,38 @@
                                         <select required="" name="time"
                                                 class="form-control department-name select2input">
                                             <option
-                                                    <c:if test="${appointment.time == '7:00'}">
-                                                        selected
-                                                    </c:if>
                                                     value="07:00">7:00
                                             </option>
                                             <option
-                                                    <c:if test="${appointment.time == '8:00'}">
-                                                        selected
-                                                    </c:if>
+
                                                     value="08:00">8:00
                                             </option>
                                             <option
-                                                    <c:if test="${appointment.time == '9:00'}">
-                                                        selected
-                                                    </c:if>
+
                                                     value="09:00">9:00
                                             </option>
                                             <option
-                                                    <c:if test="${appointment.time == '10:00'}">
-                                                        selected
-                                                    </c:if>
+
                                                     value="10:00">10:00
                                             </option>
                                             <option
-                                                    <c:if test="${appointment.time == '11:00'}">
-                                                        selected
-                                                    </c:if>
+
                                                     value="11:00">11:00
                                             </option>
                                             <option
-                                                    <c:if test="${appointment.time == '14:00'}">
-                                                        selected
-                                                    </c:if>
+
                                                     value="14:00">14:00
                                             </option>
                                             <option
-                                                    <c:if test="${appointment.time == '15:00'}">
-                                                        selected
-                                                    </c:if>
+
                                                     value="15:00">15:00
                                             </option>
                                             <option
-                                                    <c:if test="${appointment.time == '16:00'}">
-                                                        selected
-                                                    </c:if>
+
                                                     value="16:00">16:00
                                             </option>
                                             <option
-                                                    <c:if test="${appointment.time == '17:00'}">
-                                                        selected
-                                                    </c:if>
+
                                                     value="17:00">17:00
                                             </option>
                                         </select>
@@ -183,8 +167,8 @@
                                     <div class="mb-3">
                                         <label class="form-label">Thông tin bệnh lý<span
                                                 class="text-danger">*</span></label>
-                                        <textarea required="" name="decription" id="comments2" rows="4"
-                                                  class="form-control">${appointment.decription}</textarea>
+                                        <textarea required="" name="decription" id="decription" rows="4"
+                                                  class="form-control"></textarea>
                                     </div>
                                 </div><!--end col-->
 
@@ -195,25 +179,18 @@
                                         <select name="payment"
                                                 id="mySelect" class="form-control department-name select2input">
                                             <option
-                                                    <c:if test="${appointment.payment == 'CASH'}">
-                                                        selected
-                                                    </c:if>
+
                                                     value="CASH">Thanh toán sau khi khám
                                             </option>
                                             <option
-                                                    <c:if test="${appointment.payment == 'VNPAY'}">
-                                                        selected
-                                                    </c:if>
+
                                                     value="VNPAY">Thanh toán thông qua VNPay
                                             </option>
                                         </select>
 
                                     </div>
                                 </div><!--end col-->
-                                <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal"
-                                        onclick="onClickSubmit()"
-                                        data-bs-target="#exampleModal">
-                                    Đặt lịch khám
+                                <button class="btn btn-primary" id="btn-booking" onclick="onClickForm()">Đặt lịch
                                 </button>
                             </div>
                         </form>
@@ -329,7 +306,6 @@
 <script src="${pageContext.request.contextPath}/static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/libs/date/flatpickr.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/libs/date/flatpickr.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/libs/date/jquery.timepicker.min.js"></script>
@@ -341,14 +317,84 @@
         window.location.href = "/booking?serviceId=" + ${id} +"&typeId=" + id;
     }
 
-    const selectedDate = document.querySelector("#checkin-date");
-    $("#checkin-date").flatpickr({
+    let selectedDate = document.querySelector("#checkinDate");
+    $("#checkinDate").flatpickr({
         defaultDate: selectedDate.value || new Date(),
         minDate: new Date().fp_incr(1),
         maxDate: new Date().fp_incr(14),
         dateFormat: "d/m/Y",
         locale: "vn"
     });
+
+    $(document).ready(function () {
+        const bookingForm = $('#bookingForm');
+        console.log(bookingForm);
+        bookingForm.validate({
+            rules: {
+                name: {
+                    required: true,
+                    maxlength: 255,
+                    minlength: 2,
+                },
+                phone: {
+                    required: true,
+                    number: true,
+                    maxlength: 10,
+                    minlength: 10,
+                },
+                age: {
+                    required: true,
+                    number: true,
+                    maxlength: 3,
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                checkinDate: {
+                    required: true,
+                },
+                decription: {
+                    required: true,
+                },
+            },
+            messages: {
+                name: {
+                    required: "Vui lòng nhập tên",
+                    maxlength: "Tên không được vượt quá 255 ký tự",
+                },
+                phone: {
+                    required: "Vui lòng nhập số điện thoại",
+                    number: "Số điện thoại không hợp lệ",
+                    maxlength: "Số điện thoại không hợp lệ",
+                    minlength: "Số điện thoại không hợp lệ",
+                },
+                age: {
+                    required: "Vui lòng nhập tuổi",
+                    number: "Tuổi không hợp lệ",
+                    maxlength: "Tuổi không hợp lệ",
+                },
+                email: {
+                    required: "Vui lòng nhập email",
+                    email: "Email không hợp lệ",
+                },
+                checkinDate: {
+                    required: "Vui lòng chọn ngày",
+                },
+                decription: {
+                    required: "Vui lòng nhập thông tin bệnh lý",
+                }
+            },
+            submitHandler: function () {
+                onClickSubmit();
+            }
+        });
+    });
+
+    function onClickForm() {
+        $('#bookingForm').valid()
+    }
+
 
     function onClickSubmit() {
         Swal.fire({

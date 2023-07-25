@@ -41,4 +41,6 @@ public interface ServiceDao extends GenericDao<Service>{
 
     void updateServiceFeeByServiceTypeId(Long idService,Long idServiceType, Double fee) throws SQLException;
     void updateServiceFee(Long idService,Long idServiceType, Double fee) throws SQLException;
+
+    void deleteDoctor(Long id, Long doctorId) throws SQLException;
 }

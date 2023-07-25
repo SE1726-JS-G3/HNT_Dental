@@ -129,6 +129,8 @@ public class ServiceDaoImpl implements ServiceDao {
             "SET fee= ?" +
             "WHERE service_id= ? AND service_type= ?";
 
+    private static final String DELETE_DOCTOR = "DELETE FROM service_doctor WHERE (id_doctor = ?) and (id_service = ?)";
+
     @Override
     public List<Service> getAll(Integer offset, Integer limit, String search) throws SQLException {
         return null;
@@ -292,6 +294,11 @@ public class ServiceDaoImpl implements ServiceDao {
     @Override
     public void updateServiceFee(Long idService, Long idServiceType, Double fee) throws SQLException {
         ConnectionUtils.executeUpdate(SQL_UPDATE_SERVICE_FEE, fee, idService, idServiceType);
+    }
+
+    @Override
+    public void deleteDoctor(Long id, Long doctorId) throws SQLException {
+        ConnectionUtils.executeUpdate(DELETE_DOCTOR, doctorId, id);
     }
 
     @Override

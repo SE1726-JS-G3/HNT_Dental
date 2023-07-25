@@ -30,15 +30,16 @@
 
                                 </a>
                             </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link rounded" id="pills-smart-tab" data-bs-toggle="pill" href="#edit"
-                                   role="tab" aria-controls="edit" aria-selected="false">
-                                    <div class="text-center pt-1 pb-1">
-                                        <h4 class="title font-weight-normal mb-0">Chỉnh sửa</h4>
-                                    </div>
-                                </a>
-                            </li>
+                            <c:if test="${sessionScope.account.role == 1}">
+                                <li class="nav-item">
+                                    <a class="nav-link rounded" id="pills-smart-tab" data-bs-toggle="pill" href="#edit"
+                                       role="tab" aria-controls="edit" aria-selected="false">
+                                        <div class="text-center pt-1 pb-1">
+                                            <h4 class="title font-weight-normal mb-0">Chỉnh sửa</h4>
+                                        </div>
+                                    </a>
+                                </li>
+                            </c:if>
                         </ul>
                     </div>
                 </div>
@@ -168,7 +169,9 @@
                                         <c:when test="${empty feedbacks}">
                                             <li class="mt-4">
                                                 <div class="d-flex align-items-center">
-                                                    <p> Chưa có đánh giá nào  <i class="uil uil-sad-cry" style="font-size: 35px; color: black;"></i></p>
+                                                    <p> Chưa có đánh giá nào <i class="uil uil-sad-cry"
+                                                                                style="font-size: 35px; color: black;"></i>
+                                                    </p>
                                                 </div>
                                             </li>
                                         </c:when>
@@ -178,14 +181,19 @@
                                                     <div class="d-flex justify-content-between">
                                                         <div class="d-flex align-items-center">
                                                             <a class="pe-3" href="#">
-                                                                <img src="${f.image}" class="img-fluid avatar avatar-md-sm rounded-circle shadow" alt="img">
+                                                                <img src="${f.image}"
+                                                                     class="img-fluid avatar avatar-md-sm rounded-circle shadow"
+                                                                     alt="img">
                                                             </a>
                                                             <div class="commentor-detail">
-                                                                <h6 class="mb-0"><a href="javascript:void(0)" class="text-dark media-heading">${f.fullName}</a></h6>
+                                                                <h6 class="mb-0"><a href="javascript:void(0)"
+                                                                                    class="text-dark media-heading">${f.fullName}</a>
+                                                                </h6>
                                                                 <small class="text-muted">${f.createdAt}</small>
                                                                 <ul class="list-unstyled text-warning h5 mb-0">
                                                                     <c:forEach var="i" begin="1" end="${f.star}">
-                                                                        <li class="list-inline-item"><i class="mdi mdi-star"></i></li>
+                                                                        <li class="list-inline-item"><i
+                                                                                class="mdi mdi-star"></i></li>
                                                                     </c:forEach>
                                                                 </ul>
                                                             </div>
@@ -232,52 +240,61 @@
                                     </div>
                                 </form>
 
-                                <form action="${pageContext.request.contextPath}/management/doctor/update" method="POST" class="mt-4"  onSubmit="return validateForm()">
+                                <form action="${pageContext.request.contextPath}/management/doctor/update" method="POST"
+                                      class="mt-4" onSubmit="return validateForm()">
                                     <div class="row">
                                         <div id="message-container"></div>
                                         <input name="id" type="hidden" value="${doctor.account.id}">
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label class="form-label" >Họ và tên</label>
-                                                <input name="full_name" id="name" type="text" class="form-control" value="${doctor.fullName}" placeholder="Họ và tên">
+                                                <label class="form-label">Họ và tên</label>
+                                                <input name="full_name" id="name" type="text" class="form-control"
+                                                       value="${doctor.fullName}" placeholder="Họ và tên">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Ngày sinh</label>
-                                                <input name="dob" id="name2" type="text" class="form-control" value="${doctor.dob}" placeholder="YYYY-MM-DD">
+                                                <input name="dob" id="name2" type="text" class="form-control"
+                                                       value="${doctor.dob}" placeholder="YYYY-MM-DD">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Email</label>
-                                                <input name="email" id="email" type="email" class="form-control" value="${doctor.account.email}" placeholder="Email">
+                                                <input name="email" id="email" type="email" class="form-control"
+                                                       value="${doctor.account.email}" placeholder="Email">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Địa chỉ</label>
-                                                <input name="address" id="address" type="text" class="form-control" placeholder="Địa chỉ" value="${doctor.address}">
+                                                <input name="address" id="address" type="text" class="form-control"
+                                                       placeholder="Địa chỉ" value="${doctor.address}">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Điện thoại</label>
-                                                <input name="phone" id="phone" type="text" class="form-control" placeholder="Điện thoại" value="${doctor.phone}">
+                                                <input name="phone" id="phone" type="text" class="form-control"
+                                                       placeholder="Điện thoại" value="${doctor.phone}">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Chuyên môn</label>
-                                                <input name="position" id="position" type="text" class="form-control" placeholder="Chuyên môn " value="${doctor.position}">
+                                                <input name="position" id="position" type="text" class="form-control"
+                                                       placeholder="Chuyên môn " value="${doctor.position}">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Giới tính</label>
                                                 <select name="gender" class="form-select form-control">
-                                                    <option value="Nam" ${doctor.gender == true ? "selected" : ""}>Nam</option>
-                                                    <option value="Nữ" ${doctor.gender == false ? "selected" : ""}>Nữ</option>
+                                                    <option value="Nam" ${doctor.gender == true ? "selected" : ""}>Nam
+                                                    </option>
+                                                    <option value="Nữ" ${doctor.gender == false ? "selected" : ""}>Nữ
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
@@ -304,8 +321,12 @@
                                             <div class="mb-3">
                                                 <label class="form-label">Trạng thái</label>
                                                 <select name="status" class="form-select form-control">
-                                                    <option value="Đang làm việc" ${doctor.status == true ? "selected" : ""}>Đang làm việc</option>
-                                                    <option value="Đã nghỉ việc" ${doctor.status == false ? "selected" : ""}>Đã nghỉ việc</option>
+                                                    <option value="Đang làm việc" ${doctor.status == true ? "selected" : ""}>
+                                                        Đang làm việc
+                                                    </option>
+                                                    <option value="Đã nghỉ việc" ${doctor.status == false ? "selected" : ""}>
+                                                        Đã nghỉ việc
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
@@ -322,7 +343,8 @@
                                         <div class="col-md-12">
                                             <div class="mb-3">
                                                 <label class="form-label">Mô tả</label>
-                                                <textarea name="description" id="comments" rows="3" class="form-control" placeholder="Bio">${doctor.description}</textarea>
+                                                <textarea name="description" id="comments" rows="3" class="form-control"
+                                                          placeholder="Bio">${doctor.description}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -497,11 +519,13 @@
         var pattern = /^\d{4}-\d{2}-\d{2}$/;
         return pattern.test(dateString);
     }
+
     function isValidRankId(rankId) {
         // Kiểm tra xếp hạng chỉ từ 1 đến 10
         var rankNumber = parseInt(rankId, 10);
         return rankNumber >= 1 && rankNumber <= 10;
     }
+
     function isValidPhoneNumber(phone) {
         // Kiểm tra số điện thoại chỉ chứa nguyên số và không chứa ký tự đặc biệt hoặc chữ cái
         var pattern = /^\d+$/;

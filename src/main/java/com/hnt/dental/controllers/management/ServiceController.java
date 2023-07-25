@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet(name = "ServiceController", value = {
         "/management/service",
@@ -19,7 +20,8 @@ import java.io.IOException;
         "/management/service/createFee",
         "/management/service/updateFee",
         "/management/service/type/detail",
-        "/management/service/delete"
+        "/management/service/delete",
+        "/management/service/deleteDoctor"
 })
 public class ServiceController extends HttpServlet {
     private static final ServiceService service;
@@ -63,7 +65,12 @@ public class ServiceController extends HttpServlet {
             case "/management/service/type":
                 req.getRequestDispatcher("/WEB-INF/templates/management/service/serviceType.jsp").forward(req, resp);
                 break;
-
+            case "/management/service/deleteDoctor":
+                try {
+                    service.deleteDoctor(req, resp);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             default:
         }
     }

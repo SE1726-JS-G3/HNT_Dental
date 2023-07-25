@@ -129,13 +129,12 @@
 
                                             <td>
                                                 <button type="button" class="btn btn-danger"
-                                                        data-bs-toggle="modal" data-bs-target="#doctor_id${d.id}">
+                                                        onclick="deleteDoctor(${d.id})">
                                                     Xóa
                                                 </button>
                                             </td>
                                         </tr>
                                     </c:forEach>
-
                                     </tbody>
                                 </table>
                             </div>
@@ -307,31 +306,6 @@
                 </div>
             </div>
         </div>
-        <c:forEach items="${doctorOfService}" var="d">
-            <div class="modal fade" id="doctor_id${d.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-body mx-3">
-                            <div class="md-form mb-2">
-                                <i class="fas fa-envelope prefix grey-text"></i>
-                                <div class="md-form mb-2">
-                                    <label data-error="wrong" data-success="right">Loại dịch vụ của bác sĩ
-                                        : ${d.name}</label>
-                                    <c:forEach items="${d.types}" var="t">
-                                        <div class="d-flex justify-content-between bg-light p-2 mb-2">
-                                            <p>${t.nameType}</p>
-                                            <button class="btn btn-danger">Xóa</button>
-                                        </div>
-                                    </c:forEach>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </c:forEach>
         <jsp:include page="../layout/footer.jsp"/>
     </main>
 
@@ -344,6 +318,13 @@
 <script src="${pageContext.request.contextPath}/static/js/plugins.init.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
 
+<script>
+    function deleteDoctor(id) {
+        if (confirm("Bạn có chắc chắn muốn xóa bác sĩ này không?")) {
+            window.location.href = "${pageContext.request.contextPath}/management/service/deleteDoctor?id=${param.id}&&did=" + id;
+        }
+    }
+</script>
 </body>
 <style>
     .Choicefile {
