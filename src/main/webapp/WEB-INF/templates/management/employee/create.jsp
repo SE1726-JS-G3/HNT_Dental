@@ -99,7 +99,7 @@
 
                             <form class="mt-4" action="${pageContext.request.contextPath}/management/employee/create" method="post" enctype="multipart/form-data">
                                 <div class="row">
-
+                                    <p style="color: red; font-weight: bold; padding: 10px">${param.error}</p>
                                     <%-- Copy upload--%>
                                     <div class="col-lg-12">
                                         <div class="mb-3">
@@ -134,7 +134,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Ngày sinh</label>
                                             <input name="dob" id="name2" type="text" class="form-control"
-                                                   placeholder="DD/MM/YYYY">
+                                                   placeholder="YYYY-DD-MM">
                                         </div>
                                     </div><!--end col-->
 

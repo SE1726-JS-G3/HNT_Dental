@@ -72,44 +72,56 @@ public class EmployeeService {
         String position = req.getParameter("position") == null ? "marketing" : req.getParameter("position");
         String description = req.getParameter("description");
         Part img = req.getPart("image"); // copy upload
+        String error = null;
+        try {
+            Account account = accountDao.findByEmail(email);
+            String password = AesUtils.encrypt(CaptchaUtils.getCaptcha(8));
+            if (account != null) {
+                throw new SystemRuntimeException(StringUtils.join("Email ", email, " already exists"));
+            }
+            RoleEnum role = position.equals("marketing") ? RoleEnum.ROLE_MARKETING : RoleEnum.ROLE_STAFF;
+            String image = null;
 
-        String password = AesUtils.encrypt(CaptchaUtils.getCaptcha(8));
+            // copy upload
+            if (img.getSize() > 0) {
+                image = ImageUtils.upload(img);
+            }
+            // copy upload
 
-        RoleEnum role = position.equals("marketing") ? RoleEnum.ROLE_MARKETING : RoleEnum.ROLE_STAFF;
-        String image = null;
+            Long id = accountDao.save(
+                    Account.builder()
+                            .email(email)
+                            .password(password)
+                            .role(role.ordinal())
+                            .isVerified(true)
+                            .image(image)
+                            .build()
+            );
 
-        // copy upload
-        if (img.getSize() > 0) {
-            image = ImageUtils.upload(img);
+            employeeDao.save(
+                    Employee.builder()
+                            .account(Account.builder().id(id).build())
+                            .fullName(fullName)
+                            .dob(LocalDate.parse(dob, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                            .gender(Objects.equals(gender, "Nam"))
+                            .phone(phone)
+                            .salary(Double.valueOf(salary))
+                            .address(address)
+                            .description(description)
+                            .build()
+            );
+
+            MailService.sendMailAccount(fullName, password, email);
+
+        } catch (Exception e) {
+            error = e.getMessage();
         }
-        // copy upload
 
-        Long id = accountDao.save(
-                Account.builder()
-                        .email(email)
-                        .password(password)
-                        .role(role.ordinal())
-                        .isVerified(true)
-                        .image(image)
-                        .build()
-        );
-
-        employeeDao.save(
-                Employee.builder()
-                        .account(Account.builder().id(id).build())
-                        .fullName(fullName)
-                        .dob(LocalDate.parse(dob, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-                        .gender(Objects.equals(gender, "Nam"))
-                        .phone(phone)
-                        .salary(Double.valueOf(salary))
-                        .address(address)
-                        .description(description)
-                        .build()
-        );
-
-        MailService.sendMailAccount(fullName, password, email);
-
-        ServletUtils.redirect(req, resp, "/management/employee");
+        if (StringUtils.isNotEmpty(error)) {
+            ServletUtils.redirect(req, resp, "/management/employee/create?error=" + error);
+        } else {
+            ServletUtils.redirect(req, resp, "/management/employee");
+        }
     }
 
     public void update(HttpServletRequest req, HttpServletResponse resp) throws Exception {
