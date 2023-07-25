@@ -1,3 +1,17 @@
+$.validator.addMethod('dob', function(value, element) {
+    // Parse the date string into a Date object
+    const dob = new Date(value)
+
+    // Calculate the age in milliseconds
+    const ageInMs = Date.now() - dob.getTime()
+
+    // Calculate the age in years
+    const ageInYears = ageInMs / (1000 * 60 * 60 * 24 * 365.25)
+
+    // Check if the age is greater than or equal to 18
+    return ageInYears >= 18
+}, 'Bạn phải đủ 18 tuổi để đăng ký tài khoản');
+
 $(document).ready(function () {
         const register = $('#register');
         register.validate({
@@ -20,7 +34,9 @@ $(document).ready(function () {
                     maxlength: 10
                 },
                 dob: {
-                    required: true
+                    required: true,
+                    date: true,
+                    dob: true
                 },
 
                 address: {
@@ -30,6 +46,9 @@ $(document).ready(function () {
                 confirmPassword: {
                     required: true,
                     equalTo: "#password"
+                },
+                acceptTncCheck: {
+                    required: true
                 }
 
             },
@@ -61,6 +80,9 @@ $(document).ready(function () {
                 confirmPassword: {
                     required: 'Vui lòng nhập lại mật khẩu',
                     equalTo: 'Mật khẩu không trùng khớp',
+                },
+                acceptTncCheck: {
+                    required: 'Vui lòng đồng ý với điều khoản sử dụng dịch vụ',
                 }
             },
             submitHandler: function () {
@@ -88,7 +110,12 @@ function getRegister() {
                     break;
                 case 'success':
                     document.getElementById("content").style.color = "green";
-                    document.getElementById("content").innerHTML = "Đăng ký thành công! Vui lòng kiểm tra email để xác thực tài khoản!";
+                    Swal.fire({
+                        confirmButtonColor: '#396cf0',
+                        title: 'Đăng ký thành công',
+                        icon: 'success',
+                        text: 'Vui lòng kiểm tra email để xác nhận'
+                    })
                     break;
                 default:
                     document.getElementById("content").style.color = "red";

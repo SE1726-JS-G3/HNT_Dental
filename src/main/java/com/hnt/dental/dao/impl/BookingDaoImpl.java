@@ -118,7 +118,6 @@ public class BookingDaoImpl implements BookingDao {
             "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 13 DAY)" +
             " ) AS p" +
             " LEFT JOIN booking AS u ON p.day = u.date" +
-            " WHERE u.date BETWEEN DATE_SUB(CURDATE(), INTERVAL 13 DAY) AND CURDATE()" +
             " GROUP BY p.day" +
             " ORDER BY p.day ASC";
     
@@ -156,7 +155,6 @@ public class BookingDaoImpl implements BookingDao {
             "    UNION SELECT DATE_SUB(CURDATE(), INTERVAL 29 DAY) " +
             ") AS p " +
             "LEFT JOIN booking AS u ON p.day = u.date " +
-            "WHERE u.date BETWEEN DATE_SUB(CURDATE(), INTERVAL 29 DAY) AND CURDATE() " +
             "GROUP BY p.day " +
             "ORDER BY p.day ASC ";
 
@@ -222,9 +220,6 @@ public class BookingDaoImpl implements BookingDao {
         List<StatisticDto> statisticDtoList = new ArrayList<>();
         ResultSet rs = null;
         switch (type) {
-            case "7":
-                rs = ConnectionUtils.executeQuery(SQL_GET_STATISTIC_7Day);
-                break;
             case "14":
                 rs = ConnectionUtils.executeQuery(SQL_GET_STATISTIC_14Day);
                 break;

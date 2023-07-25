@@ -41,7 +41,8 @@
                         <form class="login-form mt-4" id="confirmForgot">
                             <div class="row">
                                 <label>
-                                    <input name="token" hidden="hidden" value="${param.token}">
+                                    <input name="email" hidden="hidden" value="${param.email}">
+                                    <input name="code" hidden="hidden" value="${param.code}">
                                 </label>
                                 <div class="col-lg-12">
                                     <div class="mb-3">

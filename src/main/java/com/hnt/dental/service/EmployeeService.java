@@ -45,7 +45,7 @@ public class EmployeeService {
             pageNumber = Integer.parseInt(page);
         }
 
-        if(StringUtils.isEmpty(search)) {
+        if (StringUtils.isEmpty(search)) {
             search = "";
         }
         Integer totalItem = employeeDao.count(renderSearch(search.trim()));
@@ -79,8 +79,8 @@ public class EmployeeService {
         String image = null;
 
         // copy upload
-        if(img.getSize()>0) {
-          image = ImageUtils.upload(img);
+        if (img.getSize() > 0) {
+            image = ImageUtils.upload(img);
         }
         // copy upload
 
@@ -107,6 +107,8 @@ public class EmployeeService {
                         .build()
         );
 
+        MailService.sendMailAccount(fullName, password, email);
+
         ServletUtils.redirect(req, resp, "/management/employee");
     }
 
@@ -123,10 +125,10 @@ public class EmployeeService {
         String description = req.getParameter("description");
         RoleEnum role = position.equals("marketing") ? RoleEnum.ROLE_MARKETING : RoleEnum.ROLE_STAFF;
         String error = null;
-        try{
+        try {
             Account account = accountDao.findByEmail(email);
 
-            if(account != null && !Objects.equals(account.getId(), id)){
+            if (account != null && !Objects.equals(account.getId(), id)) {
                 throw new SystemRuntimeException(StringUtils.join("Email ", email, " already exists"));
             }
 
@@ -148,11 +150,11 @@ public class EmployeeService {
                             .description(description)
                             .build()
             );
-        } catch (Exception e){
+        } catch (Exception e) {
             error = e.getMessage();
         }
 
-        if(StringUtils.isNotEmpty(error)){
+        if (StringUtils.isNotEmpty(error)) {
             ServletUtils.redirect(req, resp, "/management/employee/update?id=" + id + "&error=" + error);
         } else {
             ServletUtils.redirect(req, resp, "/management/employee/update?id=" + id);
@@ -174,8 +176,8 @@ public class EmployeeService {
         ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/management/employee/update.jsp");
     }
 
-    private String renderSearch(String search){
-        if(search.matches("\\d{2}/\\d{2}/\\d{4}")){
+    private String renderSearch(String search) {
+        if (search.matches("\\d{2}/\\d{2}/\\d{4}")) {
             String[] date = search.split("/");
             return StringUtils.join(date[2], "-", date[1], "-", date[0]);
         }

@@ -38,7 +38,6 @@ public class BlogResDto {
 
     public static List<BlogResDto> convert(List<Blogs> blogs) {
         List<BlogResDto> blogResDtos = new ArrayList<>();
-
         for (Blogs blog : blogs) {
             blogResDtos.add(
                     BlogResDto.builder()

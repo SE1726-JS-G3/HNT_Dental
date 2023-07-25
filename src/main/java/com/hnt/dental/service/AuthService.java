@@ -129,8 +129,7 @@ private static final EmployeeDao employeeDao;
                                 .build()
                 );
 
-                String token = AesUtils.encrypt(StringUtils.join(email, ":", captcha));
-                String url = bundle.getString("server.url") + "/auth/verification?token=" + token;
+                String url = bundle.getString("server.url") + "/auth/verification?email=" + email + "&code=" + captcha;
                 MailService.sendMailConfirm(fullName, url, email);
 
                 ApiResponse<Account> response = new ApiResponse<>();
@@ -144,13 +143,9 @@ private static final EmployeeDao employeeDao;
     }
 
     public void verification(HttpServletRequest req, HttpServletResponse resp) {
-        String token = req.getParameter("token");
+        String email = req.getParameter("email");
+        String code = req.getParameter("code");
         try {
-            String tokenDecrypt = AesUtils.decrypt(token);
-            String[] tokenSplit = tokenDecrypt.split(":");
-            String email = tokenSplit[0];
-            String code = tokenSplit[1];
-
             Verification verification = verificationDao.findByEmail(email);
 
             if (verification != null && StringUtils.equals(verification.getCode(), code) && (StringUtils.equals(code, verification.getCode()))) {
@@ -185,8 +180,7 @@ private static final EmployeeDao employeeDao;
                                 .createdBy(account.getId())
                                 .build()
                 );
-                String token = AesUtils.encrypt(StringUtils.join(email, ":", captcha));
-                String url = bundle.getString("server.url") + "/auth/forgot/confirm?token=" + token;
+                String url = bundle.getString("server.url") + "/auth/forgot/confirm?email=" + email + "&code=" + captcha;
                 MailService.sendMailForgotPassword(account.getEmail(), url, email);
                 ServletUtils.apiResponse(resp, new Gson().toJson(ApiResponse.builder().status(true).message("success").build()));
             } else {
@@ -198,14 +192,10 @@ private static final EmployeeDao employeeDao;
     }
 
     public void forgotConfirm(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String token = req.getParameter("token");
+        String email = req.getParameter("email");
+        String code = req.getParameter("code");
         String password = req.getParameter("newPassword");
         try {
-            String tokenDecrypt = AesUtils.decrypt(token);
-            String[] tokenSplit = tokenDecrypt.split(":");
-            String email = tokenSplit[0];
-            String code = tokenSplit[1];
-
             Verification verification = verificationDao.findByEmail(email);
 
             if (verification != null && StringUtils.equals(verification.getCode(), code) && (StringUtils.equals(code, verification.getCode()))) {

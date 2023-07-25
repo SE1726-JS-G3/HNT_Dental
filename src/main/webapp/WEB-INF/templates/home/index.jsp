@@ -268,6 +268,10 @@
 <script>
     function redirectToBooking() {
         let id = document.getElementById("serviceId").value;
+        if(id == null || id === "" || id === "Chọn dịch vụ"){
+            alert("Vui lòng chọn dịch vụ");
+            return;
+        }
         window.location.href = "/booking?serviceId=" + id;
     }
 </script>

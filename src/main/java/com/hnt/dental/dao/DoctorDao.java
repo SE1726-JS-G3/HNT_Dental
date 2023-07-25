@@ -42,4 +42,5 @@ public interface DoctorDao extends GenericDao<Doctors> {
     int countDoctorDashboard() throws SQLException;
 
     ProfileDto getProfileDoctor(Long id) throws SQLException;
+    List<RankDto> getAllRanks() throws SQLException;
 }
