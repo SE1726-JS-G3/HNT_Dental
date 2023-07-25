@@ -290,37 +290,35 @@ public class PatientDaoImpl implements PatientDao {
             throw new SQLException("Failed to save service feedback: " + e.getMessage());
         }
     }
-
-
-    private static final String SERVICE_APPOINTMENT = "SELECT f.fee,b.service_id, b.status  ,s.name,st.name as type " +
-            "                                                                      FROM booking b " +
-            "                                                                          INNER JOIN service s  " +
-            "                                                                        INNER JOIN service_type st " +
-            "                                                                        INNER JOIN service_fee f " +
-            "                                                                         ON b.service_id = s.id  " +
-            "                                                                         AND b.service_type_id = st.id  " +
-            "                                                                         AND b.service_type_id = f.service_id " +
-            "                                                                          where b.account_id=?";
+    
+    private static final String HISTORY_SERVICE = " SELECT  " +
+            " s.id, s.name, st.name as 'type', sf.fee, b.status " +
+            "FROM  " +
+            " service s  " +
+            "    INNER JOIN booking b on s.id = b.service_id " +
+            "    INNER JOIN service_fee sf on ( b.service_type_id = sf.service_type AND b.service_id = sf.service_id) " +
+            "    INNER JOIN service_type st on sf.service_type = st.id " +
+            "WHERE b.account_id = ?";
 
     @Override
-    public BookingDto getService(Long id) throws SQLException {
-        ResultSet rs = ConnectionUtils.executeQuery(SERVICE_APPOINTMENT, id);
+    public List<BookingDto> getService(Long id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(HISTORY_SERVICE, id);
         assert rs != null;
-        if (rs.next()) {
-            return BookingDto.builder()
+        List<BookingDto> list = new ArrayList<>();
+        while (rs.next()) {
+            list.add(BookingDto.builder()
                     .serviceResDto(ServiceResDto.builder()
                             .name(rs.getString("name"))
-                            //.id(rs.getLong("id"))
                             .build()).serviceTypeDto(ServiceTypeDto.builder()
                             .nameType(rs.getString("type"))
                             .build()).serviceFeeDto(ServiceFeeDto.builder()
                             .fee(rs.getDouble("fee"))
                             .build())
                     .status(BookingStatusEnum.getBookingStatusString(rs.getInt("status")))
-                    .service_id(rs.getInt("service_id"))
-                    .build();
+                    .service_id(rs.getInt("id"))
+                    .build());
         }
-        return null;
+        return list;
     }
 
 

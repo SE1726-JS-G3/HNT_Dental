@@ -24,44 +24,31 @@
                                 <thead>
                                 <tr>
                                     <th class="border-bottom p-3" style="min-width: 10px;">ID</th>
-                                    <th class="border-bottom p-3" style="min-width: 190px;">Tên dịch vụ </th>
-                                    <th class="border-bottom p-3" style="min-width: 190px;">Loại dịch vụ </th>
-                                    <th class="border-bottom p-3" style="min-width: 190px;">Phí dịch vụ </th>
+                                    <th class="border-bottom p-3" style="min-width: 190px;">Tên dịch vụ</th>
+                                    <th class="border-bottom p-3" style="min-width: 190px;">Loại dịch vụ</th>
+                                    <th class="border-bottom p-3" style="min-width: 190px;">Phí dịch vụ</th>
                                     <th class="border-bottom p-3">Trạng thái</th>
                                     <th class="border-bottom p-5">Tác vụ</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <%--                                <c:forEach items="${service}" >--%>
-                                <tr>
-                                    <td class="p-3">${service != null ? service.service_id : ''}</td>
-                                    <td class="p-3">${service != null ? service.serviceResDto.name : ''}</td>
-                                    <td class="p-3">${service != null ? service.serviceTypeDto.nameType : ''}</td>
-                                    <td class="p-3">${service != null ? service.serviceFeeDto.fee : ''}</td>
-                                    <td class="p-3">${service != null ? service.status : ''}</td>
-
-
-
-
-
-                                    <%--                                        <td class="p-3">${o.serviceResDto.id}</td>--%>
-                                    <%--                                        <td class="p-3">${o.serviceResDto.name}</td>--%>
-                                    <%--                                        <td class="p-3">${o.serviceTypeDto.nameType}</td>--%>
-                                    <%--                                        <td class="p-3">--%>
-                                    <%--                                            <c:if test="${o.status == true}">--%>
-                                    <%--                                                Assigned--%>
-                                    <%--                                            </c:if>--%>
-                                    <%--                                            <c:if test="${o.status == false}">--%>
-                                    <%--                                                Complete--%>
-                                    <%--                                            </c:if>--%>
-                                    <%--                                        </td>--%>
-                                    <td class="p-3 text-center">
-                                        <a href="#">
-                                            <button class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/service/detail?id=${service.service_id}'">Chi tiết</button>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <%--                                </c:forEach>--%>
+                                <c:forEach items="${service}" var="s">
+                                    <tr>
+                                        <td class="p-3">${s.service_id  }</td>
+                                        <td class="p-3">${s.serviceResDto.name  }</td>
+                                        <td class="p-3">${s.serviceTypeDto.nameType  }</td>
+                                        <td class="p-3">${s.serviceFeeDto.fee  }</td>
+                                        <td class="p-3">${s.status  }</td>
+                                        <td class="p-3 text-center">
+                                            <a href="#">
+                                                <button class="btn btn-primary"
+                                                        onclick="window.location.href='${pageContext.request.contextPath}/service/detail?id=${s.service_id}'">
+                                                    Chi tiết
+                                                </button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>
@@ -71,7 +58,9 @@
                                 <div class="d-md-flex align-items-center text-center justify-content-between">
                                     <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
                                         <c:forEach begin="${1}" end="${totalPage}" var="i">
-                                            <li class="page-item ${i==page?'active':''}"><a class="page-link" href="${url}?page=${i}">${i}</a></li>
+                                            <li class="page-item ${i==page?'active':''}"><a class="page-link"
+                                                                                            href="${url}?page=${i}">${i}</a>
+                                            </li>
                                         </c:forEach>
                                     </ul>
                                 </div>
