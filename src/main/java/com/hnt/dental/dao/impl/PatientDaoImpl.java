@@ -1,4 +1,5 @@
 package com.hnt.dental.dao.impl;
+
 import com.hnt.dental.constant.BookingStatusEnum;
 import com.hnt.dental.dao.AccountDao;
 import com.hnt.dental.dao.PatientDao;
@@ -27,6 +28,7 @@ public class PatientDaoImpl implements PatientDao {
     private static final String SAVE_PATIENT = "INSERT INTO patients" +
             "(id,dob, full_name, gender, phone, address) \n" +
             "VALUES(?, ?, ?, ?, ?, ?)";
+
     private static final String DETAIL_PATIENT = "SELECT p.id, p.full_name, p.dob, p.gender,p.address,p.description ,p.phone,p.status,a.email \n" +
             "                       FROM patients p inner join  accounts a on p.id = a.id\n" +
             "                      where p.id = ?";
@@ -36,8 +38,8 @@ public class PatientDaoImpl implements PatientDao {
             "            ( id,full_name, dob, gender, phone, address,created_at) " +
             "            VALUES(?,?,?,?,?,?,?)  ";
 
-    private static final String UPDATE_PATIENT = "UPDATE patients \n" +
-            "           SET full_name=?, dob=?, gender=?, phone=?, address=?, description=?,status=?,created_at=?, updated_at=? \n" +
+    private static final String UPDATE_PATIENT = "UPDATE patients " +
+            "           SET full_name=?, dob=?, gender=?, phone=?, address=?, description=?,status=?,created_at=?, updated_at=? " +
             "                      WHERE id=?";
     private static final String GET_PATIENT_BY_ID = "SELECT * FROM patients where id =?";
     private static final String GET_ALL_PATIENTS = "SELECT a.id, p.full_name, p.dob,p.gender,p.status\n" +
@@ -166,7 +168,7 @@ public class PatientDaoImpl implements PatientDao {
     private static final String COUNT_APPOINTMENT = "SELECT COUNT(*) FROM booking b\n" +
             "                        JOIN service s JOIN service_type st ON b.service_id = s.id AND b.service_type_id = st.id";
 
-    private static final String GET_PROFILE_PATIENT = "SELECT p.full_name, p.dob, p.gender,p.address,p.description, p.phone,a.email FROM hnt_dental.patients p " +
+    private static final String GET_PROFILE_PATIENT = "SELECT p.full_name, p.dob, p.gender,p.address,p.description, p.phone,a.email, a.image FROM hnt_dental.patients p " +
             "inner join accounts a on a.id = p.id " +
             "where p.id = ? ";
 
@@ -237,6 +239,7 @@ public class PatientDaoImpl implements PatientDao {
         }
         return null;
     }
+
     private static final String SAVE_SERVICE_FEEDBACK = "INSERT INTO feedback " +
             "( booking_id, service_id, star, description, created_at, updated_at, is_show) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -244,7 +247,6 @@ public class PatientDaoImpl implements PatientDao {
     private static final String SAVE_DOCTOR_FEEDBACK = "INSERT INTO feedback " +
             "( booking_id, doctor_id, star, description, created_at, updated_at, is_show) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?)";
-
 
 
     @Override
@@ -290,9 +292,6 @@ public class PatientDaoImpl implements PatientDao {
     }
 
 
-
-
-
     private static final String SERVICE_APPOINTMENT = "SELECT f.fee,b.service_id, b.status  ,s.name,st.name as type\n" +
             "                                                                      FROM booking b\n" +
             "                                                                          INNER JOIN service s \n" +
@@ -325,15 +324,7 @@ public class PatientDaoImpl implements PatientDao {
     }
 
 
-
-
-
-
-
-
-
-
-    private static final String MY_PATIENT_OF_DOCTOR="SELECT b.name ,b.gender ,b.id, b.date,b.age,s.name ,st.name as type\n" +
+    private static final String MY_PATIENT_OF_DOCTOR = "SELECT b.name ,b.gender ,b.id, b.date,b.age,s.name ,st.name as type\n" +
             "                                                              FROM booking b\n" +
             "                                                               INNER JOIN service s \n" +
             "                                                                 INNER JOIN service_type st\n" +
@@ -343,11 +334,12 @@ public class PatientDaoImpl implements PatientDao {
             "                                                             OR LOWER(b.age) LIKE ?\n" +
             "                                                            OR LOWER(b.date) LIKE ?\n" +
             "     LIMIT ?,?";
+
     @Override
     public List<BookingDto> getMyPatient(Integer offset, Integer limit, String search) throws SQLException {
         List<BookingDto> list = new ArrayList<>();
         search = StringUtils.isNotEmpty(search) ? "%" + search.toLowerCase() + "%" : "%";
-        ResultSet rs = ConnectionUtils.executeQuery( MY_PATIENT_OF_DOCTOR, search, search, search, offset, limit);
+        ResultSet rs = ConnectionUtils.executeQuery(MY_PATIENT_OF_DOCTOR, search, search, search, offset, limit);
         while (rs.next()) {
             list.add(
                     BookingDto
@@ -392,9 +384,15 @@ public class PatientDaoImpl implements PatientDao {
                     .dob(resultSet.getDate("dob").toLocalDate())
                     .address(resultSet.getString("address"))
                     .description(resultSet.getString("description"))
+                    .image(resultSet.getString("image"))
                     .build();
         }
         return new ProfileDto();
+    }
+
+    @Override
+    public Patient updatePatient(Patient patient) throws SQLException {
+        return null;
     }
 
 }
