@@ -92,15 +92,13 @@
                             <c:forEach items="${blogs}" var="b">
                                 <div class="col-xl-3 col-lg-4 col-md-6 col-12 mt-4">
                                     <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-                                        <img src="${pageContext.request.contextPath}/static/images/blogs/${b.image}" class="img-fluid"
+                                        <img src="${b.image}" class="img-fluid"
                                              alt="">
                                         <div class="card-body p-4">
                                             <ul class="list-unstyled mb-2">
-                                                <li class="list-inline-item text-muted small me-3"><i
-                                                        class="uil uil-calendar-alt text-dark h6 me-1"></i>${b.categoryBlog.name}
+                                                <li class="list-inline-item text-muted small me-3">${b.categoryBlog.name}
                                                 </li>
-                                                <li class="list-inline-item text-muted small"><i
-                                                        class="uil uil-clock text-dark h6 me-1"></i>${b.create_at}
+                                                <li class="list-inline-item text-muted small">${b.create_at}
                                                 </li>
                                             </ul>
                                             <a href="#" class="text-dark title h5">${b.title}</a>
@@ -113,7 +111,7 @@
                                                         <td class="p-3 text-center">
                                                             <button class="btn btn-primary"
                                                                     onclick="window.location.href='${pageContext.request.contextPath}/management/blog/update?id=${b.id}'"
-                                                            >View
+                                                            >Xem
                                                             </button>
 
                                                             <button class="btn btn-danger"
