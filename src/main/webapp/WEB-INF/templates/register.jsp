@@ -46,6 +46,7 @@
                                 <div class="col-lg-12">
                                     <div class="mb-3">
                                         <label class="form-label" for="fullName">Tên đầy đủ <span class="text-danger">*</span></label>
+
                                         <input type="text" class="form-control" id="fullName" placeholder="Tên đầy đủ"
                                                name="fullName">
                                     </div>
