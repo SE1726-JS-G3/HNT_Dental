@@ -16,6 +16,10 @@
                             <div class="col-md-4">
                                 <h5 class="mb-0">Quản lí dịch vụ</h5>
                             </div>
+                            <div class="col-md-8">
+                                <div class="search-bar p-0 d-lg-block ms-2">
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-4 col-sm-12">
                             <a href="${pageContext.request.contextPath}/management/service/create">
@@ -25,6 +29,49 @@
                                 <button class="btn btn-primary">Loại dịch vụ</button>
                             </a>
                         </div>
+                    </div>
+                    <div class="col-md-7">
+                        <br><br>
+                        <form action="doctormanage?action=filter" method="POST"
+                              onSubmit="document.getElementById('submit').disabled = true;">
+                            <div class="justify-content-md-end row">
+                                <div class="col-md-5 row align-items-center">
+                                    <div class="col-md-3">
+                                        <label class="form-label">Gói dịch vụ</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <select name="gender" class="form-select">
+                                            <option value="0">Tất cả</option>
+                                            <c:forEach items="${getALlType}" var="g">
+                                                <option value="${g.idType}">${g.nameType}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-5 row align-items-center">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Trạng thái</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <select name="speciality" class="form-select">
+                                            <option <c:if test="${speciality == 'all'}"> selected </c:if> value="all">
+                                                Tất cả
+                                            </option>
+                                            <option <c:if test="${speciality == 'all'}"> selected </c:if> value="all">
+                                                Active
+                                            </option>
+                                            <option <c:if test="${speciality == 'all'}"> selected </c:if> value="all">
+                                                Deactive
+                                            </option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-1 md-0">
+                                    <button type="submit" class="btn btn-primary">Lọc</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
 

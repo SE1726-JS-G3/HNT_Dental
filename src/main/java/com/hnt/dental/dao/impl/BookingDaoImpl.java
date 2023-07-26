@@ -177,6 +177,14 @@ public class BookingDaoImpl implements BookingDao {
     private static final String SQL_UPDATE_STATUS = "UPDATE booking SET status = ? WHERE id = ?";
 
 
+    private static String SQL_GET_BOOKING_FOR_DOCTOR = "SELECT b.id, b.name,s.name as serviceName, b.date,b.time,b.status FROM hnt_dental.booking b " +
+            "left join service s on s.id = b.service_id " +
+            "where b.doctor_id = ?";
+
+    private static String SQL_GET_BOOKING_FOR_STAFF = "SELECT b.id, b.name,s.name as serviceName, b.date,b.time,b.status FROM hnt_dental.booking b " +
+            "left join service s on s.id = b.service_id " +
+            "where b.staff_id = ?";
+
     @Override
     public void updateBookingDetail(Booking bookingDetailDto) throws SQLException {
         ConnectionUtils.executeUpdate(UPDATE_BOOKING_FOR_MARKETING, bookingDetailDto.getDoctors().getId(),
