@@ -30,8 +30,6 @@
             <c:if test="${sessionScope.account.role == 2}">
                 <li><a href="${pageContext.request.contextPath}/management/booking"><i
                         class="ri-user-2-line h5 fw-normal mb-0"></i>Quản lý lịch hẹn </a></li>
-                <li><a href="${pageContext.request.contextPath}/management/doctor/myPatientOfDoctor"><i
-                        class="uil uil-user me-2 d-inline-block"></i>Bệnh nhân của tôi</a></li>
             </c:if>
             <c:if test="${sessionScope.account.role == 3}">
                 <li><a href="${pageContext.request.contextPath}/management/doctor"><i
