@@ -342,4 +342,12 @@ public class BookingService {
         ServletUtils.redirect(req, resp, "/management/booking/detail?id=" + bookingId);
     }
 
+    public void getSuccessBooking(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        String id = req.getParameter("id");
+        adao.updateStatus(Booking.builder()
+                .id(Long.valueOf(id))
+                .status(BookingStatusEnum.DONE.ordinal())
+                .build());
+        ServletUtils.redirect(req, resp, "/management/booking/detail?id=" + id);
+    }
 }

@@ -174,6 +174,8 @@ public class BookingDaoImpl implements BookingDao {
             "GROUP BY p.day " +
             "ORDER BY p.day ASC ";
 
+    private static final String SQL_UPDATE_STATUS = "UPDATE booking SET status = ? WHERE id = ?";
+
 
     @Override
     public void updateBookingDetail(Booking bookingDetailDto) throws SQLException {
@@ -253,6 +255,15 @@ public class BookingDaoImpl implements BookingDao {
                     .build());
         }
         return statisticDtoList;
+    }
+
+    @Override
+    public void updateStatus(Booking booking) {
+        try {
+            ConnectionUtils.executeUpdate(SQL_UPDATE_STATUS, booking.getStatus(), booking.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 

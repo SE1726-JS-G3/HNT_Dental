@@ -22,7 +22,8 @@
                         </p>
                     </div>
                     <div class="p-4">
-                        <form action="${pageContext.request.contextPath}/management/doctor/my-appointment-detail" method="post">
+                        <form action="${pageContext.request.contextPath}/management/doctor/my-appointment-detail"
+                              method="post">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
@@ -74,7 +75,8 @@
                                     <div class="col-lg-12">
                                         <input hidden="" name="id" value="${param.id}">
                                         <div class="mb-3">
-                                            <label class="form-label">Kết quả khám bao gồm kết luần của bác sĩ + đơn thuốc + Phim XQ (nếu có)</label>
+                                            <label class="form-label">Kết quả khám bao gồm kết luần của bác sĩ + đơn
+                                                thuốc + Phim XQ (nếu có)</label>
                                             <readonly name="result" class="form-control attachments"
                                                       rows="3">${d.bookingResultDto.result}</readonly>
                                         </div>
@@ -104,7 +106,8 @@
         <div class="modal-content">
             <div class="modal-header border-bottom p-3">
                 <h5 class="modal-title" id="exampleModalLabel">Đây là trang hiển thị kết quả khám</h5>
-                <button type="button" class="btn btn-icon btn-close" data-bs-dismiss="modal" id="close-modal"><i class="uil uil-times fs-4 text-dark"></i></button>
+                <button type="button" class="btn btn-icon btn-close" data-bs-dismiss="modal" id="close-modal"><i
+                        class="uil uil-times fs-4 text-dark"></i></button>
             </div>
 
             <div class="modal-body p-3 pt-4">
@@ -115,22 +118,26 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="mb-3">
-                                            <label class="form-label">Tiêu đề bài viết <span class="text-danger">*</span></label>
-                                            <input name="name" id="name" type="text" class="form-control" placeholder="Tiêu đề :">
+                                            <label class="form-label">Tiêu đề bài viết <span
+                                                    class="text-danger">*</span></label>
+                                            <input name="name" id="name" type="text" class="form-control"
+                                                   placeholder="Tiêu đề :">
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label"> Ngày : </label>
-                                            <input name="date" type="text" class="form-control start" id="date" value="Chọn ngày :">
+                                            <input name="date" type="text" class="form-control start" id="date"
+                                                   value="Chọn ngày :">
                                         </div>
                                     </div><!--end col-->
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label"> Thời gian đọc : </label>
-                                            <input name="time" type="text" class="form-control" id="time" value="5 phút">
+                                            <input name="time" type="text" class="form-control" id="time"
+                                                   value="5 phút">
                                         </div>
                                     </div><!--end col-->
 
@@ -152,8 +159,10 @@
 
                                     <div class="col-lg-12">
                                         <div class="mb-3">
-                                            <label class="form-label">Nội dung <span class="text-danger">*</span></label>
-                                            <textarea name="comments" id="comments" rows="4" class="form-control" placeholder="Nội dung BLog :"></textarea>
+                                            <label class="form-label">Nội dung <span
+                                                    class="text-danger">*</span></label>
+                                            <textarea name="comments" id="comments" rows="4" class="form-control"
+                                                      placeholder="Nội dung BLog :"></textarea>
                                         </div>
                                     </div><!--end col-->
 
@@ -199,7 +208,7 @@
 <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/toastr@2.1.4"></script>
 <script>
-    document.getElementById("submit").addEventListener("click", function() {
+    document.getElementById("submit").addEventListener("click", function () {
         Swal.fire({
             icon: 'success',
             title: 'Hoàn thành lịch hẹn',
@@ -207,7 +216,7 @@
             timer: 50000,
             showConfirmButton: false,
             position: 'top-right',
-            didClose: function() {
+            didClose: function () {
                 form.submit(); // Gửi form sau khi thông báo đã đóng
             }
         });
