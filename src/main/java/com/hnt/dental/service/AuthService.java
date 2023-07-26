@@ -7,17 +7,17 @@ import com.hnt.dental.dao.impl.*;
 import com.hnt.dental.dto.response.ApiResponse;
 import com.hnt.dental.dto.response.BookingDto;
 import com.hnt.dental.dto.response.ProfileDto;
-import com.hnt.dental.entities.Account;
-import com.hnt.dental.entities.Patient;
-import com.hnt.dental.entities.Verification;
+import com.hnt.dental.entities.*;
 import com.hnt.dental.exception.SystemRuntimeException;
 import com.hnt.dental.util.AesUtils;
 
 import com.hnt.dental.util.CaptchaUtils;
+import com.hnt.dental.util.ImageUtils;
 import com.hnt.dental.util.ServletUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.EOFException;
@@ -33,8 +33,8 @@ import java.util.ResourceBundle;
 public class AuthService {
     private static final AccountDao accountDao;
     private static final PatientDao patientDao;
-private static final DoctorDao doctorDao;
-private static final EmployeeDao employeeDao;
+    private static final DoctorDao doctorDao;
+    private static final EmployeeDao employeeDao;
     private static final VerificationDao verificationDao;
 
     private static final ResourceBundle bundle = ResourceBundle.getBundle("application");
@@ -80,6 +80,7 @@ private static final EmployeeDao employeeDao;
         response.setMessage(message);
         ServletUtils.apiResponse(resp, new Gson().toJson(response));
     }
+
     public void register(HttpServletRequest req, HttpServletResponse resp) {
         String fullName = req.getParameter("fullName");
         String dob = req.getParameter("dob");
@@ -224,13 +225,13 @@ private static final EmployeeDao employeeDao;
         List<BookingDto> list = null;
         try {
             list = dao.getAllHistory();
-            int page =1;
+            int page = 1;
             String pageStr = req.getParameter("page");
-            if(pageStr!=null){
+            if (pageStr != null) {
                 page = Integer.parseInt(pageStr);
             }
-            final int PAGE_SIZE =8;
-            req.setAttribute("list", list.subList((page-1)*PAGE_SIZE,page*PAGE_SIZE));
+            final int PAGE_SIZE = 8;
+            req.setAttribute("list", list.subList((page - 1) * PAGE_SIZE, page * PAGE_SIZE));
             ServletUtils.requestDispatcher(req, resp, "/WEB-INF/templates/home/service-history.jsp");
         } catch (SQLException e) {
             throw new EOFException();
@@ -257,21 +258,17 @@ private static final EmployeeDao employeeDao;
         String success = req.getParameter("success");
         ProfileDto profileDto = null;
 
-        switch (account.getRole()){
+        switch (account.getRole()) {
             case 0://patient
                 profileDto = patientDao.getProfile(account.getId());
                 break;
             case 1:// admin
+            case 3:
+            case 4:
                 profileDto = employeeDao.getProfileEmployee(account.getId());
                 break;
             case 2://doctor
                 profileDto = doctorDao.getProfileDoctor(account.getId());
-                break;
-            case 3://marketing
-                profileDto = employeeDao.getProfileEmployee(account.getId());
-                break;
-            case 4://staff
-                profileDto = employeeDao.getProfileEmployee(account.getId());
                 break;
         }
 
@@ -303,5 +300,68 @@ private static final EmployeeDao employeeDao;
         } else {
             ServletUtils.redirect(req, resp, "/auth/profile?error=confirm_password_invalid");
         }
+    }
+
+    public void updateProfile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+        Part img = req.getPart("image");
+        String fullName = req.getParameter("fullName");
+        String phone = req.getParameter("phone");
+        String dob = req.getParameter("dob");
+        String address = req.getParameter("address");
+        String description = req.getParameter("description");
+        String gender = req.getParameter("gender");
+
+        Account account = (Account) req.getSession().getAttribute("account");
+        account = accountDao.findByEmail(account.getEmail());
+        if (img.getSize() > 0) {
+            account.setImage(ImageUtils.upload(img));
+            accountDao.update(account);
+        }
+
+        switch (account.getRole()) {
+            case 0://patient
+                patientDao.update(Patient.builder()
+                        .account(Account.builder().id(account.getId()).build())
+                        .fullName(fullName)
+                        .phone(phone)
+                        .dob(LocalDate.parse(dob, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                        .address(address)
+                        .description(description)
+                        .gender(gender.equalsIgnoreCase("Nam"))
+                        .createdAt(LocalDateTime.now())
+                        .updatedAt(LocalDateTime.now())
+                        .build());
+                break;
+            case 1:// admin
+            case 3:
+            case 4:
+                employeeDao.update(Employee.builder()
+                        .account(Account.builder().id(account.getId()).build())
+                        .fullName(fullName)
+                        .phone(phone)
+                        .dob(LocalDate.parse(dob, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                        .address(address)
+                        .description(description)
+                        .gender(gender.equalsIgnoreCase("Nam"))
+                        .createdAt(LocalDateTime.now())
+                        .updatedAt(LocalDateTime.now())
+                        .build());
+                break;
+            case 2://doctor
+                doctorDao.update(Doctors.builder()
+                        .account(Account.builder().id(account.getId()).build())
+                        .fullName(fullName)
+                        .phone(phone)
+                        .dob(LocalDate.parse(dob, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                        .address(address)
+                        .description(description)
+                        .gender(gender.equalsIgnoreCase("Nam"))
+                        .createdAt(LocalDateTime.now())
+                        .updatedAt(LocalDateTime.now())
+                        .build());
+                break;
+        }
+
+        ServletUtils.redirect(req, resp, "/auth/profile?success=update_profile_success");
     }
 }

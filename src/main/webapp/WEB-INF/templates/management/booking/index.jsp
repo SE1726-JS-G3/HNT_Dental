@@ -120,19 +120,90 @@
                         </div>
                     </div>
                 </div>
+                <label class="form-label">Lịch hẹn của tôi (bác sĩ)</label>
+                <div class="row">
+                    <div class="col-12 mt-4">
+                        <div class="table-responsive bg-white shadow rounded">
+                            <table class="table mb-0 table-center">
+                                <thead>
+                                <tr>
+                                    <th class="border-bottom p-3">ID</th>
+                                    <th class="border-bottom p-3">Tên bệnh nhân</th>
+                                    <th class="border-bottom p-3">Dịch vụ</th>
+                                    <th class="border-bottom p-3">Ngày khám bệnh</th>
+                                    <th class="border-bottom p-3">Thời gian</th>
+                                    <th class="border-bottom p-3">Trạng thái</th>
+                                    <th class="border-bottom p-3 text-center">Tác vụ</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach items="${bookingForDoctor}" var="bd">
+                                    <tr>
+                                        <td>${bd.id}</td>
+                                        <td>${bd.name}</td>
+                                        <td>${bd.service.name}</td>
+                                        <td>${bd.date}</td>
+                                        <td>${bd.time}</td>
+                                        <td>${bd.status}</td>
+                                        <td class="text-center">
+                                            <button class="btn btn-primary"
+                                                    onclick="window.location.href='${pageContext.request.contextPath}/management/booking/detail?id=${bd.id}'"
+                                            >Chi tiết
+                                            </button>
+                                        <td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <label class="form-label">Lịch hẹn của tôi (staff)</label>
+                <div class="row">
+                    <div class="col-12 mt-4">
+                        <div class="table-responsive bg-white shadow rounded">
+                            <table class="table mb-0 table-center">
+                                <thead>
+                                <tr>
+                                    <th class="border-bottom p-3">ID</th>
+                                    <th class="border-bottom p-3">Tên bệnh nhân</th>
+                                    <th class="border-bottom p-3">Dịch vụ</th>
+                                    <th class="border-bottom p-3">Ngày khám bệnh</th>
+                                    <th class="border-bottom p-3">Thời gian</th>
+                                    <th class="border-bottom p-3">Trạng thái</th>
+                                    <th class="border-bottom p-3 text-center">Tác vụ</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach items="${bookingForStaff}" var="bs">
+                                    <tr>
+                                        <td>${bs.id}</td>
+                                        <td>${bs.name}</td>
+                                        <td>${bs.service.name}</td>
+                                        <td>${bs.date}</td>
+                                        <td>${bs.time}</td>
 
-
+                                        <td>
+                                                ${bs.status}
+                                        </td>
+                                        <td class="text-center">
+                                            <button class="btn btn-primary"
+                                                    onclick="window.location.href='${pageContext.request.contextPath}/management/booking/detail?id=${bs.id}'"
+                                            >Chi tiết
+                                            </button>
+                                        <td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
                 <c:set var="page" value="${currentPage}"/>
                 <div class="row text-center">
                     <div class="col-12 mt-4">
                         <div class="d-md-flex align-items-center text-center justify-content-between">
                             <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                <li class="page-item status pl-1"><a class="page-link"
-                                                                     href="#">1</a>
-                                </li>
-                                <li class="page-item pl-1"><a class="page-link"
-                                                              href="#">2</a>
-                                </li>
                                 <c:forEach begin="${1}" end="${totalPage}" var="i">
                                     <li class="page-item ${i==page?"active":""}"><a class="page-link"
                                                                                     href="${url}?page=${i}&search=${search}">${i}</a>

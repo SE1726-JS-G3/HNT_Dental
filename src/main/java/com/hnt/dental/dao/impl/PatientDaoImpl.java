@@ -1,4 +1,5 @@
 package com.hnt.dental.dao.impl;
+
 import com.hnt.dental.constant.BookingStatusEnum;
 import com.hnt.dental.dao.AccountDao;
 import com.hnt.dental.dao.PatientDao;
@@ -25,10 +26,11 @@ public class PatientDaoImpl implements PatientDao {
     }
 
     private static final String SAVE_PATIENT = "INSERT INTO patients" +
-            "(id,dob, full_name, gender, phone, address) \n" +
+            "(id,dob, full_name, gender, phone, address)  " +
             "VALUES(?, ?, ?, ?, ?, ?)";
-    private static final String DETAIL_PATIENT = "SELECT p.id, p.full_name, p.dob, p.gender,p.address,p.description ,p.phone,p.status,a.email \n" +
-            "                       FROM patients p inner join  accounts a on p.id = a.id\n" +
+
+    private static final String DETAIL_PATIENT = "SELECT p.id, p.full_name, p.dob, p.gender,p.address,p.description ,p.phone,p.status,a.email  " +
+            "                       FROM patients p inner join  accounts a on p.id = a.id " +
             "                      where p.id = ?";
     private static final String DELETE_PATIENT = "DELETE FROM patients " +
             "WHERE id=?";
@@ -36,11 +38,11 @@ public class PatientDaoImpl implements PatientDao {
             "            ( id,full_name, dob, gender, phone, address,created_at) " +
             "            VALUES(?,?,?,?,?,?,?)  ";
 
-    private static final String UPDATE_PATIENT = "UPDATE patients \n" +
-            "           SET full_name=?, dob=?, gender=?, phone=?, address=?, description=?,status=?,created_at=?, updated_at=? \n" +
+    private static final String UPDATE_PATIENT = "UPDATE patients " +
+            "           SET full_name=?, dob=?, gender=?, phone=?, address=?, description=?,status=?,created_at=?, updated_at=? " +
             "                      WHERE id=?";
     private static final String GET_PATIENT_BY_ID = "SELECT * FROM patients where id =?";
-    private static final String GET_ALL_PATIENTS = "SELECT a.id, p.full_name, p.dob,p.gender,p.status\n" +
+    private static final String GET_ALL_PATIENTS = "SELECT a.id, p.full_name, p.dob,p.gender,p.status " +
             "FROM patients p " +
             "INNER JOIN accounts a ON p.id = a.id " +
             "WHERE LOWER(p.full_name) LIKE ? " +
@@ -163,29 +165,30 @@ public class PatientDaoImpl implements PatientDao {
         return null;
     }
 
-    private static final String COUNT_APPOINTMENT = "SELECT COUNT(*) FROM booking b\n" +
+    private static final String COUNT_APPOINTMENT = "SELECT COUNT(*) FROM booking b " +
             "                        JOIN service s JOIN service_type st ON b.service_id = s.id AND b.service_type_id = st.id";
 
-    private static final String GET_PROFILE_PATIENT = "SELECT p.full_name, p.dob, p.gender,p.address,p.description, p.phone,a.email FROM hnt_dental.patients p " +
+    private static final String GET_PROFILE_PATIENT = "SELECT p.full_name, p.dob, p.gender,p.address,p.description, p.phone,a.email, a.image FROM hnt_dental.patients p " +
             "inner join accounts a on a.id = p.id " +
             "where p.id = ? ";
 
-    private static final String HISTORY_APPOINTMENT = "SELECT b.time,b.id, b.status ,b.date ,s.name,st.name as type\n" +
-            "                                                        FROM booking b\n" +
-            "                                                         INNER JOIN service s \n" +
-            "                                                         INNER JOIN service_type st\n" +
-            "                                                         ON b.service_id = s.id \n" +
-            "                                                         AND b.service_type_id = st.id\n" +
+    private static final String HISTORY_APPOINTMENT = "SELECT b.time,b.id, b.status ,b.date ,s.name,st.name as type " +
+            "                                                        FROM booking b " +
+            "                                                         INNER JOIN service s  " +
+            "                                                         INNER JOIN service_type st " +
+            "                                                         ON b.service_id = s.id  " +
+            "                                                         AND b.service_type_id = st.id " +
             "                                                     where b.account_id=?";
 
 
     @Override
-    public BookingDto getAppointment(Long id) throws SQLException {
+    public List<BookingDto> getAppointment(Long id) throws SQLException {
         ResultSet rs = ConnectionUtils.executeQuery(HISTORY_APPOINTMENT, id);
         assert rs != null;
-        if (rs.next()) {
-            return BookingDto.builder().serviceResDto(ServiceResDto.builder()
-                            //.id(rs.getLong("id"))
+        List<BookingDto> list = new ArrayList<>();
+        while (rs.next()) {
+            list.add(BookingDto.builder().serviceResDto(ServiceResDto.builder()
+                            .id(rs.getLong("id"))
                             .name(rs.getString("name"))
                             .build()).serviceTypeDto(ServiceTypeDto.builder()
                             .nameType(rs.getString("type"))
@@ -194,9 +197,9 @@ public class PatientDaoImpl implements PatientDao {
                     .status(BookingStatusEnum.getBookingStatusString(rs.getInt("status")))
                     .id(rs.getLong("id"))
                     .time(rs.getTime("time").toLocalTime())
-                    .build();
+                    .build());
         }
-        return null;
+        return list;
     }
 
     @Override
@@ -213,7 +216,7 @@ public class PatientDaoImpl implements PatientDao {
 
     private static final String DETAIL_APPOINTMENT = "SELECT b.id, b.date, b.name, b.status, b.time, b.account_id, br.result, b.doctor_id, b.service_id " +
             "FROM booking b " +
-            "INNER JOIN booking_result br ON b.id = br.booking_id " +
+            "LEFT JOIN booking_result br ON b.id = br.booking_id " +
             "WHERE b.id = ?";
 
     @Override
@@ -237,6 +240,7 @@ public class PatientDaoImpl implements PatientDao {
         }
         return null;
     }
+
     private static final String SAVE_SERVICE_FEEDBACK = "INSERT INTO feedback " +
             "( booking_id, service_id, star, description, created_at, updated_at, is_show) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -244,7 +248,6 @@ public class PatientDaoImpl implements PatientDao {
     private static final String SAVE_DOCTOR_FEEDBACK = "INSERT INTO feedback " +
             "( booking_id, doctor_id, star, description, created_at, updated_at, is_show) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?)";
-
 
 
     @Override
@@ -288,66 +291,54 @@ public class PatientDaoImpl implements PatientDao {
             throw new SQLException("Failed to save service feedback: " + e.getMessage());
         }
     }
-
-
-
-
-
-    private static final String SERVICE_APPOINTMENT = "SELECT f.fee,b.service_id, b.status  ,s.name,st.name as type\n" +
-            "                                                                      FROM booking b\n" +
-            "                                                                          INNER JOIN service s \n" +
-            "                                                                        INNER JOIN service_type st\n" +
-            "                                                                        INNER JOIN service_fee f\n" +
-            "                                                                         ON b.service_id = s.id \n" +
-            "                                                                         AND b.service_type_id = st.id \n" +
-            "                                                                         AND b.service_type_id = f.service_id\n" +
-            "                                                                          where b.account_id=?";
+    
+    private static final String HISTORY_SERVICE = " SELECT  " +
+            " s.id, s.name, st.name as 'type', sf.fee, b.status " +
+            "FROM  " +
+            " service s  " +
+            "    INNER JOIN booking b on s.id = b.service_id " +
+            "    INNER JOIN service_fee sf on ( b.service_type_id = sf.service_type AND b.service_id = sf.service_id) " +
+            "    INNER JOIN service_type st on sf.service_type = st.id " +
+            "WHERE b.account_id = ?";
 
     @Override
-    public BookingDto getService(Long id) throws SQLException {
-        ResultSet rs = ConnectionUtils.executeQuery(SERVICE_APPOINTMENT, id);
+    public List<BookingDto> getService(Long id) throws SQLException {
+        ResultSet rs = ConnectionUtils.executeQuery(HISTORY_SERVICE, id);
         assert rs != null;
-        if (rs.next()) {
-            return BookingDto.builder()
+        List<BookingDto> list = new ArrayList<>();
+        while (rs.next()) {
+            list.add(BookingDto.builder()
                     .serviceResDto(ServiceResDto.builder()
                             .name(rs.getString("name"))
-                            //.id(rs.getLong("id"))
                             .build()).serviceTypeDto(ServiceTypeDto.builder()
                             .nameType(rs.getString("type"))
                             .build()).serviceFeeDto(ServiceFeeDto.builder()
                             .fee(rs.getDouble("fee"))
                             .build())
                     .status(BookingStatusEnum.getBookingStatusString(rs.getInt("status")))
-                    .service_id(rs.getInt("service_id"))
-                    .build();
+                    .service_id(rs.getInt("id"))
+                    .build());
         }
-        return null;
+        return list;
     }
 
 
-
-
-
-
-
-
-
-
-    private static final String MY_PATIENT_OF_DOCTOR="SELECT b.name ,b.gender ,b.id, b.date,b.age,s.name ,st.name as type\n" +
-            "                                                              FROM booking b\n" +
-            "                                                               INNER JOIN service s \n" +
-            "                                                                 INNER JOIN service_type st\n" +
-            "                                                                ON b.service_id = s.id \n" +
-            "                                                              AND b.service_type_id = st.id\n" +
-            "                                                             WHERE LOWER(b.name) LIKE ? \n" +
-            "                                                             OR LOWER(b.age) LIKE ?\n" +
-            "                                                            OR LOWER(b.date) LIKE ?\n" +
+    private static final String MY_PATIENT_OF_DOCTOR = "SELECT b.name ,b.gender ,b.id, b.date,b.age,s.name ,st.name as type " +
+            "                                                              FROM booking b " +
+            "                                                               INNER JOIN service s  " +
+            "                                                                 INNER JOIN service_type st " +
+            "                                                                ON b.service_id = s.id  " +
+            "                                                              AND b.service_type_id = st.id " +
+            "                                                             WHERE LOWER(b.name) LIKE ?  " +
+            "                                                             OR LOWER(b.age) LIKE ? " +
+            "                                                            OR LOWER(b.date) LIKE ? " +
             "     LIMIT ?,?";
+
     @Override
     public List<BookingDto> getMyPatient(Integer offset, Integer limit, String search) throws SQLException {
         List<BookingDto> list = new ArrayList<>();
         search = StringUtils.isNotEmpty(search) ? "%" + search.toLowerCase() + "%" : "%";
-        ResultSet rs = ConnectionUtils.executeQuery( MY_PATIENT_OF_DOCTOR, search, search, search, offset, limit);
+        ResultSet rs = ConnectionUtils.executeQuery(MY_PATIENT_OF_DOCTOR, search, search, search, offset, limit);
         while (rs.next()) {
             list.add(
                     BookingDto
@@ -392,9 +383,15 @@ public class PatientDaoImpl implements PatientDao {
                     .dob(resultSet.getDate("dob").toLocalDate())
                     .address(resultSet.getString("address"))
                     .description(resultSet.getString("description"))
+                    .image(resultSet.getString("image"))
                     .build();
         }
         return new ProfileDto();
+    }
+
+    @Override
+    public Patient updatePatient(Patient patient) throws SQLException {
+        return null;
     }
 
 }

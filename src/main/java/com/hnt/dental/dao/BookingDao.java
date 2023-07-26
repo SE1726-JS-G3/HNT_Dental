@@ -14,9 +14,9 @@ import java.util.Optional;
 
 public interface BookingDao extends GenericDao<Booking> {
 
-    List<BookingManagementDto> getAllBookingSummary(int offset, int limit, String search, String serviceId, String status) throws SQLException;
+    List<BookingManagementDto> getAllBookingSummary(int offset, int limit, String search, String serviceId, String status, Long staff, Long doctor) throws SQLException;
 
-    Integer countListBookingSummary(String search) throws SQLException;
+    Integer countListBookingSummary(String search, Long staff, Long doctor) throws SQLException;
 
     List<BookingManagementDto> getServiceByServiceId() throws SQLException;
 

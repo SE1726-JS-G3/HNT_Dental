@@ -214,6 +214,7 @@ public class BookingService {
         String search = req.getParameter("search");
         String status = req.getParameter("status");
         String service = req.getParameter("service");
+        Account loginInfo = (Account) req.getSession().getAttribute("account");
         int pageNumber = 1;
 
         if (StringUtils.isNotEmpty(page)) {
@@ -233,9 +234,35 @@ public class BookingService {
         }
 
         try {
-            Integer totalItem = adao.countListBookingSummary(search.trim());
+            Integer totalItem = 0;
+            switch (loginInfo.getRole()) {
+                case 1:
+                case 3:
+                    totalItem = adao.countListBookingSummary(search.trim(), null, null);
+                    break;
+                case 2:
+                    totalItem = adao.countListBookingSummary(search.trim(), null, loginInfo.getId());
+                    break;
+                case 4:
+                    totalItem = adao.countListBookingSummary(search.trim(), loginInfo.getId(), null);
+                    break;
+            }
             Integer totalPage = PagingUtils.getTotalPage(totalItem);
-            List<BookingManagementDto> getAllBookingSummary = adao.getAllBookingSummary(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE, search.trim(), service.trim(), status.trim());
+            List<BookingManagementDto> getAllBookingSummary = null;
+            switch (loginInfo.getRole()) {
+                case 1:
+                case 3:
+                    getAllBookingSummary = adao.getAllBookingSummary(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE, search.trim(), service.trim(), status.trim(), null, null);
+                    break;
+                case 2:
+                    getAllBookingSummary = adao.getAllBookingSummary(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE, search.trim(), service.trim(), status.trim(), null, loginInfo.getId());
+                    break;
+                case 4:
+                    getAllBookingSummary = adao.getAllBookingSummary(PagingUtils.getOffset(pageNumber), PagingUtils.DEFAULT_PAGE_SIZE, search.trim(), service.trim(), status.trim(), loginInfo.getId(), null);
+                    break;
+            }
+
+
             List<BookingManagementDto> getServiceByServiceId = adao.getServiceByServiceId();
             List<BookingStatus> statuses = BookingStatusEnum.getAllBookingStatus();
             req.setAttribute("services", getServiceByServiceId);
