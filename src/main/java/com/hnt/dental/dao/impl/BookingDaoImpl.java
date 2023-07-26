@@ -174,6 +174,8 @@ public class BookingDaoImpl implements BookingDao {
             "GROUP BY p.day " +
             "ORDER BY p.day ASC ";
 
+    private static final String SQL_UPDATE_STATUS = "UPDATE booking SET status = ? WHERE id = ?";
+
 
     private static String SQL_GET_BOOKING_FOR_DOCTOR = "SELECT b.id, b.name,s.name as serviceName, b.date,b.time,b.status FROM hnt_dental.booking b " +
             "left join service s on s.id = b.service_id " +
@@ -261,6 +263,15 @@ public class BookingDaoImpl implements BookingDao {
                     .build());
         }
         return statisticDtoList;
+    }
+
+    @Override
+    public void updateStatus(Booking booking) {
+        try {
+            ConnectionUtils.executeUpdate(SQL_UPDATE_STATUS, booking.getStatus(), booking.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 

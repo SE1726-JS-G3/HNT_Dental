@@ -45,4 +45,6 @@ public interface BookingDao extends GenericDao<Booking> {
 
     List<DashboardDto> getAllBookingToday() throws SQLException;
     List<StatisticDto> getStatisticBookingTime(String type) throws SQLException;
+
+    void updateStatus(Booking booking);
 }

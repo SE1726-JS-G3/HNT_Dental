@@ -6,6 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -52,9 +54,28 @@ public class VNPayService {
             }
         }
         String queryUrl = query.toString();
-        String vnpSecureHash = SecretUtils.Sha256(bundle.getString("vnp.hash.secret") + hashData);
+        String vnpSecure = bundle.getString("vnp.hash.secret") + hashData;
+        String vnpSecureHash = sha256(vnpSecure);
         queryUrl += "&vnp_SecureHashType=SHA256&vnp_SecureHash=" + vnpSecureHash;
         return bundle.getString("vnp.pay.url") + "?" + queryUrl;
+    }
+
+    public static String sha256(String message) {
+        String digest;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hash = md.digest(message.getBytes(StandardCharsets.UTF_8));
+            StringBuilder sb = new StringBuilder(2 * hash.length);
+            for (byte b : hash) {
+                sb.append(String.format("%02x", b & 0xff));
+            }
+
+            digest = sb.toString();
+
+        } catch (NoSuchAlgorithmException ex) {
+            digest = "";
+        }
+        return digest;
     }
 
     public static String getIpAddress(HttpServletRequest request) {

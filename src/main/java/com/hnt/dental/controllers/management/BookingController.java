@@ -21,7 +21,8 @@ import java.sql.SQLException;
         "/management/booking/update",
         "/management/booking/result",
         "/management/booking/detail",
-        "/management/booking/delete"
+        "/management/booking/delete",
+        "/management/booking/success"
 })
 
 public class BookingController extends HttpServlet {
@@ -41,7 +42,13 @@ public class BookingController extends HttpServlet {
             case "/management/booking/detail":
                 bookingService.getDetailBooking(req, resp);
                 break;
-
+            case "/management/booking/success":
+                try {
+                    bookingService.getSuccessBooking(req, resp);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
             default:
 
         }

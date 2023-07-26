@@ -5,17 +5,17 @@
     <div class="rounded shadow overflow-hidden sticky-bar">
         <div class="text-center avatar-profile margin-nagative mt-n5 position-relative pb-4 border-bottom">
             <br><br><br><br>
-            <c:if test="${profile.image != null}">
-                <img src="${profile.image}"
+            <c:if test="${sessionScope.profile.image != null}">
+                <img src="${sessionScope.profile.image}"
                      class="rounded-circle shadow-md avatar avatar-md-md" alt="">
             </c:if>
-            <c:if test="${profile.image == null}">
+            <c:if test="${sessionScope.profile.image == null}">
                 <img src="${pageContext.request.contextPath}/static/images/user.png"
                      class="rounded-circle shadow-md avatar avatar-md-md" alt="">
             </c:if>
 
-            <h5 class="mt-3 mb-1">${profile.fullName}</h5>
-            <p class="text-muted mb-0">${profile.email}</p>
+            <h5 class="mt-3 mb-1">${sessionScope.profile.fullName}</h5>
+            <p class="text-muted mb-0">${sessionScope.profile.email}</p>
         </div>
 
         <ul class="list-unstyled sidebar-nav mb-0">
