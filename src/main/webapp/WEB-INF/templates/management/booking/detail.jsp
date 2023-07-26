@@ -209,7 +209,7 @@
                                                     <c:if test="${e.id == booking.employee.id}">
                                                         selected
                                                     </c:if>
-                                                    class="form-control" value="${e.id}">${e.fullName}</option>
+                                                    class="form-control" value="${e.account.id}">${e.fullName}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
