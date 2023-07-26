@@ -17,6 +17,7 @@ import com.hnt.dental.util.ServletUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import org.apache.commons.lang3.StringUtils;
 
@@ -257,7 +258,6 @@ public class AuthService {
         String error = req.getParameter("error");
         String success = req.getParameter("success");
         ProfileDto profileDto = null;
-
         switch (account.getRole()) {
             case 0://patient
                 profileDto = patientDao.getProfile(account.getId());
@@ -271,7 +271,8 @@ public class AuthService {
                 profileDto = doctorDao.getProfileDoctor(account.getId());
                 break;
         }
-
+        HttpSession session = req.getSession();
+        session.setAttribute("profile", profileDto);
         req.setAttribute("profile", profileDto);
         req.setAttribute("error", error != null ? bundleMessage.getString(error) : null);
         req.setAttribute("success", success != null ? bundleMessage.getString(success) : null);

@@ -62,13 +62,6 @@
                                     <input readonly value="${d.status}" type="text" class="form-control">
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <input type="hidden" name="id" value="${a.id}"> <!-- Fix: Added hidden input field for id -->
-                                    <input type="hidden" name="status" value="1"> <!-- Fix: Hard-coded status value as 1 for "Chấp nhận" -->
-                                    <input type="submit" id="submit" name="send" class="btn btn-primary active" value="Hoàn thành lịch hẹn"> <!-- Added "active" class to the button -->
-                                </div>
-                            </div>
                         </form>
 
                         <div class="card border-0 shadow overflow-hidden mt-4">
@@ -91,13 +84,12 @@
                         </div>
                         <br> <br>
                         <div class="col-md-6">
-
-                            <button class="btn btn-info active" type="button">
-                                Hủy đặt lịch
-                            </button>
-                            <button class="btn btn-primary active" type="button" onclick="window.location.href='${pageContext.request.contextPath}/auth/my-feedback?id=${d.id}'">
-                                Đánh giá
-                            </button>
+                            <c:if test="${d.status == 'DONE' && d.bookingResultDto.result == null}">
+                                <button class="btn btn-primary active" type="button"
+                                        onclick="window.location.href='${pageContext.request.contextPath}/auth/my-feedback?id=${d.id}'">
+                                    Đánh giá
+                                </button>
+                            </c:if>
                         </div>
                     </div>
                 </div>
