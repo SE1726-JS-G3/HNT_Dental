@@ -18,17 +18,6 @@
                             </div>
                             <div class="col-md-8">
                                 <div class="search-bar p-0 d-lg-block ms-2">
-                                    <div class="row mb-0">
-                                        <div class="col-lg-8">
-                                            <input type="text" class="form-control border rounded-pill" name="txt"
-                                                   value="${search}"
-                                                   id="search" placeholder="Tìm kiếm dịch vụ...">
-                                        </div>
-
-                                        <div class="col-lg-4">
-                                            <button class="btn btn-primary">Tìm kiếm</button>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -40,7 +29,6 @@
                                 <button class="btn btn-primary">Loại dịch vụ</button>
                             </a>
                         </div>
-
                     </div>
                     <div class="col-md-7">
                         <br><br>
