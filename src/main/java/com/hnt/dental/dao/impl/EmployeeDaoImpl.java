@@ -54,13 +54,13 @@ public class EmployeeDaoImpl implements EmployeeDao {
     private static final String DELETE_EMPLOYEE = "DELETE FROM employees WHERE id=?";
 
     private static final String SQL_GET_EMPLOYEE_AVALABLE = "SELECT DISTINCT e.full_name , e.id from employees e " +
-            "inner join booking b on e.id = b.staff_id " +
+            "LEFT join booking b on e.id = b.staff_id " +
             "where e.id NOT IN " +
             " (" +
             "SELECT DISTINCT e.id from employees e " +
-            "inner join booking b on e.id = b.staff_id " +
-            " WHERE b.date = ? " +
-            " AND b.time = ?" +
+            "LEFT join booking b on e.id = b.staff_id " +
+            " WHERE (b.date = ? " +
+            " AND b.time = ?)" +
             " AND b.id <> ?" +
             ")";
 
