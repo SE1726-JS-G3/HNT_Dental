@@ -205,7 +205,7 @@
                             <div class="col-md-5">
                                 <div class="slider slider-for">
                                     <div><img
-                                            src="https://nkluck.vn/home/images/NewFolder/dich-vu-nha-khoa-1.png"
+                                            src="${services.image}"
                                             class="img-fluid rounded" alt=""></div>
                                 </div>
                             </div>

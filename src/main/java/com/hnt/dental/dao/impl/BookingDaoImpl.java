@@ -161,7 +161,7 @@ public class BookingDaoImpl implements BookingDao {
 
     private static String SQL_GET_BOOKING_FOR_DOCTOR = "SELECT b.id, b.name,s.name as serviceName, b.date,b.time,b.status FROM hnt_dental.booking b " +
             "left join service s on s.id = b.service_id " +
-            "where doctor_id = ?";
+            "where b.doctor_id = ?";
 
     private static String SQL_GET_BOOKING_FOR_STAFF = "SELECT b.id, b.name,s.name as serviceName, b.date,b.time,b.status FROM hnt_dental.booking b " +
             "left join service s on s.id = b.service_id " +
