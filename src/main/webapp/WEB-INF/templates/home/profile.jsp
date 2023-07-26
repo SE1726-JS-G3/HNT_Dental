@@ -142,7 +142,7 @@
                                         <label class="form-label">Email</label>
                                         <input name="email" readonly value="${profile.email}" id="email" type="email"
                                                class="form-control">
-                                        <span idgit ="emailValidationMessage" class="text-danger"></span>
+                                        <span id="emailValidationMessage" class="text-danger"></span>
                                         <!-- Thêm phần tử span để hiển thị thông báo -->
                                     </div>
                                 </div>

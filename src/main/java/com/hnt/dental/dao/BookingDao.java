@@ -14,10 +14,9 @@ import java.util.Optional;
 
 public interface BookingDao extends GenericDao<Booking> {
 
-    List<BookingManagementDto> getAllBookingSummary(int offset, int limit, String search, String serviceId, String status) throws SQLException;
-    List<BookingManagementDto> getAllBookingForDoctor(Long id) throws SQLException;
-    List<BookingManagementDto> getAllBookingForStaff(Long id) throws SQLException;
-    Integer countListBookingSummary(String search) throws SQLException;
+    List<BookingManagementDto> getAllBookingSummary(int offset, int limit, String search, String serviceId, String status, Long staff, Long doctor) throws SQLException;
+
+    Integer countListBookingSummary(String search, Long staff, Long doctor) throws SQLException;
 
     List<BookingManagementDto> getServiceByServiceId() throws SQLException;
 
@@ -31,7 +30,6 @@ public interface BookingDao extends GenericDao<Booking> {
     BookingDetailDto getBookingDetailById(Long id) throws SQLException;
 
     List<BookingDto> getAllHistory() throws SQLException;
-
 
     BookingDto DetailHistory(String id) throws SQLException;
 

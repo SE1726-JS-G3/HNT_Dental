@@ -20,7 +20,7 @@ public interface PatientDao extends GenericDao<Patient>{
 
 
 
-    BookingDto getAppointment(Long id) throws SQLException;
+    List<BookingDto> getAppointment(Long id) throws SQLException;
 
     Integer countAppointment() throws Exception;
 
@@ -33,7 +33,7 @@ public interface PatientDao extends GenericDao<Patient>{
     void saveDoctorReview(Long booking_id, Integer doctor_id, int star, String description)throws SQLException;
     List<BookingDto> getMyPatient(Integer offset, Integer limit, String search) throws SQLException;
 
-    BookingDto getService(Long id) throws SQLException;
+    List<BookingDto> getService(Long id) throws SQLException;
 
     Long countPatientDashboard() throws Exception;
 
